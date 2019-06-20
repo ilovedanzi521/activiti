@@ -19,7 +19,14 @@ import { win_switch } from "../../../components/win-switch";
 import { win_table, win_table_column } from "../../../components/win-table";
 import { win_tabs, win_tab } from "../../../components/win-tabs";
 import { win_date_picker } from "../../../components/win-date-picker";
-import { win_tree} from "../../../components/win-tree";
+import { win_tree } from "../../../components/win-tree";
+import {
+    win_container,
+    win_aside,
+    win_header,
+    win_footer,
+    win_main
+} from "../../../components/win_container";
 import { MessageBox } from "element-ui";
 /**Win插件结束 */
 import PageVO from "../../common/vo/PageVO";
@@ -48,7 +55,12 @@ import { DicRepVO } from "../../dictionary/vo/DicVO";
         win_table_column,
         win_tabs,
         win_tab,
-        win_tree
+        win_tree,
+        win_container,
+        win_aside,
+        win_header,
+        win_footer,
+        win_main
     }
 })
 export default class BaseController extends Vue {
@@ -114,7 +126,6 @@ export default class BaseController extends Vue {
         return JSON.parse(JSON.stringify(arr));
     }
 
-
     /**
      * 警告提示框方法提供
      * @param msg 消息内容
@@ -123,12 +134,18 @@ export default class BaseController extends Vue {
      * @param confirmText 确定按钮内容（可为空默认为确定）
      * @param cancelText 取消关闭按钮内容（可为空默认为取消）
      */
-    win_message_box_warning(msg: any, title: string, htmlAble: boolean, confirmText: string, cancelText: string) {
+    win_message_box_warning(
+        msg: any,
+        title: string,
+        htmlAble: boolean,
+        confirmText: string,
+        cancelText: string
+    ) {
         return MessageBox.confirm(msg, title, {
-            confirmButtonText: confirmText === undefined ? '确定' : confirmText,
-            cancelButtonText: cancelText === undefined ? '取消' : cancelText,
+            confirmButtonText: confirmText === undefined ? "确定" : confirmText,
+            cancelButtonText: cancelText === undefined ? "取消" : cancelText,
             dangerouslyUseHTMLString: htmlAble === true ? true : false,
-            type: 'warning'
+            type: "warning"
         });
     }
 }

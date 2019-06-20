@@ -1,4 +1,3 @@
-import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import ExchangeFlowService from "../service/ExchangeFlowService";
 import {
@@ -7,20 +6,6 @@ import {
 } from "../bean/ParamFlowInstVO";
 import { ParamFlowGroupVO } from "../bean/ParamFlowGroupVO";
 import { UserInfoVO } from "../bean/UserInfoVO";
-import TSearch from "@/components/Trade-Search.vue";
-import TButton from "@/components/Trade-Button.vue";
-import TTable from "@/components/Trade-Table.vue";
-import TDialog from "@/components/Trade-Dialog.vue";
-import TDown from "@/components/Trade-down.vue";
-import TPage from "@/components/Trade-Page.vue";
-import TTree from "@/components/Trade-Treelike.vue";
-import {
-    win_container,
-    win_aside,
-    win_header,
-    win_footer,
-    win_main
-} from "../../../components/win_container";
 import AxiosFun from "../../../api/AxiosFun";
 import BaseController from "../../common/controller/BaseController";
 import { DeleteEnum } from "../../flow/enum/DeleteEnum";
@@ -36,20 +21,7 @@ import {
     TransactionDirectionItem
 } from "../bean/SelectSources";
 @Component({
-    components: {
-        TSearch,
-        TButton,
-        TTable,
-        TDialog,
-        TDown,
-        TPage,
-        TTree,
-        win_container,
-        win_aside,
-        win_header,
-        win_footer,
-        win_main
-    }
+    components: {}
 })
 export default class ExchangeFlowController extends BaseController {
     /**下拉框数据**/
@@ -80,7 +52,7 @@ export default class ExchangeFlowController extends BaseController {
     repCurrencyVOs: ParamFlowClassReqVO[] = [];*/
     /**返回的实例列表 */
     repFlowVOs: ParamFlowInstRepVO[] = [];
-
+    pageVO: PageVO = new PageVO();
     /**编辑、保存开关 */
     // editFormVisible: boolean = true;
     /**打开、编辑弹出框标题 */
@@ -273,11 +245,13 @@ export default class ExchangeFlowController extends BaseController {
     }
     //查询流程ByGroupid
     queryFlowByGroupid(flowGroupid) {
+        debugger;
+        let _this = this;
         this.service.listFlowByGroupid(flowGroupid).then(res => {
             if (res.winRspType === "ERROR") {
                 console.log(res.msg);
             }
-            this.repFlowVOs = res.data.list;
+            _this.pageVO = res.data;
         });
     }
     /** 汇率分页查询 */
@@ -289,11 +263,12 @@ export default class ExchangeFlowController extends BaseController {
     //查询流程all
     queryExchangeFlow(reqVO) {
         // this.flowGroupId = 0;
+        let _this = this;
         this.service.listExchangeFlow(reqVO).then(res => {
             if (res.winRspType === "ERROR") {
                 console.log(res.msg);
             }
-            this.repFlowVOs = res.data.list;
+            _this.pageVO = res.data;
         });
     }
     //流程实例批量选择

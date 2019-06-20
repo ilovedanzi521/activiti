@@ -137,13 +137,14 @@
                                     type="warning"
                                     round
                                     @click="openAddDialog()"
-                                >
-                                    <i class="el-icon-plus"></i> 新增
-                                </win_button>
+                                    icon="el-icon-plus"
+                                    class="iconAddbutton"
+                                >新增</win_button>
                                 <win_button
                                     :disabled="level!=2||!options"
                                     type="warning"
                                     icon="el-icon-delete"
+                                    class="iconAddbutton"
                                     round
                                     @click="batchDelete(tableChecked)"
                                 >删除</win_button>
@@ -151,6 +152,7 @@
                                     :disabled="level!=2||!options"
                                     type="warning"
                                     icon="el-icon-video-play"
+                                    class="iconAddbutton"
                                     round
                                     @click="startflow(tableChecked)"
                                 >启动</win_button>
@@ -158,67 +160,55 @@
                                     :disabled="level!=2||!options"
                                     type="warning"
                                     icon="el-icon-video-pause"
+                                    class="iconAddbutton"
                                     round
                                     @click="stopflow(tableChecked)"
                                 >停止</win_button>
                             </el-button-group>
                         </el-row>
                     </win_form>
-                </win_header>
-                <!--返回数据列表-->
-                <win_main style="height:800px;background-color: #000">
-                    <div style="width:100%">
-                        <win_table
-                            :data="repFlowVOs"
-                            @selection-change="handleSelectionChange"
-                            border
-                        >
-                            <win_table_column type="selection"></win_table_column>
-                            <win_table_column prop="flowName" label="流程名称" sortable></win_table_column>
-                            <win_table_column prop="flowType" label="流程类型" sortable></win_table_column>
-                            <win_table_column prop="productCode" label="产品" sortable></win_table_column>
-                            <win_table_column
-                                prop="investCompany"
-                                label="投资单位"
-                                sortable
-                                width="180"
-                            ></win_table_column>
-                            <win_table_column prop="investConstitute" label="组合资产" sortable></win_table_column>
-                            <win_table_column prop="instructionType" label="指令类型" sortable></win_table_column>
-                            <win_table_column prop="marketCode" label="交易市场" sortable></win_table_column>
-                            <win_table_column prop="securityType" label="证券类型" sortable></win_table_column>
-                            <win_table_column prop="transactionDirection" label="交易方向" sortable></win_table_column>
-                            <win_table_column label="启用标志" prop="startFlag">
-                                <template slot-scope="scope">
-                                    <el-switch
-                                        v-model="scope.row.startFlag"
-                                        :active-value="true"
-                                        :inactive-value="false"
-                                        active-color="#13ce66"
-                                        inactive-color="#ff4949"
-                                    ></el-switch>
-                                </template>
-                            </win_table_column>
-                            <win_table_column prop="publisherCode" label="操作">
-                                <template slot-scope="scope">
-                                    <el-button
-                                        type="text"
-                                        @click="openUpdateDialog(scope.row)"
-                                        size="small"
-                                    >修改</el-button>
+                    <!--返回数据列表-->
+                    <win_table :data="pageVO.list" @selection-change="handleSelectionChange" border>
+                        <win_table_column type="selection"></win_table_column>
+                        <win_table_column prop="flowName" label="流程名称" sortable></win_table_column>
+                        <win_table_column prop="flowType" label="流程类型" sortable></win_table_column>
+                        <win_table_column prop="productCode" label="产品" sortable></win_table_column>
+                        <win_table_column prop="investCompany" label="投资单位" sortable width="180"></win_table_column>
+                        <win_table_column prop="investConstitute" label="组合资产" sortable></win_table_column>
+                        <win_table_column prop="instructionType" label="指令类型" sortable></win_table_column>
+                        <win_table_column prop="marketCode" label="交易市场" sortable></win_table_column>
+                        <win_table_column prop="securityType" label="证券类型" sortable></win_table_column>
+                        <win_table_column prop="transactionDirection" label="交易方向" sortable></win_table_column>
+                        <win_table_column label="启用标志" prop="startFlag">
+                            <template slot-scope="scope">
+                                <el-switch
+                                    v-model="scope.row.startFlag"
+                                    :active-value="true"
+                                    :inactive-value="false"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949"
+                                ></el-switch>
+                            </template>
+                        </win_table_column>
+                        <win_table_column prop="publisherCode" label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                    type="text"
+                                    @click="openUpdateDialog(scope.row)"
+                                    size="small"
+                                >修改</el-button>
 
-                                    <el-button
-                                        type="text"
-                                        @click="designFlow(scope.row)"
-                                        size="small"
-                                    >设计流程</el-button>
-                                </template>
-                            </win_table_column>
-                        </win_table>
-                        <!-- 分页组件 -->
-                        <Pagination v-bind:child-msg="pageVO" @callFather="pageQuery"></Pagination>
-                    </div>
-                </win_main>
+                                <el-button
+                                    type="text"
+                                    @click="designFlow(scope.row)"
+                                    size="small"
+                                >设计流程</el-button>
+                            </template>
+                        </win_table_column>
+                    </win_table>
+                    <!--分页组件-->
+                    <Pagination v-bind:childMsg="pageVO" @callFather="pageQuery"></Pagination>
+                </win_header>
             </win_container>
         </win_container>
         <!-- 流程弹出窗体-->
