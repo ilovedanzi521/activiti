@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.win.dfas.dao.FlowGroupMapper">
+  <resultMap id="BaseResultMap" type="com.win.dfas.entity.FlowGroup">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="flow_name" jdbcType="VARCHAR" property="flowName" />
+    <result column="level" jdbcType="CHAR" property="level" />
+    <result column="father_id" jdbcType="BIGINT" property="fatherId" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, flow_name, level, father_id, create_user_id, create_time, update_user_id, update_time
+  </sql>
+
+  <resultMap type="com.win.dfas.vo.response.ParamFlowGroupRepVO" id="flowMap">
+    <id column="id" property="id"/>
+    <result column="flow_name" property="label"/>
+    <result column="level" property="level"/>
+    <result column="rownum" property="rownum"/>
+    <result column="isedit" property="edit"/>
+    <collection property="children" ofType="com.win.dfas.vo.response.ParamFlowGroupRepVO">
+      <id column="cid" property="id"/><!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
+      <result column="cname" property="label"/>
+      <result column="clevel" property="level"/>
+      <result column="crownum" property="rownum"/>
+      <result column="cisedit" property="edit"/>
+    </collection>
+  </resultMap>
+  <select id="list" parameterType="com.win.dfas.vo.response.ParamFlowGroupRepVO" resultMap="flowMap">
+    			select 	rownum,	tmp.id,
+			'0' as isedit,
+			tmp.flow_name,
+			tmp.level,
+			c.id AS cid,
+			c.flow_name as cname,
+			c.level as clevel,
+			case when c.id is null then null else rownum end as crownum ,
+			case when  c.id  is null then null else '0' end as cisedit
+			from (
+		select f.*,  @rownum:=@rownum+1 rownum from (SELECT @rownum:=-1)r,param_flowgroup f where f.level ='1')tmp left join param_flowgroup c
+		on tmp.id = c.father_id 	order by  tmp.id
+	</select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from param_flowgroup
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectCountGroup" resultType="java.lang.Integer" parameterType="java.lang.Long">
+    select count(*) from param_flowgroup where father_id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectCountFlowInst" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    select
+    count(*)
+    from param_flowInst
+    where flow_code in(	select id from (
+    select id FROM param_flowgroup  where id= #{id,jdbcType=BIGINT}
+    union
+    select id from param_flowgroup  where father_id= #{id,jdbcType=BIGINT} ) tmp )
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from param_flowgroup
+    where id = #{id,jdbcType=BIGINT} or father_id= #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.win.dfas.entity.FlowGroup">
+    insert into param_flowgroup (id, flow_name, level,
+      father_id, create_user_id, create_time,
+      update_user_id, update_time)
+    values (#{id,jdbcType=BIGINT}, #{flowName,jdbcType=VARCHAR}, #{level,jdbcType=CHAR},
+      #{fatherId,jdbcType=BIGINT}, #{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateUserId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.win.dfas.entity.FlowGroup">
+    insert into param_flowgroup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="flowName != null">
+        flow_name,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="fatherId != null">
+        father_id,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateUserId != null">
+        update_user_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="flowName != null">
+        #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=CHAR},
+      </if>
+      <if test="fatherId != null">
+        #{fatherId,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserId != null">
+        #{updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.win.dfas.entity.FlowGroup">
+    update param_flowgroup
+    <set>
+      <if test="flowName != null">
+        flow_name = #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=CHAR},
+      </if>
+      <if test="fatherId != null">
+        father_id = #{fatherId,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserId != null">
+        update_user_id = #{updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.win.dfas.entity.FlowGroup">
+    update param_flowgroup
+    set flow_name = #{flowName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=CHAR},
+      father_id = #{fatherId,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_user_id = #{updateUserId,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

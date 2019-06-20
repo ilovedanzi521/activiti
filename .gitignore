@@ -41,7 +41,7 @@ target/
 
 ### NetBeans ###
 nbproject/private/
-build/
+### bbuild/
 nbbuild/
 dist/
 nbdist/
