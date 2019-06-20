@@ -1,0 +1,105 @@
+@charset 'UTF-8';
+@import "./theme.scss";
+
+@mixin button($width:100px, $height:40px, $bg:#f5f7fa, $color:#999999) {
+    display: inline-block;
+    border: none;
+    width: $width;
+    height: $height;
+    background: $bg;
+    border-radius: 4px;
+    color: $color;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+@mixin sinput($width:249px, $height:40px, $bg:#3F3F3F, $color:#999999) {
+    width: $width;
+    height: $height;
+    line-height: $height;
+    background: $bg;
+    color: $color;
+    display: inline-block;
+    padding: 14px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+
+@mixin showType($bg:#FF4D4D) {
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        margin-left: -4px;
+        margin-top: -4px;
+        border-radius: 50%;
+        background: $bg;
+    }
+}
+
+
+@mixin showType($bg:#FF4D4D) {
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        margin-left: -4px;
+        margin-top: -4px;
+        border-radius: 50%;
+        background: $bg;
+    }
+}
+
+
+@mixin iuputUi() {
+    border: 0;
+    background: none;
+    width: 240px;
+    height: 40px;
+    line-height: 40px;
+    padding: 15px;
+    border: 1px solid #dcdfe6;
+    border-radius: $radius4px;
+    box-sizing: border-box;
+    font-size: $font-size4;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+
+    &::-webkit-input-placeholder {
+        color: $color-font3;
+    }
+
+    &:focus {
+        border: 1px solid $color-orange;
+    }
+
+    &.disabled {
+        background: $color-font5;
+        color: $color-font3;
+    }
+}

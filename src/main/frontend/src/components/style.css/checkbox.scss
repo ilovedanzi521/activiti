@@ -1,0 +1,30 @@
+@charset "UTF-8";
+@import "../../assets/style/theme.scss";
+
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #FF900D;
+    border-color: #FF900D;
+}
+
+.el-checkbox__inner::after {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    content: "";
+    border: 2px solid #707070;
+    border-left: 0;
+    border-top: 0;
+    height: 7px;
+    left: 4px;
+    position: absolute;
+    top: 1px;
+}
+
+
+.el-checkbox {
+    color: #ADB5BB;
+}
+
+.el-checkbox__input.is-checked+.el-checkbox__label {
+    color: #FF4D4D
+}

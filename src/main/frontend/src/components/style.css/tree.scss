@@ -1,0 +1,51 @@
+@charset "UTF-8";
+@import "../../assets/style/theme.scss";
+
+.el-tree {
+    position: absolute;
+    left: 0;
+    top: 40px;
+    bottom: 0;
+    background: #273049;
+    color: #ADB5BB;
+    width: 212px;
+    z-index: 2;
+}
+
+.el-tree-node {
+    margin: 24px 0;
+
+    .el-tree-node {
+        margin-bottom: 0;
+        text-align: right
+    }
+}
+
+.el-tree-node__label {
+    font-size: 18px;
+
+    &:nth-of-type(2) {
+        font-size: 16px;
+    }
+}
+
+.el-tree-node__content:hover {
+    color: $color-orange;
+    background: transparent
+}
+
+
+.el-tree-node__expand-icon.expanded {
+    -webkit-transform: rotate(90deg);
+
+    &::before {
+        color: $color-orange
+    }
+
+    /* transform: rotate(90deg); */
+}
+
+.el-tree-node__expand-icon.is-leaf {
+    color: transparent;
+    cursor: default;
+}

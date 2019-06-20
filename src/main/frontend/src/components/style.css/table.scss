@@ -1,0 +1,57 @@
+@charset "UTF-8";
+@import "../../assets/style/theme.scss";
+
+.el-table th,
+.el-table tr {
+    background: $table-color
+}
+
+.el-table {
+    .el-table__header-wrapper {
+        background: $table-color;
+    }
+
+    .el-table__body-wrapper {
+        background: $color-main2;
+
+        & .el-table__row:nth-of-type(odd) {
+            background: $table-color2;
+        }
+
+        .el-table__row {
+            background: $color-main2;
+        }
+    }
+
+    .cell {
+        font-size: 14px;
+        color: $color-white
+    }
+}
+
+.el-table td,
+.el-table th.is-leaf {
+    border-bottom: 1px solid transparent
+}
+
+.el-table td,
+.el-table th.is-leaf {
+    padding: 8px 0
+}
+
+.el-table--enable-row-hover .el-table__body tr td {
+    padding: 8px 0;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+    background-color: $color-orange
+}
+
+.el-table--border::after,
+.el-table--group::after,
+.el-table::before {
+    content: '';
+    position: absolute;
+    background-color: #444E69;
+    z-index: 1;
+}
