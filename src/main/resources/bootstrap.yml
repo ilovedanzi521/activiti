@@ -1,21 +1,89 @@
 server:
-    port: 30302
+  port: 8080
 spring:
-    application:
-        name: ycmp-auth-center #对应前配置文件中的{application}部分 
-    cloud:
-      config: #/{label}/{application}-{profile}.yml
-         label: dev #对应前配置文件的git分支
-         profile: ${config.profile:test} #对应前配置文件中的{profile}部分
-         discovery:
-           enabled: true #是从配置中心读取文件
-           service-id: ycmp-config-center #配置中心的servieId，即服务名
+  freemarker:
+    cache: false
+    charset: UTF-8
+    contentType: text/html
+    requestContextAttribute: ctx
+    templateEncoding: UTF-8
+    settings:
+      defaultEncoding: UTF-8
+      url_escaping_charset: UTF-8
+      locale: zh_CN
+  http:
+    activiti:
+      check-process-definitions: false
+  application:
+    name: dfas-common-bpm #对应前配置文件中的{application}部分
+  profiles:
+    active: dev
+  cloud:
+    inetutils:
+      preferred-networks: 192.168.
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.0.107:3307/testdb?useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  redis:
+    database: 0
+    host: 192.168.0.107
+    password: #默认为空
+    port: 6379
+#      max-idle: 8 #最大空闲连接
+#      min-idle: 0 #最小空闲连接
+#      max-active: 8 #连接池最大连接数（使用负值表示没有限制）
+    jedis:
+      pool:
+        max-idle: 8 #最大空闲连接
+        min-idle: 0 #最小空闲连接
+        max-active: 8 #连接池最大连接数（使用负值表示没有限制）
+
 eureka:
   client:
-    service-url:
-         defaultZone: http://ycmpadmin:ycmpadmin@127.0.0.1:10010/eureka #配置服务注册中心 多个用逗号分隔
+    serviceUrl:
+      defaultZone: http://192.168.0.60:10010/eureka
+#  instance:
+#    lease-renewal-interval-in-seconds: 10 # 续约更新时间间隔（默认是30秒）
+#    lease-expiration-duration-in-seconds: 30 #服务失效时间。默认是90秒，也就是如果Eureka Server在90秒内没有接收到来自ServiceProvider的Renew操作，就会把Service Provider剔除
+#    instance-id: ${spring.cloud.client.hostname}:${spring.cloud.client.ipAddress}:${random.int} #设置实例名
+#    prefer-ip-address: true #使用IP地址来做注册中心地址
 
-##如果无需使用数据库，请做如下设置，否则将导致监控失败下线. 用数据库则设置为true
 mybatis:
-   datasource:
-     enable: true
+  table:
+    auto: update
+  model:
+    pack: com.win.dfas.dao
+  database:
+    type: mysql
+  actable:
+    name: dfas-common-bpm
+    version: 1.0
+  mapper-locations: classpath:mybatis/mapper/**/*.xml #实体类所要映射sql的xml文件
+  type-aliases-package: com.win.dfas.entity #实体类全路径所在的最后一级目录
+management:
+  security:
+    enabled: false
+security:
+  basic:
+    enabled: false
+#PageHelper配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+logging:
+  level:
+    com.win.dfas: debug

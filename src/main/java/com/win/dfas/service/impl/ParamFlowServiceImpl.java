@@ -1,0 +1,108 @@
+/****************************************************
+ * 创建人：     @author wanglei
+ * 创建时间: 2019/6/11/13:46
+ * 项目名称：dfbp-common-basicparameter
+ * 文件名称: ParamFlowServiceImpl.java
+ * 文件描述: @Description:
+ *
+ * All rights Reserved, Designed By 投资交易团队
+ * @Copyright:2016-2019
+ *
+ ********************************************************/
+
+package com.win.dfas.service.impl;
+
+import cn.hutool.core.util.ObjectUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.win.dfas.common.entity.BaseEntity;
+import com.win.dfas.common.util.ObjectUtils;
+import com.win.dfas.common.util.PrimaryKeyUtil;
+import com.win.dfas.dao.ParamFlowInstMapper;
+import com.win.dfas.entity.ParamFlowInst;
+import com.win.dfas.service.IParamFlowService;
+import com.win.dfas.vo.request.ParamFlowReqVO;
+import com.win.dfas.vo.response.ParamFlowRepVO;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * 包名称：com.win.dfas.service.impl
+ * 类名称：ParamFlowServiceImpl
+ * 类描述：流程服务实现类
+ * 创建人：@author wanglei
+ * 创建时间：2019/6/11/13:46
+ *
+ */
+@Service
+public class ParamFlowServiceImpl implements IParamFlowService {
+
+    @Autowired
+    private ParamFlowInstMapper paramFlowMapper;
+
+    @Override
+    public PageInfo<ParamFlowRepVO> list(ParamFlowReqVO queryVO) {
+//        PageHelper.startPage(queryVO.getReqPageNum(),queryVO.getReqPageSize());
+        PageHelper.startPage(1,2);
+        List<ParamFlowInst> flows = paramFlowMapper.list(queryVO);
+        PageInfo<ParamFlowInst> pageInfo = new PageInfo<ParamFlowInst>(flows);
+		return ObjectUtils.copyPageInfo(pageInfo, ParamFlowRepVO.class);
+    }
+
+    @Override
+    public void add(ParamFlowRepVO vo) {
+//        if(StrUtil.isBlank(vo.get)) {
+//            throw ParameterExceptionUtil.winException(WinRspTypeEnum.EXCHANGE_RATE_SOURCE_NOT_NULL);
+//        }
+        vo.setId(PrimaryKeyUtil.generateId());
+        ParamFlowInst entity = new ParamFlowInst();
+        BeanUtils.copyProperties(vo, entity);
+        entity.setId(PrimaryKeyUtil.generateId());
+        paramFlowMapper.insert(entity);
+    }
+
+    @Override
+    public void update(ParamFlowRepVO vo) {
+        if(ObjectUtil.isNull(vo.getId())) {
+//            throw ParameterExceptionUtil.winException(WinRspTypeEnum.EXCHANGE_RATE_ID_NOT_NULL);
+            //TODO
+        }
+        ParamFlowInst entity = new ParamFlowInst();
+        BeanUtils.copyProperties(vo, entity);
+        paramFlowMapper.updateByPrimaryKeySelective(entity);
+    }
+
+    @Override
+    public void delete(Long id) {
+        if(ObjectUtil.isNull(id)) {
+            //TODO
+        }
+
+        paramFlowMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void batchDelete(List ids) {
+        paramFlowMapper.batchDelete(ids);
+    }
+
+    @Override
+    public  PageInfo<ParamFlowRepVO>  queryFlowByGroupid(Long flowGroupId) {
+        List<ParamFlowInst> flows =paramFlowMapper.queryFlowByGroupid(flowGroupId);
+        PageInfo<ParamFlowInst> pageInfo = new PageInfo<ParamFlowInst>(flows);
+        return ObjectUtils.copyPageInfo(pageInfo, ParamFlowRepVO.class);
+    }
+
+    @Override
+    public void updateStartFlagToStop(List<String> ids) {
+        paramFlowMapper.updateStartFlagToStop(ids);
+    }
+
+    @Override
+    public void updateStartFlagToStart(List<Long> ids) {
+        paramFlowMapper.updateStartFlagToStart(ids);
+    }
+}
