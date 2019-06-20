@@ -14,6 +14,13 @@ import TDialog from "@/components/Trade-Dialog.vue";
 import TDown from "@/components/Trade-down.vue";
 import TPage from "@/components/Trade-Page.vue";
 import TTree from "@/components/Trade-Treelike.vue";
+import {
+    win_container,
+    win_aside,
+    win_header,
+    win_footer,
+    win_main
+} from "../../../components/win_container";
 import AxiosFun from "../../../api/AxiosFun";
 import BaseController from "../../common/controller/BaseController";
 import { DeleteEnum } from "../../flow/enum/DeleteEnum";
@@ -22,11 +29,27 @@ import {
     FlowTypeItem,
     InstructionTypeItem,
     InvestCompanyItem,
-    InvestConstituteItem, MarketItem,
-    ProductItem, SecurityTypeItem, TransactionDirectionItem
+    InvestConstituteItem,
+    MarketItem,
+    ProductItem,
+    SecurityTypeItem,
+    TransactionDirectionItem
 } from "../bean/SelectSources";
 @Component({
-    components: { TSearch, TButton, TTable, TDialog, TDown, TPage, TTree }
+    components: {
+        TSearch,
+        TButton,
+        TTable,
+        TDialog,
+        TDown,
+        TPage,
+        TTree,
+        win_container,
+        win_aside,
+        win_header,
+        win_footer,
+        win_main
+    }
 })
 export default class ExchangeFlowController extends BaseController {
     /**下拉框数据**/
@@ -67,7 +90,7 @@ export default class ExchangeFlowController extends BaseController {
     userVOs: UserInfoVO[] = [];
     ids: Array<number> = [];
     tableChecked: [];
-    options:boolean=false;
+    options: boolean = false;
     flowGroupId: number;
     //处理flowgroup的增加删除变量
     level: number = 1;
@@ -79,7 +102,7 @@ export default class ExchangeFlowController extends BaseController {
     // $refs: {
     //     validate: HTMLFormElement
     // }
-    startFlag:boolean = true   ;
+    startFlag: boolean = true;
     $refs;
     treedata: any[] = [
         {
@@ -99,97 +122,106 @@ export default class ExchangeFlowController extends BaseController {
         this.level = data.level;
         this.rownum = data.rownum;
         this.queryFlowByGroupid(data.id);
-
     }
     //选中树形行后点击删除
-    public  delflowgroup() {
+    public delflowgroup() {
         let flowId = this.flowGroupId;
         let level = this.level;
-        if(flowId != 1){
-            this.deleteFlowClass(flowId,level);
-        }else{
-            this.win_message_box_warning("不能删除默认流程类",'提示',false,null,null).catch();
+        if (flowId != 1) {
+            this.deleteFlowClass(flowId, level);
+        } else {
+            this.win_message_box_warning(
+                "不能删除默认流程类",
+                "提示",
+                false,
+                null,
+                null
+            ).catch();
         }
-
     }
 
     //删除流程实例
-    deleteFlowClass(flowId: number,level:number) {
+    deleteFlowClass(flowId: number, level: number) {
         //1.获取流程组信息
         this.service.queryGroupCount(flowId).then(res => {
             if (res.winRspType === "ERROR") {
                 console.log(res.msg);
-            }else{
-                let msg ="";
-                let type =res.data;
-                if(DeleteEnum.EXIST_INST==type){
-                    msg="该流程类中存在流程数据，请优先删除流程数据。";
-                    if(level==2){
-                        msg="该流程组存在流程数据，请优先删除对应流程数据。";
+            } else {
+                let msg = "";
+                let type = res.data;
+                if (DeleteEnum.EXIST_INST == type) {
+                    msg = "该流程类中存在流程数据，请优先删除流程数据。";
+                    if (level == 2) {
+                        msg = "该流程组存在流程数据，请优先删除对应流程数据。";
                     }
-                    this.win_message_box_warning(msg,'提示',false,null,null).then(() => {
-
-                    }).catch();
-                }else {
-                    if(DeleteEnum.EXIST_GROUP==type){
-                        msg="请确认删除此流程分类及流程组信息";
-                    }else{
-                        msg="请确认删除此流程分类信息";
+                    this.win_message_box_warning(msg, "提示", false, null, null)
+                        .then(() => {})
+                        .catch();
+                } else {
+                    if (DeleteEnum.EXIST_GROUP == type) {
+                        msg = "请确认删除此流程分类及流程组信息";
+                    } else {
+                        msg = "请确认删除此流程分类信息";
                     }
-                    if(level==2){
-                        msg="请确认删除该流程组信息";
+                    if (level == 2) {
+                        msg = "请确认删除该流程组信息";
                     }
-                    this.win_message_box_warning(msg,'提示',false,null,null).then(() => {
-                        this.service.delflowgroup(flowId).then(res => {
-                            if (res.winRspType === "ERROR") {
-                                console.log(res.msg);
-                            }
-                            this.queryflowgroup();
-                        });
-                    }).catch();
+                    this.win_message_box_warning(msg, "提示", false, null, null)
+                        .then(() => {
+                            this.service.delflowgroup(flowId).then(res => {
+                                if (res.winRspType === "ERROR") {
+                                    console.log(res.msg);
+                                }
+                                this.queryflowgroup();
+                            });
+                        })
+                        .catch();
                 }
             }
-
         });
     }
     //选中树形后点击新增
     addflowgroup() {
-        let that=this;
-        if(this.flowGroupId==1) {
-            let s = document.createElement('input');
+        let that = this;
+        if (this.flowGroupId == 1) {
+            let s = document.createElement("input");
             let d = this.$refs.SlotTree.$el;
             d.appendChild(s);
             s.focus();
-            s.addEventListener('blur', function () {
+            s.addEventListener("blur", function() {
                 that.flowGroupVO.flowName = s.value;
                 that.flowGroupVO.level = "1";
                 s.remove();
-                AxiosFun.post("/param/flowgroup/", that.flowGroupVO).then(res => {
-                    if (res.winRspType === "ERROR") {
-                        console.log(res.msg);
+                AxiosFun.post("/param/flowgroup/", that.flowGroupVO).then(
+                    res => {
+                        if (res.winRspType === "ERROR") {
+                            console.log(res.msg);
+                        }
+                        that.queryflowgroup();
                     }
-                    that.queryflowgroup();
-                });
+                );
             });
-        }else  if(this.flowGroupId>1){
-            let s = document.createElement('input');
+        } else if (this.flowGroupId > 1) {
+            let s = document.createElement("input");
             let d = this.$refs.SlotTree.$el.children[that.rownum];
             console.log(that.rownum);
             d.appendChild(s);
             s.focus();
-            s.addEventListener('blur', function () {
-                console.log(s.value)
+            s.addEventListener("blur", function() {
+                console.log(s.value);
                 that.flowGroupVO.flowName = s.value;
                 that.flowGroupVO.level = "2";
                 that.flowGroupVO.fatherId = that.flowGroupId;
                 s.remove();
-                AxiosFun.post("/param/flowgroup/", that.flowGroupVO).then(res => {
-                    if (res.winRspType === "ERROR") {
-                        console.log(res.msg);
-                    }
+                AxiosFun.post("/param/flowgroup/", that.flowGroupVO).then(
+                    res => {
+                        if (res.winRspType === "ERROR") {
+                            console.log(res.msg);
+                        }
 
-                    that.queryflowgroup();
-                });
+                        that.queryflowgroup();
+                    }
+                );
             });
             // s.onkeyup = function (value){
             //     console.log(value);
@@ -208,8 +240,8 @@ export default class ExchangeFlowController extends BaseController {
             // };
         }
     }
-//todo
-    handleEdit(level,s,that){
+    //todo
+    handleEdit(level, s, that) {
         that.flowGroupVO.flowName = s.value;
         that.flowGroupVO.level = level;
         that.flowGroupVO.fatherId = that.fatherId;
@@ -221,8 +253,6 @@ export default class ExchangeFlowController extends BaseController {
             that.queryflowgroup();
         });
     }
-
-
 
     mounted() {
         this.$nextTick(() => {
@@ -242,7 +272,7 @@ export default class ExchangeFlowController extends BaseController {
         });
     }
     //查询流程ByGroupid
-    queryFlowByGroupid(flowGroupid){
+    queryFlowByGroupid(flowGroupid) {
         this.service.listFlowByGroupid(flowGroupid).then(res => {
             if (res.winRspType === "ERROR") {
                 console.log(res.msg);
@@ -269,77 +299,116 @@ export default class ExchangeFlowController extends BaseController {
     //流程实例批量选择
     handleSelectionChange(val) {
         this.tableChecked = val;
-        this.tableChecked.length>0?this.options=true:this.options=false;
-        console.log(this.level!=2||this.options)
+        this.tableChecked.length > 0
+            ? (this.options = true)
+            : (this.options = false);
+        console.log(this.level != 2 || this.options);
     }
     //批量删除
     batchDelete(rows: Array<ParamFlowInstRepVO>) {
-        this.win_message_box_warning('请确认删除此流程数据信息','提示',false,null,null).then(() => {
-            let _this = this;
-            _this.ids = [];
-            rows.forEach((repVO: ParamFlowInstRepVO) => {
-                _this.ids.push(repVO.id);
-            });
-            this.service.deleteExchangeFlows(_this.ids).then(res => {
-                if (res.winRspType === "ERROR") {
-                    console.log(res.msg);
-                }
-                _this.queryFlowByGroupid(this.flowGroupId);
-            });
-        }).catch();
-    }
-    //批量启动
-    startflow(rows: Array<ParamFlowInstRepVO>){
-        if(this.conditionFlowDiagram(rows,true)){
-            this.win_message_box_warning('请确认批量启用流程。','提示',false,null,null).then(() => {
-                this.service.batchStartFlow(rows).then(res => {
+        this.win_message_box_warning(
+            "请确认删除此流程数据信息",
+            "提示",
+            false,
+            null,
+            null
+        )
+            .then(() => {
+                let _this = this;
+                _this.ids = [];
+                rows.forEach((repVO: ParamFlowInstRepVO) => {
+                    _this.ids.push(repVO.id);
+                });
+                this.service.deleteExchangeFlows(_this.ids).then(res => {
                     if (res.winRspType === "ERROR") {
                         console.log(res.msg);
                     }
-                    this.queryFlowByGroupid(this.flowGroupId);
+                    _this.queryFlowByGroupid(this.flowGroupId);
                 });
-            }).catch();
+            })
+            .catch();
+    }
+    //批量启动
+    startflow(rows: Array<ParamFlowInstRepVO>) {
+        if (this.conditionFlowDiagram(rows, true)) {
+            this.win_message_box_warning(
+                "请确认批量启用流程。",
+                "提示",
+                false,
+                null,
+                null
+            )
+                .then(() => {
+                    this.service.batchStartFlow(rows).then(res => {
+                        if (res.winRspType === "ERROR") {
+                            console.log(res.msg);
+                        }
+                        this.queryFlowByGroupid(this.flowGroupId);
+                    });
+                })
+                .catch();
         }
     }
     //批量停止
-    stopflow(rows: Array<ParamFlowInstRepVO>){
-        if(this.conditionFlowDiagram(rows,false)){
+    stopflow(rows: Array<ParamFlowInstRepVO>) {
+        if (this.conditionFlowDiagram(rows, false)) {
             let ids = [];
             rows.forEach((repVO: ParamFlowInstRepVO) => {
                 ids.push(repVO.processDefId);
-            })
-            this.win_message_box_warning('请确认批量停用流程。','提示',false,null,null).then(() => {
-                this.service.batchStopFlow(ids).then(res => {
-                    if (res.winRspType === "ERROR") {
-                        console.log(res.msg);
-                    }
-                    this.queryFlowByGroupid(this.flowGroupId);
-                });
-            }).catch();
+            });
+            this.win_message_box_warning(
+                "请确认批量停用流程。",
+                "提示",
+                false,
+                null,
+                null
+            )
+                .then(() => {
+                    this.service.batchStopFlow(ids).then(res => {
+                        if (res.winRspType === "ERROR") {
+                            console.log(res.msg);
+                        }
+                        this.queryFlowByGroupid(this.flowGroupId);
+                    });
+                })
+                .catch();
         }
     }
     //判断流程是否设计
-    private conditionFlowDiagram(rows: Array<ParamFlowInstRepVO>,flag:boolean) {
-        let msg:string=flag?"启动":"停止";
-        let modelIds:any=[];
-        let startFlag:any=[];
+    private conditionFlowDiagram(
+        rows: Array<ParamFlowInstRepVO>,
+        flag: boolean
+    ) {
+        let msg: string = flag ? "启动" : "停止";
+        let modelIds: any = [];
+        let startFlag: any = [];
         rows.forEach((repVO: ParamFlowInstRepVO) => {
-            if(repVO.modelId==""){
+            if (repVO.modelId == "") {
                 modelIds.push(repVO.modelId);
             }
             //如果启动，提示重复启动|如果停止，提示已停止
-            if(repVO.startFlag==flag){
+            if (repVO.startFlag == flag) {
                 startFlag.push(repVO.startFlag);
             }
-        })
-        if(modelIds.length>0){
-            this.win_message_box_warning("存在流程没有设计,无法正常"+msg,"提示",false,null,null).catch(() => {
-            });
+        });
+        if (modelIds.length > 0) {
+            this.win_message_box_warning(
+                "存在流程没有设计,无法正常" + msg,
+                "提示",
+                false,
+                null,
+                null
+            ).catch(() => {});
             return false;
         }
-        if(startFlag.length>0){
-            this.win_message_box_warning("存在流程已"+msg,"提示",false,null,null).catch(() => {
-            });
+        if (startFlag.length > 0) {
+            this.win_message_box_warning(
+                "存在流程已" + msg,
+                "提示",
+                false,
+                null,
+                null
+            ).catch(() => {});
             return false;
         }
         return true;
@@ -348,27 +417,25 @@ export default class ExchangeFlowController extends BaseController {
     designFlow(flowVO) {
         this.flowVO = flowVO;
         // return AxiosFun.get("/service/editor?modelId="+this.flowVO.modleId);
-        return AxiosFun.post("/param/exchangeFlow/create", flowVO).then(
-            res => {
-                if (res.winRspType === "ERROR") {
-                    console.log(res.msg);
-                } else {
-                    this.dialogTableVisible = true;
-                    console.log("/modeler.html?modelId=" + res.msg)
-                    this.flowUrl = "/modeler.html?modelId=" + res.msg;
-                    // this.flowUrl='https://www.baidu.com';
-                    let href = "/modeler.html?modelId=" + res.msg;
-                    // window.open(href,"流程设计", "height=754, width=1277, top=0, left=2, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
-                }
-                // document.write('https://www.baidu.com')
-                // AxiosFun.get("/modeler.html?modelId="+flowVO.modelId);
+        return AxiosFun.post("/param/exchangeFlow/create", flowVO).then(res => {
+            if (res.winRspType === "ERROR") {
+                console.log(res.msg);
+            } else {
+                this.dialogTableVisible = true;
+                console.log("/modeler.html?modelId=" + res.msg);
+                this.flowUrl = "/modeler.html?modelId=" + res.msg;
+                // this.flowUrl='https://www.baidu.com';
+                let href = "/modeler.html?modelId=" + res.msg;
+                // window.open(href,"流程设计", "height=754, width=1277, top=0, left=2, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
             }
-        );
+            // document.write('https://www.baidu.com')
+            // AxiosFun.get("/modeler.html?modelId="+flowVO.modelId);
+        });
     }
 
-    closeFlowDialog(){
+    closeFlowDialog() {
         this.queryFlowByGroupid(this.flowVO.flowCode);
-        console.log(this.flowVO)
+        console.log(this.flowVO);
     }
     /**重置 */
     reset() {
@@ -385,8 +452,8 @@ export default class ExchangeFlowController extends BaseController {
 
     /**新增流程 */
     addExchangeFlow() {
-        this.$refs['exchangeForm'].validate((valid) => {
-            if(valid){
+        this.$refs["exchangeForm"].validate(valid => {
+            if (valid) {
                 this.service.addExchangeFlow(this.flowVO).then(res => {
                     if (res.winRspType === "ERROR") {
                         console.log(res.msg);
@@ -396,7 +463,7 @@ export default class ExchangeFlowController extends BaseController {
                     this.queryFlowByGroupid(this.flowVO.flowCode);
                 });
             }
-        })
+        });
     }
 
     /**打开修改弹框 */
@@ -459,10 +526,9 @@ export default class ExchangeFlowController extends BaseController {
             }
         ]
     };
-    change(value){
-        console.log(value)
+    change(value) {
+        console.log(value);
     }
-
 
     private loadSelectsItems() {
         this.service.loadSelectsItems().then(res => {
@@ -470,7 +536,7 @@ export default class ExchangeFlowController extends BaseController {
                 console.log(res.data);
             }
             this.flowTypeItems = res.data.flowTypeItems;
-          //  console.log(this.flowTypeItems)
+            //  console.log(this.flowTypeItems)
             // 产品
             this.productItems = res.data.productItems;
             // 投资单位
@@ -485,7 +551,6 @@ export default class ExchangeFlowController extends BaseController {
             this.securityTypeItems = res.data.securityTypeItems;
             // 交易方向
             this.transactionDirectionItems = res.data.transactionDirectionItems;
-
         });
     }
 }

@@ -19,7 +19,14 @@ import User from "@/page/user/view/index.vue";
 export default [
     {
         path: "/",
-        name: "flow",
-        component: Flow
+        name: "layout",
+        component: layout,
+        children: [
+            {
+                path: "/flow",
+                name: "flow",
+                component: Flow
+            }
+        ]
     }
 ];
