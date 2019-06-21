@@ -2,9 +2,9 @@
     <div class="container">
         <!--程序主窗体-->
         <win_container>
-            <win_aside width="212px">
+            <win_aside width="185px">
                 <div ref="userinfo">
-                    <el-button-group>
+                    <el-button-group style="width:200px">
                         <win_button
                             :disabled="level!=1"
                             type="warning"
@@ -24,7 +24,7 @@
 
                     <!--左侧树形列表 -->
                     <win_tree
-                        style="margin-top:10px"
+                        style="margin-top:10px; width:185px"
                         ref="SlotTree"
                         :data="treedata"
                         @node-click="handleNodeClick"
@@ -125,13 +125,13 @@
                             <el-button @click="queryExchangeFlow(reqVO)" type="warning">查询</el-button>
                             <el-button @click="reset()">重置</el-button>
                         </el-row>
-                        <el-row style="margin-left:15px">
+                        <el-row style="margin-left:15px ;margin-bottom:10px">
                             <!--<el-button @click="openAddDialog()">新增</el-button>-->
                             <!--<el-button @click="batchDelete(tableChecked)">删除</el-button>-->
                             <!--<el-button @click="startflow()">启动</el-button>-->
                             <!--<el-button @click="stopflow()">停止</el-button>-->
 
-                            <el-button-group>
+                            <el-button-group >
                                 <win_button
                                     :disabled="level!=2"
                                     type="warning"
@@ -211,18 +211,7 @@
                 </win_header>
             </win_container>
         </win_container>
-        <!-- 流程弹出窗体-->
-        <div :v-show="dialogTableVisible" width="1740px" height="760px" top="50px">
-            <iframe
-                :src="flowUrl"
-                style="width:100%;height:760px;"
-                frameborder="0"
-                marginwidth="0"
-                marginheight="0"
-            ></iframe>
-        </div>
-        <!-- 流程弹出窗体结束-->
-        <div v-show="dialogTableVisible">你麻痹</div>
+
 
         <!--修改、增加框 -->
         <win_dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%">
@@ -249,18 +238,18 @@
                     </win_form_item>
                 </div>
                 <div class="form_content">
-                    <win_form_item label="日期" prop="date">
+                    <win_form_item label="有效日期" prop="date">
                         <el-date-picker
                             v-model="flowVO.beginDate"
                             value-format="yyyy-MM-dd"
                             type="date"
-                            placeholder="选择日期"
+                            placeholder="开始日期"
                         ></el-date-picker>
                         <el-date-picker
                             v-model="flowVO.endDate"
                             value-format="yyyy-MM-dd"
                             type="date"
-                            placeholder="选择日期"
+                            placeholder="结束日期"
                         ></el-date-picker>
                     </win_form_item>
                 </div>
@@ -356,6 +345,20 @@
             </div>
         </win_dialog>
         <!--end -->
+        <!-- 流程弹出窗体-->
+        <win_dialog @close="closeFlowDialog"
+                    title="流程设计"
+                    :visible.sync="dialogTableVisible"
+                    width="1740px"
+                    height="760px"
+                    top="50px">
+            <iframe :src="flowUrl" style="width:100%;height:760px;"
+                    frameborder="0"
+                    marginwidth="0"
+                    marginheight="0"
+            ></iframe>
+        </win_dialog>
+        <!-- 流程弹出窗体结束-->
     </div>
 </template>
 <script lang="ts">
@@ -394,6 +397,21 @@ export default class Exchange extends ExchangeFlowController {}
     color: #fff;
     background: #2b3551;
     border: #2b3551;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    padding-bottom: 8px;
+    font-size: 18px;
+    color: #fff;
+    font-weight: bold;
+    font-weight: bolder;
+    border-bottom: 2px solid #707070;
+    .header-close {
+        cursor: pointer;
+    }
 }
 </style>
 

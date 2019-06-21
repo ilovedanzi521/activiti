@@ -16,6 +16,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.service.IActivitiService;
@@ -61,7 +62,7 @@ import java.util.Map;
  */
 @Api(tags = "流程")
 @RestController
-@RequestMapping("/exchangeFlow")
+@RequestMapping("/param/exchangeFlow")
 @Slf4j
 public class ParamFlowController {
 
@@ -88,13 +89,13 @@ public class ParamFlowController {
     }
 
     @ApiOperation(value = "流程组实例查询")
-    @GetMapping("/listFlowByGroupid/{flowGroupid}")
-    public WinResponseData queryFlowByGroupid(@PathVariable("flowGroupid") Long flowGroupid) {
-        log. info(flowGroupid.toString());
-        if(flowGroupid.longValue()==0){//最顶级查询所有
+    @PostMapping("/listFlowByGroupid")
+    public WinResponseData queryFlowByGroupid(@RequestBody ParamFlowReqVO queryVO) {
+        log. info(queryVO.toString());
+        if(queryVO.getFlowCode().longValue()==0){//最顶级查询所有
             return list(new ParamFlowReqVO());
         }
-        PageInfo<ParamFlowRepVO>  data = paramFlowService.queryFlowByGroupid(flowGroupid);
+        PageInfo<ParamFlowRepVO>  data = paramFlowService.queryFlowByGroupid(queryVO);
         log. info(data.toString());
         return WinResponseData.handleSuccess(data);
     }

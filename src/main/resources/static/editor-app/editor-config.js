@@ -18,8 +18,15 @@
  */
 'use strict';
 
-var ACTIVITI = ACTIVITI || {};
+var KISBPM = KISBPM || {};
 
-ACTIVITI.CONFIG = {
-	'contextRoot' : '/service',
+KISBPM.CONFIG = {
+		'showRemovedProperties' : false
+};
+
+KISBPM.HEADER_CONFIG = {
+		'showAppTitle' : true,
+		'showHeaderMenu' : true,
+		'showMainNavigation' : true,
+		'showPageHeader' : true
 };

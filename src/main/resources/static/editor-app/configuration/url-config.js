@@ -16,10 +16,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-'use strict';
+var KISBPM = KISBPM || {};
 
-var ACTIVITI = ACTIVITI || {};
+KISBPM.URL = {
 
-ACTIVITI.CONFIG = {
-	'contextRoot' : '/service',
+    getModel: function(modelId) {
+        return ACTIVITI.CONFIG.contextRoot + '/model/' + modelId + '/json';
+    },
+
+    getStencilSet: function() {
+        return ACTIVITI.CONFIG.contextRoot + '/editor/stencilset?version=' + Date.now();
+    },
+
+    putModel: function(modelId) {
+        return ACTIVITI.CONFIG.contextRoot + '/model/' + modelId + '/save';
+    }
 };

@@ -22,11 +22,11 @@ import java.util.List;
  * 创建人：@author wanglei
  * 创建时间：2019/6/19/16:16
  */
-@RequestMapping("/feign")
+@RequestMapping("/param")
 @RestController
 @Slf4j
 public class ThirdFeignInterfaceController {
-    @RequestMapping("/loadSelectsItems")
+    @RequestMapping("/feign/loadSelectsItems")
     public WinResponseData LoadSelectsItems(){
         HashMap<String,List> map = new HashMap<>();
         List<FlowTypeItem> list = new ArrayList<>();

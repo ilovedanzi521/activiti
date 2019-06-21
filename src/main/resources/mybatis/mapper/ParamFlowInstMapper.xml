@@ -63,7 +63,6 @@
       and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
     </if>
 
-
   </select>
   <select id="queryFlowByGroupid" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select

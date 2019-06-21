@@ -27,13 +27,6 @@ body {
     margin-bottom: 0;
     color: #1a1a1a;
 }
-.control-label {
-	font-weight: 700;
-	font-weight: bold;
-	color: #000000;
-	padding-left: 0px;
-	padding-right:0px;
-}
 
 .subtle {
     color: #999999;
@@ -142,7 +135,7 @@ a:hover {
 label {
     font-weight: normal;
     color: #636363;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 [ng\:cloak], [ng-cloak], .ng-cloak { display: none; }
@@ -171,7 +164,7 @@ label {
 
 /** Buttons **/
 button.btn, a.btn {
-    background-color: #428bca;
+    background-color: #36a7c4;
     color: #ffffff;
     border-color: #ffffff;
     font-size: 15px;
@@ -195,15 +188,15 @@ button.btn.btn-danger {
     background-color: #c83737;
 }
 
-button.btn:hover, button.btn.active, button.btn:focus {
+.btn:hover, .btn.active, .btn:focus {
     background-color: #2a8198;
     border-color: #ffffff;
     color: #ffffff;
 }
 
 .btn.disabled, .btn[disabled], .btn[disabled]:active, .btn[disabled]:hover {
-    background-color: #1f89ce;
-    border-color: #1f89ce;
+    background-color: #668b94;
+    border-color: #668b94;
     color: #ffffff;
 }
 
@@ -227,7 +220,9 @@ button.btn:hover, button.btn.active, button.btn:focus {
     overflow: auto;
 }
 
-
+.content.split {
+    background: transparent url('../../images/line-1px.png') repeat-y 60% 0;
+}
 
 .content .split-left {
     float: left;
@@ -941,7 +936,7 @@ a.dropdown-toggle {
 }
 
 .wrapper.full {
-    padding: 0px 0px 0px 0px;  /*40顶部去掉*/
+    padding: 0px 0px 0px 0px;
     overflow: hidden;
     max-width: 100%;
     min-width: 100%;
@@ -1471,7 +1466,7 @@ button.selection:active, button.selection:focus {
 .modal-backdrop {
     background-color: #999999; /** Non alpha-supporting browser fallback */
     background-color: rgba(100, 100, 100, .75);
-/*     background-image: url('../../images/glasspane.png'); */
+    background-image: url('../../images/glasspane.png');
 }
 .modal-content {
     -webkit-border-radius: 0;

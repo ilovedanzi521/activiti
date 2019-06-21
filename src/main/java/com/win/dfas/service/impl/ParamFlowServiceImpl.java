@@ -45,8 +45,7 @@ public class ParamFlowServiceImpl implements IParamFlowService {
 
     @Override
     public PageInfo<ParamFlowRepVO> list(ParamFlowReqVO queryVO) {
-//        PageHelper.startPage(queryVO.getReqPageNum(),queryVO.getReqPageSize());
-        PageHelper.startPage(1,2);
+        PageHelper.startPage(queryVO.getReqPageNum(),queryVO.getReqPageSize());
         List<ParamFlowInst> flows = paramFlowMapper.list(queryVO);
         PageInfo<ParamFlowInst> pageInfo = new PageInfo<ParamFlowInst>(flows);
 		return ObjectUtils.copyPageInfo(pageInfo, ParamFlowRepVO.class);
@@ -90,8 +89,9 @@ public class ParamFlowServiceImpl implements IParamFlowService {
     }
 
     @Override
-    public  PageInfo<ParamFlowRepVO>  queryFlowByGroupid(Long flowGroupId) {
-        List<ParamFlowInst> flows =paramFlowMapper.queryFlowByGroupid(flowGroupId);
+    public  PageInfo<ParamFlowRepVO>  queryFlowByGroupid(ParamFlowReqVO queryVO) {
+        PageHelper.startPage(queryVO.getReqPageNum(),queryVO.getReqPageSize());
+        List<ParamFlowInst> flows =paramFlowMapper.queryFlowByGroupid(queryVO.getFlowCode());
         PageInfo<ParamFlowInst> pageInfo = new PageInfo<ParamFlowInst>(flows);
         return ObjectUtils.copyPageInfo(pageInfo, ParamFlowRepVO.class);
     }

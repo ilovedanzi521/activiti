@@ -24,8 +24,8 @@ export default class ExchangeFlowService {
     listExchangeFlow(FlowVO) {
         return AxiosFun.post("/param/exchangeFlow/list", FlowVO);
     }
-    listFlowByGroupid(flowGroupid){
-        return AxiosFun.get("/param/exchangeFlow/listFlowByGroupid/"+flowGroupid);
+    listFlowByGroupid(reqVo){
+        return AxiosFun.post("/param/exchangeFlow/listFlowByGroupid",reqVo);
     }
     /**流程实例新增 */
     addExchangeFlow(FlowVO) {

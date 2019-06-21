@@ -52,7 +52,7 @@ public class ParamFlowReqVO extends BaseReqVO {
      * 流程组id
      */
     @ApiModelProperty(value = "流程组id")
-    private String flowGroupId;
+    private Long flowCode;
     /**
      * 交易市场
      */
@@ -68,4 +68,5 @@ public class ParamFlowReqVO extends BaseReqVO {
      */
     @ApiModelProperty(value = "交易方向")
     private String transactionDirection;
+
 }

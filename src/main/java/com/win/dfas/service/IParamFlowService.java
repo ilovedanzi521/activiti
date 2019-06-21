@@ -76,7 +76,7 @@ public interface IParamFlowService {
     void delete(Long id);
 
     void batchDelete(List ids);
-    PageInfo<ParamFlowRepVO> queryFlowByGroupid(Long flowGroupId);
+    PageInfo<ParamFlowRepVO> queryFlowByGroupid(ParamFlowReqVO queryVO);
 
     /**
      * 更新启停标志to stop

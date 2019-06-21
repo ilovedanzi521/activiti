@@ -65,7 +65,7 @@ export default class ExchangeFlowController extends BaseController {
     options: boolean = false;
     flowGroupId: number;
     //处理flowgroup的增加删除变量
-    level: number = 1;
+    level: number = 0;
     flowGroupVO: ParamFlowGroupVO = new ParamFlowGroupVO();
     //查询流程实例
     // flowCode: string = "";
@@ -99,9 +99,9 @@ export default class ExchangeFlowController extends BaseController {
     public delflowgroup() {
         let flowId = this.flowGroupId;
         let level = this.level;
-        if (flowId != 1) {
+        if (flowId != 1 && flowId!=null) {
             this.deleteFlowClass(flowId, level);
-        } else {
+        } else if(flowId == 1) {
             this.win_message_box_warning(
                 "不能删除默认流程类",
                 "提示",
@@ -244,14 +244,14 @@ export default class ExchangeFlowController extends BaseController {
         });
     }
     //查询流程ByGroupid
-    queryFlowByGroupid(flowGroupid) {
-        debugger;
-        let _this = this;
-        this.service.listFlowByGroupid(flowGroupid).then(res => {
+    queryFlowByGroupid(flowGroupid){
+        let reqVo: ParamFlowInstReqVO = new ParamFlowInstReqVO();
+        reqVo.flowCode = flowGroupid;
+        this.service.listFlowByGroupid(reqVo).then(res => {
             if (res.winRspType === "ERROR") {
                 console.log(res.msg);
             }
-            _this.pageVO = res.data;
+            this.pageVO = res.data;
         });
     }
     /** 汇率分页查询 */

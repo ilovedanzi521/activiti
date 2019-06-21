@@ -1,4 +1,4 @@
-<span ng-click="group.expanded = !group.expanded" ng-init="group.expanded=true">
+<span ng-click="group.expanded = !group.expanded">
         <i class="glyphicon"
            ng-class="{'glyphicon-chevron-right': !group.expanded, 'glyphicon-chevron-down': group.expanded}"></i>
         {{group.name}}
@@ -6,7 +6,7 @@
 
 <!-- Child groups -->
 <ul ng-repeat="group in group.groups"
-    class="stencil-group stencil-group-non-root "
+    class="stencil-group stencil-group-non-root"
     ng-class="{collapsed: !group.expanded, 'first': $first}"
     ng-include="'editor-app/partials/stencil-item-template.html?version=4'">
 </ul>

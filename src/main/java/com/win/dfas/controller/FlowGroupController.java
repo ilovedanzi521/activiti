@@ -53,7 +53,7 @@ import java.util.List;
  */
 @Api(tags = "流程组类管理")
 @RestController
-@RequestMapping("/flowgroup")
+@RequestMapping("/param/flowgroup")
 @Slf4j
 public class FlowGroupController {
 
