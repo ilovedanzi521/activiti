@@ -1,0 +1,154 @@
+<html ng-app="app">
+<head>
+<link href="../../build/common/base.css" rel="stylesheet">
+<script type="text/javascript" src="../../build/common/base.js"></script>
+<script type="text/javascript" src="../../build/common/ngEdit.js"></script>
+<script type="text/javascript">
+
+	var app = angular.module("app", [ 'base']);
+	app.controller('ctrl', [ '$scope','$http', '$rootScope','baseService',function($scope,$http,$rootScope, baseService) {
+		$scope.data = window.passData;
+
+		$scope.data.source = 'spec';
+		console.log("88888="+$scope.data);
+		$scope.user = {};
+		$scope.user.list = [];
+		$scope.list =[];
+		$scope.checked =[];
+		$scope.checkedUser={};
+		$http.get("/service/param/userList").then(function(response) {
+			$scope.list = response.data.data;
+			for(var i = 0; i < $scope.list.length; i++){
+				$scope.list[i].state =0;
+			}
+		});
+
+		// 指定人员
+		// if ($scope.data.source == 'spec' && $scope.data.userName != "") {
+		// 	$scope.user.name = $scope.data.userName;
+		// 	$scope.user.account = $scope.data.account;
+		// 	if($scope.user.name){
+		// 		var arrName = $scope.user.name.split(',');
+		// 		var arrAccount = $scope.user.account.split(',')
+		// 		$.each(arrName,function(i,item){
+		// 			var item={name:arrName[i],account:arrAccount[i]};
+		// 			$scope.user.list.push(item);
+		// 		})
+		// 	}
+		// };
+		$scope.updateSelection= function(){
+			// var selectData = [];
+			// for(var i = 0; i < $scope.list.length; i++){
+			// 	if($scope.list[i].state){
+			// 		// console.log($scope.list[i])
+			// 		selectData.push($scope.list[i]);
+			// 	}
+			// }
+			var scope = AngularUtil.getScope();
+			scope.data.description=""+$scope.user.name;
+			$scope.data.description= $scope.user.name;
+			window.data.description =  $scope.user.name;
+			console.log(window.passData.description)
+			return getResult();
+			// var calc =$scope.data;
+			// var data = getResult(calc);
+			// if(!data)return;
+			// jQuery.extend(calc, data);
+			// !$rootScope.$$phase && $rootScope.$digest();
+			// $.Dialog.close(this.userDialog);
+
+		};
+
+		$scope.checkChange = function (entity,$index) {
+			console.log(entity.state+"===="+$index);
+			// console.log($scope.list[$index].state)
+			if(entity.state) {
+				$scope.checked.push(entity);
+			}else{
+				//查询id对应的index
+				for(var i = 0; i < $scope.checked.length; i++){
+					if($scope.checked[i].id===entity.id){
+						console.log("11111======"+i)
+						$scope.checked.splice(i, 1);
+						break;
+					}
+				}
+			};
+			$scope.user.list = $scope.checked;
+			console.log($scope.user.list)
+			$scope.user.name="";
+			for(var i = 0; i < $scope.checked.length; i++){
+				if(i==0){
+					$scope.user.name += $scope.checked[i].name;
+				}else{
+					$scope.user.name +=","+ $scope.checked[i].name;
+				}
+			};
+			$scope.data.description=""+$scope.user.name;
+	};
+
+	} ]);
+	function getResult() {
+		var scope = AngularUtil.getScope();
+
+		//指定人员
+		if (scope.data.source == 'spec') {
+			scope.data.userName = scope.user.name;
+			scope.data.account = scope.user.account;
+		}
+
+		if (scope.data.source == 'start') {
+			scope.data.description="发起人";
+		}else if (scope.data.source == 'spec') {
+			if(!scope.user.name){
+				$.Toast.error("请选择用户！");
+				return false;
+			}
+			scope.data.description=""+scope.user.name;
+		}
+		return scope.data;
+	}
+</script>
+</head>
+<body ng-controller="ctrl">
+<div id="tempTree"></div>
+	<table class="form-table" cellspacing="0">
+		<!-- <tr>
+			<th>
+				<span>用户：</span>
+			</th>
+			<td>
+				<input type="radio" ng-model="data.source" value="spec" id="source_spec" checked="checked">
+				<label class="normal_label" for="source_spec">指定用户</label>
+			</td>
+		</tr> -->
+		<tr ng-show="data.source=='var'">
+			<th>
+				<span>变量选择：</span>
+			</th>
+			<td>
+				<a class="btn btn-primary btn-xs" title="表单变量" id="asdf" onclick="showFlowMenu(this)">表单变量</a>
+               </br>
+               <textarea id="vars"  style="width:300px;height:30px;" ng-model="data.var.name" rows="" cols=""></textarea>
+			</td>
+		</tr>
+		<tr ng-show="data.source=='spec'">
+			<th> 指定用户：
+			</th>
+			<td colspan="3">
+				<textarea ng-model="user.name" readonly="readonly"  cols="30" rows="3"></textarea>
+				<a href="javascript:javaScript:void(0)" class="btn  btn-primary" ng-click="updateSelection()">选择用户</a>
+			</td>
+
+		</tr>
+		<tr ng-repeat="entity in list">
+			<td><input type="checkbox" ng-model="entity.state" ng-change="checkChange(entity,$index)"></td>
+			<!--<td>{{entity.id}}</td>-->
+			<td>{{entity.name}}</td>
+			<td>{{entity.account}}</td>
+		</tr>
+	</table>
+</body>
+</html>
+
+
