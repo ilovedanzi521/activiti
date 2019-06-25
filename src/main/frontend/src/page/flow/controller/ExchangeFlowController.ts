@@ -397,10 +397,10 @@ export default class ExchangeFlowController extends BaseController {
                 console.log(res.msg);
             } else {
                 this.dialogTableVisible = true;
-                console.log("/modeler.html?modelId=" + res.msg);
-                this.flowUrl = "/modeler.html?modelId=" + res.msg;
+                console.log("/flow-editor/modeler.html?modelId=" + res.msg);
+                this.flowUrl = "/flow-editor/modeler.html?modelId=" + res.msg;
                 // this.flowUrl='https://www.baidu.com';
-                let href = "/modeler.html?modelId=" + res.msg;
+                let href = "/flow-editor/modeler.html?modelId=" + res.msg;
                 // window.open(href,"流程设计", "height=754, width=1277, top=0, left=2, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
             }
             // document.write('https://www.baidu.com')
@@ -501,8 +501,17 @@ export default class ExchangeFlowController extends BaseController {
             }
         ]
     };
-    change(value) {
-        console.log(value);
+    //开关
+    change(flowVO :ParamFlowInstRepVO,value:boolean) {
+       //启动
+        let startFlag = flowVO.startFlag;
+        this.service.startOrStopFlow(flowVO).then(res => {
+            if (res.winRspType === "ERROR") {
+                console.log(res.msg);
+            }
+            this.queryFlowByGroupid(this.flowGroupId);
+        });
+
     }
 
     private loadSelectsItems() {

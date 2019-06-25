@@ -187,6 +187,7 @@
                                     :inactive-value="false"
                                     active-color="#13ce66"
                                     inactive-color="#ff4949"
+                                    @change="change(scope.row,scope.row.startFlag)"
                                 ></el-switch>
                             </template>
                         </win_table_column>
@@ -397,21 +398,6 @@ export default class Exchange extends ExchangeFlowController {}
     color: #fff;
     background: #2b3551;
     border: #2b3551;
-}
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-    padding-bottom: 8px;
-    font-size: 18px;
-    color: #fff;
-    font-weight: bold;
-    font-weight: bolder;
-    border-bottom: 2px solid #707070;
-    .header-close {
-        cursor: pointer;
-    }
 }
 </style>
 

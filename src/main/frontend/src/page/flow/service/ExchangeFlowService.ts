@@ -72,4 +72,8 @@ export default class ExchangeFlowService {
     loadSelectsItems() {
         return AxiosFun.get("/param/feign/loadSelectsItems");
     }
+
+    startOrStopFlow(flowVO: ParamFlowInstRepVO) {
+        return AxiosFun.post("/param/exchangeFlow/startOrStopFlow/", flowVO);
+    }
 }
