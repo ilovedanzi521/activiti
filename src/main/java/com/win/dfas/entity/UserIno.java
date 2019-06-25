@@ -11,28 +11,7 @@ import lombok.Data;
  */
 @Data
 public class UserIno {
-    /**
-     * 用户ID
-     */
-    String userId;
-    /**
-     * 姓名
-     */
-    String userName;
-    /**
-     * 公司
-     */
-    String company;
-    /**
-     * 部门
-     */
-    String  department;
-    /**
-     * 角色
-     */
-    String  role;
-    /**
-     * 操作
-     */
-    String  operation;
+   String id;
+   String name;
+   String account;
 }
