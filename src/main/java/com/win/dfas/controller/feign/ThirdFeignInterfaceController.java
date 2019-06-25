@@ -101,19 +101,14 @@ public class ThirdFeignInterfaceController {
 
     @PostMapping("/param/searchUserinfo")
     public WinResponseData getSearchUserinfoList(@RequestBody UserInoReq userInoReq){
-        UserIno info = new UserIno();
-        info.setCompany("赢时胜");
-        info.setDepartment("开发");
-        info.setUserId("1201");
-        info.setOperation("增删");
-        info.setRole("管理员");
-        info.setUserName("王雷");
-
         List<UserIno> userList = new ArrayList<>();
-        userList.add(info);
-        userList.add(info);
-        userList.add(info);
-        userList.add(info);
+        for (int i = 0; i <10; i++) {
+            UserIno info = new UserIno();
+            info.setAccount("888888888888"+i);
+            info.setName("王雷");
+            userList.add(info);
+        }
+        log.info(userList.toString());
         return WinResponseData.handleSuccess(userList);
     }
 }

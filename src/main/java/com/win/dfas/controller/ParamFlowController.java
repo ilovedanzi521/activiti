@@ -319,4 +319,23 @@ public class ParamFlowController {
         return map;
     }
 
+    /**
+     *
+     * @param paramFlowRepVOS
+     * @return
+     */
+    @PostMapping("/startOrStopFlow")
+    public WinResponseData start(@ApiParam(value = "启动/停止流程") @RequestBody  ParamFlowRepVO paramFlowRepVO) {
+
+        if(paramFlowRepVO.getStartFlag()){
+            List<ParamFlowRepVO> paramFlowRepVOS = new ArrayList<>();
+            paramFlowRepVOS.add(paramFlowRepVO);
+            start(paramFlowRepVOS);
+        }else{
+            List<String> ids = new ArrayList<>();
+            ids.add(paramFlowRepVO.getProcessDefId());
+            stop(ids);
+        }
+        return WinResponseData.handleSuccess("成功");
+    }
 }
