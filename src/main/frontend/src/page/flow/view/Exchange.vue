@@ -141,7 +141,7 @@
                                     class="iconAddbutton"
                                 >新增</win_button>
                                 <win_button
-                                    :disabled="level!=2||!options"
+                                    :disabled="!options"
                                     type="warning"
                                     icon="el-icon-delete"
                                     class="iconAddbutton"
@@ -149,7 +149,7 @@
                                     @click="batchDelete(tableChecked)"
                                 >删除</win_button>
                                 <win_button
-                                    :disabled="level!=2||!options"
+                                    :disabled="!options"
                                     type="warning"
                                     icon="el-icon-video-play"
                                     class="iconAddbutton"
@@ -157,7 +157,7 @@
                                     @click="startflow(tableChecked)"
                                 >启动</win_button>
                                 <win_button
-                                    :disabled="level!=2||!options"
+                                    :disabled="!options"
                                     type="warning"
                                     icon="el-icon-video-pause"
                                     class="iconAddbutton"

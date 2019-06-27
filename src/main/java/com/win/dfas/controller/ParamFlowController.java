@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.win.dfas.bpm.converter.ConverterUtil;
+import com.win.dfas.bpm.converter.CostomBpmnJsonConverter;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.service.IActivitiService;
 import com.win.dfas.service.IParamFlowService;
@@ -28,18 +30,22 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -80,6 +86,9 @@ public class ParamFlowController {
     @Autowired
     private IActivitiService activitiService;
 
+    @Autowired
+    private TaskService taskService;
+
     @ApiOperation(value = "流程实例查询", notes = "<br/>1. 分页查询 ")
     @PostMapping("/list")
     public WinResponseData list(@ApiParam(value = "流程查询参数") @RequestBody ParamFlowReqVO queryVO) {
@@ -92,7 +101,7 @@ public class ParamFlowController {
     @PostMapping("/listFlowByGroupid")
     public WinResponseData queryFlowByGroupid(@RequestBody ParamFlowReqVO queryVO) {
         log. info(queryVO.toString());
-        if(queryVO.getFlowCode().longValue()==0){//最顶级查询所有
+        if(queryVO==null||queryVO.getFlowCode()==null||queryVO.getFlowCode().longValue()==0){//最顶级查询所有
             return list(new ParamFlowReqVO());
         }
         PageInfo<ParamFlowRepVO>  data = paramFlowService.queryFlowByGroupid(queryVO);
@@ -246,6 +255,7 @@ public class ParamFlowController {
     private String startProcessInstance(String processDefId,Map map) {
         //通过指定流程定义的id，开启流程定义，得到流程实例。流程实例是一系列任务的集合
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefId,map);
+        log.info("流程启动id："+processInstance.getId());
         return processDefId;
     }
 
@@ -260,11 +270,14 @@ public class ParamFlowController {
                 return null;
             }
             JsonNode modelNode = new ObjectMapper().readTree(bytes);
-            BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
-            Deployment deployment = repositoryService.createDeployment()
-                    .name(modelData.getName())
-                    .addBpmnModel(modelData.getKey()+".bpmn20.xml", model)
+            //modify
+            CostomBpmnJsonConverter jsonConverter = new CostomBpmnJsonConverter();
+            BpmnModel model = jsonConverter.convertToBpmnModel(modelNode);
+            //modify end
+            Deployment deployment = ConverterUtil.convertToXML(repositoryService.createDeployment()
+                    .name(modelData.getName()),modelData.getKey()+".bpmn20.xml",model)
                     .deploy();
+            log.info(String.valueOf(deployment)+"===="+deployment!=null?deployment.getId():"builder失败");
             String deploymentId = deployment.getId();
             modelData.setDeploymentId(deploymentId);
             modelData.setKey(key);
@@ -321,7 +334,7 @@ public class ParamFlowController {
 
     /**
      *
-     * @param paramFlowRepVOS
+     * @param paramFlowRepVO
      * @return
      */
     @PostMapping("/startOrStopFlow")
@@ -336,6 +349,17 @@ public class ParamFlowController {
             ids.add(paramFlowRepVO.getProcessDefId());
             stop(ids);
         }
+        return WinResponseData.handleSuccess("成功");
+    }
+
+    @RequestMapping("/runFlow/{defId}")
+    public WinResponseData run( @PathVariable("defId") String defId) {
+        ExecutionEntity pi1 = (ExecutionEntity) runtimeService.startProcessInstanceById(defId);
+        String processId = pi1.getId();
+        log.info(processId);
+        Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
+        log.info("task 第一步:{}", task);
+        taskService.complete(task.getId());
         return WinResponseData.handleSuccess("成功");
     }
 }
