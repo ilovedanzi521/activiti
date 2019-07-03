@@ -1,5 +1,8 @@
 package com.win.dfas.bpm.service;
 
+import com.win.dfas.bpm.vo.request.FlowAssignersReqVO;
+import com.win.dfas.bpm.vo.response.AllFlowAssignersRepVO;
+import com.win.dfas.bpm.vo.response.FlowAssignersRepVO;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +19,10 @@ import java.util.List;
 public interface BpmService {
 
     List<Task>  selectTask(List<Task> task, String taskType);
+
+    int add(FlowAssignersReqVO flowAssignersReqVO);
+
+    List<FlowAssignersRepVO> queryNodeDescribe(String modelId, String nodeId );
+
+    List<AllFlowAssignersRepVO> queryAllDescribe(String modelId);
 }

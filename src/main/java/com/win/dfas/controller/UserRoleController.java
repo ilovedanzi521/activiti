@@ -2,9 +2,7 @@ package com.win.dfas.controller;
 
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.entity.UserIno;
-import com.win.dfas.vo.request.ParamFlowGroupReqVO;
 import com.win.dfas.vo.request.UserInoReq;
-import com.win.dfas.vo.response.ParamFlowGroupRepVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +32,7 @@ public class UserRoleController {
             UserIno info = new UserIno();
             info.setId("11"+i);
             info.setAccount("888888888888"+i);
-            info.setName("王雷雷");
+            info.setName("王雷雷"+i);
             userList.add(info);
         }
         log.info(userList.toString());

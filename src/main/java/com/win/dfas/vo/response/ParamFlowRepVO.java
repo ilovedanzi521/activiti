@@ -117,4 +117,9 @@ public class ParamFlowRepVO extends BaseRepVO {
      * 流程定义ID
      */
     private String processDefId;
+
+    /**
+     * 控制类型
+     */
+    private String controlType;
 }

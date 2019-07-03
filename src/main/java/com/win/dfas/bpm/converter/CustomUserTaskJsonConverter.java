@@ -2,18 +2,14 @@ package com.win.dfas.bpm.converter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.win.dfas.bpm.model.BpmConstant;
+import com.win.dfas.bpm.constant.BpmConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.FormProperty;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.language.json.converter.BaseBpmnJsonConverter;
-import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.editor.language.json.converter.UserTaskJsonConverter;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +20,7 @@ import java.util.Map;
  * 创建时间：2019/6/26/11:37
  */
 @Slf4j
-public class CustomUserTaskJsonConverter extends UserTaskJsonConverter{
+public class CustomUserTaskJsonConverter extends UserTaskJsonConverter {
 
     @Override
     protected void convertElementToJson(ObjectNode propertiesNode, BaseElement baseElement) {
@@ -35,7 +31,7 @@ public class CustomUserTaskJsonConverter extends UserTaskJsonConverter{
 //        String taskType = userTask.getAttributeValue(BpmConstant.NAMESPACE,BpmConstant.NAME);
 //        propertiesNode.put("taskType",taskType);
 //        userTask.set
-        log.info(userTask.getAttributeValue(BpmConstant.NAMESPACE,BpmConstant.NAME));
+        log.info(userTask.getAttributeValue(BpmConstant.NAMESPACE, BpmConstant.NAME));
     }
 
     @Override
@@ -45,10 +41,6 @@ public class CustomUserTaskJsonConverter extends UserTaskJsonConverter{
                 modelNode, shapeMap);
         String taskType=this.getPropertyValueAsString(BpmConstant.NAME, elementNode);
         log.info("convertJsonToElement -tasktype ==="+taskType);
-//
-////        CustomUserTask task = new CustomUserTask();
-////        task.clone(userTask,taskType);
-////        ConverterUtil.setUserTaskTypeProperty(userTask,taskType);
         ConverterUtil.setUserTaskTypeAttribute(userTask,taskType);
         return userTask;
     }

@@ -1,7 +1,13 @@
 package com.win.dfas.bpm.service.impl;
 
-import com.win.dfas.bpm.model.BpmConstant;
+import com.win.dfas.bpm.constant.BpmConstant;
+
+import com.win.dfas.bpm.dao.FlowAssignersMapper;
+import com.win.dfas.bpm.entity.FlowAssigners;
 import com.win.dfas.bpm.service.BpmService;
+import com.win.dfas.bpm.vo.request.FlowAssignersReqVO;
+import com.win.dfas.bpm.vo.response.AllFlowAssignersRepVO;
+import com.win.dfas.bpm.vo.response.FlowAssignersRepVO;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -10,7 +16,9 @@ import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.task.Task;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +31,10 @@ import java.util.List;
  * 创建时间：2019/6/27/17:49
  */
 @Slf4j
+@Service
 public class BpmServiceImpl implements BpmService {
+    @Autowired
+    private FlowAssignersMapper flowAssignersMapper;
     @Autowired
     private TaskService taskService;
     @Autowired
@@ -49,5 +60,24 @@ public class BpmServiceImpl implements BpmService {
             }
         }
         return list;
+    }
+
+    @Override
+    public int add(FlowAssignersReqVO flowAssignersReqVO) {
+        FlowAssigners entity = new FlowAssigners();
+        BeanUtils.copyProperties(flowAssignersReqVO, entity);
+//        entity.setId(PrimaryKeyUtil.generateId());
+        //todo
+        return flowAssignersMapper.insert(entity);
+    }
+
+    @Override
+    public List<FlowAssignersRepVO> queryNodeDescribe(String modelId, String nodeId) {
+        return flowAssignersMapper.queryNodeDescribe(modelId,nodeId);
+    }
+
+    @Override
+    public List<AllFlowAssignersRepVO> queryAllDescribe(String modelId) {
+        return flowAssignersMapper.queryAllDescribe(modelId);
     }
 }

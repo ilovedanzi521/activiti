@@ -1,27 +1,21 @@
 package com.win.dfas.bpm.converter;
 
-import cn.hutool.core.util.ObjectUtil;
-import com.win.dfas.bpm.model.BpmConstant;
-import com.win.dfas.bpm.model.TaskTypeFormProperty;
+import com.win.dfas.bpm.constant.BpmConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.ExtensionAttribute;
-import org.activiti.bpmn.model.FormProperty;
+import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.RepositoryServiceImpl;
-import org.activiti.engine.impl.repository.DeploymentBuilderImpl;
 import org.activiti.engine.repository.DeploymentBuilder;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 包名称：com.win.dfas.bpm.converter
  * 类名称：ConverterUtil
- * 类描述：${TODO}
+ * 类描述：ConverterUtil
  * 创建人：@author wanglei
  * 创建时间：2019/6/26/20:20
  */
@@ -45,11 +39,36 @@ public class ConverterUtil {
             throw new ActivitiException("Error while transforming BPMN model to xml: not UTF-8 encoded", var5);
         }
     }
-
+    /**
+     * @Title: setUserTaskTypeAttribute
+     * @Description: 设置userTask节点的属性
+     * @param userTask
+     * @param taskType
+     * @return void
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/2/9:44
+     */
     public static void setUserTaskTypeAttribute(UserTask userTask, String taskType) {
         ExtensionAttribute extensionAttribute = new ExtensionAttribute(BpmConstant.NAMESPACE,BpmConstant.NAME);
         extensionAttribute.setValue(taskType);
         userTask.addAttribute(extensionAttribute);
+    }
+    /**
+     * @Title: setFlowElementAttribute
+     * @Description: 设置activiti元素的属性
+     * @param flowElement
+     * @param name
+     * @param value
+     * @return void
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/2/9:44
+     */
+    public static void setFlowElementAttribute(FlowElement flowElement,String name, String value) {
+        ExtensionAttribute extensionAttribute = new ExtensionAttribute(BpmConstant.NAMESPACE,name);
+        extensionAttribute.setValue(value);
+        flowElement.addAttribute(extensionAttribute);
     }
 
 

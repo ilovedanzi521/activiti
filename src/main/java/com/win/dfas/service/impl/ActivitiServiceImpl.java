@@ -31,6 +31,7 @@ public class ActivitiServiceImpl implements IActivitiService {
         ProcessDefinition definition = query.singleResult();
         //获取流程定义id
         String processDefId = definition.getId();
+
         return processDefId;
     }
 }

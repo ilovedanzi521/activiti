@@ -85,6 +85,14 @@ public class ThirdFeignInterfaceController {
             info.setName("交易方向"+i);
             list7.add(info);
         }
+        List<ControlTypeItem> list8 = new ArrayList<>();
+        for (int i = 0; i < 1; i++) {
+            ControlTypeItem info = new ControlTypeItem();
+            info.setCode("11"+i);
+            info.setName("指令金额");
+            list8.add(info);
+        }
+
         log.info(list.toString());
         map.put(SelectorItemEnum.FLW.getValue(),list);
         map.put(SelectorItemEnum.INS.getValue(),list1);
@@ -94,6 +102,7 @@ public class ThirdFeignInterfaceController {
         map.put(SelectorItemEnum.PRO.getValue(),list5);
         map.put(SelectorItemEnum.SEC.getValue(),list6);
         map.put(SelectorItemEnum.TRN.getValue(),list7);
+        map.put(SelectorItemEnum.CTR.getValue(),list8);
         return WinResponseData.handleSuccess(map);
     }
 

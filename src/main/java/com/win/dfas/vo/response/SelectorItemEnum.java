@@ -23,7 +23,9 @@ public enum SelectorItemEnum {
     //证券类型
     SEC("securityTypeItems"),
     // 交易方向
-    TRN("transactionDirectionItems");
+    TRN("transactionDirectionItems"),
+    // 控制类型
+    CTR("controlTypeItems");
 
     private String value;
 

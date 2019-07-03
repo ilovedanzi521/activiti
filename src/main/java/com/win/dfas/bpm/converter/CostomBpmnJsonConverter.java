@@ -12,5 +12,6 @@ import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 public class CostomBpmnJsonConverter extends BpmnJsonConverter {
     static {
         CustomUserTaskJsonConverter.fillTypes(convertersToBpmnMap, convertersToJsonMap);
+        CustomSequenceFlowJsonConverter.fillTypes(convertersToBpmnMap, convertersToJsonMap);
     }
 }

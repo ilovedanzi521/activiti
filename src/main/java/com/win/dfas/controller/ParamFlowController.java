@@ -16,7 +16,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.win.dfas.bpm.converter.ConverterUtil;
 import com.win.dfas.bpm.converter.CostomBpmnJsonConverter;
@@ -24,17 +23,13 @@ import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.service.IActivitiService;
 import com.win.dfas.service.IParamFlowService;
 import com.win.dfas.vo.request.ParamFlowReqVO;
-import com.win.dfas.vo.response.ParamFlowGroupRepVO;
 import com.win.dfas.vo.response.ParamFlowRepVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.constants.ModelDataJsonConstants;
-import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -42,14 +37,11 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -237,6 +229,7 @@ public class ParamFlowController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("apply", paramFlowRepVO.getCreateUserId());
             map.put("approve", "wanglei");
+            map.put("controlType", 123);//控制
             //启动流程
             startProcessInstance(processDefId,map);
             log.info("启动流程实例,流程定义id="+processDefId);
@@ -338,7 +331,7 @@ public class ParamFlowController {
      * @return
      */
     @PostMapping("/startOrStopFlow")
-    public WinResponseData start(@ApiParam(value = "启动/停止流程") @RequestBody  ParamFlowRepVO paramFlowRepVO) {
+    public WinResponseData start(@ApiParam(value = "启动/停止流程") @RequestBody ParamFlowRepVO paramFlowRepVO) {
 
         if(paramFlowRepVO.getStartFlag()){
             List<ParamFlowRepVO> paramFlowRepVOS = new ArrayList<>();

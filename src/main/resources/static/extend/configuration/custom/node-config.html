@@ -1,0 +1,35 @@
+<div ng-controller="NodeConfController" class="panel-group" aria-multiselectable="true">
+
+	<!-- 节点人员  -->
+	<div class="panel panel-primary" >
+		<div class="panel-heading">
+			<div class="panel-title" data-toggle="collapse" data-target=".nodeUser" aria-expanded="true" aria-controls="nodeUser">节点人员</div>
+		</div>
+		<div class="panel-body collapse nodeUser">
+			<span class="pull-right btn btn-info btn-sm" ng-click="editAllNodes('nodeUser')">{{isEditAllNode_nodeUser?'隐藏其他节点人员':'设置所有节点人员'}}</span>
+			<br />
+			<div ng-if="isUserTaskNode() || isEditAllNode_nodeUser">
+				<div class="btn-group" role="group" aria-label="...">
+					<button type="button" class="btn glyphicon">{{node.nodeName}}({{node.nodeId}})</button>
+					<button type="button" class="pull-right btn btn-info glyphicon glyphicon-plus" ng-click="addNodeUserCondition()"></button>
+				</div>
+				<div class="alert alert-danger row show-grid" role="alert" ng-if="!node.plugins.userAssign.ruleList||node.plugins.userAssign.ruleList.length==0">尚未配置节点人员，请添加人员设置</div>
+				<div ng-repeat="nodeCondition in node.plugins.userAssign.ruleList" class="row show-grid well">
+					<div class="col-xs-8 pull-left" style="white-space: pre-wrap;">{{nodeCondition.description}}</div>
+					<div class="col-xs-4 pull-right">
+						<a href="javascript:javaScript:void(0)" ng-click="ArrayTool.up($index,node.plugins.userAssign.ruleList)" class="btn btn-xs btn-default glyphicon glyphicon-chevron-up"></a>
+						<a href="javascript:javaScript:void(0)" ng-click="ArrayTool.down($index,node.plugins.userAssign.ruleList)" class="btn btn-xs btn-default glyphicon glyphicon-chevron-down"></a>
+						<a ng-click="addNodeUserCondition(node,$index)" class="btn btn-danger btn-xs glyphicon glyphicon-edit"></a>
+						<a href="javascript:javaScript:void(0)" ng-click="ArrayTool.del($index,node.plugins.userAssign.ruleList)" class="btn btn-xs btn-default glyphicon glyphicon-trash"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+</div>
+
+

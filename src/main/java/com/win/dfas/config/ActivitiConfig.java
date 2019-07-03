@@ -1,8 +1,8 @@
 package com.win.dfas.config;
 
+import com.win.dfas.bpm.ExtensionSequenceFlowParseHandler;
 import com.win.dfas.bpm.ExtensionUserTaskParseHandler;
 import org.activiti.engine.ProcessEngineConfiguration;
-import org.activiti.engine.impl.bpmn.parser.handler.UserTaskParseHandler;
 import org.activiti.engine.impl.history.HistoryLevel;
 import org.activiti.engine.parse.BpmnParseHandler;
 import org.activiti.spring.SpringProcessEngineConfiguration;
@@ -29,6 +29,8 @@ public class ActivitiConfig {
     @Autowired
     private ExtensionUserTaskParseHandler handler;
 
+    @Autowired
+    private ExtensionSequenceFlowParseHandler sequenceFlowParseHandler;
     /**
      * 初始化配置
      *
@@ -52,6 +54,7 @@ public class ActivitiConfig {
 
         List<BpmnParseHandler> customDefaultBpmnParseHandlers= new ArrayList<>();
         customDefaultBpmnParseHandlers.add(handler);
+        customDefaultBpmnParseHandlers.add(sequenceFlowParseHandler);
         configuration.setCustomDefaultBpmnParseHandlers(customDefaultBpmnParseHandlers);
         return configuration;
 

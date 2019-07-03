@@ -2,7 +2,6 @@ package com.win.dfas.controller.editor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.ActivitiException;
@@ -11,8 +10,6 @@ import org.activiti.engine.repository.Model;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -77,6 +74,7 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
       final byte[] result = outStream.toByteArray();
       repositoryService.addModelEditorSourceExtra(model.getId(), result);
       outStream.close();
+
     } catch (Exception e) {
       log.error("Error saving model", e);
       throw new ActivitiException("Error saving model", e);

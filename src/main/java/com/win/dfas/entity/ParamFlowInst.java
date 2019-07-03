@@ -36,6 +36,7 @@ public class ParamFlowInst extends BaseEntity {
 
     private String deploymentId;
     private String  processDefId;
+    private String controlType;
 
     public String getProcessDefId() {
         return processDefId;
@@ -164,5 +165,13 @@ public class ParamFlowInst extends BaseEntity {
 
     public void setStartFlag(Boolean startFlag) {
         this.startFlag = startFlag;
+    }
+
+    public String getControlType() {
+        return controlType;
+    }
+
+    public void setControlType(String controlType) {
+        this.controlType = controlType == null ? null : controlType.trim();
     }
 }
