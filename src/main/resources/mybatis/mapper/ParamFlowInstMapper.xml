@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.win.dfas.bpm.dao.ParamFlowInstMapper">
+<mapper namespace="com.win.dfas.dao.ParamFlowInstMapper">
   <resultMap id="BaseResultMap" type="com.win.dfas.entity.ParamFlowInst">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="flow_name" jdbcType="VARCHAR" property="flowName" />
@@ -104,7 +104,7 @@
     delete from param_flowInst
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.win.dfas.bpm.entity.ParamFlowInst">
+  <insert id="insert" parameterType="com.win.dfas.entity.ParamFlowInst">
     insert into param_flowInst (id, flow_name, flow_type,
       begin_date, end_date, product_code,
       invest_company, invest_constitute, instruction_type,
@@ -122,7 +122,7 @@
       #{deploymentId,jdbcType=VARCHAR}, #{processDefId,jdbcType=VARCHAR}, #{startFlag,jdbcType=BIT},
       #{controlType,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.win.dfas.bpm.entity.ParamFlowInst">
+  <insert id="insertSelective" parameterType="com.win.dfas.entity.ParamFlowInst">
     insert into param_flowInst
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -261,7 +261,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.win.dfas.bpm.entity.ParamFlowInst">
+  <update id="updateByPrimaryKeySelective" parameterType="com.win.dfas.entity.ParamFlowInst">
     update param_flowInst
     <set>
       <if test="flowName != null">
@@ -330,7 +330,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.win.dfas.bpm.entity.ParamFlowInst">
+  <update id="updateByPrimaryKey" parameterType="com.win.dfas.entity.ParamFlowInst">
     update param_flowInst
     set flow_name = #{flowName,jdbcType=VARCHAR},
       flow_type = #{flowType,jdbcType=VARCHAR},
