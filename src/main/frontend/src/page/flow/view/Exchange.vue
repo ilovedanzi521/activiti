@@ -331,6 +331,16 @@
                             ></win_option>
                         </win_select>
                     </win_form_item>
+                    <win_form_item label="控制类型">
+                        <win_select v-model="flowVO.controlType">
+                            <win_option
+                                v-for="item in controlTypeItems"
+                                :key="item.code"
+                                :label="item.name"
+                                :value="item.code"
+                            ></win_option>
+                        </win_select>
+                    </win_form_item>
                     <win_input v-if="false" v-model="flowVO.flowCode"></win_input>
                 </div>
             </win_form>

@@ -126,4 +126,9 @@ export class ParamFlowInstRepVO extends BaseReqVO {
      * 流程定义id
      */
     processDefId: string;
+
+    /**
+     *控制类型
+     */
+    controlType:string;
 }

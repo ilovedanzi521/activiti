@@ -109,3 +109,17 @@ export class TransactionDirectionItem {
      */
     name: string;
 }
+
+/**
+ * 控制类型
+ */
+export class ControlTypeItem {
+    /**
+     * code
+     */
+    code: string;
+    /**
+     * 名称
+     */
+    name: string;
+}
