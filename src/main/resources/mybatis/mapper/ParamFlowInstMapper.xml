@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.win.dfas.dao.ParamFlowInstMapper">
+<mapper namespace="com.win.dfas.bpm.dao.ParamFlowInstMapper">
   <resultMap id="BaseResultMap" type="com.win.dfas.entity.ParamFlowInst">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="flow_name" jdbcType="VARCHAR" property="flowName" />
@@ -8,7 +8,7 @@
     <result column="begin_date" jdbcType="CHAR" property="beginDate" />
     <result column="end_date" jdbcType="CHAR" property="endDate" />
     <result column="product_code" jdbcType="VARCHAR" property="productCode" />
-    <result column="invest_Company" jdbcType="VARCHAR" property="investCompany" />
+    <result column="invest_company" jdbcType="VARCHAR" property="investCompany" />
     <result column="invest_constitute" jdbcType="VARCHAR" property="investConstitute" />
     <result column="instruction_type" jdbcType="VARCHAR" property="instructionType" />
     <result column="market_code" jdbcType="VARCHAR" property="marketCode" />
@@ -23,12 +23,13 @@
     <result column="deployment_id" jdbcType="VARCHAR" property="deploymentId" />
     <result column="process_def_id" jdbcType="VARCHAR" property="processDefId" />
     <result column="start_flag" jdbcType="BIT" property="startFlag" />
+    <result column="control_type" jdbcType="VARCHAR" property="controlType" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, flow_name, flow_type, begin_date, end_date, product_code, invest_Company, invest_constitute,
+    id, flow_name, flow_type, begin_date, end_date, product_code, invest_company, invest_constitute,
     instruction_type, market_code, security_type, transaction_direction, create_user_id,
     create_time, update_user_id, update_time, model_id, flow_code, deployment_id, process_def_id,
-    start_flag
+    start_flag, control_type
   </sql>
   <select id="list" parameterType="com.win.dfas.vo.request.ParamFlowReqVO"
           resultMap="BaseResultMap">
@@ -36,7 +37,7 @@
     FROM param_flowInst
     where 1=1
     <if test="flowName != null and flowName.length() > 0">
-     and flow_name = #{flowName,jdbcType=VARCHAR}
+      and flow_name = #{flowName,jdbcType=VARCHAR}
     </if>
     <if test="flowType != null and flowType.length() > 0">
       and flow_type = #{flowType,jdbcType=VARCHAR}
@@ -92,6 +93,7 @@
       #{id}
     </foreach>
   </update>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -102,25 +104,25 @@
     delete from param_flowInst
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.win.dfas.entity.ParamFlowInst">
+  <insert id="insert" parameterType="com.win.dfas.bpm.entity.ParamFlowInst">
     insert into param_flowInst (id, flow_name, flow_type,
       begin_date, end_date, product_code,
-      invest_Company, invest_constitute, instruction_type,
+      invest_company, invest_constitute, instruction_type,
       market_code, security_type, transaction_direction,
       create_user_id, create_time, update_user_id,
       update_time, model_id, flow_code,
-      deployment_id, process_def_id, start_flag
-      )
+      deployment_id, process_def_id, start_flag,
+      control_type)
     values (#{id,jdbcType=BIGINT}, #{flowName,jdbcType=VARCHAR}, #{flowType,jdbcType=VARCHAR},
       #{beginDate,jdbcType=CHAR}, #{endDate,jdbcType=CHAR}, #{productCode,jdbcType=VARCHAR},
       #{investCompany,jdbcType=VARCHAR}, #{investConstitute,jdbcType=VARCHAR}, #{instructionType,jdbcType=VARCHAR},
       #{marketCode,jdbcType=VARCHAR}, #{securityType,jdbcType=VARCHAR}, #{transactionDirection,jdbcType=VARCHAR},
       #{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUserId,jdbcType=VARCHAR},
       #{updateTime,jdbcType=TIMESTAMP}, #{modelId,jdbcType=VARCHAR}, #{flowCode,jdbcType=BIGINT},
-      #{deploymentId,jdbcType=VARCHAR}, #{processDefId,jdbcType=VARCHAR}, #{startFlag,jdbcType=BIT}
-      )
+      #{deploymentId,jdbcType=VARCHAR}, #{processDefId,jdbcType=VARCHAR}, #{startFlag,jdbcType=BIT},
+      #{controlType,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.win.dfas.entity.ParamFlowInst">
+  <insert id="insertSelective" parameterType="com.win.dfas.bpm.entity.ParamFlowInst">
     insert into param_flowInst
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -142,7 +144,7 @@
         product_code,
       </if>
       <if test="investCompany != null">
-        invest_Company,
+        invest_company,
       </if>
       <if test="investConstitute != null">
         invest_constitute,
@@ -185,6 +187,9 @@
       </if>
       <if test="startFlag != null">
         start_flag,
+      </if>
+      <if test="controlType != null">
+        control_type,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -251,9 +256,12 @@
       <if test="startFlag != null">
         #{startFlag,jdbcType=BIT},
       </if>
+      <if test="controlType != null">
+        #{controlType,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.win.dfas.entity.ParamFlowInst">
+  <update id="updateByPrimaryKeySelective" parameterType="com.win.dfas.bpm.entity.ParamFlowInst">
     update param_flowInst
     <set>
       <if test="flowName != null">
@@ -272,7 +280,7 @@
         product_code = #{productCode,jdbcType=VARCHAR},
       </if>
       <if test="investCompany != null">
-        invest_Company = #{investCompany,jdbcType=VARCHAR},
+        invest_company = #{investCompany,jdbcType=VARCHAR},
       </if>
       <if test="investConstitute != null">
         invest_constitute = #{investConstitute,jdbcType=VARCHAR},
@@ -316,17 +324,20 @@
       <if test="startFlag != null">
         start_flag = #{startFlag,jdbcType=BIT},
       </if>
+      <if test="controlType != null">
+        control_type = #{controlType,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.win.dfas.entity.ParamFlowInst">
+  <update id="updateByPrimaryKey" parameterType="com.win.dfas.bpm.entity.ParamFlowInst">
     update param_flowInst
     set flow_name = #{flowName,jdbcType=VARCHAR},
       flow_type = #{flowType,jdbcType=VARCHAR},
       begin_date = #{beginDate,jdbcType=CHAR},
       end_date = #{endDate,jdbcType=CHAR},
       product_code = #{productCode,jdbcType=VARCHAR},
-      invest_Company = #{investCompany,jdbcType=VARCHAR},
+      invest_company = #{investCompany,jdbcType=VARCHAR},
       invest_constitute = #{investConstitute,jdbcType=VARCHAR},
       instruction_type = #{instructionType,jdbcType=VARCHAR},
       market_code = #{marketCode,jdbcType=VARCHAR},
@@ -340,7 +351,8 @@
       flow_code = #{flowCode,jdbcType=BIGINT},
       deployment_id = #{deploymentId,jdbcType=VARCHAR},
       process_def_id = #{processDefId,jdbcType=VARCHAR},
-      start_flag = #{startFlag,jdbcType=BIT}
+      start_flag = #{startFlag,jdbcType=BIT},
+      control_type = #{controlType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
