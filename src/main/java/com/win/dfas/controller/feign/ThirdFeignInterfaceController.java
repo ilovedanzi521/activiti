@@ -1,8 +1,6 @@
 package com.win.dfas.controller.feign;
 
 import com.win.dfas.common.vo.WinResponseData;
-import com.win.dfas.entity.UserIno;
-import com.win.dfas.vo.request.UserInoReq;
 import com.win.dfas.vo.response.SelectorItemEnum;
 import com.win.dfas.vo.response.item.*;
 import lombok.extern.slf4j.Slf4j;
@@ -106,18 +104,4 @@ public class ThirdFeignInterfaceController {
         return WinResponseData.handleSuccess(map);
     }
 
-
-
-    @PostMapping("/param/searchUserinfo")
-    public WinResponseData getSearchUserinfoList(@RequestBody UserInoReq userInoReq){
-        List<UserIno> userList = new ArrayList<>();
-        for (int i = 0; i <10; i++) {
-            UserIno info = new UserIno();
-            info.setAccount("888888888888"+i);
-            info.setName("王雷");
-            userList.add(info);
-        }
-        log.info(userList.toString());
-        return WinResponseData.handleSuccess(userList);
-    }
 }

@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * 创建时间：2019/6/11/13:10
  */
-
+@EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class ActivitiApplication {

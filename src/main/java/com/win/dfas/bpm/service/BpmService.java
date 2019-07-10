@@ -1,8 +1,10 @@
 package com.win.dfas.bpm.service;
 
+import com.win.dfas.bpm.entity.FlowAssigners;
 import com.win.dfas.bpm.vo.request.FlowAssignersReqVO;
 import com.win.dfas.bpm.vo.response.AllFlowAssignersRepVO;
 import com.win.dfas.bpm.vo.response.FlowAssignersRepVO;
+import com.win.dfas.vo.request.FlowTaskReqVO;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +27,8 @@ public interface BpmService {
     List<FlowAssignersRepVO> queryNodeDescribe(String modelId, String nodeId );
 
     List<AllFlowAssignersRepVO> queryAllDescribe(String modelId);
+
+    int deleteByPrimaryKey(FlowAssigners flowAssigners);
+
+    List<String> nextUserInfo(String processId);
 }

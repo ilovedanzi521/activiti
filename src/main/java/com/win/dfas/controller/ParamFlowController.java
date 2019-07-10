@@ -12,7 +12,9 @@
 
 package com.win.dfas.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -22,6 +24,7 @@ import com.win.dfas.bpm.converter.CostomBpmnJsonConverter;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.service.IActivitiService;
 import com.win.dfas.service.IParamFlowService;
+import com.win.dfas.vo.request.FlowTaskReqVO;
 import com.win.dfas.vo.request.ParamFlowReqVO;
 import com.win.dfas.vo.response.ParamFlowRepVO;
 import io.swagger.annotations.Api;
@@ -34,6 +37,7 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
@@ -220,18 +224,24 @@ public class ParamFlowController {
                     log.info("流程有问题！");
                     return WinResponseData.handleError("异常");
                 }
-                if(!startFlag){
-                    //后面启动使用激活
-                    repositoryService.activateProcessDefinitionById(processDefId);
-                    continue;
+                if(startFlag){
+                    //repositoryService.activateProcessDefinitionById(processDefId);
+                    //重新发布
+                    deploymentId=publish(modelId,paramFlowRepVO.getFlowName());
+                    processDefId = activitiService.queryProcessDefId(deploymentId);
+                    //TODO 是否批量更新
+                    paramFlowRepVO.setDeploymentId(deploymentId);
+                    paramFlowRepVO.setProcessDefId(processDefId);
+                    paramFlowService.update(paramFlowRepVO);
+//                    continue;
                 }
             }
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("apply", paramFlowRepVO.getCreateUserId());
-            map.put("approve", "wanglei");
-            map.put("controlType", 123);//控制
-            //启动流程
-            startProcessInstance(processDefId,map);
+//            Map<String, Object> map = new HashMap<String, Object>();
+//            map.put("apply", paramFlowRepVO.getCreateUserId());
+//            map.put("approve", "wanglei");
+//            map.put("controlType", 123);//控制
+//            //启动流程
+//            startProcessInstance(processDefId,map);
             log.info("启动流程实例,流程定义id="+processDefId);
 
         }
@@ -292,9 +302,9 @@ public class ParamFlowController {
     @RequestMapping("/batchStopFlow")
     public WinResponseData stop( @RequestBody List<String> ids) {
         log.info(ids.toString());
-        for (String id : ids) {
-            repositoryService.suspendProcessDefinitionById(id);
-        }
+//        for (String id : ids) {
+//            repositoryService.suspendProcessDefinitionById(id);
+//        }
         paramFlowService.updateStartFlagToStop(ids);
         return WinResponseData.handleSuccess("成功");
     }
@@ -345,14 +355,6 @@ public class ParamFlowController {
         return WinResponseData.handleSuccess("成功");
     }
 
-    @RequestMapping("/runFlow/{defId}")
-    public WinResponseData run( @PathVariable("defId") String defId) {
-        ExecutionEntity pi1 = (ExecutionEntity) runtimeService.startProcessInstanceById(defId);
-        String processId = pi1.getId();
-        log.info(processId);
-        Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
-        log.info("task 第一步:{}", task);
-        taskService.complete(task.getId());
-        return WinResponseData.handleSuccess("成功");
-    }
+
+
 }
