@@ -13,8 +13,8 @@ import java.math.BigDecimal;
  */
 @Data
 public class FlowTaskReqVO {
-    private String userName; //流程用户
-    private String groupName; //流程用户组
+    private String userId; //流程用户
+    private String groupId; //流程用户组
 //    private String
     private String taskType;
     private BigDecimal amt;

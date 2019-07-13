@@ -105,4 +105,9 @@ public class ParamFlowServiceImpl implements IParamFlowService {
     public void updateStartFlagToStart(List<Long> ids) {
         paramFlowMapper.updateStartFlagToStart(ids);
     }
+
+    @Override
+    public String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO) {
+        return  paramFlowMapper.queryProcessDefIdfromFlowInst(queryVO);
+    }
 }

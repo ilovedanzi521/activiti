@@ -89,4 +89,14 @@ public interface IParamFlowService {
      * @param ids
      */
     void updateStartFlagToStart(List<Long> ids);
+    /**
+     * @Title: queryProcessDefIdfromFlowInst
+     * @Description: 根据流程唯一索引查询流程定义id
+     * @param queryVO
+     * @return java.lang.String
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/11/11:34
+     */
+    String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO);
 }
