@@ -1,0 +1,149 @@
+<html ng-app="app">
+<head>
+<link href="../../build/common/base.css" rel="stylesheet">
+<script type="text/javascript" src="../../build/common/base.js"></script>
+<script type="text/javascript" src="../../build/common/ngEdit.js"></script>
+
+<script type="text/javascript">
+	var app = angular.module("app", [ 'base' ]);
+	app.controller('ctrl', [ '$scope','$http', 'baseService', function($scope,$http, baseService) {
+		$scope.conf = window.passData;
+		// 指定组
+		$scope.initList = [];
+		$scope.list = [];
+		$scope.checked =[];
+		if ($scope.conf.groupName) {
+			var arrName = $scope.conf.groupName.split(',');
+			var arrkey = $scope.conf.account.split(',')
+			$.each(arrName, function(i, item) {
+				var item = { name : arrName[i], key : arrkey[i] };
+				$scope.initList.push(item);
+			})
+		};
+		$scope.checkChange = function (entity,$index) {
+			console.log(entity.state+"===="+$index);
+			// console.log($scope.list[$index].state)
+			if(entity.state) {
+				$scope.checked.push(entity);
+			}else{
+				//查询id对应的index
+				for(var i = 0; i < $scope.checked.length; i++){
+					if($scope.checked[i].id===entity.id){
+						console.log("11111======"+i)
+						$scope.checked.splice(i, 1);
+						break;
+					}
+				}
+			};
+			$scope.initList = $scope.checked;
+			for(var i = 0; i < $scope.checked.length; i++){
+				if(i==0){
+					$scope.conf.groupName = $scope.checked[i].name;
+					$scope.conf.account = $scope.checked[i].account;
+				}else{
+					$scope.conf.groupName +=","+ $scope.checked[i].name;
+					$scope.conf.account +=","+ $scope.checked[i].account;
+				}
+			};
+			$scope.conf.description=""+$scope.conf.groupName;
+
+		};
+
+
+		$scope.groupDialog = function() {
+			var callBack = function(data, dialog) {
+				$scope.$apply(function() {
+					$scope.initList = {};
+					$scope.initList = data;
+					$scope.conf.groupName = "";
+					$scope.conf.account = "";
+					$(data).each(function() {
+						if ($scope.conf.account){
+							$scope.conf.groupName += ",";
+							$scope.conf.account += ",";
+						}
+						$scope.conf.groupName += this.name;
+						$scope.conf.account += this.account;
+					});
+				});
+				$.Dialog.close(dialog);
+			};
+
+			// CustUtil.openCustDialog($scope.conf.type + "Selector", callBack, $scope.initList);
+
+			var conf = { height:300,width:600,
+				url:"/bpm/nodeDef/userSelector.html",
+				title:"选择用户",
+				topOpen:false,
+				passData:angular.copy(calc)
+			};
+			conf.ok = function(index,innerWindow){
+				var data = innerWindow.getResult();
+				if(!data)return;
+				jQuery.extend(calc, data);
+				!$rootScope.$$phase && $rootScope.$digest();
+				$.Dialog.close(innerWindow);
+			}
+			$.Dialog.open(conf);
+
+		};
+
+		var post = baseService.post(__ctx + "/sys/tools/getGroupTypes", {});
+		$.getResultData(post, function(data) {
+			$scope.typeList = data;
+		})
+
+		$scope.changeType = function() {
+			$scope.conf.typeName = $("#aaa").find("option:selected").text();
+			$scope.conf.typeValue = $("#aaa").find("option:selected").val();
+			console.log($scope.conf.typeName+"========="+$scope.conf.typeValue );
+			$http.get("/service/param/groupList/"+$scope.conf.typeValue).then(function(response) {
+				$scope.list = response.data.data;
+				for(var i = 0; i < $scope.list.length; i++){
+					$scope.list[i].state =0;
+				}
+			});
+			// $scope.initList = [];
+		}
+
+	} ]);
+
+	function getResult() {
+		var scope = AngularUtil.getScope();
+		if (!scope.conf.groupName) {
+			$.Dialog.error("请选择组织！");
+			return false;
+		}
+		scope.conf.description = scope.conf.groupName;
+		console.info("account="+scope.conf.account)
+		return scope.conf;
+	}
+</script>
+</head>
+<body ng-controller="ctrl">
+	<div id="tempTree"></div>
+	<table class="form-table">
+		<tr>
+			<th>组织类型：</th>
+			<td>
+				<select id="aaa" ng-model="conf.type" class="form-control" ng-change="changeType()">
+					<option ng-repeat="type in typeList"  value="{{type.key}}"  ng-selected="type.key===conf.type" >{{type.label}}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>{{conf.typeName}}</th>
+			<td>
+				<span ng-repeat="group in initList" class="label label-primary">{{group.name}}</span>
+			</td>
+		</tr>
+		<tr ng-repeat="entity in list">
+			<td><input type="checkbox" ng-model="entity.state" ng-change="checkChange(entity,$index)"></td>
+			<!--<td>{{entity.id}}</td>-->
+			<td>{{entity.name}}</td>
+		</tr>
+	</table>
+</body>
+</html>
+
+
