@@ -31,6 +31,14 @@
     create_time, update_user_id, update_time, model_id, flow_code, deployment_id, process_def_id,
     start_flag, control_type
   </sql>
+  <select id="queryProcessDefIdfromFlowInst" resultType="java.lang.String" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
+    select process_def_id from param_flowInst where
+     product_code = #{productCode,jdbcType=BIGINT}
+    and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
+    and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
+     limit 1
+  </select>
+
   <select id="list" parameterType="com.win.dfas.vo.request.ParamFlowReqVO"
           resultMap="BaseResultMap">
     SELECT  <include refid="Base_Column_List" />
