@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 包名称：com.win.dfas
@@ -18,9 +19,10 @@ import org.springframework.context.annotation.Configuration;
  *
  * 创建时间：2019/6/11/13:10
  */
-@EnableFeignClients
-@EnableDiscoveryClient
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
+@EnableSwagger2
+@ComponentScan(basePackages = {"com.win"})
+@EnableFeignClients(basePackages = {"com.win"})
 public class ActivitiApplication {
 
     public static void main(String[] args) {

@@ -1,8 +1,12 @@
 package com.win.dfas.bpm.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import com.win.dfas.bpm.dto.QueryAndStartFlowReqDTO;
 import com.win.dfas.bpm.service.BpmService;
+import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.common.vo.WinResponseData;
+import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.service.IParamFlowService;
 import com.win.dfas.vo.request.FlowTaskReqVO;
 import com.win.dfas.vo.request.ParamFlowReqVO;
@@ -15,6 +19,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +56,37 @@ public class BpmTaskController {
     private IParamFlowService paramFlowService;
 
     @PostMapping("/runFlow")
+    public WinResponseData queryAndStart(@RequestBody QueryAndStartFlowReqDTO queryAndStartFlowReqDTO) {
+        try {
+            log.info("运行参数======" + BeanUtil.beanToMap(queryAndStartFlowReqDTO).toString());
+            ParamFlowReqVO paramFlowReqVO = new ParamFlowReqVO();
+            paramFlowReqVO.setInstructionType(queryAndStartFlowReqDTO.getInvestConstitute());
+            paramFlowReqVO.setTransactionDirection(queryAndStartFlowReqDTO.getTransactionDirection());
+            paramFlowReqVO.setProductCode(queryAndStartFlowReqDTO.getProductCode());
+            WinResponseData rtn = queryprocessDef(paramFlowReqVO);
+            if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
+                FlowTaskReqVO flowTaskReqVO = new FlowTaskReqVO();
+//            flowTaskReqVO.setProcessId(String.valueOf(rtn.getData()));
+                flowTaskReqVO.setAmt(queryAndStartFlowReqDTO.getAmt());
+                flowTaskReqVO.setPermit(queryAndStartFlowReqDTO.getPermit());
+                flowTaskReqVO.setGroupId(queryAndStartFlowReqDTO.getGroupId());
+                flowTaskReqVO.setUserId(queryAndStartFlowReqDTO.getUserId());
+                flowTaskReqVO.setProcessDefId(String.valueOf(rtn.getData()));
+
+                WinResponseData runRtn = run(flowTaskReqVO);
+                if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
+                    return WinResponseData.handleSuccess("成功", runRtn.getData());
+                }
+            }
+        }catch(Throwable throwable){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
+        }
+
+        return WinResponseData.handleError("失败");
+
+    }
+
+    @PostMapping("/run")
     public WinResponseData run(@RequestBody FlowTaskReqVO flowTaskReqVO) {
         log.info("运行参数======"+ BeanUtil.beanToMap(flowTaskReqVO).toString());
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(flowTaskReqVO.getProcessDefId(),BeanUtil.beanToMap(flowTaskReqVO));
