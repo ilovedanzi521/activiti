@@ -60,7 +60,7 @@ public class BpmTaskController {
         try {
             log.info("运行参数======" + BeanUtil.beanToMap(queryAndStartFlowReqDTO).toString());
             ParamFlowReqVO paramFlowReqVO = new ParamFlowReqVO();
-            paramFlowReqVO.setInstructionType(queryAndStartFlowReqDTO.getInvestConstitute());
+            paramFlowReqVO.setInvestConstitute(queryAndStartFlowReqDTO.getInvestConstitute());
             paramFlowReqVO.setTransactionDirection(queryAndStartFlowReqDTO.getTransactionDirection());
             paramFlowReqVO.setProductCode(queryAndStartFlowReqDTO.getProductCode());
             WinResponseData rtn = queryprocessDef(paramFlowReqVO);
@@ -77,6 +77,8 @@ public class BpmTaskController {
                 if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
                     return WinResponseData.handleSuccess("成功", runRtn.getData());
                 }
+            }else{
+                throw WinExceptionUtil.winException(BpmExceptionEnum.NOT_FOUND_FLOW);
             }
         }catch(Throwable throwable){
             throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
@@ -121,8 +123,14 @@ public class BpmTaskController {
      */
     @PostMapping("/queryprocessDef")
     public WinResponseData queryprocessDef(@RequestBody ParamFlowReqVO queryVO) {
+        log.info("queryprocessDef入参："+ BeanUtil.beanToMap(queryVO).toString());
         String processDefId = paramFlowService.queryProcessDefIdfromFlowInst(queryVO);
-        return WinResponseData.handleSuccess("成功",(Object)processDefId);
+        if(processDefId!=null){
+            return WinResponseData.handleSuccess("成功",(Object)processDefId);
+        }else{
+            return WinResponseData.handleError("失败");
+        }
+
     }
 
     /**
@@ -136,27 +144,31 @@ public class BpmTaskController {
      */
     @PostMapping("/getTaskInfo")
     public WinResponseData queryTaskInfoByTask( @RequestBody FlowTaskReqVO flowTaskReqVO) {
-        String groupName = flowTaskReqVO.getGroupId();
-        String username = flowTaskReqVO.getUserId();
-        String taskType = flowTaskReqVO.getTaskType();
-        //按照类型返回task列表
-        List<Task> list = new ArrayList<Task>();
-        //第一步获取用户组流程信息
-        List<Task> groupTasks = taskService.createTaskQuery().taskCandidateGroup(groupName).list();
-        list.addAll(bpmService.selectTask(groupTasks,taskType));
-        //第二步获取用户流程信息
-        List<Task> userTasks = taskService.createTaskQuery().taskCandidateUser(username).list();
-        list.addAll(bpmService.selectTask(userTasks,taskType));
+        try {
+            String groupName = flowTaskReqVO.getGroupId();
+            String username = flowTaskReqVO.getUserId();
+            String taskType = flowTaskReqVO.getTaskType();
+            //按照类型返回task列表
+            List<Task> list = new ArrayList<Task>();
+            //第一步获取用户组流程信息
+            List<Task> groupTasks = taskService.createTaskQuery().taskCandidateGroup(groupName).list();
+            list.addAll(bpmService.selectTask(groupTasks, taskType));
+            //第二步获取用户流程信息
+            List<Task> userTasks = taskService.createTaskQuery().taskCandidateUser(username).list();
+            list.addAll(bpmService.selectTask(userTasks, taskType));
 //        List<Task> users = taskService.createTaskQuery().taskAssignee(username).list();
 //        list.addAll(bpmService.selectTask(users,taskType));
-        //获取task
+            //获取task
 //        log.info(activityImpl.getProperty(BpmConstant.NAME).toString());
-        List<String> rtn = new ArrayList<String>();
-        for (Task task : list) {
-            rtn.add( task.getProcessInstanceId());
+            List<String> rtn = new ArrayList<String>();
+            for (Task task : list) {
+                rtn.add(task.getProcessInstanceId());
+            }
+            log.info(list.toString());
+            return WinResponseData.handleSuccess("成功", rtn);
+        }catch(Throwable throwable){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
         }
-        log.info(list.toString());
-        return WinResponseData.handleSuccess("成功",rtn);
     }
     /**
      * @Title: complete
@@ -169,24 +181,28 @@ public class BpmTaskController {
      */
     @PostMapping("/complete")
     public WinResponseData complete( @RequestBody FlowTaskReqVO flowTaskReqVO) {
-        String processId = flowTaskReqVO.getProcessId();
-        Map map = BeanUtil.beanToMap(flowTaskReqVO);
-        log.info(map.toString());
-        HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
-        if(historicProcessInstance.getEndTime()!=null){
-            log.info("流程已经结束！");
-            return WinResponseData.handleError("流程已经结束",historicProcessInstance.getEndTime());
-        }else {
-            Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
+        try {
+            String processId = flowTaskReqVO.getProcessId();
+            Map map = BeanUtil.beanToMap(flowTaskReqVO);
+            log.info(map.toString());
+            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
+            if (historicProcessInstance.getEndTime() != null) {
+                log.info("流程已经结束！");
+                return WinResponseData.handleError("流程已经结束", historicProcessInstance.getEndTime());
+            } else {
+                Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
 
-            taskService.complete(task.getId(),map);
-            historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
-            if(historicProcessInstance.getEndTime()!=null){
-                log.info("最后节点已完成！");
-                return WinResponseData.handleSuccess("最后节点已完成",historicProcessInstance.getEndTime());
+                taskService.complete(task.getId(), map);
+                historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
+                if (historicProcessInstance.getEndTime() != null) {
+                    log.info("最后节点已完成！");
+                    return WinResponseData.handleSuccess("最后节点已完成", historicProcessInstance.getEndTime());
+                }
+                List<String> list = bpmService.nextUserInfo(processId);
+                return WinResponseData.handleSuccess("成功", list);
             }
-            List<String> list = bpmService.nextUserInfo(processId);
-            return WinResponseData.handleSuccess("成功",list);
+        }catch(Throwable throwable){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
         }
     }
 

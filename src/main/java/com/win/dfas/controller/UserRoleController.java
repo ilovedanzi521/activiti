@@ -28,8 +28,7 @@ import java.util.Map;
 @Slf4j
 public class UserRoleController {
     //fegin接口
-    @Autowired
-    IuserFeignClient userFeignClient;
+    private IuserFeignClient userFeignClient;
     /**
      * @Title: getUserInfoList
      * @Description: activiti选择人员信息时，获取fegin第三方数据，并解析返回

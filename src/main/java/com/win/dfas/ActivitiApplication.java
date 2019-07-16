@@ -2,6 +2,7 @@ package com.win.dfas;
 
 import org.activiti.spring.boot.SecurityAutoConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -19,10 +20,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  *
  * 创建时间：2019/6/11/13:10
  */
-@SpringBootApplication
-@EnableSwagger2
-@ComponentScan(basePackages = {"com.win"})
-@EnableFeignClients(basePackages = {"com.win"})
+@EnableDiscoveryClient
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+//@EnableSwagger2
 public class ActivitiApplication {
 
     public static void main(String[] args) {

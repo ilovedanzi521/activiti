@@ -26,6 +26,7 @@ public enum BpmExceptionEnum implements IExceptionEnum {
 
     // 认证异常枚举
     SYSTEM_ERR("800000", "系统错误"),
+    NOT_FOUND_FLOW("800001", "没有发现流程记录")
 //    ID_NOT_NULL("100000", "ID不能为空")
     ;
 
