@@ -21,7 +21,7 @@ import java.util.List;
  * 创建时间：2019/6/25/19:07
  */
 @RestController
-@RequestMapping({"/dfas-common-bpm/service/bpm/processDef"})
+@RequestMapping({"/service/bpm/processDef"})
 public class ProcessDefController {
     @RequestMapping({"/getSubjectVariable"})
     public JSONArray getSubjectVariable(@RequestParam String defId) throws Exception {

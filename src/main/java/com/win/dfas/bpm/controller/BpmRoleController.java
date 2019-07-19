@@ -38,7 +38,7 @@ import java.util.List;
  * 创建时间：2019/6/27/13:25
  */
 @RestController
-@RequestMapping("/dfas-common-bpm/bpm/process/def")
+@RequestMapping("/bpm/process/def")
 @Slf4j
 public class BpmRoleController {
     @Autowired

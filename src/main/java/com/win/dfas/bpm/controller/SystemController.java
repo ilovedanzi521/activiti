@@ -21,7 +21,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/dfas-common-bpm")
 public class SystemController {
 
     @RequestMapping(value = "/sys/tools/getEnum", method = RequestMethod.POST)

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/dfas-common-bpm/form/formCustDialog/"})
+@RequestMapping({"/form/formCustDialog/"})
 public class FormCustDialogController {
     @Autowired
     FormCustDialogManager formCustDialogManager;
