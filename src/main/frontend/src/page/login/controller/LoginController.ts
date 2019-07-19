@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { LoginVO } from "../vo/loginVO";
-import loginService from "../service/loginService";
+import loginService from "../service/LoginService";
 import Tool from "../../../mixin/mm";
 import Logo from "../view/logo.vue";
 import Login from "../view/login.vue";
