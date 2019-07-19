@@ -22,7 +22,7 @@ var ACTIVITI = ACTIVITI || {};
 
 ACTIVITI.CONFIG = {
 	// 'contextRoot' : '/agile-bpm-platform/',
-	'contextRoot' : '/service',
+	'contextRoot' : '/dfas-common-bpm/service',
 };
 
 // window.__ctx = "/agile-bpm-platform";
