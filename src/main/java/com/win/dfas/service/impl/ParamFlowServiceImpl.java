@@ -45,6 +45,11 @@ public class ParamFlowServiceImpl implements IParamFlowService {
 
     @Override
     public PageInfo<ParamFlowRepVO> list(ParamFlowReqVO queryVO) {
+        if(queryVO==null){
+            queryVO = new ParamFlowReqVO();
+            queryVO.setReqPageNum(0);
+            queryVO.setReqPageSize(10);
+        }
         PageHelper.startPage(queryVO.getReqPageNum(),queryVO.getReqPageSize());
         List<ParamFlowInst> flows = paramFlowMapper.list(queryVO);
         PageInfo<ParamFlowInst> pageInfo = new PageInfo<ParamFlowInst>(flows);

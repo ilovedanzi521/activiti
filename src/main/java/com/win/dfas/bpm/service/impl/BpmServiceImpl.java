@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.win.dfas.bpm.constant.BpmConstant;
 
 import com.win.dfas.bpm.constant.UserClassEnum;
-import com.win.dfas.bpm.dao.FlowAssignersMapper;
 import com.win.dfas.bpm.entity.FlowAssigners;
 import com.win.dfas.bpm.service.BpmService;
 import com.win.dfas.bpm.vo.request.FlowAssignersReqVO;
@@ -12,6 +11,7 @@ import com.win.dfas.bpm.vo.response.AllFlowAssignersRepVO;
 import com.win.dfas.bpm.vo.response.FlowAssignersRepVO;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.controller.feign.IuserFeignClient;
+import com.win.dfas.dao.FlowAssignersMapper;
 import com.win.dfas.vo.request.FlowTaskReqVO;
 import com.win.dfas.vo.request.UserInfoReqVO;
 import com.win.dfas.vo.response.DepartmentInfoRepVO;

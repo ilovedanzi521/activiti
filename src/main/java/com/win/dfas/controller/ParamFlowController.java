@@ -88,6 +88,7 @@ public class ParamFlowController {
     @ApiOperation(value = "流程实例查询", notes = "<br/>1. 分页查询 ")
     @PostMapping("/list")
     public WinResponseData list(@ApiParam(value = "流程查询参数") @RequestBody ParamFlowReqVO queryVO) {
+        log.info("list 入参："+BeanUtil.beanToMap(queryVO).toString());
         PageInfo<ParamFlowRepVO> list = paramFlowService.list(queryVO);
         log. info(list.toString());
         return WinResponseData.handleSuccess(list);

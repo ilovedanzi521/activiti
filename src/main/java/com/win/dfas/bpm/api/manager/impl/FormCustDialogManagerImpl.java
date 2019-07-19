@@ -2,7 +2,7 @@ package com.win.dfas.bpm.api.manager.impl;
 
 import com.win.dfas.bpm.api.manager.FormCustDialogManager;
 import com.win.dfas.bpm.api.model.def.form.FormCustDialog;
-import com.win.dfas.bpm.dao.FormCustDialogMapper;
+import com.win.dfas.dao.FormCustDialogMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

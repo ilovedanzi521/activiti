@@ -23,7 +23,7 @@ export default [
         component: Flow,
         children: [
             {
-                path: "/",
+                path: "/flow",
                 name: "flow",
                 component: Flow
             }

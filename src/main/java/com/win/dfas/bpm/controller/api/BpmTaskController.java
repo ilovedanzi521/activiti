@@ -145,14 +145,14 @@ public class BpmTaskController {
     @PostMapping("/getTaskInfo")
     public WinResponseData queryTaskInfoByTask( @RequestBody FlowTaskReqVO flowTaskReqVO) {
         try {
-            String groupName = flowTaskReqVO.getGroupId();
+//            String groupName = flowTaskReqVO.getGroupId();
             String username = flowTaskReqVO.getUserId();
             String taskType = flowTaskReqVO.getTaskType();
             //按照类型返回task列表
             List<Task> list = new ArrayList<Task>();
             //第一步获取用户组流程信息
-            List<Task> groupTasks = taskService.createTaskQuery().taskCandidateGroup(groupName).list();
-            list.addAll(bpmService.selectTask(groupTasks, taskType));
+//            List<Task> groupTasks = taskService.createTaskQuery().taskCandidateGroup(groupName).list();
+//            list.addAll(bpmService.selectTask(groupTasks, taskType));
             //第二步获取用户流程信息
             List<Task> userTasks = taskService.createTaskQuery().taskCandidateUser(username).list();
             list.addAll(bpmService.selectTask(userTasks, taskType));

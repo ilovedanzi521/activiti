@@ -1,6 +1,8 @@
 server:
-  port: 8081
+  port: 10015
 spring:
+  main:
+    allow-bean-definition-overriding: true
   freemarker:
     cache: false
     charset: UTF-8
@@ -54,24 +56,11 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://192.168.0.60:10010/eureka
-#  instance:
-#    lease-renewal-interval-in-seconds: 10 # 续约更新时间间隔（默认是30秒）
-#    lease-expiration-duration-in-seconds: 30 #服务失效时间。默认是90秒，也就是如果Eureka Server在90秒内没有接收到来自ServiceProvider的Renew操作，就会把Service Provider剔除
-#    instance-id: ${spring.cloud.client.hostname}:${spring.cloud.client.ipAddress}:${random.int} #设置实例名
-#    prefer-ip-address: true #使用IP地址来做注册中心地址
-
-mybatis:
-  table:
-    auto: update
-  model:
-    pack: com.win.dfas.dao
-  database:
-    type: mysql
-  actable:
-    name: dfas-common-bpm
-    version: 1.0
-  mapper-locations: classpath:mybatis/mapper/**/*.xml #实体类所要映射sql的xml文件
-  type-aliases-package: com.win.dfas.entity #实体类全路径所在的最后一级目录
+  instance:
+    lease-renewal-interval-in-seconds: 10 # 续约更新时间间隔（默认是30秒）
+    lease-expiration-duration-in-seconds: 30 #服务失效时间。默认是90秒，也就是如果Eureka Server在90秒内没有接收到来自ServiceProvider的Renew操作，就会把Service Provider剔除
+    instance-id: ${spring.cloud.client.hostname}:${spring.cloud.client.ipAddress}:${random.int} #设置实例名
+    prefer-ip-address: true #使用IP地址来做注册中心地址
 management:
   security:
     enabled: false

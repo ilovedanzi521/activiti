@@ -51,7 +51,6 @@ public class ActivitiConfig {
         configuration.setAnnotationFontName("宋体");
         configuration.setLabelFontName("宋体");
         configuration.setTransactionManager(transactionManager);
-
         List<BpmnParseHandler> customDefaultBpmnParseHandlers= new ArrayList<>();
         customDefaultBpmnParseHandlers.add(handler);
         customDefaultBpmnParseHandlers.add(sequenceFlowParseHandler);
