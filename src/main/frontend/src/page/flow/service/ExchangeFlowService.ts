@@ -1,49 +1,77 @@
 import AxiosFun from "../../../api/AxiosFun";
-import {ParamFlowInstRepVO} from "../bean/ParamFlowInstVO";
-
+import { ParamFlowInstRepVO } from "../bean/ParamFlowInstVO";
 export default class ExchangeFlowService {
     /**流程类**/
     listFlowClass() {
-        return AxiosFun.get("/param/flowclass", undefined);
+        return AxiosFun.get(
+            AxiosFun.commonBpmServiceName + "/param/flowclass",
+            undefined
+        );
     }
     /**流程组列表 */
     listFlowGroup() {
-        return AxiosFun.post("/param/flowgroup/list", undefined);
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName + "/param/flowgroup/list",
+            undefined
+        );
     }
     delflowgroup(id: number) {
-        return AxiosFun.delete("/param/flowgroup/" + id, undefined);
+        return AxiosFun.winDelete(
+            AxiosFun.commonBpmServiceName + "/param/flowgroup/" + id
+        );
     }
     addflowgroup(ParamFlowGroupVO) {
-        return AxiosFun.post("/param/flowgroup/", ParamFlowGroupVO);
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName + "/param/flowgroup/",
+            ParamFlowGroupVO
+        );
     }
     getflowgroupid() {
-        return AxiosFun.get("/param/flowgroup/getflowgroupid", undefined);
+        return AxiosFun.get(
+            AxiosFun.commonBpmServiceName + "/param/flowgroup/getflowgroupid",
+            undefined
+        );
     }
 
     /**流程实例列表 */
     listExchangeFlow(FlowVO) {
-        return AxiosFun.post("/param/exchangeFlow/list", FlowVO);
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName + "/param/exchangeFlow/list",
+            FlowVO
+        );
     }
-    listFlowByGroupid(reqVo){
-        return AxiosFun.post("/param/exchangeFlow/listFlowByGroupid",reqVo);
+    listFlowByGroupid(reqVo) {
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName +
+                "/param/exchangeFlow/listFlowByGroupid",
+            reqVo
+        );
     }
     /**流程实例新增 */
     addExchangeFlow(FlowVO) {
-        return AxiosFun.post("/param/exchangeFlow", FlowVO);
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName + "/param/exchangeFlow",
+            FlowVO
+        );
     }
     /**流程实例修改 */
     updateExchangeFlow(FlowVO) {
-        return AxiosFun.put("/param/exchangeFlow", FlowVO);
+        return AxiosFun.put(
+            AxiosFun.commonBpmServiceName + "/param/exchangeFlow",
+            FlowVO
+        );
     }
     /**流程实例删除 */
     deleteExchangeFlow(FlowId) {
-        return AxiosFun.delete(
-            "/param/exchangeFlow/" + FlowId,
-            undefined
+        return AxiosFun.winDelete(
+            AxiosFun.commonBpmServiceName + "/param/exchangeFlow/" + FlowId
         );
     }
-    deleteExchangeFlows(flowIds: Array<number>) {
-        return AxiosFun.post("/param/exchangeFlow/batchDelete/", flowIds);
+    deleteExchangeFlows(rows: Array<ParamFlowInstRepVO>) {
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName + "/param/exchangeFlow/batchDelete/",
+            rows
+        );
     }
 
     /**
@@ -53,27 +81,48 @@ export default class ExchangeFlowService {
      * @param flowId
      */
     queryGroupCount(flowId: number) {
-        return AxiosFun.get("/param/flowgroup/getflowcount/"+flowId);
+        return AxiosFun.get(
+            AxiosFun.commonBpmServiceName +
+                "/param/flowgroup/getflowcount/" +
+                flowId
+        );
     }
 
-    deleteFlowInfo(flowId: number,type: string) {
-
-        return AxiosFun.get("/param/flowgroup/getflowcount/"+flowId);
+    deleteFlowInfo(flowId: number, type: string) {
+        return AxiosFun.get(
+            AxiosFun.commonBpmServiceName +
+                "/param/flowgroup/getflowcount/" +
+                flowId
+        );
     }
 
-    batchStopFlow(ids: Array<number>){
-        return AxiosFun.post("/param/exchangeFlow/batchStopFlow/", ids);
+    batchStopFlow(rows: Array<ParamFlowInstRepVO>) {
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName +
+                "/param/exchangeFlow/batchStopFlow/",
+            rows
+        );
     }
 
     batchStartFlow(rows: Array<ParamFlowInstRepVO>) {
-        return AxiosFun.post("/param/exchangeFlow/batchStartFlow/", rows);
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName +
+                "/param/exchangeFlow/batchStartFlow/",
+            rows
+        );
     }
 
     loadSelectsItems() {
-        return AxiosFun.get("/param/feign/loadSelectsItems");
+        return AxiosFun.get(
+            AxiosFun.commonBpmServiceName + "/param/feign/loadSelectsItems"
+        );
     }
 
     startOrStopFlow(flowVO: ParamFlowInstRepVO) {
-        return AxiosFun.post("/param/exchangeFlow/startOrStopFlow/", flowVO);
+        return AxiosFun.post(
+            AxiosFun.commonBpmServiceName +
+                "/param/exchangeFlow/startOrStopFlow/",
+            flowVO
+        );
     }
 }

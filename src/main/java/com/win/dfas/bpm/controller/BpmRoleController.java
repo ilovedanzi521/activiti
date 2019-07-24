@@ -122,12 +122,28 @@ public class BpmRoleController {
         String description = RequestUtil.getString(request, "description");
         String codeDesc = RequestUtil.getString(request, "codeDesc");
         String pluginType = RequestUtil.getString(request, "pluginType");
-
-        FlowAssignersReqVO flowAssignersReqVO = new FlowAssignersReqVO(modelId,nodeId,index,description,codeDesc,pluginType);
+        String taskType = RequestUtil.getString(request, "taskType");
+        FlowAssignersReqVO flowAssignersReqVO = new FlowAssignersReqVO(modelId,nodeId,index,description,codeDesc,pluginType,taskType);
         log.info(flowAssignersReqVO.toString());
         bpmService.add(flowAssignersReqVO);
         return WinResponseData.handleSuccess("成功");
     }
+    @ApiOperation(value = "保存节点用户信息")
+    @RequestMapping(value = "/updateTaskTypeToModel")
+    public WinResponseData updateTaskTypeToModel(HttpServletRequest request, HttpServletResponse response){
+        String modelId = RequestUtil.getString(request, "modelId");
+        String nodeId = RequestUtil.getString(request, "nodeId");//
+        String taskType = RequestUtil.getString(request, "taskType");
+//        FlowAssignersReqVO flowAssignersReqVO = new FlowAssignersReqVO(modelId,nodeId,index,description,codeDesc,pluginType,taskType);
+        FlowAssignersReqVO flowAssignersReqVO = new FlowAssignersReqVO();
+        flowAssignersReqVO.setModelId(modelId);
+        flowAssignersReqVO.setNodeId(nodeId);
+        flowAssignersReqVO.setTaskType(taskType);
+        log.info(flowAssignersReqVO.toString());
+        bpmService.updateTaskTypeToModel(flowAssignersReqVO);
+        return WinResponseData.handleSuccess("成功");
+    }
+
 
 }
 

@@ -24,9 +24,11 @@ public interface ParamFlowInstMapper {
 
     List<ParamFlowInst> queryFlowByGroupid(Long flowGroupId);
 
-    int updateStartFlagToStop(List<String> ids);
+    int updateStartFlagToStop(List<Long> ids);
 
     int updateStartFlagToStart(List<Long> ids);
 
     String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO);
+
+    int queryCountFromFlowInst(ParamFlowReqVO queryVO);
 }

@@ -38,7 +38,13 @@
     and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
      limit 1
   </select>
-
+  <select id="queryCountFromFlowInst" resultType="java.lang.Integer" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
+    select count(1) from param_flowInst where
+     product_code = #{productCode,jdbcType=BIGINT}
+    and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
+    and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
+     limit 1
+  </select>
   <select id="list" parameterType="com.win.dfas.vo.request.ParamFlowReqVO"
           resultMap="BaseResultMap">
     SELECT  <include refid="Base_Column_List" />
@@ -71,7 +77,13 @@
     <if test="transactionDirection != null and transactionDirection.length() > 0">
       and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
     </if>
-
+    <if test="flowCode != null">
+      and flow_code in(	select id from (
+      select id FROM param_flowgroup  where id= #{flowCode,jdbcType=BIGINT}
+      union
+      select id from param_flowgroup  where father_id=#{flowCode,jdbcType=BIGINT} ) tmp )
+    </if>
+      ORDER BY create_time desc
   </select>
   <select id="queryFlowByGroupid" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
@@ -81,6 +93,7 @@
     select id FROM param_flowgroup  where id= #{id,jdbcType=BIGINT}
     union
     select id from param_flowgroup  where father_id= #{id,jdbcType=BIGINT} ) tmp )
+    ORDER BY create_time desc
   </select>
   <delete id="batchDelete" parameterType="java.util.List">
     DELETE FROM  param_flowInst WHERE id in
@@ -89,7 +102,7 @@
     </foreach>
   </delete>
   <update id="updateStartFlagToStop" parameterType="java.util.List">
-    update  param_flowInst set start_flag='0'  WHERE process_def_id in
+    update  param_flowInst set start_flag='0'  WHERE id in
     <foreach collection="list" item="id" separator="," open="(" close=")">
       #{id}
     </foreach>
@@ -107,6 +120,7 @@
     <include refid="Base_Column_List" />
     from param_flowInst
     where id = #{id,jdbcType=BIGINT}
+    ORDER BY create_time desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from param_flowInst

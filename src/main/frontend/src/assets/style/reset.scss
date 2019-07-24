@@ -1,5 +1,5 @@
 * {
-    word-wrap: break-word
+    word-wrap: break-word;
 }
 
 html,
@@ -36,24 +36,24 @@ th,
 td,
 fieldset {
     margin: 0;
-    padding: 0
+    padding: 0;
 }
 
 ul,
 ol,
 dl {
-    list-style-type: none
+    list-style-type: none;
 }
 
 html,
 body {
-    *position: static
+    *position: static;
 }
 
 html {
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%
+    -ms-text-size-adjust: 100%;
 }
 
 address,
@@ -65,7 +65,7 @@ em,
 th,
 var {
     font-style: normal;
-    font-weight: normal
+    font-weight: normal;
 }
 
 input,
@@ -77,14 +77,14 @@ option {
     font-family: inherit;
     font-size: inherit;
     font-style: inherit;
-    font-weight: inherit
+    font-weight: inherit;
 }
 
 input,
 button {
     overflow: visible;
     vertical-align: middle;
-    outline: none
+    outline: none;
 }
 
 body,
@@ -94,11 +94,12 @@ button,
 input,
 select,
 textarea {
-    font-family: "Microsoft Yahei", "Hiragino Sans GB", "Helvetica Neue", Helvetica, tahoma, arial, Verdana, sans-serif, "WenQuanYi Micro Hei", "\5B8B\4F53";
+    font-family: "Microsoft Yahei", "Hiragino Sans GB", "Helvetica Neue",
+        Helvetica, tahoma, arial, Verdana, sans-serif, "WenQuanYi Micro Hei",
+        "\5B8B\4F53";
     font-size: 12px;
-    color: #333;
     -webkit-font-smoothing: antialiased;
-    -moz-font-smoothing: antialiased
+    -moz-font-smoothing: antialiased;
 }
 
 body {
@@ -111,7 +112,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-size: 100%
+    font-size: 100%;
 }
 
 .row {

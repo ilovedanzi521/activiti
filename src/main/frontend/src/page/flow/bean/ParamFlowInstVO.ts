@@ -1,5 +1,5 @@
 import { BaseReqVO, BaseRepVO } from "../../common/vo/BaseVO";
-export class ParamFlowInstReqVO extends BaseRepVO {
+export class ParamFlowInstReqVO extends BaseReqVO {
     /**
      * 流程名称
      */
@@ -48,13 +48,6 @@ export class ParamFlowInstReqVO extends BaseRepVO {
      * 交易方向
      */
     transactionDirection: string;
-
-    /**
-     *
-     */
-    reqPageNum:number;
-
-    reqPageSize:number;
 }
 
 /*流程实例列表返回响应*/
@@ -115,7 +108,7 @@ export class ParamFlowInstRepVO extends BaseReqVO {
     /**
      * 启动标志
      */
-    startFlag: boolean=false;
+    startFlag: boolean = false;
 
     /**
      * 发布id
@@ -130,5 +123,5 @@ export class ParamFlowInstRepVO extends BaseReqVO {
     /**
      *控制类型
      */
-    controlType:string;
+    controlType: string;
 }

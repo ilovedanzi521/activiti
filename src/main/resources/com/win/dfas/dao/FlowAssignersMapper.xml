@@ -6,6 +6,7 @@
     <id column="node_id" jdbcType="VARCHAR" property="nodeId" />
     <id column="desc_index" jdbcType="INTEGER" property="descIndex" />
     <id column="plugin_type" jdbcType="VARCHAR" property="pluginType" />
+    <id column="task_type" jdbcType="VARCHAR" property="taskType" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="code_desc" jdbcType="VARCHAR" property="codeDesc" />
     <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
@@ -26,10 +27,19 @@
     <result column="plugin_type" jdbcType="VARCHAR" property="pluginType" />
   </resultMap>
 
-  <select id="queryNodeDescribe" parameterType="com.win.dfas.bpm.vo.response.FlowAssignersRepVO" resultMap="DescResultMap">
+  <select id="queryNodeDescribe" parameterType="com.win.dfas.bpm.entity.FlowAssigners" resultMap="DescResultMap">
     	select 	model_id,node_id,plugin_type,desc_index,description from  param_flowassigners
     	where model_id = #{modelId,jdbcType=VARCHAR}
     	and  node_id = #{nodeId,jdbcType=VARCHAR}
+    	order by create_time
+  </select>
+
+  <select id="listUserInfoToType" parameterType="java.lang.String" resultType="java.lang.String" >
+    	select distinct code_desc from  param_flowassigners
+    	where 1=1
+    <if test="taskType != null || taskType!=''">
+      and task_type = #{taskType}
+    </if>
     	order by create_time
   </select>
 
@@ -50,6 +60,14 @@
     	order by create_time
   </select>
 
+  <select id="selectByNodeId" parameterType="com.win.dfas.bpm.entity.FlowAssignersKey" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from param_flowassigners
+    where model_id = #{modelId,jdbcType=VARCHAR}
+    and node_id = #{nodeId,jdbcType=VARCHAR}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="com.win.dfas.bpm.entity.FlowAssignersKey" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -68,11 +86,11 @@
   </delete>
   <insert id="insert" parameterType="com.win.dfas.bpm.entity.FlowAssigners">
     insert into param_flowassigners (model_id, node_id, desc_index,
-      plugin_type, description, code_desc,
+      plugin_type,task_type, description, code_desc,
       create_user_id, create_time, update_user_id,
       update_time)
     values (#{modelId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{descIndex,jdbcType=INTEGER},
-      #{pluginType,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{codeDesc,jdbcType=VARCHAR},
+      #{pluginType,jdbcType=VARCHAR},#{taskType,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{codeDesc,jdbcType=VARCHAR},
       #{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUserId,jdbcType=VARCHAR},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -146,6 +164,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.win.dfas.bpm.entity.FlowAssigners">
     update param_flowassigners
     <set>
+      <if test="taskType != null">
+        task_type = #{taskType,jdbcType=VARCHAR},
+      </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
       </if>
@@ -169,6 +190,16 @@
       and node_id = #{nodeId,jdbcType=VARCHAR}
       and desc_index = #{descIndex,jdbcType=INTEGER}
       and plugin_type = #{pluginType,jdbcType=VARCHAR}
+  </update>
+  <update id="updateTaskTypeToModel" parameterType="com.win.dfas.bpm.entity.FlowAssigners">
+    update param_flowassigners
+    <set>
+      <if test="taskType != null">
+        task_type = #{taskType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where model_id = #{modelId,jdbcType=VARCHAR}
+    and node_id = #{nodeId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.win.dfas.bpm.entity.FlowAssigners">
     update param_flowassigners

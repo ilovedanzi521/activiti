@@ -8,7 +8,10 @@ export default class DicService {
      * @param vo
      */
     switchlist(vo: SwitchReqVO): Promise<WinResponseData> {
-        return AxiosFun.post("/param/switchs/list", vo);
+        return AxiosFun.post(
+            AxiosFun.basicParameterServiceName + "/switchs/list",
+            vo
+        );
     }
 
     /**
@@ -16,7 +19,10 @@ export default class DicService {
      * @param vo
      */
     switchUpdate(vo: SwitchReqVO): Promise<WinResponseData> {
-        return AxiosFun.put("/param/switchs", vo);
+        return AxiosFun.put(
+            AxiosFun.basicParameterServiceName + "/switchs",
+            vo
+        );
     }
 
     /**
@@ -24,6 +30,9 @@ export default class DicService {
      * @param vo
      */
     switchlogList(vo: SwitchOpLogReqVO): Promise<WinResponseData> {
-        return AxiosFun.post("/param/switchlogs/list", vo);
+        return AxiosFun.post(
+            AxiosFun.basicParameterServiceName + "/switchlogs/list",
+            vo
+        );
     }
 }

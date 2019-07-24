@@ -3,20 +3,12 @@
         <div class="mask"></div>
         <div class="content">
             <Logo></Logo>
-            <Login
-                @loginClick="login"
-                @rememberChange="changeRemember"
-                @creatCode="createCode"
-                @passwordTip="passwordTip"
-                @passusenameTip="passusenameTip"
-                @yzmTip="yzmTip"
-                :loginVO="loginVO"
-            ></Login>
+            <Login @loginClick="login" @rememberChange="changeRemember" @creatCode="createCode" @passwordTip="passwordTip" @passusenameTip="passusenameTip" @yzmTip="yzmTip" :loginVO="loginVO"></Login>
         </div>
     </section>
 </template>
 <script lang="ts">
-import LoginController from "../controller/loginController";
+import LoginController from "../controller/LoginController";
 export default class Login extends LoginController {}
 </script>
 <style lang="scss" scoped>

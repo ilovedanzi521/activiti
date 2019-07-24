@@ -3,198 +3,142 @@ import ExchangeRateService from "../service/ExchangeRateService";
 import ParamCurrencyRepVO from "../vo/ParamCurrencyRepVO";
 import ParamExchangeRateReqVO from "../vo/ParamExchangeRateReqVO";
 import ParamExchangeRateRepVO from "../vo/ParamExchangeRateRepVO";
-import dialogUtil from "../../common/vo/DialogFormUtils";
+import DialogVO from "../../common/vo/DialogVO";
 import BaseController from "../../common/controller/BaseController";
-@Component({ components: {} })
+import ExchangeDialog from "../view/ExchangeRateDialog.vue";
+import dateUtils from "../../common/util/DateUtils";
+import numberUtils from "../../common/util/NumberUtils";
+import PageVO from "../../common/vo/PageVO";
+/**
+ * 类描述：汇率controller
+ * 创建人：@author jianshengxiong
+ * 创建时间：2019/6/14
+ *
+ */
+@Component({ components: { ExchangeDialog } })
 export default class ExchangeRateController extends BaseController {
+    /**汇率service */
     service: ExchangeRateService = new ExchangeRateService();
     /**查询表单数据 */
     reqVO: ParamExchangeRateReqVO = new ParamExchangeRateReqVO();
     /**返回的货币列表 */
     repCurrencyVOs: ParamCurrencyRepVO[] = [];
+    /**下拉框货币列表 */
+    selectCurrencys: ParamCurrencyRepVO[] = [];
     /**汇率编辑、保存对象 */
     rateVO: ParamExchangeRateRepVO = new ParamExchangeRateRepVO();
+    /**汇率编辑、保存的汇率时间 */
+    editDate: Date;
     /**打开、编辑、删除弹出框VO */
-    dialogVO = dialogUtil.getDefaultDialog();
+    dialogVO: DialogVO = new DialogVO();
     /**开始时间、结束时间 */
-    timeArray: string[] = [];
-    /**新增、修改，表单验证规则 */
-    rules = {
-        sourceCurrencyCode: [
-            {
-                required: true,
-                message: "源币种不能为空",
-                trigger: "blur"
-            }
-        ],
-        targetCurrencyCode: [
-            {
-                required: true,
-                message: "目标币种不能为空",
-                trigger: "blur"
-            }
-        ],
-        cashBuyPrice: [
-            {
-                validator: this.validPrice,
-                message: "现钞买入价必须为数字值且最大8位小数",
-                trigger: "blur"
-            }
-        ],
-        cashSellPrice: [
-            {
-                validator: this.validPrice,
-                message: "现钞卖出价必须为数字值且最大8位小数",
-                trigger: "blur"
-            }
-        ],
-        exchangeBuyPrice: [
-            {
-                validator: this.validPrice,
-                message: "现汇买入价必须为数字值且最大8位小数",
-                trigger: "blur"
-            }
-        ],
-        exchangeSellPrice: [
-            {
-                validator: this.validPrice,
-                message: "现汇卖出价必须为数字值且最大8位小数",
-                trigger: "blur"
-            }
-        ],
-        date: [
-            {
-                required: true,
-                message: "日期不能为空",
-                trigger: "blur"
-            }
-        ]
-    };
-
-    /**验证价格,买入价、卖出价 */
-    validPrice(rule, value, callback) {
-        if (value && typeof value !== "number") {
-            value = value.trim();
-            if (value != "") {
-                let re = /^[0-9]+(.[0-9]{1,8})?$/;
-                let r = !re.test(value);
-                if (r) {
-                    callback(new Error());
-                }
-            }
-        }
-        callback();
-    }
+    timeArray: Date[] = [new Date(), new Date()];
 
     /**数据准备 */
     mounted() {
         /**货币列表 */
-        this.service.listCurrency().then(res => {
-            this.repCurrencyVOs = res.data;
-        });
-        /**人民币、当天汇率 */
-        this.$nextTick(() => {
-            this.queryExchangeRate("CNY");
-        });
+        this.service
+            .listCurrency()
+            .then(res => {
+                this.repCurrencyVOs = res.data;
+            })
+            .then(res => {
+                this.queryExchangeRate(this.reqVO.sourceCurrencyCode);
+            });
+        /**查询汇率 */
+        this.$nextTick(() => {});
     }
 
-    /**查询汇率 */
-    queryExchangeRate(sourceCurrencyCode) {
-        if (sourceCurrencyCode) {
-            this.reqVO.sourceCurrencyCode = sourceCurrencyCode;
-        }
-        this.service.listExchangeRate(this.reqVO).then(res => {
-            if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
-            } else {
-                this.pageVO = res.data;
+    /**币种下拉框数据，过滤掉左侧已选中的币种 */
+    setSelectCurrencys() {
+        let j = 0;
+        for (let i = 0; i < this.repCurrencyVOs.length; i++) {
+            if (
+                this.repCurrencyVOs[i].currencyCode !==
+                this.reqVO.sourceCurrencyCode
+            ) {
+                this.selectCurrencys[j++] = this.repCurrencyVOs[i];
             }
-        });
+        }
+    }
+
+    /** 汇率分页查询 */
+    public pageQuery(pageVO: PageVO) {
+        this.reqVO.reqPageNum = pageVO.pageNum;
+        this.reqVO.reqPageSize = pageVO.pageSize;
+        this.queryExchangeRate(null);
+    }
+    /**查询汇率 */
+    queryExchangeRate(sourceCurrencyCode: string): void {
+        //验证查询参数
+        if (this.checkQueryForm()) {
+            //设置源币种
+            if (sourceCurrencyCode) {
+                this.reqVO.sourceCurrencyCode = sourceCurrencyCode;
+            }
+            //设置查询时间
+            this.reqVO.dateStart = dateUtils.dateFtt(
+                "yyyy-MM-dd",
+                this.timeArray[0]
+            );
+            this.reqVO.dateEnd = dateUtils.dateFtt(
+                "yyyy-MM-dd",
+                this.timeArray[1]
+            );
+            this.service.listExchangeRate(this.reqVO).then(res => {
+                this.setSelectCurrencys();
+                if (res.winRspType === "ERROR") {
+                    this.errorMessage(res.msg);
+                } else {
+                    this.pageVO = res.data;
+                }
+            });
+        }
+    }
+
+    /**验证查询参数 */
+    checkQueryForm(): boolean {
+        if (this.timeArray === null) {
+            this.errorMessage("开始日期或结束日期不能为空");
+            return false;
+        }
+        return true;
     }
 
     /**重置 */
-    reset() {
+    reset(): void {
         this.reqVO = new ParamExchangeRateReqVO();
-        this.timeArray = [];
+        this.timeArray = [
+            new Date(new Date().toLocaleDateString()),
+            new Date(new Date().toLocaleDateString())
+        ];
+        this.queryExchangeRate(this.reqVO.sourceCurrencyCode);
     }
 
     /**打开新增弹框 */
-    openAddDialog(form) {
-        this.dialogVO = dialogUtil.getAddDialog("新增-汇率");
-        this.rateVO = new ParamExchangeRateRepVO();
-        this.openDialog();
-    }
-
-    /**新增汇率 */
-    addExchangeRate(form) {
-        let el: any = this.$refs[form];
-        el.validate(valid => {
-            if (valid) {
-                this.service.addExchangeRate(this.rateVO).then(res => {
-                    this.closeDialog();
-                    if (res.winRspType === "ERROR") {
-                        this.errorMessage(res.msg);
-                    } else {
-                        this.queryExchangeRate(this.reqVO.sourceCurrencyCode);
-                        this.successMessage(res.msg);
-                    }
-                });
-            }
-        });
+    openAddDialog(): void {
+        this.dialogVO = this.dialogVO.getAddDialog("新增-汇率");
+        this.rateVO = ParamExchangeRateRepVO.initAddVO(
+            this.reqVO.sourceCurrencyCode
+        );
     }
 
     /**打开修改弹框 */
-    openUpdateDialog(rateVO) {
-        this.dialogVO = dialogUtil.getUpdateDialog("修改-汇率");
+    openUpdateDialog(rateVO: ParamExchangeRateRepVO): void {
+        this.dialogVO = this.dialogVO.getUpdateDialog("修改-汇率");
         this.rateVO = this.copy(rateVO);
-        this.openDialog();
-    }
-
-    /**修改汇率 */
-    updateExchangeRate(form) {
-        let el: any = this.$refs[form];
-        el.validate(valid => {
-            if (valid) {
-                this.service.updateExchangeRate(this.rateVO).then(res => {
-                    this.closeDialog();
-                    if (res.winRspType === "ERROR") {
-                        this.errorMessage(res.msg);
-                    } else {
-                        this.queryExchangeRate(this.reqVO.sourceCurrencyCode);
-                    }
-                });
-            }
-        });
+        this.rateVO.editDate = new Date(this.rateVO.rateDate);
     }
 
     /**打开删除弹出框 */
-    openDeleteDialog(rateVO) {
-        this.dialogVO = dialogUtil.getDeleteDialog("删除-汇率");
+    openDeleteDialog(rateVO: ParamExchangeRateRepVO): void {
+        this.dialogVO = this.dialogVO.getDeleteDialog("删除-汇率");
         this.rateVO = this.copy(rateVO);
-        this.openDialog();
-    }
-
-    /**删除汇率 */
-    deleteExchangeRate() {
-        this.service.deleteExchangeRate(this.rateVO.id).then(res => {
-            this.closeDialog();
-            if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
-            } else {
-                this.successMessage("删除成功");
-                this.queryExchangeRate(this.reqVO.sourceCurrencyCode);
-            }
-        });
-    }
-
-    /**选中汇率日期 */
-    setFormTime(times) {
-        this.reqVO.dateStart = times[0];
-        this.reqVO.dateEnd = times[1];
+        this.rateVO.editDate = new Date(this.rateVO.rateDate);
     }
 
     /**币种,表格显示 */
-    currencyFormatter(row, column, cellValue, index) {
+    currencyFormatter({ cellValue, row, rowIndex, column, columnIndex }) {
         let currencys = this.repCurrencyVOs;
         for (var i = 0; i < currencys.length; i++) {
             if (cellValue === currencys[i].currencyCode) {
@@ -202,5 +146,13 @@ export default class ExchangeRateController extends BaseController {
             }
         }
         return "";
+    }
+
+    /**金额，表格显示 */
+    moneyFormatter({ cellValue, row, rowIndex, column, columnIndex }) {
+        if (!cellValue) {
+            return "";
+        }
+        return numberUtils.formatCurrency(cellValue, 4);
     }
 }

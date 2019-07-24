@@ -960,6 +960,13 @@ angular.module("activitiModeler").controller("StencilController", ["$rootScope",
         $scope.updateLinkPropertyInModel =function (e, t, i){
             $scope.updatePropertyInModel(e,t,i);
             $scope.changeNodeName(e,i);
+            var flowAssignersReqVO={};
+            flowAssignersReqVO.modelId = $scope.modelId;
+            flowAssignersReqVO.nodeId = $scope.selectedItem.nodeId;
+            flowAssignersReqVO.taskType = e.value;
+            jQuery.post(__ctx + "/bpm/process/def/updateTaskTypeToModel", flowAssignersReqVO, function (res) {
+                console.log("更新成功")
+            });
         },
         $scope.findStencilItemInGroup = function (e, t) {
             for (var i, n = 0; n < t.items.length; n++) if ((i = t.items[n]).id === e) return i;
@@ -3585,9 +3592,18 @@ var NodeConfController = ["$scope","$http", "baseService", "ArrayToolService", "
                     // scope.selectNodeInfo();
                     if(properties){
                         scope.property={};
+                        var queryUser=false;
+                        var queryTaskType=false;
                         for (var j = 0; j <properties.length; j++) {
                             if(properties[j].key==="oryx-usertaskassignment"){
                                 scope.property=properties[j];
+                                queryUser=true;
+                            }
+                            if(properties[j].key==="oryx-tasktype"){
+                                scope.taskType=properties[j];
+                                queryTaskType=true;
+                            }
+                            if(queryUser&&queryTaskType){
                                 break;
                             }
                         }
@@ -3655,6 +3671,7 @@ var NodeConfController = ["$scope","$http", "baseService", "ArrayToolService", "
                                 flowAssignersReqVO.descIndex = null != n ?i.calcs[0].descIndex:e;//(!n?scope.descIndex++:n);
                                 flowAssignersReqVO.codeDesc = i.calcs[0].account;//(!n?scope.descIndex++:n);
                                 flowAssignersReqVO.description = i.description;
+                                flowAssignersReqVO.taskType=scope.taskType.value;
                                 jQuery.post(__ctx + "/bpm/process/def/saveUserNodeAssigners", flowAssignersReqVO, function (res) {
                                     console.log("保存成功")
                                 });

@@ -3,15 +3,15 @@
         <div class="fl">
             <li v-if="modifyFlag">
                 <div class="fl">
-                    <TButton @bClick="modify">修改</TButton>
+                    <win_button type="primary" @click="modify">修改</win_button>
                 </div>
             </li>
             <li v-if="!modifyFlag">
                 <div class="fl">
-                    <TButton @bClick="update">确认</TButton>
+                    <win_button type="primary" @click="update">确认</win_button>
                 </div>
                 <div class="fr">
-                    <TButton @bClick="cancel">取消</TButton>
+                    <win_button type="primary" @click="cancel">取消</win_button>
                 </div>
             </li>
         </div>
@@ -19,31 +19,31 @@
             <li>
                 <div class="fl">
                     <span>市场编码:</span>
-                    <input v-model="details.marketCode" :disabled="true">
+                    <win_input v-model="details.marketCode" :disabled="true"></win_input>
                 </div>
                 <div class="fr">
                     <span>交易日类型:</span>
-                    <input v-model="details.tradingDayType" :disabled="true">
+                    <win_input v-model="details.tradeDayType" :disabled="true"></win_input>
                 </div>
             </li>
             <li>
                 <div class="fl">
                     <span>市场名称:</span>
-                    <input v-model="details.marketName" :disabled="true">
+                    <win_input v-model="details.marketName" :disabled="true"></win_input>
                 </div>
                 <div class="fr">
                     <span>市场全称:</span>
-                    <input v-model="details.marketFullName" :disabled="true">
+                    <win_input v-model="details.marketFullName" :disabled="true"></win_input>
                 </div>
             </li>
             <li>
                 <div class="fl">
                     <span>国家/地区:</span>
-                    <input v-model="details.country" :disabled="true">
+                    <win_input v-model="details.country" :disabled="true"></win_input>
                 </div>
                 <div class="fr">
                     <span>时区:</span>
-                    <input v-model="details.timeZone" :disabled="true">
+                    <win_input v-model="details.timeZone" :disabled="true"></win_input>
                 </div>
             </li>
             <li>
@@ -109,26 +109,22 @@
             <li>
                 <div class="fl">
                     <span>备注:</span>
-                    <input v-model="details.remark" :disabled="modifyFlag">
+                    <win_input v-model="details.remark" :disabled="modifyFlag"></win_input>
                 </div>
             </li>
         </ul>
     </div>
 </template>
 <script lang="ts">
-import MarketController from "../controller/MarketController";
+import MarketDetailController from "../controller/MarketDetailController";
 import Component from "vue-class-component";
 @Component
-export default class Market extends MarketController {}
+export default class Market extends MarketDetailController {}
 </script>
 <style lang="scss" scoped>
 @import "../../../assets/style/element.scss";
 
 .ps1 {
-    position: absolute;
-    left: 5%;
-    top: 0px;
-    width: 100%;
     input {
         @include iuputUi();
         display: inline-block;

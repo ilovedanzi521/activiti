@@ -21,7 +21,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.pagehelper.PageInfo;
 import com.win.dfas.bpm.converter.ConverterUtil;
 import com.win.dfas.bpm.converter.CostomBpmnJsonConverter;
+import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.common.vo.WinResponseData;
+import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.service.IActivitiService;
 import com.win.dfas.service.IParamFlowService;
 import com.win.dfas.vo.request.FlowTaskReqVO;
@@ -99,7 +101,7 @@ public class ParamFlowController {
     public WinResponseData queryFlowByGroupid(@RequestBody ParamFlowReqVO queryVO) {
         log. info(queryVO.toString());
         if(queryVO==null||queryVO.getFlowCode()==null||queryVO.getFlowCode().longValue()==0){//最顶级查询所有
-            return list(new ParamFlowReqVO());
+            return list(queryVO);
         }
         PageInfo<ParamFlowRepVO>  data = paramFlowService.queryFlowByGroupid(queryVO);
         log. info(data.toString());
@@ -128,11 +130,15 @@ public class ParamFlowController {
         return WinResponseData.handleSuccess("流程删除成功");
     }
     @PostMapping("/batchDelete")
-    public WinResponseData deletes(@ApiParam(value = "流程新增参数") @RequestBody List<Long> ids) {
-        paramFlowService.batchDelete(ids);
-        for (Long id : ids) {
-//            revokePublish(id.toString())
+    public WinResponseData deletes(@ApiParam(value = "流程新增参数") @RequestBody  List<ParamFlowRepVO> paramFlowRepVOS) {
+        List<Long> ids = new ArrayList<>();
+        for (ParamFlowRepVO paramFlowRepVO : paramFlowRepVOS) {
+            ids.add(paramFlowRepVO.getId());
         }
+        paramFlowService.batchDelete(ids);
+//        for (Long id : ids) {
+////            revokePublish(id.toString())
+//        }
 
         return WinResponseData.handleSuccess("流程删除成功");
     }
@@ -291,21 +297,21 @@ public class ParamFlowController {
             return deploymentId;
         } catch (Exception e) {
             log.info("部署modelId:{}模型服务异常：{}",modelId,e);
+            throw  WinExceptionUtil.winException(BpmExceptionEnum.DESIGN_PROBLEMS);
         }
-        return null;
     }
 
     /**
      * 停止挂起流程
-     * @param ids
+     * @param paramFlowRepVOS
      * @return
      */
-    @RequestMapping("/batchStopFlow")
-    public WinResponseData stop( @RequestBody List<String> ids) {
-        log.info(ids.toString());
-//        for (String id : ids) {
-//            repositoryService.suspendProcessDefinitionById(id);
-//        }
+    @PostMapping("/batchStopFlow")
+    public WinResponseData stop( @RequestBody  List<ParamFlowRepVO> paramFlowRepVOS) {
+        List<Long> ids = new ArrayList<>();
+        for (ParamFlowRepVO paramFlowRepVO : paramFlowRepVOS) {
+            ids.add(paramFlowRepVO.getId());
+        }
         paramFlowService.updateStartFlagToStop(ids);
         return WinResponseData.handleSuccess("成功");
     }
@@ -343,15 +349,13 @@ public class ParamFlowController {
      */
     @PostMapping("/startOrStopFlow")
     public WinResponseData start(@ApiParam(value = "启动/停止流程") @RequestBody ParamFlowRepVO paramFlowRepVO) {
-
+        List<ParamFlowRepVO> paramFlowRepVOS = new ArrayList<>();
+        paramFlowRepVOS.add(paramFlowRepVO);
         if(paramFlowRepVO.getStartFlag()){
-            List<ParamFlowRepVO> paramFlowRepVOS = new ArrayList<>();
-            paramFlowRepVOS.add(paramFlowRepVO);
             start(paramFlowRepVOS);
         }else{
-            List<String> ids = new ArrayList<>();
-            ids.add(paramFlowRepVO.getProcessDefId());
-            stop(ids);
+            stop(paramFlowRepVOS);
+//            paramFlowService.updateStartFlagToStop(ids);
         }
         return WinResponseData.handleSuccess("成功");
     }

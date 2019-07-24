@@ -1,4 +1,10 @@
 import { BaseRepVO } from "../../common/vo/BaseVO";
+/**
+ * 类描述：发行人返回VO
+ * 创建人：@author jianshengxiong
+ * 创建时间：2019/6/14
+ *
+ */
 export default class ParamPublisherRepVO extends BaseRepVO {
     /**
      * 发行人编号

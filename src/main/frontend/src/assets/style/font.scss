@@ -1,150 +1,151 @@
 @font-face {
-  font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?xdkftx');
-  src:  url('../fonts/icomoon.eot?xdkftx#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?xdkftx') format('truetype'),
-    url('../fonts/icomoon.woff?xdkftx') format('woff'),
-    url('../fonts/icomoon.svg?xdkftx#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
+    font-family: "icomoon";
+    src: url("../fonts/icomoon.eot?xdkftx");
+    src: url("../fonts/icomoon.eot?xdkftx#iefix") format("embedded-opentype"),
+        url("../fonts/icomoon.ttf?xdkftx") format("truetype"),
+        url("../fonts/icomoon.woff?xdkftx") format("woff"),
+        url("../fonts/icomoon.svg?xdkftx#icomoon") format("svg");
+    font-weight: normal;
+    font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
+[class^="icon-"],
+[class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: "icomoon" !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
 
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-0:before {
-  content: "\e900";
-  color: #c6c6c6;
+    content: "\e900";
+    color: #c6c6c6;
 }
 .icon-1:before {
-  content: "\e901";
-  color: #adb5bb;
+    content: "\e901";
+    color: #adb5bb;
 }
 .icon-2:before {
-  content: "\e902";
-  color: #fff;
+    content: "\e902";
+    color: #fff;
 }
 .icon-3:before {
-  content: "\e903";
-  color: #adb5bb;
+    content: "\e903";
+    color: #adb5bb;
 }
 .icon-4:before {
-  content: "\e904";
-  color: #999;
+    content: "\e904";
+    color: #999;
 }
 .icon-5:before {
-  content: "\e905";
-  color: #999;
+    content: "\e905";
+    color: #999;
 }
 .icon-6:before {
-  content: "\e906";
-  color: #adb5bb;
+    content: "\e906";
+    color: #adb5bb;
 }
 .icon-7:before {
-  content: "\e907";
-  color: #adb5bb;
+    content: "\e907";
+    color: #adb5bb;
 }
 .icon-8:before {
-  content: "\e908";
-  color: #adb5bb;
+    content: "\e908";
+    color: #adb5bb;
 }
 .icon-9:before {
-  content: "\e909";
-  color: #adb5bb;
+    content: "\e909";
+    color: #adb5bb;
 }
 .icon-11:before {
-  content: "\e90a";
-  color: #adb5bb;
+    content: "\e90a";
+    color: #adb5bb;
 }
 .icon-12:before {
-  content: "\e90b";
-  color: #adb5bb;
+    content: "\e90b";
+    color: #adb5bb;
 }
 .icon-13:before {
-  content: "\e90c";
-  color: #adb5bb;
+    content: "\e90c";
+    color: #adb5bb;
 }
 .icon-14:before {
-  content: "\e90d";
-  color: #adb5bb;
+    content: "\e90d";
+    color: #adb5bb;
 }
 .icon-15:before {
-  content: "\e90e";
-  color: #adb5bb;
+    content: "\e90e";
+    color: #adb5bb;
 }
 .icon-21:before {
-  content: "\e90f";
-  color: #ff900d;
+    content: "\e90f";
+    color: #ff900d;
 }
 .icon-22:before {
-  content: "\e910";
-  color: #adb5bb;
+    content: "\e910";
+    color: #adb5bb;
 }
 .icon-23:before {
-  content: "\e911";
-  color: #ff900d;
+    content: "\e911";
+    color: #ff900d;
 }
 .icon-24:before {
-  content: "\e912";
-  color: #ff900d;
+    content: "\e912";
+    color: #ff900d;
 }
 .icon-25:before {
-  content: "\e913";
-  color: #ff900d;
+    content: "\e913";
+    color: #ff900d;
 }
 .icon-26:before {
-  content: "\e914";
-  color: #ff900d;
+    content: "\e914";
+    color: #ff900d;
 }
 .icon-27:before {
-  content: "\e915";
-  color: #ff900d;
+    content: "\e915";
+    color: #ff900d;
 }
 .icon-28:before {
-  content: "\e916";
-  color: #adb5bb;
+    content: "\e916";
+    color: #adb5bb;
 }
 .icon-29:before {
-  content: "\e917";
-  color: #999;
+    content: "\e917";
+    color: #999;
 }
 .icon-30:before {
-  content: "\e918";
-  color: #f58a0d;
+    content: "\e918";
+    color: #f58a0d;
 }
 .icon-31:before {
-  content: "\e919";
-  color: #adb5bb;
+    content: "\e919";
+    color: #adb5bb;
 }
 .icon-32:before {
-  content: "\e91a";
-  color: #adb5bb;
+    content: "\e91a";
+    color: #adb5bb;
 }
 .icon-33:before {
-  content: "\e91b";
-  color: #adb5bb;
+    content: "\e91b";
+    color: #adb5bb;
 }
 .icon-34:before {
-  content: "\e91c";
-  color: #ff900d;
+    content: "\e91c";
+    color: #ff900d;
 }
 .icon-35:before {
-  content: "\e91d";
-  color: #adb5bb;
+    content: "\e91d";
+    color: #adb5bb;
 }
 .icon-36:before {
-  content: "\e91e";
-  color: #ff900d;
+    content: "\e91e";
+    color: #ff900d;
 }

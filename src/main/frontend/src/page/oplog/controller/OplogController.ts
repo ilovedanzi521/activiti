@@ -5,70 +5,75 @@ import OplogService from "../service/OplogService";
 import PageVO from "../../common/vo/PageVO";
 import ReqVO from "../vo/SysOplogReqVO";
 import RepVO from "../vo/SysOplogRepVO";
-import DownVO from "../vo/DownVO";
-
-import { DicReqVO } from "../../dictionary/vo/DicVO";
-import { DateRangeType } from "../../common/enum/DateRangeType";
-import dateUtils from "../../common/vo/DateUtils";
-@Component({ components: {} })
+import DialogVO from "../../common/vo/DialogVO";
+import dateUtils from "../../common/util/DateUtils";
+import OplogDialog from "../view/OplogDialogView.vue";
+import { CompareVO } from "../vo/CompareVO";
+/**
+ * 类描述：用户操作日志controller
+ * 创建人：@author jianshengxiong
+ * 创建时间：2019/6/14
+ *
+ */
+@Component({ components: { OplogDialog } })
 export default class OplogController extends BaseController {
-    /**日志service */
-    service: OplogService = new OplogService();
-    /**字典service */
-    dicService: DicService = new DicService();
+    /** 日志service */
+    public service: OplogService = new OplogService();
+    /** 字典service */
+    public dicService: DicService = new DicService();
     /** 查询表单数据 */
-    form: ReqVO = new ReqVO();
+    public form: ReqVO = new ReqVO();
     /** 日志列表 */
-    logs: Array<RepVO> = [];
-    /**分页对象 */
-    pageVO: PageVO = new PageVO();
+    public logs: RepVO[] = [];
+    /** 分页对象 */
+    public pageVO: PageVO = new PageVO();
+    /** 打开、编辑、删除弹出框VO */
+    public dialogVO: DialogVO = new DialogVO();
     /** 日志详情 */
-    details: RepVO = new RepVO();
-    /**下拉框数据 */
-    downVO: DownVO = DownVO.init();
-    /**操作时间，快捷选项 */
-    pickerOptions = {
-        shortcuts: [
-            {
-                text: DateRangeType.TD,
-                onClick: dateUtils.setTDTime
-            },
-            {
-                text: DateRangeType.YD,
-                onClick: dateUtils.setYDTime
-            },
-            {
-                text: DateRangeType.NW,
-                onClick: dateUtils.setNWTime
-            },
-            {
-                text: DateRangeType.NM,
-                onClick: dateUtils.setNMTime
-            },
-            {
-                text: DateRangeType.NY,
-                onClick: dateUtils.setNYTime
-            }
-        ]
-    };
+    public details: RepVO = new RepVO();
 
-    /**数据准备 */
-    mounted() {
-        let _this = this;
+    /**开始、结束时间数组 */
+    timeArray: Date[] = [
+        dateUtils.defaultStartTime(),
+        dateUtils.defaultEndtTime()
+    ];
+    /**数据准备对象 */
+    public compareVO: any = CompareVO;
+
+    /** 数据准备 */
+    public mounted() {
         this.form = new ReqVO();
-        /**初始化日志类型 */
-        let logDic = new DicReqVO();
-        logDic.parentDicCode = "1000104";
-        this.dicService.dicAllSubList(logDic).then(res => {
-            this.downVO.logTypeSelect = res.data;
-        });
+        // 初始化日志类型
+        this.service.initDicType();
+        // 初始化操作用户
+        this.service.initUser();
+        // 查询用户日志
         this.$nextTick(() => {
-            _this.query();
+            this.query();
         });
     }
-    /**日志查询 */
-    query(): void {
+
+    /**
+     * 用户查询
+     */
+    remoteUserList(query) {
+        if (query !== "") {
+            setTimeout(() => {
+                CompareVO.userSelect = CompareVO.userList.filter(item => {
+                    return (
+                        item.userId.toLowerCase().indexOf(query.toLowerCase()) >
+                        -1
+                    );
+                });
+            }, 200);
+        } else {
+            this.compareVO.userSelect = CompareVO.userList;
+        }
+    }
+    /** 日志查询 */
+    public query(): void {
         let _this = this;
+        this.setFormTime(this.timeArray);
         this.service.queryLog(this.form).then(res => {
             if (res.winRspType === "ERROR") {
                 console.log(res.msg);
@@ -76,30 +81,43 @@ export default class OplogController extends BaseController {
             _this.pageVO = res.data;
         });
     }
-    /**日志分页查询 */
-    pageQuery(pageVO: PageVO) {
-        this.form.pageNum = pageVO.pageNum;
-        this.form.pageSize = pageVO.pageSize;
+    /** 日志分页查询 */
+    public pageQuery(pageVO: PageVO) {
+        this.form.reqPageNum = pageVO.pageNum;
+        this.form.reqPageSize = pageVO.pageSize;
         this.query();
     }
-    /**重置 */
-    reset() {
+    /** 重置 */
+    public reset(): void {
         this.form = new ReqVO();
+        this.timeArray = [
+            dateUtils.defaultStartTime(),
+            dateUtils.defaultEndtTime()
+        ];
+        this.query();
     }
-    /**打开详情框 */
-    detail(oplog) {
-        this.openDialog();
+    /** 打开详情框 */
+    public detail(oplog): void {
+        this.dialogVO = this.dialogVO.getSeeDialog("日志详情");
         this.details = oplog;
     }
-    /**选中时间 */
-    setFormTime(times) {
-        this.form.timeStart = times[0];
-        this.form.timeEnd = times[1];
+    /** 选中时间 */
+    private setFormTime(times: Date[]): void {
+        if (!times) {
+            this.form.timeStart = null;
+            this.form.timeEnd = null;
+            return;
+        }
+        this.form.timeStart = dateUtils.dateFtt(
+            "yyyy-MM-dd hh:mm:ss",
+            times[0]
+        );
+        this.form.timeEnd = dateUtils.dateFtt("yyyy-MM-dd hh:mm:ss", times[1]);
     }
-    /**日志类型,表格显示 */
-    logTypeFormatter(row, column, cellValue, index) {
-        let logTypes = this.downVO.logTypeSelect;
-        for (var i = 0; i < logTypes.length; i++) {
+    /** 日志类型,表格显示 */
+    public logTypeFormatter({ cellValue, row, rowIndex, column, columnIndex }) {
+        const logTypes = CompareVO.logTypeSelect;
+        for (let i = 0; i < logTypes.length; i++) {
             if (cellValue === logTypes[i].dicCode) {
                 return logTypes[i].dicExplain;
             }

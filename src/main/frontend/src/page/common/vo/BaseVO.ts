@@ -1,15 +1,18 @@
 /**
  * 基础请求VO
  */
+
 export class BaseReqVO {
     id: number;
     userId: string;
     ip: string;
     mac: string;
     hostName: string;
-    menuId: number;
-    reqPageNum: number;
-    reqPageSize: number;
+    reqMenuId: number;
+    reqPageNum: number = 1;
+    reqPageSize: number = 10;
+    reqSource: string; // 请求源
+    reqSequence: string; // 请求序列
 }
 
 /**
@@ -25,6 +28,9 @@ export class BaseRepVO {
     updateTime: string;
 }
 
+/**
+ * 公用返回数据
+ */
 export interface WinResponseData {
     code: string;
     msg: string;

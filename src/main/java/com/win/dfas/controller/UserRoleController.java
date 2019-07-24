@@ -23,11 +23,12 @@ import java.util.Map;
  * 创建人：@author wanglei
  * 创建时间：2019/6/19/16:16
  */
-@RequestMapping("service")
+@RequestMapping("/service")
 @RestController
 @Slf4j
 public class UserRoleController {
     //fegin接口
+    @Autowired
     private IuserFeignClient userFeignClient;
     /**
      * @Title: getUserInfoList

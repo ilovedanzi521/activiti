@@ -7,6 +7,9 @@ import AxiosFun from "../../../api/AxiosFun";
  */
 export default class loginService {
     static login(vo: LoginVO): Promise<WinResponseData> {
-        return AxiosFun.post("/param/dfas-auth-center/api/web/login", vo);
+        return AxiosFun.post(
+            AxiosFun.authCenterServiceName + "/api/web/login",
+            vo
+        );
     }
 }

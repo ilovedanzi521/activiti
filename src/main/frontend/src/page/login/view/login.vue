@@ -1,59 +1,30 @@
 <template>
     <div class="login-container">
+
         <span class="login-title">账户密码登录</span>
         <div class="login-info">
+
             <label class="icon icon-29" for="user"></label>
             <span class="input-content">
-                <input
-                    type="text"
-                    placeholder="用户名/用户编号"
-                    id="user"
-                    v-focus
-                    v-model="username"
-                    @blur="handleUsernameForm"
-                >
+                <input type="text" placeholder="用户名/用户编号" id="user" v-focus :change="handleChange()" v-model="username" @blur="handleUsernameForm" @keyup.enter="hangleLogin" maxlength="50" autocomplete="off">
             </span>
-            <label
-                for="remember"
-                :class="['remember' ,{'rememberOk':rememberisOk}]"
-                @click="handleRemberUserName"
-            ></label>
+            <label for="remember" :class="['remember' ,{'rememberOk':rememberisOk}]" @click="handleRemberUserName"></label>
         </div>
         <div class="login-info">
             <label class="icon icon-5" for="password"></label>
             <span class="input-content">
-                <input
-                    type="password"
-                    placeholder="密码"
-                    id="password"
-                    v-model="password"
-                    @blur="handlePasswordForm"
-                >
+                <input type="password" placeholder="密码" id="password" v-model="password" @blur="handlePasswordForm" @keyup.enter="hangleLogin" maxlength="50" autocomplete="off">
             </span>
         </div>
-        <div class="login-info">
+        <!-- <div class="login-info">
             <label class="icon icon-4" for="code"></label>
             <span class="input-content code">
-                <input
-                    type="text"
-                    placeholder="验证码"
-                    maxlength="4"
-                    id="code"
-                    v-model="loginVO.code"
-                    @input="handleYzmForm"
-                >
+                <input type="text" placeholder="验证码" maxlength="4" id="code" v-model="loginVO.code" @input="handleYzmForm" @keyup.enter="hangleLogin" autocomplete="off">
             </span>
             <span class="code-img">
-                <!-- <img src="../../../assets/image/yzm.png" width="122" height="39"> -->
-                <input
-                    type="button"
-                    ref="checkCode"
-                    @click="handleCreateCode"
-                    class="yzm"
-                    v-model="loginVO.yzm"
-                >
+                <input type="button" ref="checkCode" @click="handleCreateCode" class="yzm" v-model="loginVO.yzm">
             </span>
-        </div>
+        </div> -->
         <div :class="['login-info','notip',{'tip-message':ShowTip}]">
             <span class="icon-8 icon-tip"></span>
             <span class="tip">{{loginVO.tipMessage}}</span>
@@ -61,12 +32,13 @@
         <div class="login-content">
             <button class="login" @click="hangleLogin">登录</button>
         </div>
+
     </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Emit } from "vue-property-decorator";
 import { LoginVO } from "../vo/loginVO";
 
 @Component({
@@ -96,36 +68,54 @@ export default class Login extends Vue {
         }
     }
 
+    handleChange() {
+        this.username = this.username.replace(/[^\a-\z\A-\Z0-9]/g, "");
+    }
+
+    @Emit("loginClick")
     hangleLogin() {
-        this.$emit("loginClick", {
+        return {
             loginName: this.username,
             password: this.password
-        });
+        };
     }
-
+    @Emit("this.username")
     handleUsernameForm() {
-        this.$emit("passusenameTip", this.username);
+        return this.username;
     }
+    @Emit("passwordTip")
     handlePasswordForm() {
-        this.$emit("passwordTip", this.password);
+        return this.password;
     }
-
+    @Emit("yzmTip")
     handleYzmForm() {
-        this.$emit("yzmTip", this.loginVO.code);
+        return this.loginVO.code;
     }
 
+    @Emit("rememberChange")
     handleRemberUserName() {
         this.rememberisOk = !this.rememberisOk;
-        this.$emit("rememberChange", this.rememberisOk);
+        return this.rememberisOk;
     }
+    @Emit("creatCode")
+    handleCreateCode() {}
 
-    handleCreateCode() {
-        this.$emit("creatCode");
+    mounted() {
+        let that = this;
+        document.body.addEventListener("keydown", function(e) {
+            let key = e.keyCode;
+            if (key == 13) {
+                that.$emit("loginClick", {
+                    loginName: that.username,
+                    password: that.password
+                });
+            }
+        });
     }
 }
 </script>
 <style lang="scss" scoped>
-@import "../../../assets/style/theme.scss";
+@import "../../../assets/style/element.scss";
 
 .login-container {
     position: relative;

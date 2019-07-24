@@ -6,38 +6,53 @@
 
 <template>
     <section class="header-container">
-        <div class="logo-container" @click="handleGoLogin">
-            <img src="../assets/image/logo.png" width="33" height="35">
-            <span class="logo-text">赢时胜</span>
-            <!---快速区域---->
-            <Fast></Fast>
-            <!---快速区域---->
+        <div class="logo-container">
+            <img src="../assets/image/logo.png" width="33" height="35" @click="handleGoLogin">
+            <span class="logo-text" @click="handleGoLogin">赢 · 投资</span>
         </div>
         <div class="user-container">
-            <span :class="['has', 'icon-22']" @click="handleOpenCard"></span>
+            <!-- <span :class="['has', 'icon-22']" @click="handleOpenCard"></span> -->
+            <span :class="['icon', 'el-icon-lock']" @click="handleLocking">
+                <i>锁屏</i>
+            </span>
+            <span :class="['icon', 'el-icon-date']" @click="handlefullScree">
+                <i>全屏</i>
+            </span>
             <span class="user-img">
                 <img src="../assets/image/user.png" width="28" height="28">
             </span>
-            <span class="user">用户_操作员</span>
+            <span class="user" @click="operationUser">用户_操作员</span>
             <i class="more-userinfo"></i>
         </div>
         <!---消息区域---->
         <div class="card-container" v-if="cavrIsOpen">
             <Cavr></Cavr>
         </div>
-        <!---消息区域---->
+        <transition name="fade">
+            <div class="userInfo-container" v-if="layoutReqVO.luserInfoOpen">
+                <LuserInfo @modifyPassWord="modifyPassWord" :userInfoOpen="luserInfoOpen" @closeUserInfo="closeUserInfo"></LuserInfo>
+            </div>
+        </transition>
     </section>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import Component from "vue-class-component";
+import { Component, Prop } from "vue-property-decorator";
 import Fast from "./LFast.vue";
-import Cavr from "@/components/Trade-Card.vue";
-
-@Component({ components: { Fast, Cavr } })
+import Cavr from "./Lcard.vue";
+import LuserInfo from "./LuserInfo.vue";
+import { LayoutReqVO } from "./vo/LayoutVO";
+@Component({ components: { Fast, Cavr, LuserInfo } })
 export default class Header extends Vue {
+    d: string = "12121313121";
     cavrIsOpen: boolean = false;
+    luserInfoOpen: boolean = false;
+    passWordOpen: boolean = false;
+    @Prop()
+    layoutReqVO: LayoutReqVO;
+    @Prop()
+    inFullCreeen: Function;
 
     //切换消息框开关
     handleOpenCard() {
@@ -48,11 +63,26 @@ export default class Header extends Vue {
             path: "/login"
         });
     }
+    operationUser() {
+        this.layoutReqVO.luserInfoOpen = !this.layoutReqVO.luserInfoOpen;
+    }
+    modifyPassWord() {
+        this.layoutReqVO.passwordController = true;
+        this.luserInfoOpen = false;
+    }
+    closeUserInfo() {
+        this.layoutReqVO.luserInfoOpen = false;
+    }
+    handleLocking() {
+        this.layoutReqVO.lockisOpen = true;
+    }
+    handlefullScree() {
+        this.inFullCreeen();
+    }
 }
 </script>
-
 <style lang="scss" scoped>
-@import "../assets/style/theme.scss";
+@import "../assets/style/element.scss";
 .header-container {
     position: absolute;
     display: flex;
@@ -74,8 +104,7 @@ export default class Header extends Vue {
             cursor: pointer;
             &.logo-text {
                 margin-left: 24px;
-                font-size: 20px;
-                font-weight: bold;
+                font-size: 22px;
                 color: $color-white;
             }
         }
@@ -100,6 +129,11 @@ export default class Header extends Vue {
                     height: 6px;
                     background: $color-red;
                     border-radius: 50%;
+                }
+            }
+            .el-icon-lock {
+                &::after {
+                    color: #fff;
                 }
             }
             &.user-img {
@@ -130,6 +164,47 @@ export default class Header extends Vue {
         top: 40px;
         right: 106px;
         z-index: 100;
+    }
+    .userInfo-container {
+        position: fixed;
+        top: 60px;
+        right: 26px;
+        z-index: 100;
+    }
+    .icon {
+        position: relative;
+        display: inline-block;
+        margin-right: 10px;
+        color: #fff;
+        font-size: 14px;
+        z-index: 99;
+        i {
+            display: none;
+
+            position: absolute;
+            top: 24px;
+            left: -6px;
+            width: 30px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            background: #444e69;
+            color: #fff;
+            font-size: 12px;
+            font-style: normal;
+            &::after {
+                content: "";
+                position: absolute;
+                top: -17px;
+                left: 10px;
+                width: 0;
+                height: 0;
+                border: 10px solid transparent;
+                border-bottom-color: #444e69;
+            }
+        }
+        &:hover i {
+            display: inline-block;
+        }
     }
 }
 </style>

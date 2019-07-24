@@ -18,7 +18,7 @@ import Component from "vue-class-component";
 export default class Logo extends Vue {}
 </script>
 <style lang="scss" scoped>
-@import "../../../assets/style/theme.scss";
+@import "../../../assets/style/element.scss";
 .logo-container {
     position: relative;
     width: 322px;

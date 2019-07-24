@@ -1,87 +1,130 @@
-import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MarketService from "../service/MarketService";
-import { WinResponseData } from "../../common/vo/BaseVO";
-import {
-    ExchangeMarketRepVO,
-    ExchangeMarketReqVO,
-    TransactionDirectionReqVO,
-    TransactionDirectionRepVO,
-    SecurityTypeReqVO,
-    SecurityTypeRepVO
-} from "../bean/ExchangeMarketVO";
-import TSearch from "@/components/Trade-Search.vue";
-import TButton from "@/components/Trade-Button.vue";
-import TTable from "@/components/Trade-Table.vue";
-import { WinRspType } from "../../common/enum/BaseEnum";
-@Component({ components: { TSearch, TButton, TTable } })
-export default class MarketController extends Vue {
-    service: MarketService = new MarketService();
-
-    details: ExchangeMarketRepVO = new ExchangeMarketRepVO();
-    finlMarketRepVO: ExchangeMarketRepVO = new ExchangeMarketRepVO();
-    updateVo: ExchangeMarketReqVO = new ExchangeMarketReqVO();
-
-    directionReqVO: TransactionDirectionReqVO = new TransactionDirectionReqVO();
-    directionList: Array<TransactionDirectionRepVO> = [];
-
-    typeReqVO: SecurityTypeReqVO = new SecurityTypeReqVO();
-    typeReqList: Array<SecurityTypeRepVO> = [];
-
-    modifyFlag: boolean = true;
+import BaseController from "../../common/controller/BaseController";
+import { win_tree } from "@win-frond-frameworks/biz-common";
+@Component({ components: { win_tree } })
+export default class MarketController extends BaseController {
     mounted() {
-        this.$nextTick(() => {
-            this.query();
+        this.activeName = this.$route.name;
+    }
+
+    code = "SH";
+    type: number = 1;
+    activeName: string = "marketDetail";
+    tabsFlag: boolean = true;
+    path: String;
+
+    data = [
+        {
+            name: "上交所",
+            code: "SH",
+            type: 1,
+            children: [
+                {
+                    name: "上交所大宗交易平台",
+                    code: 1,
+                    type: 2
+                },
+                {
+                    name: "上交所固定收益平台",
+                    code: 2,
+                    type: 2
+                },
+                {
+                    name: "上交所普通平台",
+                    code: 3,
+                    type: 2
+                }
+            ]
+        },
+        {
+            name: "深交所",
+            code: "SZ",
+            type: 1,
+            children: [
+                {
+                    name: "深交所普通平台",
+                    code: 4,
+                    type: 2
+                },
+                {
+                    name: "深交所综合协议平台",
+                    code: 5,
+                    type: 2
+                }
+            ]
+        },
+        {
+            name: "银行间",
+            code: "YH",
+            type: 1,
+            children: [
+                {
+                    name: "银行间本币交易平台",
+                    code: 6,
+                    type: 2
+                }
+            ]
+        },
+        {
+            name: "场外",
+            code: "CW",
+            type: 1,
+            children: [
+                {
+                    name: "场外交易平台",
+                    code: 7,
+                    type: 2
+                }
+            ]
+        },
+        {
+            name: "沪港通",
+            code: "HG",
+            type: 1,
+            children: [
+                {
+                    name: "香港普通交易平台",
+                    code: 8,
+                    type: 2
+                }
+            ]
+        },
+        {
+            name: "深港通",
+            code: "SG",
+            type: 1,
+            children: [
+                {
+                    name: "香港普通交易平台",
+                    code: 8,
+                    type: 2
+                }
+            ]
+        }
+    ];
+    defaultProps = {
+        children: "children",
+        label: "name"
+    };
+    tabClick() {
+        this.$router.push({
+            path: `/market/${this.activeName}`
         });
     }
-    modify() {
-        this.modifyFlag = false;
+    handleNodeClick(data) {
+        this.type = data.type;
+        this.code = data.code;
+        this.tabsFlag = this.type === 1;
+        if (!this.tabsFlag) {
+            this.activeName = "securityType";
+        } else {
+            this.activeName = "marketDetail";
+        }
+        this.$router.push({
+            path: `/market/${this.activeName}`
+        });
     }
-
-    cancel() {
-        this.modifyFlag = true;
-        this.details = this.copy(this.finlMarketRepVO);
-    }
-
-    query() {
-        let marketCode = "SZ";
-        this.service
-            .queryMarketDetail(marketCode)
-            .then((winResponseData: WinResponseData) => {
-                this.finlMarketRepVO = this.copy(winResponseData.data);
-                this.details = winResponseData.data;
-            });
-    }
-
-    update() {
-        this.updateVo = this.copy(this.details);
-        this.service.update(this.updateVo);
-        this.modifyFlag = true;
-    }
-
-    queryTransactionDirection() {
-        this.service
-            .queryTransactionDirection(this.directionReqVO)
-            .then((winResponseData: WinResponseData) => {
-                if (WinRspType.SUCC == winResponseData.winRspType) {
-                    this.directionList = winResponseData.data.list;
-                }
-            });
-    }
-
-    querySecurityType() {
-        this.service
-            .querySecurityType(this.typeReqVO)
-            .then((winResponseData: WinResponseData) => {
-                if (WinRspType.SUCC == winResponseData.winRspType) {
-                    this.typeReqList = winResponseData.data.list;
-                }
-            });
-    }
-
     copy(arr) {
         return JSON.parse(JSON.stringify(arr));
     }
-
-    detail() {}
 }

@@ -18,6 +18,8 @@ import com.github.pagehelper.PageInfo;
 import com.win.dfas.common.entity.BaseEntity;
 import com.win.dfas.common.util.ObjectUtils;
 import com.win.dfas.common.util.PrimaryKeyUtil;
+import com.win.dfas.common.util.WinExceptionUtil;
+import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.dao.ParamFlowInstMapper;
 import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.service.IParamFlowService;
@@ -45,11 +47,6 @@ public class ParamFlowServiceImpl implements IParamFlowService {
 
     @Override
     public PageInfo<ParamFlowRepVO> list(ParamFlowReqVO queryVO) {
-        if(queryVO==null){
-            queryVO = new ParamFlowReqVO();
-            queryVO.setReqPageNum(0);
-            queryVO.setReqPageSize(10);
-        }
         PageHelper.startPage(queryVO.getReqPageNum(),queryVO.getReqPageSize());
         List<ParamFlowInst> flows = paramFlowMapper.list(queryVO);
         PageInfo<ParamFlowInst> pageInfo = new PageInfo<ParamFlowInst>(flows);
@@ -61,11 +58,18 @@ public class ParamFlowServiceImpl implements IParamFlowService {
 //        if(StrUtil.isBlank(vo.get)) {
 //            throw ParameterExceptionUtil.winException(WinRspTypeEnum.EXCHANGE_RATE_SOURCE_NOT_NULL);
 //        }
-        vo.setId(PrimaryKeyUtil.generateId());
+//        vo.setId(PrimaryKeyUtil.generateId());
         ParamFlowInst entity = new ParamFlowInst();
         BeanUtils.copyProperties(vo, entity);
-        entity.setId(PrimaryKeyUtil.generateId());
-        paramFlowMapper.insert(entity);
+//        entity.setId(PrimaryKeyUtil.generateId());
+        entity.preInsert();
+        ParamFlowReqVO reqVO = new ParamFlowReqVO();
+        BeanUtils.copyProperties(vo, reqVO);
+        if(paramFlowMapper.queryCountFromFlowInst(reqVO)>0){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
+        }else {
+            paramFlowMapper.insert(entity);
+        }
     }
 
     @Override
@@ -102,7 +106,7 @@ public class ParamFlowServiceImpl implements IParamFlowService {
     }
 
     @Override
-    public void updateStartFlagToStop(List<String> ids) {
+    public void updateStartFlagToStop(List<Long> ids) {
         paramFlowMapper.updateStartFlagToStop(ids);
     }
 

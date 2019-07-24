@@ -5,6 +5,7 @@ import { DicReqVO, DicRepVO } from "../vo/DicVO";
 import DicService from "../service/DicService";
 import BaseController from "../../common/controller/BaseController";
 import PageVO from "../../common/vo/PageVO";
+import { DicServices } from "../../common/service/BaseService";
 
 @Component({ components: {} })
 export default class DicController extends BaseController {
@@ -16,26 +17,42 @@ export default class DicController extends BaseController {
     dicList: Array<DicRepVO> = [];
     dicSubList: Array<DicRepVO> = [];
 
+    dicPageVO: PageVO = new PageVO();
     dicSubPageVO: PageVO = new PageVO();
+
+    /**
+     * 搜索(按钮点击)
+     */
+    search() {
+        this.dicReqVO.reqPageNum = 1;
+        this.serachDicList(this.dicReqVO);
+    }
 
     /**
      * 查询字典项信息
      *
      */
-    serachDicList() {
-        this.dicService
-            .diclist(this.dicReqVO)
-            .then((winResponseData: WinResponseData) => {
-                if (WinRspType.SUCC == winResponseData.winRspType) {
-                    this.dicList = winResponseData.data;
+    serachDicList(vo: DicReqVO) {
+        this.dicService.diclist(vo).then((winResponseData: WinResponseData) => {
+            if (WinRspType.SUCC == winResponseData.winRspType) {
+                this.dicList = winResponseData.data.list;
+                this.dicPageVO = winResponseData.data;
+
+                if (this.dicList && this.dicList.length > 0) {
+                    var dicTableObj: any = this.$refs.dicTable;
+
+                    dicTableObj.setCurrentRow(this.dicList[0]);
 
                     this.dicSubReqVO = new DicReqVO();
+                    this.dicSubReqVO.parentDicCode = this.dicList[0].dicCode;
                     this.dicSubReqVO.commonParam = this.dicReqVO.commonParam;
+                    this.dicSubReqVO.reqPageSize = this.dicSubPageVO.pageSize;
                     this.serachDicSubList(this.dicSubReqVO);
-                } else {
-                    this.errorMessage(winResponseData.msg);
                 }
-            });
+            } else {
+                this.errorMessage(winResponseData.msg);
+            }
+        });
     }
 
     /**
@@ -61,11 +78,24 @@ export default class DicController extends BaseController {
      *
      * @param item
      */
-    handleDicRow(item: DicRepVO) {
+    handleDicRow({ row }) {
         this.dicSubReqVO = new DicReqVO();
-        this.dicSubReqVO.parentDicCode = item.dicCode;
+        this.dicSubReqVO.parentDicCode = row.dicCode;
+        this.dicSubReqVO.reqPageSize = this.dicSubPageVO.pageSize;
 
         this.serachDicSubList(this.dicSubReqVO);
+    }
+
+    /**
+     * 字典项分页查询
+     *
+     * @param vo
+     */
+    dicPageQuery(vo: PageVO) {
+        this.dicReqVO.reqPageNum = vo.pageNum;
+        this.dicReqVO.reqPageSize = vo.pageSize;
+
+        this.serachDicList(this.dicReqVO);
     }
 
     /**
@@ -81,6 +111,7 @@ export default class DicController extends BaseController {
     }
 
     mounted() {
-        this.serachDicList();
+        this.dicSubPageVO.pageSize = 20;
+        this.serachDicList(this.dicReqVO);
     }
 }

@@ -1,5 +1,11 @@
 import { BaseReqVO } from "../../common/vo/BaseVO";
-import dateUtils from "../../common/vo/DateUtils";
+
+/**
+ * 类描述：用户操作日志，请求VO
+ * 创建人：@author jianshengxiong
+ * 创建时间：2019/6/14
+ *
+ */
 export default class SysOplogReqVO extends BaseReqVO {
     /**操作用户 */
     operateUserIds: number[] = [];
@@ -17,13 +23,4 @@ export default class SysOplogReqVO extends BaseReqVO {
     logPath: string = "";
     /**操作页面 */
     operatePage: string = "";
-    /**当前页面 */
-    pageNum: number = 1;
-    /**页面行数 */
-    pageSize: number = 10;
-    /**开始、结束时间数组 */
-    timeArray: Date[] = [
-        dateUtils.defaultStartTime(),
-        dateUtils.defaultEndtTime()
-    ];
 }

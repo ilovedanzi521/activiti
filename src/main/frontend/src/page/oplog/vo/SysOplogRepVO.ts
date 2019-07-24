@@ -1,59 +1,65 @@
 import { BaseRepVO } from "../../common/vo/BaseVO";
+/**
+ * 类描述：用户操作日志，返回VO
+ * 创建人：@author jianshengxiong
+ * 创建时间：2019/6/14
+ *
+ */
 export default class SysOplogRepVO extends BaseRepVO {
     /**
      * 日志的类型，字典key
      */
-    logType: string = "";
+    public logType: string = "";
     /**
      * 操作页面
      */
-    operatePage: string = "";
+    public operatePage: string = "";
     /**
      * 日志描述
      */
-    logDescrip: string = "";
+    public logDescrip: string = "";
     /**
      * 操作用户ID
      */
-    operateUserId: number = 0;
+    public operateUserId: number = 0;
     /**
      * 日志路径
      */
-    logPath: string = "";
+    public logPath: string = "";
     /**
      * 操作时间
      */
-    operateTime: string = "";
+    public operateTime: string = "";
     /**
      * 操作前数据
      */
-    operatePreData: string = "";
+    public operatePreData: string = "";
     /**
      * 操作后数据
      */
-    operateAfterData: string = "";
+    public operateAfterData: string = "";
     /**
      * 终端机器名
      */
-    terminalName: string = "";
+    public terminalName: string = "";
     /**
      * 请求IP
      */
-    requestIp: string = "";
+    public requestIp: string = "";
     /**
      * MAC地址
      */
-    macAddress: string = "";
+    public macAddress: string = "";
     /**
      * 微服务名
      */
-    microServiceName: string = "";
+    public microServiceName: string = "";
     /**
      * 请求路径
      */
-    requestPath: string = "";
+    public requestPath: string = "";
     /**
      * 请求参数
      */
-    requestParam: string = "";
+    public requestParam: string = "";
 }

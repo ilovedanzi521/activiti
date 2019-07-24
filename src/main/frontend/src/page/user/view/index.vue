@@ -1,111 +1,128 @@
 <template>
     <div>
-        <div class="menu-content">
-            <win_tabs v-model="activeName">
-                <win_tab label="首页" name="home"></win_tab>
-                <win_tab label="机构及用户管理" name="organizational"></win_tab>
-            </win_tabs>
+        <div class="tree-content">
+            <div class="text-content">
+                <input type="text" placeholder="输入进行模糊搜索" v-model="filterText" disabled="true" />
+            </div>
+            <div class="tree-wrapp">
+                <win_tree :data="userReqVo.companArray" node-key="id" :accordion="true" :default-expanded-keys="compayArray" :highlight-current="true" ref="tree" @node-click="handleNodeClick">
+                </win_tree>
+            </div>
         </div>
-        <div>
-            <win_tree :data="companyArray" node-key="id" :default-expanded-keys="[1, 4]"></win_tree>
-        </div>
-        <div :style="{'position':'absolute','left':'224px','right':0}">
+        <div class="table-content">
             <div class="content">
                 <div class="fl"></div>
                 <div class="rl">
-                    <dl class="searchList">
-                        <dt>赢和基金员工管理</dt>
-                        <dd>
-                            <span class="cop">公司</span>
-                            <span class="btngrounp">
-                                <button class="but" @click="handleAddCom">新增公司</button>
-                                <button class="but">编辑公司</button>
-                                <button class="but">删除公司</button>
-                            </span>
-                            <span class="cop">部门</span>
-                            <span class="btngrounp">
-                                <button class="but" @click="handleAddDep">新增部门</button>
-                                <button class="but">编辑部门</button>
-                                <button class="but">删除部门</button>
-                            </span>
-                            <span class="cop">用户</span>
-                            <span class="btngrounp">
-                                <button class="but" @click="handleAddUser">新增用户</button>
-                                <button class="but">用户导出</button>
-                            </span>
-                        </dd>
-                    </dl>
+                    <TabType :userReqVo="userReqVo" @handleAddDep="handleAddDep" @handleAddRole="handleAddRole" @handleAddRoleUser="handleAddRoleUser"></TabType>
                     <div class="serch-container">
-                        <input class="input">
-                        <!-- <span class="showTypeGroup">
-                        <i class="showType"></i>
-                        <i class="showType2"></i>
-                        </span>-->
+                        <input class="input" placeholder="请动态进行模糊搜索" disabled="true">
+                        <span class="showTypeGroup">
+                            <span @click="getUserTable(item.userStateType)" v-for="(item,index) in userReqVo.userStateArray" :key="item.userStateText">
+                                <i :class="[`showType${index}`,{'active':userReqVo.stateController.switchingUserState==item.userStateType}]"></i>
+                                <em class="marginRight16">{{item.userStateText}}</em>
+                            </span>
+                        </span>
                     </div>
                     <div class="test"></div>
                 </div>
             </div>
 
             <div>
-                <win_table style="width: 100%">
-                    <win_table_column prop="date" label="序号" width="180"></win_table_column>
-                    <win_table_column prop="name" label="用户编码" width="180"></win_table_column>
-                    <win_table_column prop="address" label="用户名"></win_table_column>
-                    <win_table_column prop="address" label="隶属角色"></win_table_column>
-                    <win_table_column prop="address" label="联系方式"></win_table_column>
-                    <win_table_column prop="address" label="手机号"></win_table_column>
-                    <win_table_column prop="address" label="邮箱"></win_table_column>
-                    <win_table_column prop="address" label="所属部门"></win_table_column>
-                    <win_table_column prop="address" label="状态"></win_table_column>
-                    <win_table_column prop="address" label="操作"></win_table_column>
-                </win_table>
+                <UserTable :userReqVo="userReqVo" @forbidUser="httpForbidUser" @resetUser="httpResetUser" @cancelUser="httpCancelUser"></UserTable>
             </div>
         </div>
+        <component :is="userReqVo.stateController.switchFormType" @addCom="httpAddCompany" @editCom="httpEditCompany" @addDep="httpAdddepartment" @editDep="httpEditdepartment" @adduser="httpAddUser" @edituser="httpEditUser"
+            @changeDep="changeDep" @deletetCom="httpDeletetCom" @deleteDep="httpDeleteDepartment" @setDepartmentId="setDepartmentId" @handleShowRole="handleShowRole" @addRoleUserss="adduserRole" :userReqVo="userReqVo"
+            @addRoleRight="addRoleRight" @httpEditRole="httpEditRole" @httpDeleteRole="httpDeleteRole" @httpForbidUser="httpForbidUser" @httpThawUser="httpThawUser" @httpCancelUser="httpCancelUser" @httpResetUserPassword="httpResetUser"
+            @validateUserCode="httpValidateUserCode">
+        </component>
 
-        <component :is="userReqVo.formType" @cliclClose="handleFromClose" @addCom="comParams"></component>
     </div>
 </template>
 
 <script lang="ts">
 import UserController from "../controller/userController";
+import "../style/user.scss";
+import { symlink } from "fs";
 export default class UserView extends UserController {
     activeName: string = "organizational";
-    data: any = "222";
-    companyArray: any[] = [
-        {
-            id: 1,
-            label: "默认公司",
-            children: [
-                {
-                    id: 4,
-                    label: "默认部门",
-                    children: [
-                        {
-                            id: 9,
-                            label: "默认职位"
-                        },
-                        {
-                            id: 10,
-                            label: "默认职位"
-                        }
-                    ]
-                }
-            ]
-        }
-    ];
-    userList: any = [
-        { title: "首页", path: "" },
-        { title: "机构及用户管理", path: "panel2" }
-    ];
+    switchingUserState;
+    filterText = "";
     inputval: string = "";
 }
 </script>
 <style lang="scss" scoped>
 @import "../../../assets/style/element.scss";
-.menu-content {
-    border-bottom: 1px solid #f58a0d;
+@import "../style/user.scss";
+.tree-content {
+    position: absolute;
+    width: 212px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 10px 0;
+    background: #273049;
 }
-.test {
+.text-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 52px;
+    left: 0;
+    color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: #273049;
+    z-index: 3;
+
+    input {
+        display: block;
+        width: 90%;
+        padding-left: 6px;
+        margin: 6px auto;
+        height: 36px;
+        border-radius: 4px;
+        border: 1px solid #848993;
+        background: transparent;
+        color: #fff;
+        box-sizing: border-box;
+    }
+}
+.tree-wrapp {
+    position: absolute;
+    left: 0;
+    top: 40px;
+    bottom: 22px;
+    overflow-y: auto;
+    background: #273049;
+    color: #adb5bb;
+    width: 212px;
+    z-index: 2;
+
+    &::-webkit-scrollbar {
+        /*滚动条整体样式*/
+        width: 2px; /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+    &::-webkit-scrollbar-thumb {
+        /*滚动条里面小方块*/
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        background: #535353;
+    }
+    &::-webkit-scrollbar-track {
+        /*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        background: #ededed;
+    }
+}
+
+.table-content {
+    position: absolute;
+    left: 224px;
+    right: 0;
+    top: 10px;
 }
 .content {
     .fl {
@@ -119,48 +136,45 @@ export default class UserView extends UserController {
             justify-content: space-between;
             align-items: center;
             padding-bottom: 10px;
+
             .input {
                 @include sinput();
+                background: #495473;
+                font-size: 16px;
             }
             .showTypeGroup {
                 margin-right: 30px;
-                .showType {
+                .showType0 {
                     @include showType();
+                    &.active + em {
+                        color: #ff900d;
+                    }
+                }
+                .showType1 {
+                    @include showType($bg: #2f4cbd);
+                    &.active + em {
+                        color: #ff900d;
+                    }
                 }
                 .showType2 {
-                    @include showType($bg: #2f4cbd);
+                    @include showType($bg: #ffd3a0);
+                    &.active + em {
+                        color: #ff900d;
+                    }
                 }
-            }
-        }
-        .searchList {
-            width: 100%;
-            padding: 0 0 12px 0;
-            box-sizing: border-box;
-            dt {
-                float: left;
-                font-size: 16px;
-                color: #fff;
-                margin-top: 20px;
-            }
-            dd {
-                padding: 10px 30px;
-                margin-left: 176px;
-                background: #2b3451;
-                .but {
-                    display: inline-block;
-                    border: none;
-                    padding: 8px 30px;
-                    background: transparent;
-                    font-size: 16px;
-                    color: #adb5bb;
-                    cursor: pointer;
-                }
-                .cop {
+                em,
+                i {
                     display: inline-block;
                     vertical-align: middle;
-                    color: #fff;
-                    font-size: 16px;
-                    margin-right: 6px;
+                    color: #8d959a;
+                    cursor: pointer;
+                    &.marginRight16 {
+                        margin-right: 46px;
+                    }
+                }
+
+                i {
+                    margin-right: 12px;
                 }
             }
         }

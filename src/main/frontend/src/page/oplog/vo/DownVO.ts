@@ -1,23 +1,22 @@
 import { DicRepVO } from "../../dictionary/vo/DicVO";
+/**
+ * 类描述：用户日志界面下拉框数据VO
+ * 创建人：@author jianshengxiong
+ * 创建时间：2019/6/14
+ *
+ */
 export default class DownVO {
     /**操作用户,下拉框数据 */
-    userSelect: User[] = [new User(1, "张山"), new User(2, "王五")];
+    userSelect: User[] = [];
     /**日志类型,下拉框数据 */
     logTypeSelect: DicRepVO[] = [];
 
-    static init() {
+    static init(): DownVO {
         return new DownVO();
     }
 }
 
 export class User {
-    id: number;
-    name: string;
-    title: string;
-
-    constructor(id, name) {
-        this.id = id;
-        this.name = name;
-        this.title = name;
-    }
+    userId: number;
+    userName: string;
 }

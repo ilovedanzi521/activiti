@@ -4,31 +4,38 @@
  * @Last Modified time: 2019-05-21 13:10:04
  */
 <template>
-    <section class="main-container">
+    <section class="main-container" @click="closeMenusPanle">
         <slot></slot>
     </section>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import Component from "vue-class-component";
+import { Component, Prop, Emit } from "vue-property-decorator";
 
 @Component({})
-export default class Main extends Vue {}
+export default class Main extends Vue {
+    @Emit("closeMenusPanle")
+    closeMenusPanle() {
+        return false;
+    }
+}
 </script>
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/style/theme.scss";
+@import "../assets/style/element.scss";
 .main-container {
     position: absolute;
     left: 70px;
     right: 0;
-    top: 48px;
+    top: 88px;
     bottom: 0;
     background: $color-main2;
     padding: 0 0 0 0;
     overflow: hidden;
+    padding-top: 60px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 </style>

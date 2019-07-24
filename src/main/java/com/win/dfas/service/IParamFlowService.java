@@ -82,7 +82,7 @@ public interface IParamFlowService {
      * 更新启停标志to stop
      * @param ids
      */
-    void updateStartFlagToStop(List<String> ids);
+    void updateStartFlagToStop(List<Long> ids);
 
     /**
      * 更新启停标志

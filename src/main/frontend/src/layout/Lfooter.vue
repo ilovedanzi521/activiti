@@ -2,13 +2,13 @@
  * @Author: mikey.zhaopeng 
  * @Date: 2019-05-31 00:48:32 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-05-31 00:55:27
+ * @Last Modified time: 2019-07-15 09:41:19
  */
 
 
 <template>
     <footer class="footer-container">
-        <span class="transaction-time">交易日期 ：2019-05-22 星期三</span>
+        <span class="transaction-time">交易日期 ：{{init}}</span>
     </footer>
 </template>
 
@@ -17,11 +17,31 @@ import Vue from "vue";
 import Component from "vue-class-component";
 
 @Component({})
-export default class Footer extends Vue {}
+export default class Footer extends Vue {
+    date: Date = new Date();
+    get init() {
+        this.date = new Date();
+        //年
+        var year = this.date.getFullYear();
+        //月
+        var month = this.date.getMonth() + 1;
+        //日
+        var day = this.date.getDate();
+        //时
+        var hh = this.date.getHours();
+        //分
+        var mm = this.date.getMinutes();
+        //秒
+        var ss = this.date.getSeconds();
+        // var rq=year+"年"+month+"月"+day+"日"+hh+":"+mm+":"+ss;
+        var data = year + "年" + month + "月" + day + "日";
+        return data;
+    }
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/style/theme.scss";
+@import "../assets/style/element.scss";
 .footer-container {
     position: absolute;
     bottom: 0;

@@ -1,50 +1,122 @@
 import axios from "axios";
+import Vue from "vue";
+import HttpStatusUtil from "../page/common/util/HttpStatusUtil";
+import Snowflake from "../mixin/Snowflake";
 
-export default class AxiosFun {
-    // static root = "http://127.0.0.1:8080";
+export default class AxiosFun extends Vue {
+    public static basicParameterServiceName = "/dfbp-common-basicparameter";
+
+    public static authCenterServiceName = "/dfas-auth-center";
+
+    public static commonBpmServiceName = "/dfas-common-bpm";
+
+    snowflake: Snowflake = Snowflake.getInstance();
+
+    private static instance: AxiosFun = new AxiosFun();
+
+    private constructor() {
+        super();
+    }
+
+    static getInstance() {
+        return this.instance;
+    }
 
     static get(url: string, params?: any): Promise<any> {
-        return this.apiAxios("GET", url, params);
+        return this.instance.apiAxios("GET", url, params);
     }
+
     static post(url: string, params: any): Promise<any> {
-        return this.apiAxios("POST", url, params);
+        return this.instance.apiAxios("POST", url, params);
     }
 
     static put(url: string, params: any): Promise<any> {
-        return this.apiAxios("PUT", url, params);
+        return this.instance.apiAxios("PUT", url, params);
     }
 
-    static delete(url: string, params?: any): Promise<any> {
-        return this.apiAxios("DELETE", url, params);
+    static winDelete(url: string, params?: any): Promise<any> {
+        return this.instance.apiAxios("DELETE", url, params);
     }
 
-    static apiAxios(method: string, url: string, params: any): Promise<any> {
+    apiAxios(method: string, url: string, params: any): Promise<any> {
         return new Promise((resolve, reject) => {
-            if (params) {
-                params = this.filterNull(params);
+            var authorization: string = localStorage.getItem("Authorization");
+
+            if (this.isDev()) {
+                authorization = process.env.NODE_ENV;
             }
+
+            if (
+                "/dfas-auth-center/api/web/login" != url &&
+                (!authorization || authorization.trim() == "")
+            ) {
+                // 判断是否有token数据
+                // this.gotoIndex();
+                // return;
+            }
+
+            // 头部数据
+            var headerParams = {};
+
+            if (authorization && authorization.trim() != "") {
+                headerParams["Authorization"] = authorization
+                    .replace('"', "")
+                    .replace('"', "");
+            }
+
+            // 参数数据
+            params = params || {};
+
+            params = this.filterNull(params);
+
+            // POST、PUT、PATCH比如传入reqSource
+            if (method === "POST" || method === "PUT" || method === "PATCH") {
+                if (
+                    !params["reqSource"] ||
+                    params["reqSource"] == null ||
+                    "" === params["reqSource"].trim()
+                ) {
+                    params["reqSource"] = url.replace(/\//g, "-");
+                }
+
+                // 雪花算法生成reqSequence(19位)
+                params["reqSequence"] = this.snowflake.nextId();
+            }
+
             axios({
                 method: method,
                 url: url,
+                headers: headerParams,
                 data: method === "POST" || method === "PUT" ? params : null,
                 params: method === "GET" || method === "DELETE" ? params : null,
-                timeout: 10 * 1000,
+                // timeout: 10 * 1000,
                 withCredentials: false
             })
                 .then(response => {
-                    if ("SUCC" != response.data.winRspType) {
-                    }
                     resolve(response.data);
                 })
                 .catch(error => {
                     if (error.response && error.response.status) {
-                        if (404 == error.response.status) {
-                            alert("请求资源不存在");
-                        } else if (404 == error.response.status) {
-                            alert("服务器发生错误");
+                        if (!this.isDev()) {
+                            if (error.response.status == 401) {
+                                // this.gotoIndex();
+                                // return;
+                            }
                         }
+
+                        this.$message({
+                            showClose: true,
+                            type: "error",
+                            message: HttpStatusUtil.getMessage(
+                                error.response.status
+                            )
+                        });
                     } else {
-                        alert(error.message);
+                        this.$message({
+                            showClose: true,
+                            type: "error",
+                            message: error.message
+                        });
                     }
 
                     reject(error);
@@ -52,7 +124,7 @@ export default class AxiosFun {
         });
     }
 
-    static filterNull(o: any): any {
+    filterNull(o: any): any {
         for (var key in o) {
             if (o[key] === null) {
                 delete o[key];
@@ -68,10 +140,27 @@ export default class AxiosFun {
         return o;
     }
 
-    static toType(obj: any): string {
+    toType(obj: any): string {
         return {}.toString
             .call(obj)
             .match(/\s([a-zA-Z]+)/)[1]
             .toLowerCase();
+    }
+
+    /**
+     * 跳转首页
+     */
+    gotoIndex() {
+        if (localStorage.getItem("Authorization")) {
+            localStorage.removeItem("Authorization");
+        }
+        window.location.href = "#/login";
+    }
+
+    /**
+     * 判断是否开发环境
+     */
+    isDev() {
+        return "development" === process.env.NODE_ENV;
     }
 }

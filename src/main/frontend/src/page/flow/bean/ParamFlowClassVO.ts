@@ -1,5 +1,5 @@
 import { BaseReqVO, BaseRepVO } from "../../common/vo/BaseVO";
-export class ParamFlowClassReqVO extends BaseRepVO {
+export class ParamFlowClassReqVO extends BaseReqVO {
     /**
      * 流程名称
      */
@@ -24,7 +24,4 @@ export class ParamFlowClassReqVO extends BaseRepVO {
      * 指令类型
      */
     instructionType: string = "";
-
 }
-
-

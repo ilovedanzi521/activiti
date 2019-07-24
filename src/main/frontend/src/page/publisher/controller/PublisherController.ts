@@ -3,12 +3,21 @@ import BaseController from "../../common/controller/BaseController";
 import ParamPublisherService from "../service/ParamPublisherService";
 import ParamPublisherReqVO from "../vo/ParamPublisherReqVO";
 import ParamPublisherRepVO from "../vo/ParamPublisherRepVO";
-import ParamCurrencyRepVO from "../vo/ParamPublisherRepVO";
-import { DicReqVO, DicRepVO } from "../../dictionary/vo/DicVO";
+import { DicReqVO } from "../../dictionary/vo/DicVO";
 import DicService from "../../dictionary/service/DicService";
-import dialogUtil from "../../common/vo/DialogFormUtils";
+import DialogVO from "../../common/vo/DialogVO";
 import ExchangeRateService from "../../currency/service/ExchangeRateService";
-@Component({ components: {} })
+import PublisherDialog from "../view/publisherDialog.vue";
+import CompareData from "../vo/CompareData";
+import PageVO from "../../common/vo/PageVO";
+import numberUtils from "../../common/util/NumberUtils";
+/**
+ * 类描述：发行人controller
+ * 创建人：@author jianshengxiong
+ * 创建时间：2019/6/14
+ *
+ */
+@Component({ components: { PublisherDialog } })
 export default class PublisherController extends BaseController {
     /**字典service */
     dicService: DicService = new DicService();
@@ -21,86 +30,38 @@ export default class PublisherController extends BaseController {
     /**新增、保存对象 */
     publisherVO: ParamPublisherRepVO = new ParamPublisherRepVO();
     /**打开、编辑、删除弹出框VO */
-    dialogVO = dialogUtil.getDefaultDialog();
-    /**公司类别, 字典数据 */
-    companyCategorySelect: DicRepVO[] = [];
-    /**企业性质，字典数据 */
-    enterpriseNatureSelect: DicRepVO[] = [];
-    /**外部评级，字典数据 */
-    externalRating: DicRepVO[] = [];
-    /**内部评级，字典数据 */
-    internalRating: DicRepVO[] = [];
-    /**币种列表 */
-    repCurrencyVOs: ParamCurrencyRepVO[] = [];
-    /**新增、修改，表单验证规则 */
-    rules = {
-        publisherCode: [
-            {
-                required: true,
-                message: "发行人编号不能为空",
-                trigger: "blur"
-            }
-        ],
-        publisherName: [
-            {
-                required: true,
-                message: "发行人名称不能为空",
-                trigger: "blur"
-            }
-        ],
-        date: [
-            {
-                required: true,
-                message: "日期不能为空",
-                trigger: "blur"
-            }
-        ]
-    };
-
-    /**验证资产 */
-    validPrice(rule, value, callback) {
-        if (value && typeof value !== "number") {
-            value = value.trim();
-            if (value != "") {
-                let re = /^[0-9]+(.[0-9]{1,8})?$/;
-                let r = !re.test(value);
-                if (r) {
-                    callback(new Error());
-                }
-            }
-        }
-        callback();
-    }
-
+    dialogVO: DialogVO = new DialogVO();
+    /**加载前，需准备的数据 */
+    compareData: CompareData = new CompareData();
     /**数据准备 */
     mounted() {
         let companyDic = new DicReqVO();
         /**公司类别 */
         companyDic.parentDicCode = "1000101";
         this.dicService.dicAllSubList(companyDic).then(res => {
-            this.companyCategorySelect = res.data;
+            this.compareData.companyCategorySelect = res.data;
         });
         /**企业性质 */
         let dic = new DicReqVO();
         dic.parentDicCode = "1000105";
         this.dicService.dicAllSubList(dic).then(res => {
-            this.enterpriseNatureSelect = res.data;
+            this.compareData.enterpriseNatureSelect = res.data;
         });
         /**外部评级 */
         let exdic = new DicReqVO();
         exdic.parentDicCode = "1000107";
         this.dicService.dicAllSubList(exdic).then(res => {
-            this.externalRating = res.data;
+            this.compareData.externalRating = res.data;
         });
         /**内部评级 */
         let indic = new DicReqVO();
         indic.parentDicCode = "1000106";
         this.dicService.dicAllSubList(indic).then(res => {
-            this.internalRating = res.data;
+            this.compareData.internalRating = res.data;
         });
         /**货币列表 */
         this.currencyService.listCurrency().then(res => {
-            this.repCurrencyVOs = res.data;
+            this.compareData.repCurrencyVOs = res.data;
         });
         /**查询数据 */
         this.$nextTick(() => {
@@ -109,12 +70,13 @@ export default class PublisherController extends BaseController {
     }
 
     /**重置查询 */
-    reset() {
+    reset(): void {
         this.form = new ParamPublisherReqVO();
+        this.query();
     }
 
     /**查询 */
-    query() {
+    query(): void {
         let _this = this;
         this.service.list(this.form).then(res => {
             if (res.winRspType === "ERROR") {
@@ -126,86 +88,79 @@ export default class PublisherController extends BaseController {
     }
 
     /**带分页参数查询 */
-    pageQuery(pageVO) {
+    pageQuery(pageVO: PageVO): void {
         this.form.reqPageNum = pageVO.pageNum;
         this.form.reqPageSize = pageVO.pageSize;
         this.query();
     }
 
     /**打开新增弹框 */
-    openAddDialog() {
-        this.dialogVO = dialogUtil.getAddDialog("新增-发行人");
+    openAddDialog(form: ParamPublisherReqVO): void {
+        this.dialogVO = this.dialogVO.getAddDialog("新增-发行人");
         this.publisherVO = new ParamPublisherRepVO();
-        this.openDialog();
-    }
-
-    /**发行人新增 */
-    addPublisher() {
-        let _this = this;
-        this.service.add(this.publisherVO).then(res => {
-            this.closeDialog();
-            if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
-            } else {
-                _this.query();
-            }
-        });
     }
 
     /**打开修改弹框 */
-    openUpdateDialog(publisherVO) {
-        debugger;
-        this.dialogVO = dialogUtil.getUpdateDialog("修改-发行人");
+    openUpdateDialog(publisherVO: ParamPublisherRepVO): void {
+        this.dialogVO = this.dialogVO.getUpdateDialog("修改-发行人");
         this.publisherVO = this.copy(publisherVO);
-        this.openDialog();
     }
-    /**发行人修改 */
-    updatePublisher() {
-        let _this = this;
-        this.service.update(this.publisherVO).then(res => {
-            this.closeDialog();
-            if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
-            } else {
-                _this.query();
-            }
-        });
-    }
+
     /**打开删除弹出框 */
-    openDeleteDialog(publisherVO) {
-        this.dialogVO = dialogUtil.getDeleteDialog("删除-发行人");
+    openDeleteDialog(publisherVO: ParamPublisherRepVO): void {
+        this.dialogVO = this.dialogVO.getDeleteDialog("删除-发行人");
         this.publisherVO = this.copy(publisherVO);
-        this.openDialog();
-    }
-    /**发行人删除 */
-    deletePublisher() {
-        this.service.delete(this.publisherVO.id).then(res => {
-            this.closeDialog();
-            if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
-            } else {
-                this.query();
-            }
-        });
     }
 
     /**公司类别，表格显示 */
-    companyCategoryFormatter(row, column, cellValue, index) {
-        return this.dicFormatter(cellValue, this.companyCategorySelect);
+    companyCategoryFormatter({
+        cellValue,
+        row,
+        rowIndex,
+        column,
+        columnIndex
+    }): string {
+        return this.dicFormatter(
+            row.companyCategory,
+            this.compareData.companyCategorySelect
+        );
     }
 
     /**企业性质，表格显示 */
-    enterpriseNatureFormatter(row, column, cellValue, index) {
-        return this.dicFormatter(cellValue, this.enterpriseNatureSelect);
+    enterpriseNatureFormatter({
+        cellValue,
+        row,
+        rowIndex,
+        column,
+        columnIndex
+    }): string {
+        return this.dicFormatter(
+            row.enterpriseNature,
+            this.compareData.enterpriseNatureSelect
+        );
     }
 
     /**外部评级，表格显示 */
-    exFormatter(row, column, cellValue, index) {
-        return this.dicFormatter(cellValue, this.externalRating);
+    exFormatter({ cellValue, row, rowIndex, column, columnIndex }): string {
+        return this.dicFormatter(
+            row.externalRating,
+            this.compareData.externalRating
+        );
     }
 
     /**内部评级，表格显示 */
-    inFormatter(row, column, cellValue, index) {
-        return this.dicFormatter(cellValue, this.internalRating);
+    inFormatter({ cellValue, row, rowIndex, column, columnIndex }): string {
+        return this.dicFormatter(
+            row.internalRating,
+            this.compareData.internalRating
+        );
+    }
+
+    /**金额，表格显示 */
+    moneyFormatter({ cellValue, row, rowIndex, column, columnIndex }) {
+        if (!cellValue) {
+            return "";
+        }
+        return numberUtils.formatCurrency(cellValue, 2);
     }
 }

@@ -12,6 +12,7 @@ import {
 import SwtichService from "../service/SwtichService";
 import BaseController from "../../common/controller/BaseController";
 import PageVO from "../../common/vo/PageVO";
+import dateUtils from "../../common/util/DateUtils";
 
 @Component({ components: { SwitchTable } })
 export default class SwitchController extends BaseController {
@@ -61,7 +62,7 @@ export default class SwitchController extends BaseController {
             .switchlist(vo)
             .then((winResponseData: WinResponseData) => {
                 if (WinRspType.SUCC == winResponseData.winRspType) {
-                    this.swtichList = winResponseData.data.list;
+                    this.swtichList = winResponseData.data;
 
                     this.switchOpLogReqVO = new SwitchOpLogReqVO();
                     this.switchOpLogReqVO.switchType = vo.switchType;
@@ -82,6 +83,8 @@ export default class SwitchController extends BaseController {
                 if (WinRspType.SUCC == winResponseData.winRspType) {
                     this.switchOpLogList = winResponseData.data.list;
                     this.opLogPageVO = winResponseData.data;
+                } else {
+                    this.errorMessage(winResponseData.msg);
                 }
             });
     }
@@ -106,42 +109,33 @@ export default class SwitchController extends BaseController {
     switchChange(index: number, reqVo: SwitchReqVO) {
         const messageArray: Array<string> = [
             (reqVo.switchStatus == 0 ? "开启" : "关闭") +
-                "[" +
-                reqVo.switchName +
-                "]",
-            " 该项操作上次为" + (reqVo.switchStatus == 0 ? "关闭" : "开启"),
-            " 请确认是否继续"
+                ": " +
+                reqVo.switchName,
+            "该项操作上次为: " + (reqVo.switchStatus == 0 ? "关闭" : "开启"),
+            "操作时间: " + dateUtils.nowTime(),
+            " 请确认是否继续?"
         ];
-
         const messageHData = [];
         const h = this.$createElement;
         for (const i in messageArray) {
             messageHData.push(h("p", null, messageArray[i]));
         }
 
-        this.$confirm("", {
-            title: "提示",
-            message: h("div", null, messageHData),
-            showCancelButton: true,
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-        })
+        this.win_message_box_warning(
+            h("div", null, messageHData),
+            "修改业务开关提示"
+        )
             .then(() => {
                 this.swtichService
                     .switchUpdate(reqVo)
                     .then((winResponseData: WinResponseData) => {
                         if (WinRspType.SUCC == winResponseData.winRspType) {
-                            this.$message({
-                                type: "success",
-                                message: "修改成功!"
-                            });
+                            this.win_message_success(winResponseData.msg);
                             var switchRepVO: SwitchReqVO = new SwitchReqVO();
-
                             switchRepVO.switchType = reqVo.switchType;
-
                             this.switchlist(switchRepVO);
                         } else {
+                            this.win_message_error(winResponseData.msg);
                             reqVo.switchStatus =
                                 reqVo.switchStatus == 0 ? 1 : 0;
                         }
@@ -152,10 +146,7 @@ export default class SwitchController extends BaseController {
             })
             .catch(() => {
                 reqVo.switchStatus = reqVo.switchStatus == 0 ? 1 : 0;
-                this.$message({
-                    type: "info",
-                    message: "已取消操作"
-                });
+                this.win_message_warning("已取消操作");
             });
     }
 

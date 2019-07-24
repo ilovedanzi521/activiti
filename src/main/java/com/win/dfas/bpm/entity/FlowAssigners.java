@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class FlowAssigners extends FlowAssignersKey {
     private String description;
-
+    private String taskType;
     private String codeDesc;
 
     private String createUserId;
@@ -21,6 +21,14 @@ public class FlowAssigners extends FlowAssignersKey {
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+
+    public String getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(String taskType) {
+        this.taskType = taskType == null ? null : taskType.trim();
     }
 
     public String getCodeDesc() {

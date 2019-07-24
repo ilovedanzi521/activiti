@@ -6,6 +6,9 @@ class Tool {
         if ("require" === type) {
             return !!inputValue;
         }
+        if ("number" == type) {
+            return /[1-9]{2}.?/.test(inputValue);
+        }
         // 手机号验证
         if ("phone" === type) {
             return /^1\d{10}$/.test(inputValue);

@@ -6,6 +6,7 @@ export class LoginVO extends BaseReqVO {
     yzm: string = "";
     code: string;
     rememberOk: boolean;
+    yamisOk: boolean;
     yzmArray: Array<any> = [
         0,
         1,
@@ -42,6 +43,32 @@ export class LoginVO extends BaseReqVO {
         "W",
         "X",
         "Y",
-        "Z"
+        "Z",
+        "a",
+        "b",
+        "b",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z"
     ];
 }

@@ -3,5 +3,6 @@ export enum WinRspType {
     WARN = "WARN",
     ERROR = "ERROR",
     AUTH_ERROR = "AUTH_ERROR",
-    UNIQUE = "UNIQUE"
+    UNIQUE = "UNIQUE",
+    CANCEL = "CANCEL"
 }

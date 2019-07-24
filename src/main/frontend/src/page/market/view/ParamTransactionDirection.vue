@@ -5,71 +5,57 @@
                 <li>
                     <div class="fl">
                         <span>交易方向:</span>
-                        <input v-model="directionReqVO.transactionDirection">
+                        <win_select clearable filterable v-model="directionReqVO.transactionDirection" placeholder="请选择">
+                            <win_option v-for="item in directionCodes" :key="item.transactionDirection" :label="item.transactionDirection+'-'+item.transactionDirectionName" :value="item.transactionDirection"></win_option>
+                        </win_select>
                     </div>
                     <div class="fr">
                         <span>证券方向:</span>
-                        <input v-model="directionReqVO.securitiesPath">
+                        <win_select clearable v-model="directionReqVO.securityPath" placeholder="请选择">
+                            <win_option v-for="item in securityTypeDic.securityPathDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></win_option>
+                        </win_select>
                     </div>
                     <div class="fr">
                         <span>资金方向:</span>
-                        <input v-model="directionReqVO.fundsPath">
+                        <win_select clearable v-model="directionReqVO.fundsPath" placeholder="请选择">
+                            <win_option v-for="item in securityTypeDic.fundsPathDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></win_option>
+                        </win_select>
                     </div>
                     <div class="fr">
-                        <TButton @bClick="queryTransactionDirection">查询</TButton>
+                        <win_button style="width: 90px;" type="primary" icon="el-icon-search" @click="queryTransactionDirection">查询</win_button>
+                        <win_button style="width: 90px;" icon="el-icon-refresh" @click="reset">重置</win_button>
                     </div>
                 </li>
             </ul>
         </div>
         <div class=".ps2">
-            <TTable>
-                <tr slot="tableHeader">
-                    <td>交易市场</td>
-                    <td>交易方向</td>
-                    <td>交易方向名称</td>
-                    <td>申报方向</td>
-                    <td>资金方向</td>
-                    <td>证券方向</td>
-                    <td>影响证券</td>
-                    <td>关联变动方向</td>
-                    <td>关联影响证券</td>
-                </tr>
-                <tr slot="tableBody" v-for="item in directionList" :key="item.id">
-                    <td>{{item.marketCode}}</td>
-                    <td>{{item.transactionDirection}}</td>
-                    <td>{{item.transactionDirectionName}}</td>
-                    <td>{{item.declarePath}}</td>
-                    <td>{{item.fundsPath}}</td>
-                    <td>{{item.securitiesPath}}</td>
-                    <td>{{item.effectSecurities}}</td>
-                    <td>{{item.relationChangePath}}</td>
-                    <td>{{item.relationEffectSecurities}}</td>
-                </tr>
-            </TTable>
+            <win_table :max-height="520" :data="pageVO.list" style="width: 100%" :showSelection="false">
+                <win_table_column prop="marketCode" :formatter="marketFormatter" label="交易市场" width="157"></win_table_column>
+                <win_table_column prop="transactionDirection" label="交易方向" width="150"></win_table_column>
+                <win_table_column prop="transactionDirectionName" label="交易方向名称" width="180"></win_table_column>
+                <win_table_column prop="declarePath" :formatter="declarePatFormatter" label="申报方向" width="180"></win_table_column>
+                <win_table_column prop="fundsPath" :formatter="fundsPathFormatter" label="资金方向" width="180"></win_table_column>
+                <win_table_column prop="securityPath" :formatter="securityPathFormatter" label="证券方向" width="180"></win_table_column>
+                <win_table_column prop="effectSecurity" :formatter="effectSecurityFormatter" label="影响证券" width="180"></win_table_column>
+                <win_table_column prop="relationChangePath" :formatter="relationChangePathFormatter" label="关联变动方向" width="180"></win_table_column>
+                <win_table_column prop="relationEffectSecurity" :formatter="relationEffectSecurityFormatter" label="关联影响证券" width="150"></win_table_column>
+            </win_table>
+            <!-- 分页组件 -->
+            <win_pagination v-bind:child-msg="pageVO" @callFather="pageQuery"></win_pagination>
         </div>
     </div>
 </template>
 <script lang="ts">
-import MarketController from "../controller/MarketController";
 import Component from "vue-class-component";
+import TransactionDirectionController from "../controller/TransactionDirectionController";
 
 @Component
-export default class ParamTransactionDirection extends MarketController {}
+export default class ParamTransactionDirection extends TransactionDirectionController {}
 </script>
 <style lang="scss" scoped>
 @import "../../../assets/style/element.scss";
 
 .ps1 {
-    position: absolute;
-    left: 0%;
-    top: 0px;
-    width: 100%;
-    input {
-        @include iuputUi();
-        display: inline-block;
-        vertical-align: middle;
-    }
-
     span {
         display: inline-block;
         width: 80px;
@@ -80,8 +66,7 @@ export default class ParamTransactionDirection extends MarketController {}
 }
 
 li {
-    width: 80%;
-    margin-bottom: 32px;
+    width: 100%;
     overflow: hidden;
     .fl {
         float: left;

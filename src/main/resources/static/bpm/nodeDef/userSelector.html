@@ -18,7 +18,7 @@
 		$scope.checkedUser={};
 		// console.log("start=="+$scope.data);
 		// var arr = $scope.data.account.split(',');
-		$http.get("/service/param/userList").then(function(response) {
+		$http.get(__ctx + "/service/param/userList").then(function(response) {
 			$scope.list = response.data.data;
 			for(var i = 0; i < $scope.list.length; i++){
 				// if(arr.in_array($scope.list[i])){

@@ -4,6 +4,7 @@ export class DicReqVO extends BaseReqVO {
     dicCode: string;
     dicExplain: string;
     parentDicCode: string;
+    parentDicCodeList: Array<string>;
     param1: string;
     param2: string;
     param3: string;

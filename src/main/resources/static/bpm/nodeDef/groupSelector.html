@@ -97,7 +97,7 @@
 			$scope.conf.typeName = $("#aaa").find("option:selected").text();
 			$scope.conf.typeValue = $("#aaa").find("option:selected").val();
 			console.log($scope.conf.typeName+"========="+$scope.conf.typeValue );
-			$http.get("/service/param/groupList/"+$scope.conf.typeValue).then(function(response) {
+			$http.get(__ctx + "/service/param/groupList/"+$scope.conf.typeValue).then(function(response) {
 				$scope.list = response.data.data;
 				for(var i = 0; i < $scope.list.length; i++){
 					$scope.list[i].state =0;

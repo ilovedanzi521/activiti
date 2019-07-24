@@ -1,145 +1,97 @@
 <template>
-    <div class="mask">
-        <div class="dialogFrom-contaier">
-            <div class="header">
-                <span class="header-title">新增部门</span>
-                <span class="header-close" @click="handleClose">✕</span>
+    <win_fdialog title="新增部门" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px">
+        <win_form :inline="true" :model="department" :rules="rules" ref="department">
+            <div class="form_content">
+                <win_form_item label="所属公司">
+                    <win_input :placeholder="userReqVo.company.companyName" :disabled="true"></win_input>
+                </win_form_item>
             </div>
-            <div class="content">
-                <p>
-                    <span>
-                        <label for="dep" class="label">所属公司</label>
-                        <input type="text" class="input" id="dep">
-                    </span>
-                </p>
-
-                <p>
-                    <span>
-                        <label for="name" class="label required">部门名称</label>
-                        <input type="text" class="input" id="name">
-                    </span>
-                </p>
-                <p>
-                    <span>
-                        <label for="jc" class="label required">部门编号</label>
-                        <input type="text" class="input" id="jc">
-                    </span>
-                </p>
+            <div class="form_content">
+                <win_form_item label="部门名称" prop="departmentname">
+                    <win_input placeholder="请填写部门名称" v-model="department.departmentname" :maxlength="50"></win_input>
+                </win_form_item>
             </div>
-            <div class="footer">
-                <button @click="handleClose">取消</button>
-                <button class="submit">确认</button>
+            <div class="form_content">
+                <win_form_item label="部门编号">
+                    <win_input placeholder="请填写部门编号" v-model="userReqVo.department.departmentCode" :disabled="true"></win_input>
+                </win_form_item>
             </div>
+        </win_form>
+        <div slot="footer" class="dialog-footer">
+            <win_button @click="close">取 消</win_button>
+            <win_button type="primary" @click="handleAddDep('department')">确 认</win_button>
         </div>
-    </div>
+    </win_fdialog>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-@Component({})
-export default class FromDialog extends Vue {
-    handleClose() {
-        this.$emit("cliclClose");
+import { Component, Prop, Emit } from "vue-property-decorator";
+import { win_fdialog } from "@win-frond-frameworks/biz-common";
+import { win_button } from "@win-frond-frameworks/biz-common";
+import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
+import { win_tabs, win_tab } from "@win-frond-frameworks/biz-common";
+import { win_select, win_option } from "@win-frond-frameworks/biz-common";
+import { win_input } from "@win-frond-frameworks/biz-common";
+import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
+import {
+    win_checkbox,
+    win_checkboxButton,
+    win_checkboxGroup
+} from "@win-frond-frameworks/biz-common";
+import { UserReqVO, DepartmentClass } from "../vo/UserVO";
+import BaseController from "../../common/controller/BaseController";
+@Component({
+    components: {
+        win_tabs,
+        win_tab,
+        win_select,
+        win_option,
+        win_input,
+        win_form,
+        win_form_item,
+        win_fdialog,
+        win_button,
+        win_table,
+        win_table_column,
+        win_checkbox,
+        win_checkboxButton,
+        win_checkboxGroup
+    }
+})
+export default class AddDep extends BaseController {
+    dialogFormVisible: boolean = true;
+    department: DepartmentClass = new DepartmentClass();
+    @Prop()
+    userReqVo: UserReqVO;
+    rules = {
+        departmentname: [
+            { required: true, message: "请输入公司部门名称", trigger: "blur" }
+        ]
+    };
+
+    //验证部门名称不能为空
+    handleAddDep(formName) {
+        let form: any = this.$refs[formName];
+        form.validate(valid => {
+            if (valid) {
+                const depParams = {
+                    companyId: this.userReqVo.company.companyId,
+                    departmentName: this.department.departmentname,
+                    departmentCode: this.userReqVo.department.departmentCode
+                };
+                this.$emit("addDep", depParams);
+            } else {
+                this.errorMessage("请填写完整信息");
+                return false;
+            }
+        });
+    }
+
+    close() {
+        this.userReqVo.stateController.switchFormType = "";
     }
 }
 </script>
 <style lang="scss" scoped>
-@import "../../../assets/style/theme.scss";
-@import "../../../assets/style/element.scss";
-.mask {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    .dialogFrom-contaier {
-        padding: 30px 32px;
-        border: 1px solid $color-orange;
-        border-radius: 4px;
-        background: #494949;
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-            padding-bottom: 8px;
-            font-size: 18px;
-            color: #fff;
-            font-weight: bold;
-            font-weight: bolder;
-            border-bottom: 2px solid #707070;
-            .header-close {
-                cursor: pointer;
-            }
-        }
-        .footer {
-            padding: 28px 0 0;
-            margin-top: 16px;
-            text-align: center;
-            border-top: 2px solid #707070;
-            button {
-                @include button();
-                &:last-of-type {
-                    margin-left: 16px;
-                }
-                &.submit {
-                    @include button($bg: #ff900d, $color: #fff);
-                }
-            }
-        }
-        .content {
-            p {
-                display: flex;
-                margin-bottom: 16px;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                span {
-                    display: inline-block;
-                    label,
-                    input {
-                        display: inline-block;
-                        vertical-align: middle;
-                        margin-right: 4px;
-                        &.input {
-                            width: 220px;
-                            height: 40px;
-                            padding-left: 6px;
-                            line-height: 40px;
-                            background: #494949;
-                            border: none;
-                            color: #fff;
-                            border: 1px solid #adb5bb;
-                            border-radius: 4px;
-                            box-sizing: border-box;
-                        }
-                        &.label {
-                            color: #adb5bb;
-                            font-weight: bolder;
-                            margin-right: 6px;
-                            position: relative;
-                            width: 60px;
-                            text-align: right;
-                            &.required {
-                                &::after {
-                                    content: "*";
-                                    position: absolute;
-                                    color: red;
-                                    right: -6px;
-                                    top: -4px;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 </style>

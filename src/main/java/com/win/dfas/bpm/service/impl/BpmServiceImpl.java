@@ -5,6 +5,7 @@ import com.win.dfas.bpm.constant.BpmConstant;
 
 import com.win.dfas.bpm.constant.UserClassEnum;
 import com.win.dfas.bpm.entity.FlowAssigners;
+import com.win.dfas.bpm.entity.FlowAssignersKey;
 import com.win.dfas.bpm.service.BpmService;
 import com.win.dfas.bpm.vo.request.FlowAssignersReqVO;
 import com.win.dfas.bpm.vo.response.AllFlowAssignersRepVO;
@@ -130,6 +131,28 @@ public class BpmServiceImpl implements BpmService {
         List<String> userList = getUserInfo(userCodes);
         userList.addAll(list);
         return userList;
+    }
+
+    @Override
+    public Set<String> listUserInfoToType(String tasktype) {
+        List<String> list =  flowAssignersMapper.listUserInfoToType(tasktype);
+        Set<String> set = new HashSet<>();
+        for (String beforeCode : list) {
+            String [] afterCodes = beforeCode.split(",",-1);
+            for (String code : afterCodes) {
+                set.add(code);
+            }
+        }
+        return set;
+    }
+
+    @Override
+    public int updateTaskTypeToModel(FlowAssignersReqVO flowAssignersReqVO) {
+//        List<FlowAssigners> list = flowAssignersMapper.selectByNodeId(flowAssignersReqVO);
+//        if(list.size()<=0){
+//            return 0;
+//        }
+        return  flowAssignersMapper.updateTaskTypeToModel(flowAssignersReqVO);
     }
 
     private List<String> getUserInfo(Set<Expression> expressions) {

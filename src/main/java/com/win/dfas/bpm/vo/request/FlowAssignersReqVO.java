@@ -15,14 +15,16 @@ import java.io.Serializable;
 @Data
 public class FlowAssignersReqVO implements Serializable{
 
-    public FlowAssignersReqVO(String modelId, String nodeId, Integer descIndex, String description,String codeDesc,String pluginType) {
+    public FlowAssignersReqVO(String modelId, String nodeId, Integer descIndex, String description,String codeDesc,String pluginType,String taskType) {
         this.modelId = modelId;
         this.nodeId = nodeId;
         this.descIndex = descIndex;
         this.description = description;
         this.codeDesc = codeDesc;
         this.pluginType = pluginType;
+        this.taskType = taskType;
     }
+    private String taskType;
     private String pluginType;
     private String modelId;
 
@@ -31,6 +33,10 @@ public class FlowAssignersReqVO implements Serializable{
     private Integer descIndex;
 
     private String description;
+
+    public FlowAssignersReqVO() {
+
+    }
 
     @Override
     public String toString() {
