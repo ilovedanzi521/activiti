@@ -77,7 +77,7 @@
                             <el-button-group>
                                 <win_button :disabled="level!=2" type="warning" round @click="openAddDialog()" icon="el-icon-plus" class="iconAddbutton">新增</win_button>
                                 <win_button :disabled="!options" type="warning" icon="el-icon-delete" class="iconAddbutton" round @click="batchDelete(tableChecked)">删除</win_button>
-                                <win_button :disabled="!options" type="warning" icon="el-icon-video-play" class="iconAddbutton" round @click="startflow(tableChecked)">启动</win_button>
+                                <win_button :disabled="!options" type="warning" icon="el-icon-video-play" class="iconAddbutton" round @click="startflow(tableChecked)">启用</win_button>
                                 <win_button :disabled="!options" type="warning" icon="el-icon-video-pause" class="iconAddbutton" round @click="stopflow(tableChecked)">停用</win_button>
                             </el-button-group>
                         </el-row>
