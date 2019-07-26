@@ -1,10 +1,14 @@
 package com.win.dfas.controller.feign;
 
 import com.win.dfas.common.vo.WinResponseData;
+import com.win.dfas.dto.InvestCompanyDTO;
 import com.win.dfas.dto.InvestConstituteDTO;
+import com.win.dfas.dto.SecurityTypeDTO;
+import com.win.dfas.dto.TransactionDirectionDTO;
 import com.win.dfas.vo.request.DepartmentInfoReqVO;
 import com.win.dfas.vo.request.UserInfoReqVO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +44,47 @@ public interface IDicFeignClient {
      */
     @PostMapping("/api/prod/portfolio/list")
     WinResponseData queryInvestConstituteList(@RequestBody InvestConstituteDTO o);
-
-    @PostMapping("/direction/find/code")
-    WinResponseData queryDirectionList(@RequestBody InvestConstituteDTO o);
+    /**
+     * @Title: queryDirectionList
+     * @Description: 获取交易方向
+     * @param o
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/25/15:34
+     */
+    @PostMapping("/api/direction/find/code")
+    WinResponseData queryDirectionList(@RequestBody TransactionDirectionDTO o);
+    /**
+     * @Title: querySecurityTypeList
+     * @Description: 证券类型
+     * @param
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/26/11:40
+     */
+    @GetMapping("/security/find/code")
+    WinResponseData querySecurityTypeList();
+    /**
+     * @Title: queryMarketList
+     * @Description: 交易市场
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/26/11:54
+     */
+    @GetMapping("/market/find/all")
+    WinResponseData queryMarketList();
+    /**
+     * @Title: queryInvestCompanyList
+     * @Description: 查询投资单元
+     * @param investCompanyDTO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/26/13:29
+     */
+    @PostMapping("/api/prod/portfolio/list")
+    WinResponseData queryInvestCompanyList(InvestCompanyDTO investCompanyDTO);
 }
