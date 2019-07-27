@@ -224,9 +224,6 @@ import Component from "vue-class-component";
 import ElementUI from "element-ui";
 export default class Exchange extends ExchangeFlowController {
     /**鼠标聚焦 */
-    edit(item) {
-        this.$set(item, "isEdit", true);
-    }
 
     /**鼠标移开 */
 }
