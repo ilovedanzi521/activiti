@@ -3,9 +3,11 @@ package com.win.dfas.bpm.controller.api;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.win.dfas.bpm.constant.BpmConstant;
 import com.win.dfas.bpm.dto.QueryAndStartFlowReqDTO;
 import com.win.dfas.bpm.entity.FlowAssigners;
 import com.win.dfas.bpm.service.BpmService;
+import com.win.dfas.bpm.vo.response.FlowNodeTaskTypeRepVO;
 import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.constant.BpmExceptionEnum;
@@ -19,6 +21,9 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,9 +111,17 @@ public class BpmTaskController {
         Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
         log.info("task 步骤:{}", task);
 
+        String processDefinitionId=task.getProcessDefinitionId(); // 获取流程定义id
+        ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
+        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey()); // 根据活动id获取活动实例
+
+        String taskType = (String) activityImpl.getProperties().get(BpmConstant.NAME);
+        FlowNodeTaskTypeRepVO repVO = new FlowNodeTaskTypeRepVO();
+        repVO.setProcessId(processId);
+        repVO.setTaskType(taskType);
 //        taskService.claim(task.getId(), flowTaskReqVO.getUserName());
 //        taskService.complete(task.getId(), BeanUtil.beanToMap(flowTaskReqVO));
-        return WinResponseData.handleSuccess("成功", (Object) processId);
+        return WinResponseData.handleSuccess("成功", repVO);
 
     }
 
@@ -200,8 +213,11 @@ public class BpmTaskController {
                     log.info("最后节点已完成！");
                     return WinResponseData.handleSuccess("最后节点已完成", historicProcessInstance.getEndTime());
                 }
-                List<String> list = bpmService.nextUserInfo(processId);
-                return WinResponseData.handleSuccess("成功", list);
+                String taskType = bpmService.nextTaskType(processId);
+                FlowNodeTaskTypeRepVO repVO = new FlowNodeTaskTypeRepVO();
+                repVO.setProcessId(processId);
+                repVO.setTaskType(taskType);
+                return WinResponseData.handleSuccess("成功", repVO);
             }
         } catch (Throwable throwable) {
             throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);

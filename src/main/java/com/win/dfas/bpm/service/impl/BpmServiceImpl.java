@@ -155,6 +155,16 @@ public class BpmServiceImpl implements BpmService {
         return  flowAssignersMapper.updateTaskTypeToModel(flowAssignersReqVO);
     }
 
+    @Override
+    public String nextTaskType(String processId) {
+        Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
+        String processDefinitionId=task.getProcessDefinitionId(); // 获取流程定义id
+        ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
+        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey()); // 根据活动id获取活动实例
+        String taskType = (String) activityImpl.getProperties().get(BpmConstant.NAME);
+        return taskType;
+    }
+
     private List<String> getUserInfo(Set<Expression> expressions) {
         List<String> userInfo = new ArrayList<>();
         for (Expression expression : expressions) {

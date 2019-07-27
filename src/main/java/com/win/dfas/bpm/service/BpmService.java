@@ -35,4 +35,6 @@ public interface BpmService {
     Set<String> listUserInfoToType(String tasktype);
 
     int updateTaskTypeToModel(FlowAssignersReqVO flowAssignersReqVO);
+
+    String nextTaskType(String processId);
 }

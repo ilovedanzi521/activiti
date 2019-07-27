@@ -50,8 +50,8 @@ export default class AxiosFun extends Vue {
                 (!authorization || authorization.trim() == "")
             ) {
                 // 判断是否有token数据
-                this.gotoIndex();
-                return;
+                // this.gotoIndex();
+                // return;
             }
 
             // 头部数据
