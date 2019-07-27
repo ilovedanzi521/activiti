@@ -85,6 +85,6 @@ public interface IDicFeignClient {
      * @author wanglei
      * @Date 2019/7/26/13:29
      */
-    @PostMapping("/api/prod/portfolio/list")
+    @PostMapping("/api/prod/assetUnit/list")
     WinResponseData queryInvestCompanyList(InvestCompanyDTO investCompanyDTO);
 }

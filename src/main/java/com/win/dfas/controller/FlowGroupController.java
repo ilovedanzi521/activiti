@@ -12,9 +12,13 @@
 
 package com.win.dfas.controller;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.common.vo.WinResponseData;
+import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.service.IFlowGroupService;
 import com.win.dfas.vo.request.ParamFlowGroupReqVO;
+import com.win.dfas.vo.request.ParamFlowGroupUpdateReqVO;
 import com.win.dfas.vo.response.DeleteEnum;
 import com.win.dfas.vo.response.ParamFlowGroupRepVO;
 import io.swagger.annotations.Api;
@@ -56,15 +60,28 @@ public class FlowGroupController {
     @ApiOperation(value = "流程组新增")
     @PostMapping
     public WinResponseData add(@ApiParam(value = "流程组新增参数") @RequestBody ParamFlowGroupReqVO paramFlowGroupReqVO) {
+        if(ObjectUtil.isEmpty(paramFlowGroupReqVO.getFlowName())){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.PARAMS_EMPTY);
+        }
         paramFlowService.add(paramFlowGroupReqVO);
-        return WinResponseData.handleSuccess("流程组新增成功");
+        return WinResponseData.handleSuccess("流程组新增成功",paramFlowGroupReqVO);
     }
 
     @ApiOperation(value = "流程组更新", notes = "<br/>1. 流程组CODE必传")
     @PutMapping
-    public WinResponseData update(@ApiParam(value = "流程组更新参数") @RequestBody ParamFlowGroupReqVO paramFlowGroupRepVO) {
-        paramFlowService.update(paramFlowGroupRepVO);
-        return WinResponseData.handleSuccess("流程组修改成功");
+    public WinResponseData update(@ApiParam(value = "流程组更新参数") @RequestBody ParamFlowGroupReqVO reqVO) {
+        log.info("updateReqVO",reqVO);
+        if(ObjectUtil.isEmpty(reqVO.getFlowName())){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.PARAMS_EMPTY);
+        }
+        int ret = paramFlowService.merger(reqVO);
+        String msg ="";
+        if(ret==0){
+            msg="流程信息新增成功";
+        }else{
+            msg="流程信息修改成功";
+        }
+        return WinResponseData.handleSuccess(msg);
     }
 
     @ApiOperation(value = "流程组删除", notes = "流程组逻辑删除")

@@ -14,6 +14,7 @@ package com.win.dfas.service;
 
 import com.github.pagehelper.PageInfo;
 import com.win.dfas.vo.request.ParamFlowGroupReqVO;
+import com.win.dfas.vo.request.ParamFlowGroupUpdateReqVO;
 import com.win.dfas.vo.request.ParamFlowReqVO;
 import com.win.dfas.vo.response.DeleteEnum;
 import com.win.dfas.vo.response.ParamFlowGroupRepVO;
@@ -80,4 +81,5 @@ public interface IFlowGroupService {
 
     DeleteEnum queryFlowByType(Long flowId);
 
+    int merger(ParamFlowGroupReqVO reqVO);
 }

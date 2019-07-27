@@ -11,6 +11,7 @@ import com.win.dfas.entity.FlowGroup;
 import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.service.IFlowGroupService;
 import com.win.dfas.vo.request.ParamFlowGroupReqVO;
+import com.win.dfas.vo.request.ParamFlowGroupUpdateReqVO;
 import com.win.dfas.vo.response.DeleteEnum;
 import com.win.dfas.vo.response.ParamFlowGroupRepVO;
 import com.win.dfas.vo.response.ParamFlowRepVO;
@@ -77,4 +78,17 @@ public class FlowGroupServiceImpl implements IFlowGroupService {
         return DeleteEnum.ONLY_CLASS;
     }
 
+    @Override
+    public int merger(ParamFlowGroupReqVO reqVO) {
+        FlowGroup flowGroup = flowGroupMapper.selectByPrimaryKey(reqVO.getId());
+        FlowGroup entity = new FlowGroup();
+        BeanUtils.copyProperties(reqVO, entity);
+        if(flowGroup==null){
+            flowGroupMapper.insert(entity);
+            return 0;
+        }else{
+            flowGroupMapper.updateByPrimaryKey(entity);
+            return 1;
+        }
+    }
 }

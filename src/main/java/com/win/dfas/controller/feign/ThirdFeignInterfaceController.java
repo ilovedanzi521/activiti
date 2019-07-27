@@ -108,15 +108,15 @@ public class ThirdFeignInterfaceController {
      * @Date 2019/7/26/13:25
      */
     private List<InvestCompanyItem> loadInvestCompanys() {
+        List<InvestCompanyItem> list = new ArrayList<>();
         try {
-            List<InvestCompanyItem> list = new ArrayList<>();
             List<InvestCompanyDTO> rtnList = new ArrayList<>();
             WinResponseData rtn = dicFeignClient.queryInvestCompanyList(new InvestCompanyDTO());
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
                 rtnList = JSONObject.parseArray(JSONObject.toJSONString(rtn.getData())).toJavaList(InvestCompanyDTO.class);
                 for (InvestCompanyDTO dto : rtnList) {
                     InvestCompanyItem info = new InvestCompanyItem();
-                    info.setCode(dto.getAssetUnitNo());
+                    info.setCode(dto.getNo());
                     info.setName(dto.getAssetUnitName());
                     list.add(info);
                 }
@@ -127,7 +127,7 @@ public class ThirdFeignInterfaceController {
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
         }
-        return null;
+        return list;
 
     }
 
@@ -161,7 +161,6 @@ public class ThirdFeignInterfaceController {
     private List<MarketItem> loadMarkets() {
         List<MarketItem> list = new ArrayList<>();
         try {
-
             List<MarketDTO> rtnList = new ArrayList<>();
             WinResponseData rtn = dicFeignClient.queryMarketList();
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
@@ -178,7 +177,7 @@ public class ThirdFeignInterfaceController {
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
         }
-        return null;
+        return list;
     }
     /**
      * @Title: loadSecurityTypes
@@ -191,7 +190,6 @@ public class ThirdFeignInterfaceController {
     private List<SecurityTypeItem> loadSecurityTypes() {
         List<SecurityTypeItem> list = new ArrayList<>();
         try {
-
             List<SecurityTypeDTO> rtnList = new ArrayList<>();
             WinResponseData rtn = dicFeignClient.querySecurityTypeList();
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
@@ -208,7 +206,7 @@ public class ThirdFeignInterfaceController {
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
         }
-        return null;
+        return list;
     }
 
     /**
@@ -240,12 +238,11 @@ public class ThirdFeignInterfaceController {
                     info.setName("交易方向" + i);
                     list.add(info);
                 }
-                return list;
             }
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
         }
-        return null;
+        return list;
 
     }
 
@@ -258,8 +255,8 @@ public class ThirdFeignInterfaceController {
      * @Date 2019/7/24/14:59
      */
     private List<InvestConstituteItem> loadInvestConstitutes() {
+        List<InvestConstituteItem> list = new ArrayList<>();
         try {
-            List<InvestConstituteItem> list3 = new ArrayList<>();
             List<InvestConstituteDTO> rtnList = new ArrayList<>();
             WinResponseData rtn = dicFeignClient.queryInvestConstituteList(new InvestConstituteDTO());
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
@@ -268,21 +265,20 @@ public class ThirdFeignInterfaceController {
                     InvestConstituteItem info = new InvestConstituteItem();
                     info.setCode(investConstituteDTO.getNo() + "");
                     info.setName(investConstituteDTO.getPortfolioName());
-                    list3.add(info);
+                    list.add(info);
                 }
             } else {
                 for (int i = 0; i < 5; i++) {
                     InvestConstituteItem info = new InvestConstituteItem();
                     info.setCode("11" + i);
                     info.setName("组合资产" + i);
-                    list3.add(info);
+                    list.add(info);
                 }
             }
-            return list3;
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
         }
-        return null;
+        return list;
     }
 
     /**
@@ -295,21 +291,21 @@ public class ThirdFeignInterfaceController {
      * @Date 2019/7/24/14:57
      */
     private List<ProductItem> loadProds() {
-        List<ProductItem> list5 = new ArrayList<>();
+        List<ProductItem> list = new ArrayList<>();
         WinResponseData rtn5 = dicFeignClient.queryProdList();
-        ;
         if (WinResponseData.WinRspType.SUCC.equals(rtn5.getWinRspType())) {
             log.info("{}", rtn5.getData());
-            list5 = (List<ProductItem>) rtn5.getData();
+            list = (List<ProductItem>) rtn5.getData();
         } else {
             for (int i = 0; i < 5; i++) {
                 ProductItem info = new ProductItem();
                 info.setCode("11" + i);
                 info.setName("产品" + i);
-                list5.add(info);
+                list.add(info);
             }
         }
-        return list5;
+        return list;
     }
+
 
 }
