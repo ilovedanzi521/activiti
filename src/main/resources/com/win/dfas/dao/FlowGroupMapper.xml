@@ -163,10 +163,6 @@
   <update id="updateByPrimaryKey" parameterType="com.win.dfas.entity.FlowGroup">
     update param_flowgroup
     set flow_name = #{flowName,jdbcType=VARCHAR},
-      level = #{level,jdbcType=CHAR},
-      father_id = #{fatherId,jdbcType=BIGINT},
-      create_user_id = #{createUserId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user_id = #{updateUserId,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
