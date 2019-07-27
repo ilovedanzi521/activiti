@@ -10,7 +10,7 @@
             <!--汇率查询表单-->
             <win_form :inline="true" class="form">
                 <div class="form_content">
-
+                    <el-button round @click="openAddDialog('exchangeForm')" icon="el-icon-plus" class="iconAddbutton">新增</el-button>
                     <win_form_item label="日期">
                         <win_date_picker v-model="timeArray" format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></win_date_picker>
                     </win_form_item>
@@ -21,11 +21,8 @@
                     </win_form_item>
                     <win_form_item>
                         <win_button @click="queryExchangeRate()" type="primary">查询</win_button>
-                        <win_button @click="reset()" type="info">重置</win_button>
+                        <win_button @click="reset()" type="default">重置</win_button>
                     </win_form_item>
-                </div>
-                <div class="form_content">
-                    <el-button round @click="openAddDialog('exchangeForm')" icon="el-icon-plus" class="iconAddbutton">新增</el-button>
                 </div>
             </win_form>
             <div style="padding:0 50px">
@@ -43,10 +40,10 @@
                         <template slot-scope="scope">
                             <div class="operate">
                                 <span @click="openUpdateDialog(scope.row)" style="padding:10px">
-                                    <i class="el-icon-edit"></i>修改
+                                    <i class="icon1 el-icon-edit"></i>修改
                                 </span>
                                 <span @click="openDeleteDialog(scope.row)">
-                                    <i class="el-icon-delete"></i>删除
+                                    <i class="icon2 el-icon-delete"></i>删除
                                 </span>
                             </div>
                         </template>
@@ -83,8 +80,8 @@ export default class Exchange extends ExchangeRateController {}
 .select {
     color: #f58a0d;
     border-right: solid 3px #f58a0d;
+    background: #323b54;
     outline: 0;
-    background-color: #ecf5ff;
 }
 .right {
     float: left;
@@ -92,6 +89,20 @@ export default class Exchange extends ExchangeRateController {}
 }
 .form {
     padding: 5px 50px;
+}
+
+.iconAddbutton {
+    background: #2b3551;
+    border: none;
+    color: #ffffff;
+}
+
+.icon1 {
+    color: #33cc33;
+}
+
+.icon2 {
+    color: #ff4d4d;
 }
 </style>
 

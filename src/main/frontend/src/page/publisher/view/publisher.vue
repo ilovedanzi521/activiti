@@ -38,10 +38,10 @@
                 <template slot-scope="scope">
                     <div class="operate">
                         <span @click="openUpdateDialog(scope.row)">
-                            <i class="el-icon-edit"></i>修改
+                            <i class="icon1 el-icon-edit"></i>修改
                         </span>
                         <span @click="openDeleteDialog(scope.row)">
-                            <i class="el-icon-delete"></i>删除
+                            <i class="icon2 el-icon-delete"></i>删除
                         </span>
                     </div>
                 </template>
@@ -59,4 +59,17 @@ import Component from "vue-class-component";
 export default class PublisherView extends PublisherController {}
 </script>
 <style lang="scss" scoped>
+.iconAddbutton {
+    background: #2b3551;
+    border: none;
+    color: #ffffff;
+}
+
+.icon1 {
+    color: #33cc33;
+}
+
+.icon2 {
+    color: #ff4d4d;
+}
 </style>

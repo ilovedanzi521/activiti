@@ -1,7 +1,7 @@
 <template>
-    <win_fdialog title="冻结用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="840px">
+    <win_fdialog title="冻结用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="840px" v-win_dialogDrag>
         <win_form :inline="true" :disabled="true">
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户编码">
                     <win_input placeholder="用户编码" v-model="userReqVo.user.userCode" :disabled="true"></win_input>
                 </win_form_item>
@@ -9,7 +9,7 @@
                     <win_input :placeholder="userReqVo.company.companyName" :disabled="true"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户名">
                     <win_input placeholder="用户名" v-model="userReqVo.user.userName"></win_input>
                 </win_form_item>
@@ -17,7 +17,7 @@
                     <win_input placeholder="用户名" v-model="userReqVo.user.departmentName"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="邮箱">
                     <win_input placeholder="邮箱" v-model="userReqVo.user.mailAddress"></win_input>
                 </win_form_item>
@@ -27,7 +27,7 @@
                     </win_select>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户类别">
 
                     <win_input placeholder="正常" :disabled="true" v-model="getUserType"></win_input>
@@ -36,7 +36,7 @@
                     <win_input placeholder="正常" :disabled="true" v-model="status"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="联系方式">
                     <win_input placeholder="联系方式" v-model="userReqVo.user.contactWay"></win_input>
                 </win_form_item>

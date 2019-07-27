@@ -171,7 +171,7 @@ export default class TransactionDirectionController extends TradeMarketControlle
 
     public queryDirectionCode() {
         this.service
-            .queryDirectionCode(this.code)
+            .queryDirectionCode(this.directionReqVO)
             .then((winResponseData: WinResponseData) => {
                 if (WinRspType.SUCC == winResponseData.winRspType) {
                     this.directionCodes = winResponseData.data;
@@ -180,5 +180,6 @@ export default class TransactionDirectionController extends TradeMarketControlle
     }
     public reset() {
         this.directionReqVO = new TransactionDirectionReqVO();
+        this.queryTransactionDirection();
     }
 }

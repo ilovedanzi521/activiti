@@ -7,15 +7,16 @@
 <template>
     <section class="header-container">
         <div class="logo-container">
-            <img src="../assets/image/logo.png" width="33" height="35" @click="handleGoLogin">
-            <span class="logo-text" @click="handleGoLogin">赢 · 投资</span>
+            <span @mouseenter="handleOpenMenu" @mouseleave="handleCloseMenu" class="win win-more"></span>
+            <!-- <img src="../assets/image/logo.png" width="33" height="35" @mouseenter="handleOpenMenu" @mouseleave="handleCloseMenu"> -->
+            <span class="logo-text">赢 · 投资</span>
         </div>
         <div class="user-container">
             <!-- <span :class="['has', 'icon-22']" @click="handleOpenCard"></span> -->
-            <span :class="['icon', 'el-icon-lock']" @click="handleLocking">
+            <span :class="['icon','win', 'win-lock']" @click="handleLocking">
                 <i>锁屏</i>
             </span>
-            <span :class="['icon', 'el-icon-date']" @click="handlefullScree">
+            <span :class="['icon', 'win','win-mask']" @click="handlefullScree">
                 <i>全屏</i>
             </span>
             <span class="user-img">
@@ -28,7 +29,7 @@
         <div class="card-container" v-if="cavrIsOpen">
             <Cavr></Cavr>
         </div>
-        <transition name="fade">
+        <transition name="hide">
             <div class="userInfo-container" v-if="layoutReqVO.luserInfoOpen">
                 <LuserInfo @modifyPassWord="modifyPassWord" :userInfoOpen="luserInfoOpen" @closeUserInfo="closeUserInfo"></LuserInfo>
             </div>
@@ -43,12 +44,15 @@ import Fast from "./LFast.vue";
 import Cavr from "./Lcard.vue";
 import LuserInfo from "./LuserInfo.vue";
 import { LayoutReqVO } from "./vo/LayoutVO";
+import { setTimeout, clearTimeout } from "timers";
 @Component({ components: { Fast, Cavr, LuserInfo } })
 export default class Header extends Vue {
-    d: string = "12121313121";
+    // d: string = "12121313121";
     cavrIsOpen: boolean = false;
     luserInfoOpen: boolean = false;
     passWordOpen: boolean = false;
+    isMenuOpen: boolean = false;
+    time;
     @Prop()
     layoutReqVO: LayoutReqVO;
     @Prop()
@@ -58,10 +62,24 @@ export default class Header extends Vue {
     handleOpenCard() {
         this.cavrIsOpen = !this.cavrIsOpen;
     }
-    handleGoLogin() {
-        this.$router.push({
-            path: "/login"
-        });
+
+    handleOpenMenu() {
+        if (this.time) {
+            clearTimeout(this.time);
+        }
+        if (this.layoutReqVO.secondMeunIsOpen) {
+            return;
+        }
+        this.time = setTimeout(() => {
+            this.layoutReqVO.secondMeunIsOpen = true;
+            this.isMenuOpen = true;
+        }, 500);
+    }
+
+    handleCloseMenu() {
+        if (!this.isMenuOpen) {
+            clearTimeout(this.time);
+        }
     }
     operationUser() {
         this.layoutReqVO.luserInfoOpen = !this.layoutReqVO.luserInfoOpen;
@@ -90,7 +108,7 @@ export default class Header extends Vue {
     right: 0;
     top: 0;
     height: 48px;
-    padding: 0 26px 0 16px;
+    padding: 0 40px 0 16px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -103,7 +121,7 @@ export default class Header extends Vue {
             vertical-align: middle;
             cursor: pointer;
             &.logo-text {
-                margin-left: 24px;
+                margin-left: 22px;
                 font-size: 22px;
                 color: $color-white;
             }
@@ -154,7 +172,7 @@ export default class Header extends Vue {
                 z-index: 9999;
                 position: absolute;
                 top: 22px;
-                right: 10px;
+                right: 22px;
                 cursor: pointer;
             }
         }
@@ -204,6 +222,19 @@ export default class Header extends Vue {
         }
         &:hover i {
             display: inline-block;
+        }
+    }
+    .win-more {
+        display: inline-block;
+        vertical-align: middle;
+        &:hover {
+            &::before {
+                color: #ff900d;
+            }
+        }
+        &::before {
+            color: #adb5bb;
+            font-size: 17px;
         }
     }
 }

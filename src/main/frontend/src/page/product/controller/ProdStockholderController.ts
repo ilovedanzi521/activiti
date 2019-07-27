@@ -64,6 +64,12 @@ export default class ProdStockholderController extends BaseController {
         });
 
         this.cacheDict();
+        /**
+         * 初始化分页
+         */
+        this.pageVO.pageSize = 10;
+        this.pageVO.pageNum = 1;
+        this.pageVO.total = 0;
     }
     /**
      * 缓存字典
@@ -182,8 +188,7 @@ export default class ProdStockholderController extends BaseController {
             .list(this.stockholderReqVO)
             .then((winResponseData: WinResponseData) => {
                 if (WinRspType.SUCC === winResponseData.winRspType) {
-                    console.log(winResponseData.data);
-                    this.tableData = winResponseData.data;
+                    this.pageVO = winResponseData.data;
                 }
             });
     }

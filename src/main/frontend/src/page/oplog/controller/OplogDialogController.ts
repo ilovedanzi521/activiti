@@ -17,12 +17,12 @@ export default class OplogDialogController extends BaseController {
     /** 日志详情 */
     @Prop()
     public details: RepVO;
-    /**数据准备对象 */
+    /** 数据准备对象 */
     public compareVO: any = CompareVO;
 
     /** 关闭弹框 */
     public closeFormDialog(formName: string): void {
-        let form: any = this.$refs[formName];
+        const form: any = this.$refs[formName];
         if (form) {
             form.resetFields();
         }
@@ -30,5 +30,6 @@ export default class OplogDialogController extends BaseController {
     }
 
     @Emit("query")
+    // tslint:disable-next-line: no-empty
     public query() {}
 }

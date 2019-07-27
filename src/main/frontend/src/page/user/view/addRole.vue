@@ -1,8 +1,8 @@
 <template>
     <div>
-        <win_fdialog title="新增部门角色" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="800px">
+        <win_fdialog title="新增部门角色" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="800px" v-win_dialogDrag>
             <win_form :inline="true" :model="role" :rules="rules" ref="role">
-                <div class="form_content">
+                <div>
                     <win_form_item label="所属公司">
                         <win_input :placeholder="userReqVo.company.companyName" :disabled="true"></win_input>
                     </win_form_item>
@@ -15,7 +15,7 @@
                         </win_select>
                     </win_form_item>
                 </div>
-                <div class="form_content">
+                <div>
                     <win_form_item label="角色编码">
                         <win_input placeholder="角色编码" v-model="userReqVo.role.roleCode" :disabled="true"></win_input>
                     </win_form_item>
@@ -23,7 +23,7 @@
                         <win_input placeholder="角色名称" v-model="role.role" :maxlength="50"></win_input>
                     </win_form_item>
                 </div>
-                <div class="form_content">
+                <div>
                     <win_form_item label="角色类型">
                         <win_select v-model="value" placeholder="请选择角色类型">
                             <win_option v-for="(item) in userReqVo.role.roleType" :key="item.id" :value="item.name" @click.native="changeRoleType(item)"></win_option>
@@ -33,7 +33,7 @@
                         <win_input placeholder="角色状态" v-model="userReqVo.role.roleStatus[0]" :disabled="true"></win_input>
                     </win_form_item>
                 </div>
-                <div class="form_content">
+                <div>
                     <win_form_item label="互斥角色">
                         <win_select v-model="excludeRole" clearable placeholder="请选择互斥角色">
                             <win_option v-for="item in userReqVo.company.companyRoleArray" :key="item.mutexRoleId" :value="item.roleName" @click.native="changeExcludeRoleItem(item)"></win_option>
@@ -45,7 +45,7 @@
                         </win_select>
                     </win_form_item>
                 </div>
-                <div class="form_content">
+                <div>
                     <win_form_item label="角色描述">
                         <win_input placeholder="角色描述" v-model="role.roleInfo" type="textarea" :rows="2"></win_input>
                     </win_form_item>

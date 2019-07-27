@@ -37,9 +37,9 @@ export default class ParamRivalBankAccountDialogController extends BaseControlle
         rivalBankAccountDicDataVO: RivalBankAccountDicDataVO;
     };
     /** service */
-    public service: ParamRivalBankAccountService = new ParamRivalBankAccountService();
+    private service: ParamRivalBankAccountService = new ParamRivalBankAccountService();
     /** 返回数据 */
-    public paramRivalBankAccountRepVO: ParamRivalBankAccountRepVO = new ParamRivalBankAccountRepVO();
+    private paramRivalBankAccountRepVO: ParamRivalBankAccountRepVO = new ParamRivalBankAccountRepVO();
     /** 数据字典 */
     private rivalBankAccountDicDataVO: RivalBankAccountDicDataVO = new RivalBankAccountDicDataVO();
     // dialog显示
@@ -61,7 +61,6 @@ export default class ParamRivalBankAccountDialogController extends BaseControlle
 
     /** 页面初始化 */
     private mounted() {
-        debugger;
         this.paramRivalBankAccountRepVO = new ParamRivalBankAccountRepVO();
         this.paramRivalBankAccountRepVO = this.fromFatherMsg.data;
         if (this.fromFatherMsg.type === OperationTypeEnum.ADD) {
@@ -112,7 +111,7 @@ export default class ParamRivalBankAccountDialogController extends BaseControlle
                 }
                 if (this.fromFatherMsg.type === OperationTypeEnum.DELETE) {
                     this.service
-                        .delete(this.paramRivalBankAccountRepVO)
+                        .delete(this.paramRivalBankAccountRepVO.id)
                         .then((response: WinResponseData) => {
                             this.dialogMessage(response);
                         });
@@ -143,7 +142,9 @@ export default class ParamRivalBankAccountDialogController extends BaseControlle
 
     /** 回调给父组件函数 */
     @Emit("bindSend")
-    private send(msg: WinRspType) {}
+    private send(msg: WinRspType) {
+        //
+    }
 }
 export const ParamRivalBankAccountConst = {
     /** 新增托管账户信息 */

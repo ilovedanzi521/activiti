@@ -9,19 +9,19 @@ export default class ParamExchangeRateReqVO extends BaseReqVO {
     /**
      * 源币种,默认为人民币
      */
-    sourceCurrencyCode: string = "CNY";
+    public sourceCurrencyCode: string = "CNY";
     /**
      * 目标币种
      */
-    targetCurrencyCode: string = "";
-    /**目标币种，多选 */
-    targetCurrencyCodes: string[] = [];
+    public targetCurrencyCode: string = "";
+    /** 目标币种，多选 */
+    public targetCurrencyCodes: string[] = [];
     /**
      * 开始日期
      */
-    dateStart: String = "";
+    public dateStart: string = "";
     /**
      * 结束日期
      */
-    dateEnd: String = "";
+    public dateEnd: string = "";
 }

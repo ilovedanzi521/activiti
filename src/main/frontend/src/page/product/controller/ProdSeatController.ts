@@ -4,7 +4,7 @@ import DicService from "../../dictionary/service/DicService";
 import ProdSeatService from "../service/ProdSeatService";
 import { DicRepVO, DicReqVO } from "../../dictionary/vo/DicVO";
 import { WinResponseData } from "../../common/vo/BaseVO";
-import { WinRspType } from "@win-frond-frameworks/biz-common";
+import { WinRspType } from "../../common/enum/BaseEnum";
 import { ProdSeatReqVO, ProdSeatRepVO, ProdSeatDicVO } from "../vo/ProdSeatVO";
 import DateUtils from "../../common/util/DateUtils";
 import { OperationTypeEnum } from "../../common/enum/OperationTypeEnum";

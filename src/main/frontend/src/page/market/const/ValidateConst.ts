@@ -10,8 +10,8 @@
  *
  ********************************************************/
 export const ValidateConst = {
-    /** 证券内码不能为空 */
-    SECURITY_CODE_NOT_NULL: "证券内码不能为空",
+    /** 证券代码不能为空 */
+    SECURITY_CODE_NOT_NULL: "证券代码不能为空",
     /** 基金类型不能为空 */
     FUND_TYPE_NOT_NULL: "基金类型不能为空",
     /** 投资分类不能为空 */

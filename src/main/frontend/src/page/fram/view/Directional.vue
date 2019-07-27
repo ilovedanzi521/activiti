@@ -44,14 +44,13 @@ export default class Directional extends Vue {
 <style lang="scss" scoped>
 .ifram-content {
     position: absolute;
-    top: 50px;
-    bottom: 0;
+    top: 0;
+    bottom: 22px;
     right: 0;
     left: 0;
-
     iframe {
         position: absolute;
-        top: 10px;
+        // top: 10px;
         left: 0;
         bottom: 0;
         right: 0;

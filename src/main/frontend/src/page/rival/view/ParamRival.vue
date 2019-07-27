@@ -4,10 +4,10 @@
       <div class="main-header" style="margin-bottom:0px;">
         <ParamRivalInfo> </ParamRivalInfo>
       </div>
-      <div ref="mainHeader" style="background-color:#273049;height:20px;">
+      <div ref="mainHeader" style="height:21px;">
         <win_row type="flex" style="" justify="center" align="middle">
-          <win_col style="text-align:center;">
-            <el-button type="text" :icon="isShowClass" @click="showMore" style="background-color:#273049;color:#FF900D;padding: 0px 10px;" round>关联信息</el-button>
+          <win_col style="text-align:center;background-color:#273049;">
+            <el-button type="text" :icon="isShowClass" @click="showMore" style="color:#FF900D;padding: 0px 10px;" round>关联信息</el-button>
           </win_col>
         </win_row>
       </div>
@@ -30,6 +30,7 @@ export default class ParamRival extends ParamRivalController {}
   flex: 1;
   flex-basis: auto;
   height: 98%;
+  background: "";
 }
 .main {
   display: flex;

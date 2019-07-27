@@ -47,7 +47,7 @@
       <win_row>
         <win_col :span="spanWidth">
           <win_form_item label="银行账号" prop="accountCode">
-            <el-input v-model.number="prodEscrowAccountInfo.accountCode" clearable maxlength="30"></el-input>
+            <win_input v-model.number="prodEscrowAccountInfo.accountCode" :num="[20,0]" clearable maxlength="30"></win_input>
           </win_form_item>
         </win_col>
         <win_col :span="spanWidth">

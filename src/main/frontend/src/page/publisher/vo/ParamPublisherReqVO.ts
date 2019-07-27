@@ -9,13 +9,13 @@ export default class ParamPublisherReqVO extends BaseReqVO {
     /**
      * 发行人编号
      */
-    publisherCode: string = "";
+    public publisherCode: string = "";
     /**
      * 发行人名称
      */
-    publisherName: string = "";
+    public publisherName: string = "";
     /**
      * 企业性质，字典key,多选
      */
-    enterpriseNatures: Array<string> = [];
+    public enterpriseNatures: string[] = [];
 }

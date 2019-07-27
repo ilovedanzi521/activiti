@@ -69,7 +69,7 @@ export default class ParamRivalInfoController extends BaseController {
     /** dialog显示控制 */
     private dialogVisible: boolean = false;
     // 表格默认高度
-    private tableHeight: number = 390;
+    private tableHeight: number = 400;
     /** 子组件显示的信息 */
     private cardNumber: {
         type: OperationTypeEnum;

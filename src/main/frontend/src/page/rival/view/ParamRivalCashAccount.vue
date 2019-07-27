@@ -8,13 +8,13 @@
       </el-button-group>
     </div>
 
-    <win_table :data="pageVO.list" max-height="600px">
+    <win_table :data="pageVO.list" @select-change="tableSelectionChange" @select-all="tableSelectionChange" max-height="150px">
       <win_table_column prop="rivalNo" label="对手序号" width="260"></win_table_column>
       <win_table_column prop="bankAccount" label="资金账号" width="240"></win_table_column>
       <win_table_column prop="bankAccountName" label="资金账户名称" width="240"></win_table_column>
       <win_table_column prop="bankName" label="资金开户行" width="220"></win_table_column>
       <win_table_column prop="bankPayNo" label="资金支付系统行" width="200"></win_table_column>
-      <win_table_column prop="stop" label="停用标志" width="200"></win_table_column>
+      <win_table_column prop="stop" label="停用标志" :formatter="formatDic" width="200"></win_table_column>
       <win_table_column prop="remark" label="备注" width="200"></win_table_column>
       <win_table_column label="操作" width="180">
         <template slot-scope="scope">

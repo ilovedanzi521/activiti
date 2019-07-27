@@ -23,7 +23,6 @@ import ProdSubConsignorService from "../../consignor/service/ProdSubConsignorSer
 import ProdConsignorService from "../../consignor/service/ProdConsignorService";
 import { ConsignorReqVO } from "../../consignor/vo/ConsignorReqVO";
 import ExchangeRateService from "../../currency/service/ExchangeRateService";
-import ParamCurrencyRepVO from "../../currency/vo/ParamCurrencyRepVO";
 
 @Component({
     components: { ProdInfoDialog },
@@ -42,7 +41,7 @@ import ParamCurrencyRepVO from "../../currency/vo/ParamCurrencyRepVO";
                     this.tableHeight =
                         newValue.offsetTop -
                         this.$refs.fundInfoTable.$el.offsetTop -
-                        70;
+                        38;
                 }
             }
         },
@@ -91,7 +90,7 @@ export default class ProductInfoController extends BaseController {
     // 选中多选行
     private multipleSelection: any[] = [];
     // 表格默认高度
-    private tableHeight: number = 390;
+    private tableHeight: number = 400;
 
     // 详情是否显示控制
     private isDetailAble = false;
@@ -137,7 +136,7 @@ export default class ProductInfoController extends BaseController {
     }
 
     /**
-     * 查询表格产品列表, 同步第一行数据
+     * 查询表格产品列表, 选中并同步第一行数据
      */
     public onFindSubmit() {
         this.productInfoForm.reqPageNum = this.pageVO.pageNum;
@@ -255,7 +254,7 @@ export default class ProductInfoController extends BaseController {
     public findConsignorList() {
         const conReqVO = new ConsignorReqVO();
         conReqVO.reqPageNum = 1;
-        conReqVO.reqPageSize = 2000;
+        conReqVO.reqPageSize = 10000;
         this.consignorService
             .findConsignorList(conReqVO)
             .then((res: WinResponseData) => {
@@ -273,7 +272,7 @@ export default class ProductInfoController extends BaseController {
     public findSubConsignorList() {
         const subConsignorReqVO = new ProdSubConsignorReqVO();
         subConsignorReqVO.reqPageNum = 1;
-        subConsignorReqVO.reqPageSize = 2000;
+        subConsignorReqVO.reqPageSize = 10000;
         this.subConsignorService
             .list(subConsignorReqVO)
             .then((res: WinResponseData) => {
@@ -354,6 +353,7 @@ export default class ProductInfoController extends BaseController {
     public reset() {
         this.productInfoForm.status = "";
         this.productInfoForm.name = "";
+        this.onFindSubmit();
     }
 
     /**
@@ -376,8 +376,12 @@ export default class ProductInfoController extends BaseController {
     }
     // 日期格式
     public DateFormatter({ cellValue, row, rowIndex, column, columnIndex }) {
-        const date = new Date(cellValue);
-        return DateUtils.dateFtt("yyyyMMdd HH:Mm:ss", date);
+        if (cellValue !== "" && cellValue !== null) {
+            const date = new Date(cellValue);
+            return DateUtils.dateFtt("yyyy-MM-dd hh:mm:ss", date);
+        } else {
+            return "";
+        }
     }
 
     /**

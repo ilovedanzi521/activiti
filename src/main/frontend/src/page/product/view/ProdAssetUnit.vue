@@ -8,8 +8,7 @@
             </ul>
         </div>
         <div>
-            <win_table :data="prodAssetUnit.list" :showSelection="false" @select-all="handleSelectAll" @select-change="handleSelectChange" max-height="159px" highlight-current-row v-loading="loading" @cell-dblclick="view"
-                element-loading-text="拼命加载中...">
+            <win_table :data="prodAssetUnit.list" :showSelection="false" @select-all="handleSelectAll" @select-change="handleSelectChange" max-height="159px" v-loading="loading" @cell-dblclick="view" element-loading-text="拼命加载中...">
                 <win_table_column prop="no" label="资产单元编号" header-align="center" align="left" sortable min-width="200"></win_table_column>
                 <win_table_column prop="assetUnitName" label="资产单元名称" header-align="center" align="left" sortable min-width="300"></win_table_column>
                 <win_table_column prop="status" label="状态" header-align="center" align="center" sortable min-width="200" :formatter="formatDic"></win_table_column>

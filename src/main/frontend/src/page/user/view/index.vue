@@ -2,10 +2,10 @@
     <div>
         <div class="tree-content">
             <div class="text-content">
-                <input type="text" placeholder="输入进行模糊搜索" v-model="filterText" disabled="true" />
+                <input type="text" placeholder="输入进行模糊搜索" v-model="filterText" />
             </div>
             <div class="tree-wrapp">
-                <win_tree :data="userReqVo.companArray" node-key="id" :accordion="true" :default-expanded-keys="compayArray" :highlight-current="true" ref="tree" @node-click="handleNodeClick">
+                <win_tree :data="userReqVo.companArray" node-key="id" :accordion="true" :default-expanded-keys="compayArray" :highlight-current="true" @node-click="handleNodeClick" :filter-node-method="filterNode" ref="tree2" v-tree>
                 </win_tree>
             </div>
         </div>
@@ -18,7 +18,7 @@
                         <input class="input" placeholder="请动态进行模糊搜索" disabled="true">
                         <span class="showTypeGroup">
                             <span @click="getUserTable(item.userStateType)" v-for="(item,index) in userReqVo.userStateArray" :key="item.userStateText">
-                                <i :class="[`showType${index}`,{'active':userReqVo.stateController.switchingUserState==item.userStateType}]"></i>
+                                <i :class="[`showType${index}`,{'active':userStates.indexOf(item.userStateType)>-1}]"></i>
                                 <em class="marginRight16">{{item.userStateText}}</em>
                             </span>
                         </span>
@@ -28,13 +28,13 @@
             </div>
 
             <div>
-                <UserTable :userReqVo="userReqVo" @forbidUser="httpForbidUser" @resetUser="httpResetUser" @cancelUser="httpCancelUser"></UserTable>
+                <UserTable :userReqVo="userReqVo" @forbidUser="httpForbidUser" @resetUser="httpResetUser" @cancelUser="httpCancelUser" @userPageQuery="httpUserPageQuery"></UserTable>
             </div>
         </div>
-        <component :is="userReqVo.stateController.switchFormType" @addCom="httpAddCompany" @editCom="httpEditCompany" @addDep="httpAdddepartment" @editDep="httpEditdepartment" @adduser="httpAddUser" @edituser="httpEditUser"
-            @changeDep="changeDep" @deletetCom="httpDeletetCom" @deleteDep="httpDeleteDepartment" @setDepartmentId="setDepartmentId" @handleShowRole="handleShowRole" @addRoleUserss="adduserRole" :userReqVo="userReqVo"
+        <component :is="userReqVo.stateController.switchFormType" :userReqVo="userReqVo" @addCom="httpAddCompany" @editCom="httpEditCompany" @addDep="httpAdddepartment" @editDep="httpEditdepartment" @adduser="httpAddUser"
+            @edituser="httpEditUser" @changeDep="changeDep" @deletetCom="httpDeletetCom" @deleteDep="httpDeleteDepartment" @setDepartmentId="setDepartmentId" @handleShowRole="handleShowRole" @addRoleUserss="adduserRole"
             @addRoleRight="addRoleRight" @httpEditRole="httpEditRole" @httpDeleteRole="httpDeleteRole" @httpForbidUser="httpForbidUser" @httpThawUser="httpThawUser" @httpCancelUser="httpCancelUser" @httpResetUserPassword="httpResetUser"
-            @validateUserCode="httpValidateUserCode">
+            @validateUserCode="httpValidateUserCode" @httpEliminateUser="httpEliminateUser">
         </component>
 
     </div>
@@ -44,11 +44,16 @@
 import UserController from "../controller/userController";
 import "../style/user.scss";
 import { symlink } from "fs";
+import { Watch } from "vue-property-decorator";
 export default class UserView extends UserController {
     activeName: string = "organizational";
     switchingUserState;
     filterText = "";
     inputval: string = "";
+    @Watch("filterText", { immediate: true, deep: true })
+    onChildChanged(val: string, oldVal: string) {
+        alert(111);
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -122,7 +127,7 @@ export default class UserView extends UserController {
     position: absolute;
     left: 224px;
     right: 0;
-    top: 10px;
+    top: 0;
 }
 .content {
     .fl {
@@ -151,13 +156,13 @@ export default class UserView extends UserController {
                     }
                 }
                 .showType1 {
-                    @include showType($bg: #2f4cbd);
+                    @include showType($bg: #ff4d4dff);
                     &.active + em {
                         color: #ff900d;
                     }
                 }
                 .showType2 {
-                    @include showType($bg: #ffd3a0);
+                    @include showType($bg: #546fd8ff);
                     &.active + em {
                         color: #ff900d;
                     }

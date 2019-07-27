@@ -11,25 +11,24 @@
  ********************************************************/
 
 import { Component } from "vue-property-decorator";
-import BaseController from "../../common/controller/BaseController";
-import ParamRivalCashAccountService from "../service/ParamRivalCashAccountService";
-import PageVO from "../../common/vo/PageVO";
-import {
-    ParamRivalCashAccountReqVO,
-    ParamRivalCashAccountRepVO
-} from "../vo/ParamRivalCashAccountVO";
 import { mapState } from "vuex";
-import DialogVO from "../../common/vo/DialogVO";
-import dateUtils from "../../common/util/DateUtils";
-import { OperationTypeEnum } from "../../common/enum/OperationTypeEnum";
-import RivalCashAccountDicDataVO from "../vo/RivalCashAccountDicDataVO";
-import { WinRspType } from "../../common/enum/BaseEnum";
-import { WinResponseData } from "../../common/vo/BaseVO";
 import { BaseConst } from "../../common/const/BaseConst";
-import ParamRivalCashAccountDialog from "../view/ParamRivalCashAccountDialog.vue";
-import { DicRepVO, DicReqVO } from "../../dictionary/vo/DicVO";
+import BaseController from "../../common/controller/BaseController";
+import { WinRspType } from "../../common/enum/BaseEnum";
+import { OperationTypeEnum } from "../../common/enum/OperationTypeEnum";
+import dateUtils from "../../common/util/DateUtils";
+import { WinResponseData } from "../../common/vo/BaseVO";
+import PageVO from "../../common/vo/PageVO";
 import DicService from "../../dictionary/service/DicService";
+import { DicRepVO, DicReqVO } from "../../dictionary/vo/DicVO";
 import { RivalValidateConst } from "../const/RivalValidateConst";
+import ParamRivalCashAccountService from "../service/ParamRivalCashAccountService";
+import ParamRivalCashAccountDialog from "../view/ParamRivalCashAccountDialog.vue";
+import {
+    ParamRivalCashAccountRepVO,
+    ParamRivalCashAccountReqVO
+} from "../vo/ParamRivalCashAccountVO";
+import RivalCashAccountDicDataVO from "../vo/RivalCashAccountDicDataVO";
 
 /**
  * <p>
@@ -96,7 +95,7 @@ export default class ParamRivalCashAccountController extends BaseController {
      * @author: zhongyuqi
      * @Date:   2019-07-10 17:37:53
      */
-    public mounted() {
+    private mounted() {
         this.reqVO = new ParamRivalCashAccountReqVO();
         this.$nextTick(() => {
             this.query();
@@ -111,9 +110,9 @@ export default class ParamRivalCashAccountController extends BaseController {
      * @author: zhongyuqi
      * @Date:   2019-07-10 17:37:53
      */
-    public query(): void {
+    private query(): void {
         this.reqVO.rivalNo = this.rivalInfo.rivalNo;
-        this.service.pageList(this.reqVO).then(res => {
+        this.service.pageList(this.reqVO).then((res: any) => {
             if (res.winRspType === "ERROR") {
                 this.win_message_error(res.msg);
             }
@@ -129,7 +128,7 @@ export default class ParamRivalCashAccountController extends BaseController {
      * @author: zhongyuqi
      * @Date:   2019-07-10 17:37:53
      */
-    public pageQuery(pageVO: PageVO) {
+    private pageQuery(pageVO: PageVO) {
         this.reqVO.reqPageNum = pageVO.pageNum;
         this.reqVO.reqPageSize = pageVO.pageSize;
         this.query();
@@ -144,7 +143,7 @@ export default class ParamRivalCashAccountController extends BaseController {
      * @author: zhongyuqi
      * @Date:   2019-07-10 17:37:53
      */
-    public reset(): void {
+    private reset(): void {
         this.reqVO = new ParamRivalCashAccountReqVO();
     }
 
@@ -156,13 +155,13 @@ export default class ParamRivalCashAccountController extends BaseController {
         /**
          * 交易市场,当天是否交易
          */
-        dic.parentDicCodeList = [RivalValidateConst.BANK_STOP];
+        dic.parentDicCodeList = [RivalValidateConst.CASH_STOP];
 
         this.dicService
             .dicMultipleAllSubList(dic)
             .then((res: WinResponseData) => {
                 this.rivalCashAccountDicDataVO.stopTypes =
-                    res.data[RivalValidateConst.BANK_STOP];
+                    res.data[RivalValidateConst.CASH_STOP];
             });
     }
 
@@ -228,6 +227,14 @@ export default class ParamRivalCashAccountController extends BaseController {
                 rivalCashAccountDicDataVO: this.rivalCashAccountDicDataVO
             };
         }
+    }
+
+    /**
+     * checkbox选中
+     * @param val
+     */
+    private tableSelectionChange(val: any) {
+        this.multipleSelection = val.selection;
     }
 
     /** 双击查看 */

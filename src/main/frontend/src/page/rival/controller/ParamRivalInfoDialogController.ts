@@ -160,11 +160,11 @@ export default class ParamRivalInfoDialogController extends BaseController {
 }
 export const ParamRivalInfoConst = {
     /** 新增基本信息 */
-    CREATETITLE: "新增基本信息",
+    CREATETITLE: "新增对手方基本信息",
     /** 查看基本信息 */
-    VIEWTITLE: "查看基本信息",
+    VIEWTITLE: "查看对手方基本信息",
     /** 修改基本信息 */
-    MODIFYTITLE: "修改基本信息",
+    MODIFYTITLE: "修改对手方基本信息",
     /** 删除基本信息 */
-    DELETETITLE: "删除基本信息"
+    DELETETITLE: "删除对手方基本信息"
 };

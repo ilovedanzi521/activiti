@@ -9,40 +9,42 @@ import ParamPublisherReqVO from "../vo/ParamPublisherReqVO";
  *
  */
 export default class ParamPublisherService {
-    /** 发行人查询*/
-    noPageList(queryVO: ParamPublisherReqVO): Promise<WinResponseData> {
+    /** 发行人查询 */
+    public noPageList(queryVO: ParamPublisherReqVO): Promise<WinResponseData> {
         return AxiosFun.post(
             AxiosFun.basicParameterServiceName + "/param/publisher/list",
             queryVO
         );
     }
 
-    /** 发行人分页查询*/
-    list(queryVO: ParamPublisherReqVO): Promise<WinResponseData> {
+    /** 发行人分页查询 */
+    public list(queryVO: ParamPublisherReqVO): Promise<WinResponseData> {
         return AxiosFun.post(
             AxiosFun.basicParameterServiceName + "/param/publisher/pageList",
             queryVO
         );
     }
 
-    /**新增发行人 */
-    add(paramPublisher: ParamPublisherRepVO): Promise<WinResponseData> {
+    /** 新增发行人 */
+    public add(paramPublisher: ParamPublisherRepVO): Promise<WinResponseData> {
         return AxiosFun.post(
             AxiosFun.basicParameterServiceName + "/param/publisher",
             paramPublisher
         );
     }
 
-    /**修改发行人 */
-    update(paramPublisher: ParamPublisherRepVO): Promise<WinResponseData> {
+    /** 修改发行人 */
+    public update(
+        paramPublisher: ParamPublisherRepVO
+    ): Promise<WinResponseData> {
         return AxiosFun.put(
             AxiosFun.basicParameterServiceName + "/param/publisher",
             paramPublisher
         );
     }
 
-    /**删除发行人*/
-    delete(id: number): Promise<WinResponseData> {
+    /** 删除发行人 */
+    public delete(id: number): Promise<WinResponseData> {
         return AxiosFun.winDelete(
             AxiosFun.basicParameterServiceName + "/param/publisher/" + id,
             null

@@ -1,20 +1,20 @@
 <template>
     <div class="mask">
-        <win_fdialog :title="this.userReqVo.stateController.switchCompany?'删除公司':'修改公司'" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px">
+        <win_fdialog :title="this.userReqVo.stateController.switchCompany?'删除公司':'修改公司'" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win_dialogDrag>
             <win_form :inline="true" :model="company" :rules="rules" ref="company">
-                <div class="form_content">
+                <div>
                     <win_form_item label="公司全称" prop="companyFullName">
                         <win_input v-model="company['companyFullName']" v-if="this.userReqVo.stateController.switchCompany" :disabled="true"></win_input>
                         <win_input v-model="company['companyFullName']" v-else></win_input>
                     </win_form_item>
                 </div>
-                <div class="form_content">
+                <div>
                     <win_form_item label="公司简称" prop="companySimpleName">
                         <win_input v-if="this.userReqVo.stateController.switchCompany" placeholder="请填写公司简称" v-model="company['companySimpleName']" :disabled="true"></win_input>
                         <win_input v-else placeholder="请填写公司简称" v-model="company['companySimpleName']"></win_input>
                     </win_form_item>
                 </div>
-                <div class="form_content">
+                <div>
                     <win_form_item label="公司编号" prop="companyCode">
                         <win_input placeholder="请填写公司编号" v-model="company.companyCode" v-if="this.userReqVo.stateController.switchCompany" :disabled="true"></win_input>
                         <win_input placeholder="请填写公司编号" v-model="company.companyCode" v-else :disabled="true"></win_input>

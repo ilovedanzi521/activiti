@@ -40,11 +40,6 @@ let routers = [
                 path: "/flow",
                 name: "Flow",
                 component: Flow
-            },
-            {
-                path: "/task",
-                name: "task",
-                component: Task
             }
         ]
     }

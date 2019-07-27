@@ -12,7 +12,7 @@
             </ul>
         </div>
         <div style="margin-top:10px;">
-            <win_table :data="prodSubConsignor.list" @select-all="handleSelectAll" @select-change="handleSelectChange" highlight-current-row v-loading="loading" @cell-dblclick="view" element-loading-text="拼命加载中...">
+            <win_table :data="prodSubConsignor.list" @select-all="handleSelectAll" @select-change="handleSelectChange" v-loading="loading" @cell-dblclick="view" element-loading-text="拼命加载中...">
                 <win_table_column prop="no" label="二级委托人编号" header-align="center" align="left" sortable min-width="130"></win_table_column>
                 <win_table_column prop="consignorName" label="所属委托人" header-align="center" align="left" sortable min-width="200"></win_table_column>
                 <win_table_column prop="name" label="二级委托人名称" header-align="center" align="left" sortable min-width="200"></win_table_column>

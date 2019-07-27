@@ -1,132 +1,175 @@
-<!--
- @component elementUI@2.7.2 Tree 组件二次开发
- -->
 <template>
-    <div v-loading="isLoading" class="comp-tree">
-        <el-button class="comp-tr-top"
-                   type="primary"
-                   size="small"
-                   @click="handleAddTop">添加顶级节点</el-button>
-        <!-- tree -->
-        <el-tree ref="SlotTree"
-                 :data="setTree"
-                 :props="defaultProps"
-                 :expand-on-click-node="false"
-                 highlight-current
-                 :node-key="NODE_KEY">
+    <div>
+        <div>
+            <el-button @click="addNode">增加</el-button>
+            <el-button @click="remove">删除</el-button>
+            <!-- <el-input :autofocus="true" v-model="sa"></el-input> -->
+        </div>
+        <el-tree class="filter-tree" :accordion="true" :default-expanded-keys="['1']" :data="treeData" :props="defaultProps" default-expand-all ref="tree2" @node-click="handleNodeClick">
             <div class="comp-tr-node" slot-scope="{ node, data }">
                 <!-- 编辑状态 -->
-                <template v-if="node.isEdit">
-                    <el-input v-model="data.name"
-                              autofocus
-                              size="mini"
-                              :ref="'slotTreeInput'+data[NODE_KEY]"
-                              @blur.stop="handleInput(node, data)"
-                              @keyup.enter.native="handleInput(node, data)"></el-input>
+                <template v-if="data.isEdit">
+                    <el-input size="mini" v-focus v-model="data.aa" @blurstop="handleBlur(data)" @mouseout="handleBlur(data)" :ref="'slotTreeInput'+data.id" :id="data.id"
+					
+					
+		
+					></el-input>
                 </template>
-
-                <!-- 非编辑状态 -->
                 <template v-else>
-                    <!-- 名称： 新增节点增加class（is-new） -->
-                    <span :class="[data[NODE_KEY] < NODE_ID_START ? 'is-new' : '', 'comp-tr-node--name']">
-							{{ node.label }}
-						</span>
-
-                    <!-- 按钮 -->
-                    <span class="comp-tr-node--btns">
-							<!-- 新增 -->
-							<el-button icon="el-icon-plus"
-                                       size="mini"
-                                       circle
-                                       type="primary"
-                                       @click="handleAdd(node, data)"></el-button>
-
-                        <!-- 编辑 -->
-							<el-button icon="el-icon-edit"
-                                       size="mini"
-                                       circle
-                                       type="info"
-                                       @click="handleEdit(node, data)"></el-button>
-
-                        <!-- 删除 -->
-							<el-button icon="el-icon-delete"
-                                       size="mini"
-                                       circle
-                                       type="danger"
-                                       @click="handleDelete(node, data)"></el-button>
-						</span>
+                    <span @dblclick="edit(data)">
+                        {{ data.aa }}
+                    </span>
                 </template>
             </div>
         </el-tree>
     </div>
+
 </template>
 
-<script>
-import tree from "../controller/tree";
-export default class Exchange extends tree {}
-</script>
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop, Emit } from "vue-property-decorator";
+import { win_tree } from "@win-frond-frameworks/biz-common";
 
-<style lang="scss">
-/* common */
+@Component({
+    components: {}
+})
+export default class FromDialog extends Vue {
+    level = 0;
+    sa = "111";
+    currentId = "";
+    firstId = "";
+    secondId = "";
+    threeId = "";
+    firtsIndex;
+    secondInde;
+    node;
+    element;
 
-// 显示按钮
-.show-btns {
-  opacity: 1;
-}
-
-/* common end */
-
-.comp-tree {
-  width: 100%;
-  max-width: 700px;
-  max-height: 80vh;
-  padding: 2em;
-  overflow: auto;
-//顶部按钮
-  .comp-tr-top {
-    width: 100px;
-    margin-bottom: 2em;
-  }
-  // 自定义节点
-  .comp-tr-node {
-    // label
-    .comp-tr-node--name {
-      display: inline-block;
-      line-height: 40px;
-      min-height: 40px;
-      // 新增
-      &.is-new {
-        font-weight: bold;
-      }
-    }
-    // button
-    .comp-tr-node--btns {
-      margin-left: 10px;
-      opacity: 0;
-      transition: opacity 0.1s;
-      .el-button {
-        transform: scale(0.8); // 缩小按钮
-        & + .el-button {
-          margin-left: -1px;
+    treeData = [
+        {
+            id: "1",
+            aa: "一级 1",
+            children: [
+                {
+                    id: "4",
+                    aa: "二级 1-1",
+                    children: [
+                        {
+                            id: "9",
+                            aa: "三级 1-1-1"
+                        },
+                        {
+                            id: "10",
+                            aa: "三级 1-1-2"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            id: "3",
+            aa: "一级 3",
+            children: [
+                {
+                    id: "7",
+                    aa: "二级 3-1",
+                    children: []
+                },
+                {
+                    id: "8",
+                    aa: "二级 3-2",
+                    children: []
+                }
+            ]
         }
-      }
+    ];
+
+    defaultProps = {
+        children: "children",
+        label: "aa"
+    };
+
+    handleNodeClick(element, node, VueComponent) {
+        this.level = node.level;
+        this.currentId = element.id;
+        console.log(this.currentId);
+        // this.node = node;
+        // this.element = element;
     }
-  }
-  // 高亮显示按钮
-  .is-current {
-    & > .el-tree-node__content {
-      .comp-tr-node--btns {
-        @extend .show-btns;
-      }
+    /**添加节点 */
+    addNode() {
+        //增加一级节点
+        if (!this.level) {
+            let obj = { id: "", aa: "", children: [] };
+            obj.id = Math.floor(Math.random() * 100) + "";
+            obj.aa = "新增节点1";
+            obj.children = [];
+            this.treeData.push(obj);
+        }
+        //增加二级节点
+        if (this.level == 1) {
+            for (let i = 0; i < this.treeData.length; i++) {
+                if (this.treeData[i].id == this.currentId) {
+                    let obj = { id: "", aa: "", children: [] };
+                    obj.id = Math.floor(Math.random() * 100) + "";
+                    obj.aa = "新增节点2";
+                    obj.children = [];
+                    this.treeData[i].children.push(obj);
+                    return;
+                }
+            }
+        }
+        //增加三级节点
+        if (this.level == 2) {
+            for (let i = 0; i < this.treeData.length; i++) {
+                for (let j = 0; j < this.treeData[i].children.length; j++) {
+                    if (this.treeData[i].children[j].id == this.currentId) {
+                        // if (!this.treeData[i].children[j].children) {
+                        //     alert(11);
+                        //     this.treeData[i].children[j].children = new Array();
+                        //     let obj = { id: "", aa: "" };
+                        //     obj.id = Math.floor(Math.random() * 100) + "";
+                        //     obj.aa = "新增节点3";
+                        //     this.treeData[i].children[j].children.push(obj);
+                        //     return;
+                        // }
+                        let obj = { id: "", aa: "" };
+                        obj.id = Math.floor(Math.random() * 100) + "";
+                        obj.aa = "新增节点3";
+                        this.treeData[i].children[j].children.push(obj);
+                        return;
+                    }
+                }
+            }
+        }
     }
-  }
-  // 悬浮显示按钮
-  .el-tree-node__content {
-    &:hover {
-      .comp-tr-node--btns {
-        @extend .show-btns;
-      }
+
+    remove() {
+        if (this.level == 1) {
+            for (let i = 0; i < this.treeData.length; i++) {
+                if (this.treeData[i].id == this.currentId) {
+                    if (this.treeData[i].children.length > 0) {
+                        alert("该流程下还用数据");
+                    } else {
+                        this.treeData.splice(i, 1);
+                        alert("删除成功");
+                    }
+                }
+            }
+        }
+        if (this.level == 3) {
+        }
     }
-  }
+
+    edit(item) {
+        this.$set(item, "isEdit", true);
+    }
+
+    handleBlur(item) {
+        this.$set(item, "isEdit", false);
+    }
 }
+</script>
+<style lang="scss" scoped>
 </style>

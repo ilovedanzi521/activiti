@@ -60,8 +60,27 @@ export default class ParamRivalTraderDialogController extends BaseController {
                 message: RivalValidateConst.TRADER_NAME_NOT_NULL,
                 trigger: "blur"
             }
+        ],
+        email: [
+            {
+                validator: this.isEmail,
+                trigger: "blur"
+            }
         ]
     };
+
+    private isEmail(rule, value, callback) {
+        const reg = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
+        if (!value) {
+            return RivalValidateConst.EMAIL_FORMAT_INCORRECT;
+        } else {
+            if (!reg.test(value)) {
+                callback(RivalValidateConst.EMAIL_FORMAT_INCORRECT);
+            } else {
+                callback();
+            }
+        }
+    }
     /** 页面初始化 */
     private mounted() {
         this.paramRivalTraderRepVO = new ParamRivalTraderRepVO();

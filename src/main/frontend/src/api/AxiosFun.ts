@@ -7,7 +7,6 @@ export default class AxiosFun extends Vue {
     public static basicParameterServiceName = "/dfbp-common-basicparameter";
 
     public static authCenterServiceName = "/dfas-auth-center";
-
     public static commonBpmServiceName = "/dfas-common-bpm";
 
     snowflake: Snowflake = Snowflake.getInstance();
@@ -51,8 +50,8 @@ export default class AxiosFun extends Vue {
                 (!authorization || authorization.trim() == "")
             ) {
                 // 判断是否有token数据
-                // this.gotoIndex();
-                // return;
+                this.gotoIndex();
+                return;
             }
 
             // 头部数据
@@ -99,8 +98,8 @@ export default class AxiosFun extends Vue {
                     if (error.response && error.response.status) {
                         if (!this.isDev()) {
                             if (error.response.status == 401) {
-                                // this.gotoIndex();
-                                // return;
+                                this.gotoIndex();
+                                return;
                             }
                         }
 
@@ -154,7 +153,13 @@ export default class AxiosFun extends Vue {
         if (localStorage.getItem("Authorization")) {
             localStorage.removeItem("Authorization");
         }
-        window.location.href = "#/login";
+        let currentHref = `${location.href.split("#")[0]}#/login`;
+
+        if (parent) {
+            parent.window.location.href = currentHref;
+        } else {
+            window.location.href = currentHref;
+        }
     }
 
     /**

@@ -10,13 +10,13 @@ export default class ParamCurrencyRepVO extends BaseRepVO {
     /**
      * 币种代码
      */
-    currencyCode: string;
+    public currencyCode: string;
     /**
      * 币种名称
      */
-    currencyName: string;
+    public currencyName: string;
     /**
      * 备注
      */
-    remark: string;
+    public remark: string;
 }

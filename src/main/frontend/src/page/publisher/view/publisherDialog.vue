@@ -58,20 +58,12 @@
                     </win_form_item>
                 </div>
             </win_form>
-            <div class="divCenter">
-                <div class="buttons">
-                    <win_button @click="closeFormDialog()" type="default">取消</win_button>
-                    <span v-if="dialogVO.action === 1">
-                        <win_button @click="addPublisher('publisherForm')" type="primary">确认</win_button>
-                    </span>
-                    <span v-else-if="dialogVO.action === 2">
-                        <win_button @click="updatePublisher('publisherForm')" type="primary">确认</win_button>
-                    </span>
-                    <span v-else>
-                        <win_button @click="deletePublisher('publisherForm')" type="primary">确认</win_button>
-                    </span>
-                </div>
-            </div>
+            <span slot="footer" class="dialog-footer">
+                <win_button @click="closeFormDialog()" type="default">取消</win_button>
+                <win_button v-if="dialogVO.action === 1" @click="addPublisher('publisherForm')" type="primary">确认</win_button>
+                <win_button v-else-if="dialogVO.action === 2" @click="updatePublisher('publisherForm')" type="primary">确认</win_button>
+                <win_button v-else @click="deletePublisher('publisherForm')" type="primary">确认</win_button>
+            </span>
         </win_dialog>
     </div>
 </template>

@@ -26,6 +26,12 @@ export default class ExchangeFlowService {
             ParamFlowGroupVO
         );
     }
+    updateFlowgroup(item) {
+        return AxiosFun.put(
+            AxiosFun.commonBpmServiceName + "/param/flowgroup/",
+            item
+        );
+    }
     getflowgroupid() {
         return AxiosFun.get(
             AxiosFun.commonBpmServiceName + "/param/flowgroup/getflowgroupid",

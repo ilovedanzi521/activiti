@@ -2,13 +2,13 @@ import { DateRangeType } from "../../common/enum/DateRangeType";
 import { DicRepVO } from "../../dictionary/vo/DicVO";
 import dateUtils from "../../common/util/DateUtils";
 
-/**用户类型 */
+/** 用户类型 */
 class User {
-    userId: string;
-    userName: string;
+    public userId: string;
+    public userName: string;
 }
 
-/**数据准备对象 */
+/** 数据准备对象 */
 export let CompareVO = {
     // 日志类型,下拉框数据
     logTypeSelect: new Array<DicRepVO>(),

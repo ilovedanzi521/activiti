@@ -11,25 +11,24 @@
  ********************************************************/
 
 import { Component } from "vue-property-decorator";
-import BaseController from "../../common/controller/BaseController";
-import ParamRivalBankAccountService from "../service/ParamRivalBankAccountService";
-import PageVO from "../../common/vo/PageVO";
-import {
-    ParamRivalBankAccountReqVO,
-    ParamRivalBankAccountRepVO
-} from "../vo/ParamRivalBankAccountVO";
 import { mapState } from "vuex";
-import DialogVO from "../../common/vo/DialogVO";
-import dateUtils from "../../common/util/DateUtils";
-import { OperationTypeEnum } from "../../common/enum/OperationTypeEnum";
-import RivalBankAccountDicDataVO from "../vo/RivalBankAccountDicDataVO";
-import { WinRspType } from "../../common/enum/BaseEnum";
-import { WinResponseData } from "../../common/vo/BaseVO";
 import { BaseConst } from "../../common/const/BaseConst";
-import ParamRivalBankAccountDialog from "../view/ParamRivalBankAccountDialog.vue";
-import { DicRepVO, DicReqVO } from "../../dictionary/vo/DicVO";
+import BaseController from "../../common/controller/BaseController";
+import { WinRspType } from "../../common/enum/BaseEnum";
+import { OperationTypeEnum } from "../../common/enum/OperationTypeEnum";
+import dateUtils from "../../common/util/DateUtils";
+import { WinResponseData } from "../../common/vo/BaseVO";
+import PageVO from "../../common/vo/PageVO";
 import DicService from "../../dictionary/service/DicService";
+import { DicRepVO, DicReqVO } from "../../dictionary/vo/DicVO";
 import { RivalValidateConst } from "../const/RivalValidateConst";
+import ParamRivalBankAccountService from "../service/ParamRivalBankAccountService";
+import ParamRivalBankAccountDialog from "../view/ParamRivalBankAccountDialog.vue";
+import {
+    ParamRivalBankAccountRepVO,
+    ParamRivalBankAccountReqVO
+} from "../vo/ParamRivalBankAccountVO";
+import RivalBankAccountDicDataVO from "../vo/RivalBankAccountDicDataVO";
 
 /**
  * <p>
@@ -96,7 +95,7 @@ export default class ParamRivalBankAccountController extends BaseController {
      * @author: zhongyuqi
      * @Date:   2019-07-10 17:37:53
      */
-    public mounted() {
+    private mounted() {
         this.reqVO = new ParamRivalBankAccountReqVO();
         this.$nextTick(() => {
             this.query();
@@ -111,9 +110,9 @@ export default class ParamRivalBankAccountController extends BaseController {
      * @author: zhongyuqi
      * @Date:   2019-07-10 17:37:53
      */
-    public query(): void {
+    private query(): void {
         this.reqVO.rivalNo = this.rivalInfo.rivalNo;
-        this.service.pageList(this.reqVO).then(res => {
+        this.service.pageList(this.reqVO).then((res: any) => {
             if (res.winRspType === "ERROR") {
                 this.win_message_error(res.msg);
             }
@@ -129,7 +128,7 @@ export default class ParamRivalBankAccountController extends BaseController {
      * @author: zhongyuqi
      * @Date:   2019-07-10 17:37:53
      */
-    public pageQuery(pageVO: PageVO) {
+    private pageQuery(pageVO: PageVO) {
         this.reqVO.reqPageNum = pageVO.pageNum;
         this.reqVO.reqPageSize = pageVO.pageSize;
         this.query();
@@ -144,7 +143,7 @@ export default class ParamRivalBankAccountController extends BaseController {
      * @author: zhongyuqi
      * @Date:   2019-07-10 17:37:53
      */
-    public reset(): void {
+    private reset(): void {
         this.reqVO = new ParamRivalBankAccountReqVO();
     }
 
@@ -156,13 +155,18 @@ export default class ParamRivalBankAccountController extends BaseController {
         /**
          * 交易市场,当天是否交易
          */
-        dic.parentDicCodeList = [RivalValidateConst.BANK_STOP];
+        dic.parentDicCodeList = [
+            RivalValidateConst.BANK_STOP,
+            RivalValidateConst.ESCROWPARTY
+        ];
 
         this.dicService
             .dicMultipleAllSubList(dic)
             .then((res: WinResponseData) => {
                 this.rivalBankAccountDicDataVO.stopTypes =
                     res.data[RivalValidateConst.BANK_STOP];
+                this.rivalBankAccountDicDataVO.escrowPartyTypes =
+                    res.data[RivalValidateConst.ESCROWPARTY];
             });
     }
 
@@ -182,6 +186,13 @@ export default class ParamRivalBankAccountController extends BaseController {
             return this.getLabelFromDic(
                 row.stop,
                 this.rivalBankAccountDicDataVO.stopTypes
+            );
+        }
+        // 停用标志
+        if (column.property === "escrowParty") {
+            return this.getLabelFromDic(
+                row.escrowParty,
+                this.rivalBankAccountDicDataVO.escrowPartyTypes
             );
         }
     }
@@ -229,6 +240,14 @@ export default class ParamRivalBankAccountController extends BaseController {
         }
     }
 
+    /**
+     * checkbox选中
+     * @param val
+     */
+    private tableSelectionChange(val: any) {
+        this.multipleSelection = val.selection;
+    }
+
     /** 双击查看 */
     private dblclick({ row }, event: Event) {
         this.dialogVisible = true;
@@ -258,23 +277,20 @@ export default class ParamRivalBankAccountController extends BaseController {
                     " 条信息, 是否继续?",
                 BaseConst.WARNING,
                 false
-            )
-                .then((res: any) => {
-                    const ids = [];
-                    multipleSelection.forEach(
-                        (element: ParamRivalBankAccountRepVO) => {
-                            ids.push(element.id);
-                        }
-                    );
-                    const idsStr: string = ids.join(",");
-                    this.service
-                        .delBatch(idsStr)
-                        .then((response: WinResponseData) => {
-                            this.message(response);
-                        });
-                })
-                // tslint:disable-next-line: no-empty
-                .catch(() => {});
+            ).then((res: any) => {
+                const ids = [];
+                multipleSelection.forEach(
+                    (element: ParamRivalBankAccountRepVO) => {
+                        ids.push(element.id);
+                    }
+                );
+                const idsStr: string = ids.join(",");
+                this.service
+                    .delBatch(idsStr)
+                    .then((response: WinResponseData) => {
+                        this.message(response);
+                    });
+            });
         } else {
             const row = multipleSelection[0];
             this.$nextTick(() => {

@@ -39,8 +39,8 @@ export class LayoutReqVO extends BaseReqVO {
     lockisOpen: boolean = false;
     otherPanel: boolean = false;
     nameLock: string = ""; //用户锁频参数
+    storageMenus: any[] = [];
     firstMents: FristMenus[] = [
-        { menuIcon: "icon-35", menuName: "产品2", id: "1111" }
         // { menuIcon: "icon-35", menuName: "产品2", id: "222" }
     ];
     fastMenus: FastMenus[] = [

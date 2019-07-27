@@ -1,7 +1,7 @@
 <template>
-    <win_fdialog title="注销用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="840px">
+    <win_fdialog :title="userReqVo.isUserTypeDelete===1?'剔除该用户':'注销用户'" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="840px" v-win_dialogDrag>
         <win_form :inline="true" :disabled="true">
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户编码">
                     <win_input placeholder="用户编码" v-model="userReqVo.user.userCode"></win_input>
                 </win_form_item>
@@ -9,7 +9,7 @@
                     <win_input :placeholder="userReqVo.company.companyName"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户名">
                     <win_input placeholder="用户名" v-model="userReqVo.user.userName"></win_input>
                 </win_form_item>
@@ -17,7 +17,7 @@
                     <win_input placeholder="用户名" v-model="userReqVo.user.departmentName"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="邮箱">
                     <win_input placeholder="邮箱" v-model="userReqVo.user.mailAddress"></win_input>
                 </win_form_item>
@@ -27,7 +27,7 @@
                     </win_select>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户类别">
                     <win_input placeholder="正常" v-model="getUserType"></win_input>
                 </win_form_item>
@@ -35,7 +35,7 @@
                     <win_input placeholder="用户状态" v-model="getUserState"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="联系方式">
                     <win_input placeholder="联系方式" v-model="userReqVo.user.contactWay"></win_input>
                 </win_form_item>
@@ -46,7 +46,8 @@
         </win_form>
         <div slot="footer" class="dialog-footer">
             <win_button @click="close" click="close">取 消</win_button>
-            <win_button type="primary" @click="handleCancle">确 认</win_button>
+            <win_button type="primary" @click="handleEliminate" v-if="userReqVo.isUserTypeDelete==1">剔除该用户</win_button>
+            <win_button type="primary" @click="handleCancle" v-if="userReqVo.isUserTypeDelete==2">注销该用户</win_button>
         </div>
     </win_fdialog>
 </template>
@@ -95,8 +96,16 @@ export default class AddUser extends Vue {
     dep: number = 0;
     @Prop()
     userReqVo: UserReqVO;
+    /**注销用户 */
     handleCancle() {
         this.$emit("httpCancelUser");
+    }
+    /**剔除用户 */
+    handleEliminate() {
+        this.$emit(
+            "httpEliminateUser",
+            this.userReqVo.user.roleNames[0].roleId
+        );
     }
     close() {
         this.userReqVo.stateController.switchFormType = "";

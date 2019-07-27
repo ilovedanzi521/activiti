@@ -1,34 +1,34 @@
 <template>
-    <div class="ps1">
+    <div class="ps1 contanier">
         <div class="fl">
             <ul>
-                <li>
+                <li class="liGroup">
                     <div class="fr">
-                        <span>证券类别:</span>
+                        <span>证券类别</span>
                         <win_select clearable v-model="typeReqVO.securityType" filterable placeholder="请选择">
                             <el-option v-for="item in SecurityCodeArray" :key="item.securityType" :label="item.securityTypeName" :value="item.securityType"></el-option>
                         </win_select>
                     </div>
                     <div class="fr">
-                        <span>资产类别:</span>
+                        <span>资产类别</span>
                         <win_select clearable v-model="typeReqVO.assetType" placeholder="请选择">
                             <el-option v-for="item in securityTypeDic.assetTypeDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></el-option>
                         </win_select>
                     </div>
                     <div class="fr">
-                        <span>申报单位:</span>
+                        <span>申报单位</span>
                         <win_select clearable v-model="typeReqVO.declarationUnit" placeholder="请选择">
                             <el-option v-for="item in securityTypeDic.declarationUnitDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></el-option>
                         </win_select>
                     </div>
                     <div class="fr">
-                        <span>资金冻结方式:</span>
+                        <span>资金冻结方式</span>
                         <win_select clearable v-model="typeReqVO.blockFundsType" placeholder="请选择">
                             <el-option v-for="item in securityTypeDic.blockFundsTypeDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></el-option>
                         </win_select>
                     </div>
 
-                    <div class="fr">
+                    <div class="fr botton_group">
                         <win_button style="width: 90px;" type="primary" icon="el-icon-search" @click="querySecurityType">查询</win_button>
                         <win_button style="width: 90px;" icon="el-icon-refresh" @click="reset">重置</win_button>
                     </div>
@@ -76,26 +76,34 @@ export default class SecurityType extends SecurityTypeController {}
 </script>
 <style lang="scss" scoped>
 @import "../../../assets/style/element.scss";
-
 .ps1 {
+    margin-top: 8px;
     span {
         display: inline-block;
-        width: 80px;
-        text-align: left;
+        text-align: right;
+        margin: 0 10px 0 13px;
         vertical-align: middle;
-        color: #fff;
+        color: #909399;
     }
 }
+.contanier {
+    padding-left: 28px;
+    box-sizing: border-box;
+}
 
-li {
+li.liGroup {
     width: 100%;
     overflow: hidden;
+    margin-bottom: 8px;
     .fl {
         float: left;
     }
     .fr {
         float: left;
-        margin-left: 30px;
+        // margin-left: 30px;
+    }
+    .botton_group {
+        margin-left: 62px;
     }
 }
 </style>

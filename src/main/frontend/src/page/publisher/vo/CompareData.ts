@@ -7,14 +7,14 @@ import ParamCurrencyRepVO from "../vo/ParamPublisherRepVO";
  *
  */
 export default class CompareData {
-    /**公司类别, 字典数据 */
-    companyCategorySelect: DicRepVO[] = [];
-    /**企业性质，字典数据 */
-    enterpriseNatureSelect: DicRepVO[] = [];
-    /**外部评级，字典数据 */
-    externalRating: DicRepVO[] = [];
-    /**内部评级，字典数据 */
-    internalRating: DicRepVO[] = [];
-    /**币种列表 */
-    repCurrencyVOs: ParamCurrencyRepVO[] = [];
+    /** 公司类别, 字典数据 */
+    public companyCategorySelect: DicRepVO[] = [];
+    /** 企业性质，字典数据 */
+    public enterpriseNatureSelect: DicRepVO[] = [];
+    /** 外部评级，字典数据 */
+    public externalRating: DicRepVO[] = [];
+    /** 内部评级，字典数据 */
+    public internalRating: DicRepVO[] = [];
+    /** 币种列表 */
+    public repCurrencyVOs: ParamCurrencyRepVO[] = [];
 }

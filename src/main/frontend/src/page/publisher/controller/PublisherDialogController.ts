@@ -12,20 +12,20 @@ import CompareData from "../vo/CompareData";
  */
 @Component
 export default class PublisherDialogController extends BaseController {
-    /**发行人service */
-    service: ParamPublisherService = new ParamPublisherService();
-    /**新增、保存对象 */
+    /** 发行人service */
+    public service: ParamPublisherService = new ParamPublisherService();
+    /** 新增、保存对象 */
     @Prop()
-    publisherVO: ParamPublisherRepVO;
-    /**打开、编辑、删除弹出框VO */
+    public publisherVO: ParamPublisherRepVO;
+    /** 打开、编辑、删除弹出框VO */
     @Prop()
-    dialogVO: DialogUtil;
-    /**加载前，数据准备 */
+    public dialogVO: DialogUtil;
+    /** 加载前，数据准备 */
     @Prop()
-    compareData: CompareData;
+    public compareData: CompareData;
 
-    /**新增、修改，表单验证规则 */
-    rules = {
+    /** 新增、修改，表单验证规则 */
+    public rules = {
         publisherCode: [
             {
                 required: true,
@@ -61,12 +61,12 @@ export default class PublisherDialogController extends BaseController {
         ]
     };
 
-    /**发行人新增 */
-    addPublisher(formName) {
-        let form: any = this.$refs[formName];
-        form.validate(valid => {
+    /** 发行人新增 */
+    public addPublisher(formName) {
+        const form: any = this.$refs[formName];
+        form.validate((valid) => {
             if (valid) {
-                this.service.add(this.publisherVO).then(res => {
+                this.service.add(this.publisherVO).then((res) => {
                     if (res.winRspType === "ERROR") {
                         this.win_message_error(res.msg);
                     } else {
@@ -78,12 +78,12 @@ export default class PublisherDialogController extends BaseController {
         });
     }
 
-    /**发行人修改 */
-    updatePublisher(formName) {
-        let form: any = this.$refs[formName];
-        form.validate(valid => {
+    /** 发行人修改 */
+    public updatePublisher(formName) {
+        const form: any = this.$refs[formName];
+        form.validate((valid) => {
             if (valid) {
-                this.service.update(this.publisherVO).then(res => {
+                this.service.update(this.publisherVO).then((res) => {
                     if (res.winRspType === "ERROR") {
                         this.win_message_error(res.msg);
                     } else {
@@ -95,9 +95,9 @@ export default class PublisherDialogController extends BaseController {
         });
     }
 
-    /**发行人删除 */
-    deletePublisher() {
-        this.service.delete(this.publisherVO.id).then(res => {
+    /** 发行人删除 */
+    public deletePublisher() {
+        this.service.delete(this.publisherVO.id).then((res) => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
             } else {
@@ -107,9 +107,9 @@ export default class PublisherDialogController extends BaseController {
         });
     }
 
-    /**关闭弹框 */
-    closeFormDialog() {
-        let form: any = this.$refs["publisherForm"];
+    /** 关闭弹框 */
+    public closeFormDialog() {
+        const form: any = this.$refs.publisherForm;
         if (form) {
             form.resetFields();
         }
@@ -117,5 +117,6 @@ export default class PublisherDialogController extends BaseController {
     }
 
     @Emit("query")
-    query() {}
+    // tslint:disable-next-line: no-empty
+    public query() {}
 }

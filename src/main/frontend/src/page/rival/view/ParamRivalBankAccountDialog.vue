@@ -9,7 +9,7 @@
         </win_col>
         <win_col :span="spanWidth">
           <win_form_item label="对手方名称" prop="rivalName">
-            <el-input v-model.number="paramRivalBankAccountRepVO.rivalName" :disabled="rivalDisabled" clearable></el-input>
+            <el-input v-model="paramRivalBankAccountRepVO.rivalName" :disabled="rivalDisabled" clearable></el-input>
           </win_form_item>
         </win_col>
         <win_col :span="spanWidth">
@@ -24,12 +24,22 @@
         </win_col>
         <win_col :span="spanWidth">
           <win_form_item label="托管机构" prop="escrowParty">
-            <el-input v-model="paramRivalBankAccountRepVO.escrowParty" clearable maxlength="30"></el-input>
+            <win_select v-model="paramRivalBankAccountRepVO.escrowParty" placeholder="请选择" clearable>
+              <win_option v-for="item in rivalBankAccountDicDataVO.escrowPartyTypes" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
+                <span style="float: left">{{ item.dicCode }}</span>
+                <span>{{ "&nbsp;"+item.dicExplain }}</span>
+              </win_option>
+            </win_select>
           </win_form_item>
         </win_col>
         <win_col :span="spanWidth">
           <win_form_item label="停用标志" prop="stop">
-            <el-input v-model="paramRivalBankAccountRepVO.stop" clearable maxlength="30"></el-input>
+            <win_select v-model="paramRivalBankAccountRepVO.stop" placeholder="请选择" clearable>
+              <win_option v-for="item in rivalBankAccountDicDataVO.stopTypes" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
+                <span style="float: left">{{ item.dicCode }}</span>
+                <span>{{ "&nbsp;"+item.dicExplain }}</span>
+              </win_option>
+            </win_select>
           </win_form_item>
         </win_col>
 

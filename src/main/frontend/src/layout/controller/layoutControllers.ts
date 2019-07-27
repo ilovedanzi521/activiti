@@ -4,7 +4,7 @@ import LayoutService from "../service/layoutService";
 import { LayoutReqVO } from "../vo/LayoutVO";
 import { WinRspType } from "../../page/common/enum/BaseEnum";
 import { WinResponseData } from "../../page/common/vo/BaseVO";
-
+import pinyin from "convertPinyin";
 import Header from "../Lheader.vue";
 import Aside from "../Laside.vue";
 import Meun from "../LMenu.vue";
@@ -16,6 +16,7 @@ import SecondMenu from "../LsecondMenu.vue";
 import Tabs from "../Ltab.vue";
 import Lock from "../Llock.vue";
 import Ltab from "../Ltab.vue";
+import Lmask from "../Lmark.vue";
 import BaseController from "../../page/common/controller/BaseController";
 
 @Component({
@@ -30,7 +31,8 @@ import BaseController from "../../page/common/controller/BaseController";
         PassWord,
         Tabs,
         Lock,
-        Ltab
+        Ltab,
+        Lmask
     }
 })
 export default class LayoutController extends BaseController {
@@ -75,7 +77,13 @@ export default class LayoutController extends BaseController {
                             parentId: next2.parentId,
                             menuName: next2.menuName,
                             id: next2.id,
-                            children: next2.children,
+                            // children: next2.children,
+                            children: next2.children.map(item => {
+                                return {
+                                    ...item,
+                                    firstPy: this.toPinyinFirst(item.menuName)
+                                };
+                            }),
                             menuAddress: next2.menuAddress
                         };
                         storageArray[next2.parentId].push(storageArea);
@@ -84,7 +92,13 @@ export default class LayoutController extends BaseController {
                             parentId: next2.parentId,
                             menuName: next2.menuName,
                             id: next2.id,
-                            children: next2.children,
+                            // children: next2.children,
+                            children: next2.children.map(item => {
+                                return {
+                                    ...item,
+                                    firstPy: this.toPinyinFirst(item.menuName)
+                                };
+                            }),
                             menuAddress: next2.menuAddress
                         };
                         storageArray[next2.parentId].push(storageArea);
@@ -287,6 +301,18 @@ export default class LayoutController extends BaseController {
         this.layoutReqVO.otherPanel = false;
         this.layoutReqVO.secondMeunIsOpen = false;
         this.layoutReqVO.stwichController.switchsScondMeunIsDetailed = false;
+        this.layoutReqVO.secondMenus = [...this.layoutReqVO.storageMenus];
+        this.layoutReqVO.firstMenuIndex = "";
+    }
+
+    /** 获取汉字首字母*/
+    toPinyinFirst(value) {
+        let d = pinyin(value);
+        let pinyinFirst = "";
+        d.forEach(element => {
+            pinyinFirst += element.substring(0, 1);
+        });
+        return pinyinFirst;
     }
 
     /***页面初始化功能*/

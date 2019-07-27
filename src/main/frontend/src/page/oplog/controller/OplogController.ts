@@ -32,12 +32,12 @@ export default class OplogController extends BaseController {
     /** 日志详情 */
     public details: RepVO = new RepVO();
 
-    /**开始、结束时间数组 */
-    timeArray: Date[] = [
+    /** 开始、结束时间数组 */
+    public timeArray: Date[] = [
         dateUtils.defaultStartTime(),
         dateUtils.defaultEndtTime()
     ];
-    /**数据准备对象 */
+    /** 数据准备对象 */
     public compareVO: any = CompareVO;
 
     /** 数据准备 */
@@ -56,10 +56,10 @@ export default class OplogController extends BaseController {
     /**
      * 用户查询
      */
-    remoteUserList(query) {
+    public remoteUserList(query) {
         if (query !== "") {
             setTimeout(() => {
-                CompareVO.userSelect = CompareVO.userList.filter(item => {
+                CompareVO.userSelect = CompareVO.userList.filter((item) => {
                     return (
                         item.userId.toLowerCase().indexOf(query.toLowerCase()) >
                         -1
@@ -70,15 +70,34 @@ export default class OplogController extends BaseController {
             this.compareVO.userSelect = CompareVO.userList;
         }
     }
+
+    /**
+     * 检查查询时间，是否超过半年
+     */
+    public checkTime(): boolean {
+        if (this.timeArray == null || this.timeArray.length != 2) {
+            return true;
+        }
+        // 获取初始时间毫秒数
+        const start = this.timeArray[0].getTime();
+        // 获取结束时间往前推半年的毫秒数, 还需要去掉23.59.59
+        const endtTime = new Date(this.timeArray[1]);
+        const newEndTime = new Date(endtTime.setMonth(endtTime.getMonth() - 6));
+        const end = newEndTime.getTime() - 24 * 60 * 60 * 1000 - 1;
+        return end > start;
+    }
     /** 日志查询 */
     public query(): void {
-        let _this = this;
+        if (this.checkTime()) {
+            this.win_message_error("用户查询数据量太大，需要分段查询");
+            return;
+        }
         this.setFormTime(this.timeArray);
-        this.service.queryLog(this.form).then(res => {
+        this.service.queryLog(this.form).then((res) => {
             if (res.winRspType === "ERROR") {
-                console.log(res.msg);
+                this.win_message_error(res.msg);
             }
-            _this.pageVO = res.data;
+            this.pageVO = res.data;
         });
     }
     /** 日志分页查询 */
@@ -101,6 +120,16 @@ export default class OplogController extends BaseController {
         this.dialogVO = this.dialogVO.getSeeDialog("日志详情");
         this.details = oplog;
     }
+    /** 日志类型,表格显示 */
+    public logTypeFormatter({ cellValue, row, rowIndex, column, columnIndex }) {
+        const logTypes = CompareVO.logTypeSelect;
+        for (const logType of logTypes) {
+            if (cellValue === logType.dicCode) {
+                return logType.dicExplain;
+            }
+        }
+        return "";
+    }
     /** 选中时间 */
     private setFormTime(times: Date[]): void {
         if (!times) {
@@ -113,15 +142,5 @@ export default class OplogController extends BaseController {
             times[0]
         );
         this.form.timeEnd = dateUtils.dateFtt("yyyy-MM-dd hh:mm:ss", times[1]);
-    }
-    /** 日志类型,表格显示 */
-    public logTypeFormatter({ cellValue, row, rowIndex, column, columnIndex }) {
-        const logTypes = CompareVO.logTypeSelect;
-        for (let i = 0; i < logTypes.length; i++) {
-            if (cellValue === logTypes[i].dicCode) {
-                return logTypes[i].dicExplain;
-            }
-        }
-        return "";
     }
 }

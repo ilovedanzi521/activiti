@@ -24,9 +24,11 @@ export default class SwitchController extends BaseController {
 
     switchOpLogList: Array<SwitchOpLogRepVO> = [];
 
-    switchRepVO: SwitchReqVO = new SwitchReqVO();
+    switchReqVO: SwitchReqVO = new SwitchReqVO();
 
     switchOpLogReqVO: SwitchOpLogReqVO = new SwitchOpLogReqVO();
+
+    switchPageVO: PageVO = new PageVO();
 
     opLogPageVO: PageVO = new PageVO();
 
@@ -37,9 +39,9 @@ export default class SwitchController extends BaseController {
      * @param event
      */
     handleTabClick(tab: any, event: any) {
-        this.switchRepVO.switchType = this.activeName;
+        this.switchReqVO.switchType = this.activeName;
 
-        this.switchlist(this.switchRepVO);
+        this.switchlist(this.switchReqVO);
     }
 
     /**
@@ -58,14 +60,20 @@ export default class SwitchController extends BaseController {
      * @param vo
      */
     switchlist(vo: SwitchReqVO) {
+        vo.reqPageNum = vo.reqPageNum || 1;
+        vo.reqPageSize = 20;
         this.swtichService
             .switchlist(vo)
             .then((winResponseData: WinResponseData) => {
                 if (WinRspType.SUCC == winResponseData.winRspType) {
-                    this.swtichList = winResponseData.data;
+                    this.swtichList = winResponseData.data.list;
+                    this.switchPageVO = winResponseData.data;
 
                     this.switchOpLogReqVO = new SwitchOpLogReqVO();
                     this.switchOpLogReqVO.switchType = vo.switchType;
+                    this.switchOpLogReqVO.reqPageNum = 1;
+                    this.switchOpLogReqVO.reqPageSize = 20;
+
                     this.switchlogList(this.switchOpLogReqVO);
                 }
             });
@@ -87,6 +95,17 @@ export default class SwitchController extends BaseController {
                     this.errorMessage(winResponseData.msg);
                 }
             });
+    }
+
+    /**
+     * 分页查询业务开关
+     * @param vo
+     */
+    switchPageQuery(vo: PageVO) {
+        this.switchReqVO.reqPageNum = vo.pageNum;
+        this.switchReqVO.reqPageSize = vo.pageSize;
+
+        this.switchlist(this.switchReqVO);
     }
 
     /**

@@ -30,7 +30,8 @@ import {
     win_message_box_warning,
     win_date_picker,
     win_checkbox,
-    win_tree
+    win_tree,
+    win_autocomplete
 } from "@win-frond-frameworks/biz-common";
 /**Win插件结束 */
 import { DicRepVO } from "../../dictionary/vo/DicVO";
@@ -57,7 +58,8 @@ import PageVO from "../vo/PageVO";
         win_row,
         win_col,
         win_checkbox,
-        win_tree
+        win_tree,
+        win_autocomplete
     }
 })
 export default class BaseController extends Vue {

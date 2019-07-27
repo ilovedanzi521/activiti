@@ -302,11 +302,9 @@ export default class ProdPortfolioController extends BaseController {
     }
 
     private clear() {
-        ProdPortfolioEntity.marketCode = [];
-        ProdPortfolioEntity.portfolioType = [];
-        ProdPortfolioEntity.transactionDirection = [];
-        ProdPortfolioEntity.tradeRule = [];
-        ProdPortfolioEntity.capitalAccount = [];
+        for (const key of Object.keys(ProdPortfolioEntity)) {
+            ProdPortfolioEntity[key] = [];
+        }
     }
 
     private split(val: string) {

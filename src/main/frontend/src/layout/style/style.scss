@@ -74,17 +74,28 @@
     position: absolute;
     top: 48px;
     bottom: 22px;
-    z-index: 9;
+    z-index: 1;
     left: 200px;
     background: #1f2640;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: all 0.2s linear;
+    transition: all .2s cubic-bezier(0.65, -0.38, 0.21, 1.07);
 }
 
 .fade-enter,
 .fade-leave-active {
+    transform: translateX(-100%);
+}
+
+
+.hide-enter-active,
+.hide-leave-active {
+    transition: all .3s linear;
+}
+
+.hide-enter,
+.hide-leave-active {
     opacity: 0;
 }

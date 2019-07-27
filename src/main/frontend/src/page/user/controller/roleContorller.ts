@@ -35,7 +35,7 @@ import {
         win_tabs
     }
 })
-export default class RoleController extends BaseController {
+export default class RoleController extends Vue {
     $set;
     dialogFormVisible: boolean = true;
     activeName: string = "menu";
@@ -200,7 +200,6 @@ export default class RoleController extends BaseController {
             }
             return;
         });
-        // console.log(this.checkArray);
     }
 
     /**
@@ -211,6 +210,7 @@ export default class RoleController extends BaseController {
         userService.initTree({}).then((winResponseData: WinResponseData) => {
             if (WinRspType.SUCC == winResponseData.winRspType) {
                 this.userReqVo.roleRightArray = winResponseData.data;
+                console.log(this.userReqVo.user);
             } else {
                 this.errorMessage(winResponseData.msg);
             }

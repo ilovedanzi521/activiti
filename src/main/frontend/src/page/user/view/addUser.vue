@@ -1,7 +1,7 @@
 <template>
-    <win_fdialog title="新增用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="800px">
+    <win_fdialog title="新增用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="800px" v-win_dialogDrag>
         <win_form :inline="true" :model="user" :rules="rules" ref="user">
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户编码" prop="userCode">
                     <win_input placeholder="用户编码" v-model="user.userCode" :maxlength="50"></win_input>
                 </win_form_item>
@@ -9,7 +9,7 @@
                     <win_input :placeholder="userReqVo.company.companyName" :disabled="true"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户名" prop="username">
                     <win_input placeholder="用户名" v-model="user.username" :maxlength="50"></win_input>
                 </win_form_item>
@@ -22,7 +22,7 @@
                     </win_select>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="邮箱" prop="email">
                     <win_input placeholder="邮箱" v-model="user.email"></win_input>
                 </win_form_item>
@@ -35,7 +35,7 @@
                     <win_input placeholder="隶属角色" v-model="this.userReqVo.role.role" :disabled="true"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户类别" prop="userType">
                     <win_select v-model="user.userType">
                         <win_option v-for="item in userReqVo.userTypeArray" :key="item.userType" :value="item.userType" :label="item.userTypeName"></win_option>
@@ -45,7 +45,7 @@
                     <win_input placeholder="正常" :disabled="true"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="联系方式" prop="tel">
                     <win_input placeholder="联系方式" v-model="user.tel"></win_input>
                 </win_form_item>

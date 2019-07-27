@@ -1,5 +1,5 @@
 import { BaseReqVO, BaseRepVO, WinResponseData } from "../../common/vo/BaseVO";
-
+import PageVO from "../../common/vo/PageVO";
 /**
  *
  *
@@ -163,38 +163,8 @@ export class UserReqVO extends BaseReqVO {
         companyName: "",
         companySimpleName: "",
         companyCode: "",
-        companyRoleArray: [
-            {
-                mutexRoleId: 1,
-                roleName: "经理",
-                roleCode: "1",
-                roleState: "1",
-                roleType: "1",
-                createUserId: "admin"
-            },
-            {
-                mutexRoleId: 2,
-                roleName: "经理阻力",
-                roleCode: "1",
-                roleState: "1",
-                roleType: "1",
-                createUserId: "admin"
-            }
-        ],
-        companyUserArray: [
-            {
-                id: "11111",
-                userName: "张三",
-                userId: "zhz",
-                userType: 1
-            },
-            {
-                id: "1122111",
-                userName: "李四",
-                userId: "zhz11",
-                userType: 1
-            }
-        ]
+        companyRoleArray: [],
+        companyUserArray: []
     };
     department: Department = {
         departmentId: "",
@@ -239,55 +209,10 @@ export class UserReqVO extends BaseReqVO {
     changeType: number = 1; //切换增加部门，增加公司，增加角色类型
     showTab: string = ""; //展示第一个公司信息的控制数据
     dialogFormVisible: boolean = false;
+    isUserTypeDelete: string = "";
 
     //加载，刷新展示树结构的公司，部门，角色数据
-    companArray: any[] = [
-        {
-            id: 55,
-            cid: 1,
-            version: "11",
-            label: "默认公司",
-            companyCode: "333433",
-            children: [
-                {
-                    id: 4,
-                    cid: 2,
-                    label: "默认部门",
-                    departmentCode: "34343",
-                    children: [
-                        {
-                            id: 9,
-                            cid: 3,
-                            label: "默认职位"
-                        },
-                        {
-                            id: 113,
-                            cid: 3,
-                            label: "默认职位2"
-                        }
-                    ]
-                },
-                {
-                    id: 6,
-                    cid: 2,
-                    label: "默认部门2",
-                    departmentCode: "34343",
-                    children: [
-                        {
-                            id: 9,
-                            cid: 3,
-                            label: "默认职位33"
-                        },
-                        {
-                            id: 113,
-                            cid: 3,
-                            label: "默认职位44"
-                        }
-                    ]
-                }
-            ]
-        }
-    ];
+    companArray: any[] = [];
 
     userArray: UserQuery[] = [];
     userStateArray: UserState[] = [
@@ -323,6 +248,10 @@ export class UserReqVO extends BaseReqVO {
     roleRightArray: any[] = []; //加载权限
     checkArray: any[] = []; //选择权限
     changeRole: {}; //选择修改的角色
+
+    reqParam: any = {};
+
+    userPageVO: PageVO = new PageVO();
 }
 
 /**

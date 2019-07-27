@@ -79,7 +79,6 @@ export default class ProdConsignorController extends BaseController {
                     this.win_message_error(res.msg);
                 } else {
                     this.pageVO = res.data;
-                    this.multipleSelection = [];
                 }
             });
     }
@@ -113,7 +112,7 @@ export default class ProdConsignorController extends BaseController {
         this.isDetailAble = true;
         this.$nextTick(() => {
             this.$refs.prodConsignorDialog.editClickme(
-                "修改" + row.code + " " + row.name,
+                "修改" + row.no + " " + row.name,
                 true,
                 row
             );
@@ -127,7 +126,7 @@ export default class ProdConsignorController extends BaseController {
         this.isDetailAble = true;
         this.$nextTick(() => {
             this.$refs.prodConsignorDialog.deleteClickme(
-                "删除" + row.code + " " + row.name,
+                "删除" + row.no + " " + row.name,
                 true,
                 row
             );
@@ -141,7 +140,7 @@ export default class ProdConsignorController extends BaseController {
         this.isDetailAble = true;
         this.$nextTick(() => {
             this.$refs.prodConsignorDialog.viewClickme(
-                "查看" + row.code + " " + row.name,
+                "查看" + row.no + " " + row.name,
                 true,
                 row
             );
@@ -170,7 +169,7 @@ export default class ProdConsignorController extends BaseController {
                     ids.push(element.id);
                 });
                 this.win_message_box_warning(
-                    "选中" + this.multipleSelection.length + "条数据，是否删除",
+                    "是否要将选中的记录执行【删除】操作",
                     "警告"
                 ).then((_: any) => {
                     this.consignorService
@@ -189,7 +188,7 @@ export default class ProdConsignorController extends BaseController {
                 const row = this.multipleSelection[0];
                 this.$nextTick(() => {
                     this.$refs.prodConsignorDialog.deleteClickme(
-                        "删除" + row.code + " " + row.name,
+                        "删除" + row.no + " " + row.name,
                         true,
                         row
                     );

@@ -2,7 +2,7 @@
   <div>
     <div style="margin-left:-30px;margin-top:5px;">
       <!-- <win_form :model="form" :inline="true" ref="form">
-        <win_form_item label="证券内码">
+        <win_form_item label="证券代码">
           <el-autocomplete v-model="form.securityCode" :fetch-suggestions="listAll" placeholder="请输入内容" @select="handleSelect" clearable></el-autocomplete>
         </win_form_item>
         <win_form_item label="资产类别">
@@ -30,7 +30,7 @@
 
     </div>
     <div style="margin-top:5px;">
-      <win_table ref="multipleTable" :showSelection="false" highlight-current-row :data="tableData.list" tooltip-effect="dark" @cell-dblclick="dblclick" @selection-change="tableSelectionChange" max-height="160">
+      <win_table ref="multipleTable" :showSelection="false" highlight-current-row :data="pageVO.list" tooltip-effect="dark" @cell-dblclick="dblclick" @selection-change="tableSelectionChange" max-height="160">
         <win_table_column prop="code" label="股东账号" width="140" sortable></win_table_column>
         <win_table_column prop="name" label="股东名称" width="180" sortable></win_table_column>
         <win_table_column prop="marketNo" label="交易市场" width="140" :formatter="formatDic" sortable></win_table_column>
@@ -50,7 +50,7 @@
     </div>
     <!--分页组件-->
 
-    <win_pagination v-bind:childMsg="tableData" @callFather="pageQuery"></win_pagination>
+    <win_pagination v-bind:childMsg="pageVO" @callFather="pageQuery"></win_pagination>
 
     <!-- 创建/修改/删除 begin-->
     <ProdStockholderDialog :toChildMsg="cardNumber" @bindSend="toFatherMsg" v-if="dialogVisible" @getFormData="formDataSubmit"></ProdStockholderDialog>

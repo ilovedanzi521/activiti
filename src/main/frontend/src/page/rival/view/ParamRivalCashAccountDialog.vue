@@ -1,6 +1,6 @@
 <template>
   <win_dialog :title="dialogTitle" :before-close="closeDialog" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" width="780px">
-    <win_form id="#create" :model="paramRivalCashAccountRepVO" ref="paramRivalCashAccount" label-width="130px">
+    <win_form id="#create" :model="paramRivalCashAccountRepVO" ref="ParamRivalCashAccount" label-width="130px">
       <win_row>
         <win_col :span="spanWidth">
           <win_form_item label="对手方序号" prop="rivalNo">
@@ -34,7 +34,12 @@
         </win_col>
         <win_col :span="spanWidth">
           <win_form_item label="停用标志" prop="stop">
-            <el-input v-model="paramRivalCashAccountRepVO.stop" clearable maxlength="30"></el-input>
+            <win_select v-model="paramRivalCashAccountRepVO.stop" placeholder="请选择" clearable>
+              <win_option v-for="item in rivalCashAccountDicDataVO.stopTypes" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
+                <span style="float: left">{{ item.dicCode }}</span>
+                <span>{{ "&nbsp;"+item.dicExplain }}</span>
+              </win_option>
+            </win_select>
           </win_form_item>
         </win_col>
 

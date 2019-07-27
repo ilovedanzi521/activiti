@@ -86,10 +86,14 @@ export default class ParamRivalCashAccountService {
      * @author: zhongyuqi
      * @Date:  2019-07-10 17:37:53
      */
-    public delete(reqVO: ParamRivalCashAccountRepVO): Promise<WinResponseData> {
+    public delete(id): Promise<WinResponseData> {
+        // return AxiosFun.winDelete(
+        //     AxiosFun.basicParameterServiceName + "/rival/cashAccount",
+        //     reqVO
+        // );
         return AxiosFun.winDelete(
-            AxiosFun.basicParameterServiceName + "/rival/cashAccount",
-            reqVO
+            AxiosFun.basicParameterServiceName + "/rival/cashAccount/" + id,
+            null
         );
     }
 

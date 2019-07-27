@@ -229,20 +229,27 @@ export default class TabType extends Vue {
     }
     .searchList {
         width: 100%;
-        padding: 0 0 42px 0;
+        padding: 0 0 10px 0;
         box-sizing: border-box;
         dt {
             float: left;
             font-size: 14px;
             color: #fff;
-            width: 174px;
+            width: 252px;
+            background: transparent;
             text-align: center;
-            padding: 16px 0;
+            height: 41px;
+            line-height: 41px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         dd {
-            padding: 6px 26px;
-            margin-left: 176px;
+            height: 41px;
+            line-height: 41px;
+            margin-left: 252px;
             background: #2b3451;
+
             .but {
                 display: inline-block;
                 border: none;
@@ -250,6 +257,7 @@ export default class TabType extends Vue {
                 background: transparent;
                 font-size: 14px;
                 color: #adb5bb;
+
                 cursor: pointer;
                 &:hover {
                     color: #ff900d;
@@ -260,7 +268,7 @@ export default class TabType extends Vue {
                 vertical-align: middle;
                 color: #fff;
                 font-size: 16px;
-                padding-left: 16px;
+                padding-left: 24px;
                 // border-left: 1px solid #fff;
                 &:first-of-type {
                     border-left: 1px solid transparent;
@@ -299,11 +307,13 @@ export default class TabType extends Vue {
         color: #f58a0d;
     }
     .hr {
-        position: absolute;
         height: 13px;
         width: 1px;
         background: #707070;
-        margin: 13px 4px;
+        display: inline-block;
+        position: relative;
+        top: 4px;
+        margin-left: 9px;
     }
     .type-title {
         color: #fff;

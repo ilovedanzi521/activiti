@@ -7,20 +7,20 @@ import { BaseReqVO } from "../../common/vo/BaseVO";
  *
  */
 export default class SysOplogReqVO extends BaseReqVO {
-    /**操作用户 */
-    operateUserIds: number[] = [];
-    /**日志类型 */
-    logTypes: Array<string> = [];
-    /**日志描述 */
-    logDescrip: string = "";
-    /**时间范围 */
-    timeRange: string = "";
-    /**开始时间 */
-    timeStart: string = "";
-    /**结束时间 */
-    timeEnd: string = "";
-    /**日志路径 */
-    logPath: string = "";
-    /**操作页面 */
-    operatePage: string = "";
+    /** 操作用户 */
+    public operateUserIds: number[] = [];
+    /** 日志类型 */
+    public logTypes: string[] = [];
+    /** 日志描述 */
+    public logDescrip: string = "";
+    /** 时间范围 */
+    public timeRange: string = "";
+    /** 开始时间 */
+    public timeStart: string = "";
+    /** 结束时间 */
+    public timeEnd: string = "";
+    /** 日志路径 */
+    public logPath: string = "";
+    /** 操作页面 */
+    public operatePage: string = "";
 }

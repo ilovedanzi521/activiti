@@ -1,21 +1,21 @@
 <template>
 
-    <win_fdialog title="新增角色用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px">
+    <win_fdialog title="新增角色用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win_dialogDrag>
         <win_form :inline="true">
-            <div class="form_content">
+            <div>
                 <win_form_item label="所属公司" prop="companyName">
                     <win_input v-model="this.userReqVo.company.companyName" :disabled="true"></win_input>
                 </win_form_item>
             </div>
 
-            <div class="form_content">
+            <div>
                 <win_form_item label="当前角色" prop="companyCode">
                     <win_input v-model="this.userReqVo.role.role" :disabled="true"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="添加用户">
-                    <win_select v-model="userIds" multiple  placeholder="请选择用户">
+                    <win_select v-model="userIds" multiple placeholder="请选择用户">
                         <win_option v-for="item in   userReqVo.company.companyUserArray" :key="item.id" :value="item.userId" :label="item.userName"></win_option>
                     </win_select>
                 </win_form_item>
@@ -72,12 +72,11 @@ export default class FromDialog extends Vue {
     userReqVo: UserReqVO;
 
     handleAddRoleUser() {
-        let params={
-          "roleId": this.userReqVo.role.roleId,
-          "userIds":this.userIds
-
-        }
-        this.$emit("addRoleUserss",params)
+        let params = {
+            roleId: this.userReqVo.role.roleId,
+            userIds: this.userIds
+        };
+        this.$emit("addRoleUserss", params);
     }
 
     close() {

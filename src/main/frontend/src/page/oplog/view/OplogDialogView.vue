@@ -60,9 +60,9 @@
                 </win_form_item>
             </div>
         </win_form>
-        <div class="divCenter">
+        <span slot="footer" class="dialog-footer">
             <win_button @click="closeFormDialog('oplogForm')" type="primary">确认</win_button>
-        </div>
+        </span>
     </win_dialog>
 </template>
 <script lang="ts">

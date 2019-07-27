@@ -1,5 +1,5 @@
 {
-    "name": "zhz",
+    "name": "win",
     "version": "1.0.0",
     "description": "A Vue.js project",
     "author": "zhz",
@@ -11,12 +11,13 @@
         "tslint": "tslint --project . src/**/*.ts src/**/*.tsx"
     },
     "dependencies": {
-        "@types/node": "^12.6.8",
+        "@types/node": "^12.6.6",
         "@win-frond-frameworks/biz-common": "^1.0.7",
-        "@win-frond-frameworks/trade-biz": "^1.0.5",
+        "@win-frond-frameworks/trade-biz": "^1.0.1",
         "awe-dnd": "^0.3.4",
         "axios": "^0.18.0",
         "big-integer": "^1.6.44",
+        "convertPinyin": "^1.1.0",
         "cross-env": "^5.2.0",
         "element-ui": "^2.9.1",
         "getmac": "^1.4.6",
@@ -29,7 +30,7 @@
         "vue-property-decorator": "^8.1.1",
         "vue-router": "^3.0.1",
         "vuex": "^3.1.1",
-        "vxe-table": "^1.8.15",
+        "vxe-table": "^1.7.8",
         "xe-utils": "^1.9.6"
     },
     "devDependencies": {
@@ -69,7 +70,7 @@
         "tslint": "^5.17.0",
         "tslint-config-standard": "^8.0.1",
         "tslint-loader": "^3.5.4",
-        "typescript": "^3.5.1",
+        "typescript": "^3.5.3",
         "uglifyjs-webpack-plugin": "^1.1.1",
         "url-loader": "^0.5.8",
         "vue-loader": "^13.3.0",

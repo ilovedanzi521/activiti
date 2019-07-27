@@ -2,16 +2,16 @@
  * @Author: mikey.zhaopeng 
  * @Date: 2019-05-29 10:30:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-07-12 17:49:30
+ * @Last Modified time: 2019-07-23 19:05:06
  */
 
 <template>
     <span class="fast-contanier">
-        <i :class="['icon',fastItem.menuIcon] " v-for="fastItem in layoutReqVO.fastMenus " @contextmenu.prevent="handleOpenDelPanel(fastItem.id)" :key="fastItem.menuName" :title="fastItem.menuName" @click="handleClick(fastItem)"
+        <i :class="['icon','win',fastItem.menuIcon] " v-for="fastItem in layoutReqVO.fastMenus " @contextmenu.prevent="handleOpenDelPanel(fastItem.id)" :key="fastItem.menuName" :title="fastItem.menuName" @click="handleClick(fastItem)"
             v-dragging="{ item: fastItem, list: layoutReqVO.fastMenus, group: 'fastItem' }">
             <span :class="['delte',{'active':fastItem.id===fastIndex}]">
                 <span @click="handleCloseDelPanel" class="close">关闭</span>
-                <i class="icon-2" @click="handleDeleteFastItem(fastItem.id)"></i>
+                <i class="icon-2" @click="handleDeleteFastItem(fastItem.id)">✖</i>
             </span>
             <b class="right-hr"></b>
         </i>
@@ -46,7 +46,6 @@ export default class FastMenus extends Vue {
     @Emit("gotoPath")
     handleClick(menu) {
         var returnMenu = Object.assign({}, menu);
-
         returnMenu.id = returnMenu.menuId;
         return returnMenu;
     }
@@ -59,7 +58,7 @@ export default class FastMenus extends Vue {
     padding-left: 48px;
     position: absolute;
     left: 152px;
-    top: 17px;
+    top: 14px;
     .icon {
         position: relative;
         display: inline-block;
@@ -69,6 +68,9 @@ export default class FastMenus extends Vue {
             .right-hr {
                 background: transparent;
             }
+        }
+        &::before {
+            color: #adb5bb;
         }
         cursor: pointer;
         &:hover {

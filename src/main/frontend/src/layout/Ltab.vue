@@ -154,10 +154,10 @@ export default class Tab extends Vue {
 <style lang="scss" scoped>
 .tabContaner {
     position: absolute;
-    width: 96%;
+    width: 100%;
     z-index: 1;
     top: 47px;
-    left: 72px;
+    left: 0;
     .more {
         position: absolute;
         display: inline-block;

@@ -18,7 +18,6 @@ export default class MarketService {
 
     /** 交易市场详情修改 */
     public update(updateVo: ExchangeMarketReqVO) {
-        console.log(updateVo);
         return AxiosFun.put(
             AxiosFun.basicParameterServiceName + "/market/update/market",
             updateVo
@@ -49,10 +48,10 @@ export default class MarketService {
     }
 
     /** 交易编码 */
-    public queryDirectionCode(marketCode: number) {
-        return AxiosFun.get(
-            AxiosFun.basicParameterServiceName + "/direction/find/code",
-            { marketCode }
+    public queryDirectionCode(directionReqVO: TransactionDirectionReqVO) {
+        return AxiosFun.post(
+            AxiosFun.basicParameterServiceName + "/api/direction/find/code",
+            directionReqVO
         );
     }
 }

@@ -163,7 +163,7 @@ export class ProdInfoDialogControl {
         this.isSubmitShow = true;
         this.isConsignorDisabled = true;
         this.isSubConsignorDisabled = true;
-        this.isCodeDisabled = true;
+        // this.isCodeDisabled = true;
     }
 
     /**

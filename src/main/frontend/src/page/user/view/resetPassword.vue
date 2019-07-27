@@ -1,23 +1,23 @@
 <template>
-    <win_fdialog title="修改密码" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="420px">
+    <win_fdialog title="修改密码" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="420px" v-win_dialogDrag>
         <win_form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm">
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户编码">
                     <win_input placeholder="用户名编码" :disabled="true" v-model="userReqVo.user.userCode"></win_input>
                 </win_form_item>
 
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="用户姓名">
                     <win_input placeholder="用户姓名" :disabled="true" v-model="userReqVo.user.userName"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="重置密码" prop="">
                     <win_input placeholder="请输入密码" autocomplete="off" type="password" v-model="ruleForm.pass"></win_input>
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="确认密码" prop="checkPass">
                     <win_input placeholder="请确认密码" v-model="ruleForm.checkPass" autocomplete="off" type="password"></win_input>
                 </win_form_item>

@@ -18,13 +18,14 @@
           </win_form_item>
         </win_col>
         <win_col :span="spanWidth">
-          <win_form_item label="联系方式" prop="phone">
-            <el-input v-model="paramRivalTraderRepVO.phone" clearable maxlength="30"></el-input>
+          <win_form_item label="联系电话" prop="phone">
+            <win_input v-model="paramRivalTraderRepVO.phone" :num="[20,0]" clearable maxlength="30">
+            </win_input>
           </win_form_item>
         </win_col>
         <win_col :span="spanWidth">
           <win_form_item label="QQ" prop="qq" class="dialogItem">
-            <el-input v-model="paramRivalTraderRepVO.qq" clearable maxlength="30"></el-input>
+            <win_input v-model="paramRivalTraderRepVO.qq" :num="[30,0]" clearable maxlength="30"></win_input>
           </win_form_item>
         </win_col>
         <win_col :span="spanWidth">

@@ -11,7 +11,9 @@ import "./assets/style/reset.scss";
 import "./assets/style/font.scss";
 import "@win-frond-frameworks/biz-common/dist/static/index.css";
 import filters from "../src/mixin/filters";
+import directives from "../src/mixin/directives";
 
+Vue.use(directives);
 import VxeTable from "vxe-table";
 //注册全局filters
 Object.keys(filters).forEach(k => Vue.filter(k, filters[k]));

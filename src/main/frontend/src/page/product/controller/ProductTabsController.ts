@@ -7,6 +7,7 @@
 
 import Vue from "vue";
 import Component from "vue-class-component";
+import BaseController from "../../common/controller/BaseController";
 import ProdAssetUnit from "../view/ProdAssetUnit.vue";
 import ProdPortfolio from "../view/ProdPortfolio.vue";
 import ProdEscrowAccountInfo from "../view/ProdEscrowAccountInfo.vue";
@@ -26,6 +27,6 @@ import ProdCapitalAccount from "../view/ProdCapitalAccount.vue";
         ProdSeat
     }
 })
-export default class ProductTabsController extends Vue {
+export default class ProductTabsController extends BaseController {
     private activeName: string = "first";
 }

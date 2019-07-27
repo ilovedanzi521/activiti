@@ -469,7 +469,7 @@ $--input-mini-height: 28px !default;
 /* Cascader
 -------------------------- */
 /// color||Color|0
-$--cascader-menu-font-color: $--color-text-regular !default;
+/* $--cascader-menu-font-color: $--color-text-regular !default;
 /// color||Color|0
 $--cascader-menu-selected-font-color: $--color-primary !default;
 $--cascader-menu-fill: $--fill-base !default;
@@ -480,7 +480,7 @@ $--cascader-menu-shadow: $--box-shadow-light !default;
 $--cascader-node-background-hover: $--background-color-base !default;
 $--cascader-node-color-disabled: $--color-text-placeholder !default;
 $--cascader-color-empty: $--color-text-placeholder !default;
-$--cascader-tag-background: #f0f2f5;
+$--cascader-tag-background: #f0f2f5; */
 
 /* Group
 -------------------------- */
@@ -699,59 +699,59 @@ $--tooltip-padding: 10px !default;
 /* Tag
 -------------------------- */
 /// color||Color|0
-$--tag-info-color: $--color-info !default;
-/// color||Color|0
-$--tag-primary-color: $--color-primary !default;
-/// color||Color|0
-$--tag-success-color: $--color-success !default;
-/// color||Color|0
-$--tag-warning-color: $--color-warning !default;
-/// color||Color|0
-$--tag-danger-color: $--color-danger !default;
+$--tag-info-color: mix(#fff, $--color-info, 60%);
+// /// color||Color|0
+// $--tag-primary-color: $--color-primary !default;
+// /// color||Color|0
+// $--tag-success-color: $--color-success !default;
+// /// color||Color|0
+// $--tag-warning-color: $--color-warning !default;
+// /// color||Color|0
+// $--tag-danger-color: $--color-danger !default;
 /// fontSize||Font|1
-$--tag-font-size: 12px !default;
-$--tag-border-radius: 4px !default;
-$--tag-padding: 0 10px !default;
+// $--tag-font-size: 12px !default;
+// $--tag-border-radius: 4px !default;
+// $--tag-padding: 0 10px !default;
 
 /* Tree
 -------------------------- */
 /// color||Color|0
-$--tree-node-hover-background-color: $--background-color-base !default;
+/* $--tree-node-hover-background-color: $--background-color-base !default;
 /// color||Color|0
 $--tree-font-color: $--color-text-regular !default;
 /// color||Color|0
-$--tree-expand-icon-color: $--color-text-placeholder !default;
+$--tree-expand-icon-color: $--color-text-placeholder !default; */
 
 /* Dropdown
 -------------------------- */
-$--dropdown-menu-box-shadow: $--box-shadow-light !default;
+/* $--dropdown-menu-box-shadow: $--box-shadow-light !default;
 $--dropdown-menuItem-hover-fill: $--color-primary-light-9 !default;
-$--dropdown-menuItem-hover-color: $--link-color !default;
+$--dropdown-menuItem-hover-color: $--link-color !default; */
 
 /* Badge
 -------------------------- */
 /// color||Color|0
-$--badge-background-color: $--color-danger !default;
+/* $--badge-background-color: $--color-danger !default;
 $--badge-radius: 10px !default;
 /// fontSize||Font|1
 $--badge-font-size: 12px !default;
 /// padding||Spacing|3
 $--badge-padding: 6px !default;
 /// height||Other|4
-$--badge-size: 18px !default;
+$--badge-size: 18px !default; */
 
 /* Card
 --------------------------*/
 /// color||Color|0
-$--card-border-color: $--border-color-lighter !default;
+/* $--card-border-color: $--border-color-lighter !default;
 $--card-border-radius: 4px !default;
 /// padding||Spacing|3
-$--card-padding: 20px !default;
+$--card-padding: 20px !default; */
 
 /* Slider
 --------------------------*/
 /// color||Color|0
-$--slider-main-background-color: $--color-primary !default;
+/* $--slider-main-background-color: $--color-primary !default;
 /// color||Color|0
 $--slider-runway-background-color: $--border-color-light !default;
 $--slider-button-hover-color: mix($--color-primary, black, 97%) !default;
@@ -765,12 +765,12 @@ $--slider-height: 6px !default;
 $--slider-button-size: 16px !default;
 $--slider-button-wrapper-size: 36px !default;
 $--slider-button-wrapper-offset: -15px !default;
-
+ */
 /* Steps
 --------------------------*/
-$--steps-border-color: $--disabled-border-base !default;
+/* $--steps-border-color: $--disabled-border-base !default;
 $--steps-border-radius: 4px !default;
-$--steps-padding: 20px !default;
+$--steps-padding: 20px !default; */
 
 /* Menu
 --------------------------*/
@@ -784,18 +784,18 @@ $--menu-item-hover-fill: $--color-primary-light-9 !default;
 
 /* Rate
 --------------------------*/
-$--rate-height: 20px !default;
-/// fontSize||Font|1
-$--rate-font-size: $--font-size-base !default;
-/// height||Other|3
-$--rate-icon-size: 18px !default;
-/// margin||Spacing|2
-$--rate-icon-margin: 6px !default;
-$--rate-icon-color: $--color-text-placeholder !default;
+// $--rate-height: 20px !default;
+// /// fontSize||Font|1
+// $--rate-font-size: $--font-size-base !default;
+// /// height||Other|3
+// $--rate-icon-size: 18px !default;
+// /// margin||Spacing|2
+// $--rate-icon-margin: 6px !default;
+// $--rate-icon-color: $--color-text-placeholder !default;
 
 /* DatePicker
 --------------------------*/
-$--datepicker-font-color: $--color-text-regular !default;
+/* $--datepicker-font-color: $--color-text-regular !default;
 /// color|1|Color|0
 $--datepicker-off-font-color: $--color-text-placeholder !default;
 /// color||Color|0
@@ -811,7 +811,7 @@ $--datepicker-inrange-hover-background-color: $--border-color-extra-light !defau
 $--datepicker-active-color: $--color-primary !default;
 /// color||Color|0
 $--datepicker-hover-font-color: $--color-primary !default;
-$--datepicker-cell-hover-color: #fff !default;
+$--datepicker-cell-hover-color: #fff !default; */
 
 /* Loading
 --------------------------*/
@@ -822,49 +822,49 @@ $--loading-fullscreen-spinner-size: 50px !default;
 
 /* Scrollbar
 --------------------------*/
-$--scrollbar-background-color: rgba($--color-text-secondary, 0.3) !default;
+/* $--scrollbar-background-color: rgba($--color-text-secondary, 0.3) !default;
 $--scrollbar-hover-background-color: rgba(
     $--color-text-secondary,
     0.5
-) !default;
+) !default; */
 
 /* Carousel
 --------------------------*/
 /// fontSize||Font|1
-$--carousel-arrow-font-size: 12px !default;
-$--carousel-arrow-size: 36px !default;
-$--carousel-arrow-background: rgba(31, 45, 61, 0.11) !default;
-$--carousel-arrow-hover-background: rgba(31, 45, 61, 0.23) !default;
-/// width||Other|4
-$--carousel-indicator-width: 30px !default;
-/// height||Other|4
-$--carousel-indicator-height: 2px !default;
-$--carousel-indicator-padding-horizontal: 4px !default;
-$--carousel-indicator-padding-vertical: 12px !default;
-$--carousel-indicator-out-color: $--border-color-hover !default;
+// $--carousel-arrow-font-size: 12px !default;
+// $--carousel-arrow-size: 36px !default;
+// $--carousel-arrow-background: rgba(31, 45, 61, 0.11) !default;
+// $--carousel-arrow-hover-background: rgba(31, 45, 61, 0.23) !default;
+// /// width||Other|4
+// $--carousel-indicator-width: 30px !default;
+// /// height||Other|4
+// $--carousel-indicator-height: 2px !default;
+// $--carousel-indicator-padding-horizontal: 4px !default;
+// $--carousel-indicator-padding-vertical: 12px !default;
+// $--carousel-indicator-out-color: $--border-color-hover !default;
 
 /* Collapse
 --------------------------*/
 /// color||Color|0
-$--collapse-border-color: $--border-color-lighter !default;
-/// height||Other|4
-$--collapse-header-height: 48px !default;
-/// color||Color|0
-$--collapse-header-background-color: $--color-white !default;
-/// color||Color|0
-$--collapse-header-font-color: $--color-text-primary !default;
-/// fontSize||Font|1
-$--collapse-header-font-size: 13px !default;
-/// color||Color|0
-$--collapse-content-background-color: $--color-white !default;
-/// fontSize||Font|1
-$--collapse-content-font-size: 13px !default;
-/// color||Color|0
-$--collapse-content-font-color: $--color-text-primary !default;
+// $--collapse-border-color: $--border-color-lighter !default;
+// /// height||Other|4
+// $--collapse-header-height: 48px !default;
+// /// color||Color|0
+// $--collapse-header-background-color: $--color-white !default;
+// /// color||Color|0
+// $--collapse-header-font-color: $--color-text-primary !default;
+// /// fontSize||Font|1
+// $--collapse-header-font-size: 13px !default;
+// /// color||Color|0
+// $--collapse-content-background-color: $--color-white !default;
+// /// fontSize||Font|1
+// $--collapse-content-font-size: 13px !default;
+// /// color||Color|0
+// $--collapse-content-font-color: $--color-text-primary !default;
 
 /* Transfer
 --------------------------*/
-$--transfer-border-color: $--border-color-lighter !default;
+/* $--transfer-border-color: $--border-color-lighter !default;
 $--transfer-border-radius: $--border-radius-base !default;
 /// height||Other|4
 $--transfer-panel-width: 200px !default;
@@ -879,7 +879,7 @@ $--transfer-panel-body-height: 246px !default;
 /// height||Other|4
 $--transfer-item-height: 30px !default;
 /// height||Other|4
-$--transfer-filter-height: 32px !default;
+$--transfer-filter-height: 32px !default; */
 
 /* Header
   --------------------------*/
@@ -895,23 +895,23 @@ $--main-padding: 20px !default;
 
 /* Timeline
 --------------------------*/
-$--timeline-node-size-normal: 12px !default;
+/* $--timeline-node-size-normal: 12px !default;
 $--timeline-node-size-large: 14px !default;
-$--timeline-node-color: $--border-color-light !default;
+$--timeline-node-color: $--border-color-light !default; */
 
 /* Backtop
 --------------------------*/
 /// color||Color|0
-$--backtop-background-color: $--color-white !default;
+/* $--backtop-background-color: $--color-white !default;
 /// color||Color|0
 $--backtop-font-color: $--color-primary !default;
 /// color||Color|0
-$--backtop-hover-background-color: $--border-color-extra-light !default;
+$--backtop-hover-background-color: $--border-color-extra-light !default; */
 
 /* Link
 --------------------------*/
 /// fontSize||Font|1
-$--link-font-size: $--font-size-base !default;
+/* $--link-font-size: $--font-size-base !default;
 /// fontWeight||Font|1
 $--link-font-weight: $--font-weight-primary !default;
 /// color||Color|0
@@ -929,14 +929,14 @@ $--link-warning-font-color: $--color-warning !default;
 /// color||Color|0
 $--link-danger-font-color: $--color-danger !default;
 /// color||Color|0
-$--link-info-font-color: $--color-info !default;
+$--link-info-font-color: $--color-text-placeholder !default; */
 /* Calendar
 --------------------------*/
 /// border||Other|4
-$--calendar-border: $--table-border !default;
+/* $--calendar-border: $--table-border !default;
 /// color||Other|4
 $--calendar-selected-background-color: #f2f8fe !default;
-$--calendar-cell-width: 85px !default;
+$--calendar-cell-width: 85px !default; */
 
 $--font-path: "~element-ui/lib/theme-chalk/fonts";
 @import "~element-ui/packages/theme-chalk/src/index";

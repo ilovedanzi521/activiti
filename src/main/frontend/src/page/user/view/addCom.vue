@@ -1,19 +1,19 @@
 <template>
-    <win_fdialog title="新增公司" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="420px">
+    <el-dialog title="新增公司" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="420px">
         <win_form :inline="true" :model="compan" :rules="rules" ref="compan">
-            <div class="form_content">
+            <div>
                 <win_form_item label="公司全称" prop="companyName">
-                    <win_input placeholder="请填写公司全称" v-model="compan.companyName" :maxlength="50"></win_input>
+                    <win_input placeholder="请填写公司全称" v-model="compan.companyName" :maxlength="50" v-focus></win_input>
                     <!-- <span class="must">*</span> -->
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="公司简称" prop="companySimpleName">
                     <win_input placeholder="请填写公司简称" v-model="compan.companySimpleName" :maxlength="50"></win_input>
                     <!-- <span class="must">*</span> -->
                 </win_form_item>
             </div>
-            <div class="form_content">
+            <div>
                 <win_form_item label="公司编号" prop="companyCode">
                     <win_input placeholder="请填写公司编号" v-model="compan.companyCode" :maxlength="5"></win_input>
                     <!-- <span class="must">*</span> -->
@@ -24,7 +24,7 @@
             <el-button @click="close">取 消</el-button>
             <el-button type="primary" @click="handleAddCom('compan')">确 认</el-button>
         </div>
-    </win_fdialog>
+    </el-dialog>
 </template>
 
 <script lang="ts">
@@ -43,6 +43,7 @@ import {
     win_checkboxGroup
 } from "@win-frond-frameworks/biz-common";
 import { CompanyClass, UserReqVO } from "../vo/UserVO";
+
 @Component({
     components: {
         win_tabs,
@@ -63,6 +64,18 @@ import { CompanyClass, UserReqVO } from "../vo/UserVO";
 })
 export default class AddCome extends Vue {
     dialogFormVisible: boolean = true;
+    startX;
+    startY;
+    isDrag: Boolean = false;
+    style = {
+        position: "absolute",
+        left: "400px",
+        top: "20px",
+        width: "422px",
+        height: "665px",
+        overflow: "hidden",
+        cursor: "move"
+    };
     $ref;
     rules = {
         companyName: [
@@ -88,20 +101,6 @@ export default class AddCome extends Vue {
         };
 
         this.$emit("addCom", comParams);
-        // let form: any = this.$refs[formName];
-        // form.validate(valid => {
-        //     if (valid) {
-        //         const comParams = {
-        //             companyFullName: this.compan.companyName,
-        //             companySimpleName: this.compan.companySimpleName,
-        //             companyCode: this.compan.companyCode
-        //         };
-        //         this.$emit("addCom", comParams);
-        //     } else {
-        //         alert("不能为空");
-        //         return false;
-        //     }
-        // });
     }
 
     close() {

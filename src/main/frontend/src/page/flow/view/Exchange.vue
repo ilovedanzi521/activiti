@@ -10,8 +10,19 @@
                     </el-button-group>
 
                     <!--左侧树形列表 -->
-                    <win_tree style="margin-top:10px; width:185px;top: 30px;bottom: 0;position: absolute" ref="SlotTree" node-key="id" accordion :default-expanded-keys="defaultExpandList" :data="treedata" @node-click="handleNodeClick"
-                        :highlight-current="true"></win_tree>
+                    <win_tree style="margin-top:10px; width:185px;top: 30px;bottom: 0;position: absolute" ref="SlotTree" node-key="id" :accordion="true" :default-expanded-keys="expandList" :data="treedata" :auto-expand-parent="false"
+                        @node-click="handleNodeClick" :highlight-current="true">
+                        <div class="comp-tr-node" slot-scope="{ node, data }">
+                            <template v-if="data.isEdit">
+                                <el-input size="mini" v-focus v-model.trim="data.label" @blur.stop="handleBlur(data)" @keyup.enter.native="handleBlur(data)" :ref="'slotTreeInput' +data.id" :id="data.id"></el-input>
+                            </template>
+                            <template v-else>
+                                <span @dblclick="edit(data)">
+                                    {{ data.label }}
+                                </span>
+                            </template>
+                        </div>
+                    </win_tree>
                 </div>
             </el-aside>
             <el-container>
@@ -211,7 +222,14 @@
 import ExchangeFlowController from "../controller/ExchangeFlowController";
 import Component from "vue-class-component";
 import ElementUI from "element-ui";
-export default class Exchange extends ExchangeFlowController {}
+export default class Exchange extends ExchangeFlowController {
+    /**鼠标聚焦 */
+    edit(item) {
+        this.$set(item, "isEdit", true);
+    }
+
+    /**鼠标移开 */
+}
 </script>
 <style lang="scss" scoped>
 /*@import "../../../assets/style/page.scss";*/

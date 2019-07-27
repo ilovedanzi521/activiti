@@ -217,4 +217,12 @@ export default class userService {
             vo
         );
     }
+
+    //注销用户
+    static eliminateUser(vo: UserReqVO): Promise<WinResponseData> {
+        return AxiosFun.post(
+            AxiosFun.authCenterServiceName + "/api/user/deleteRole ",
+            vo
+        );
+    }
 }

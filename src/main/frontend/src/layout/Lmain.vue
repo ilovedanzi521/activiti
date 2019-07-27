@@ -27,14 +27,13 @@ export default class Main extends Vue {
 @import "../assets/style/element.scss";
 .main-container {
     position: absolute;
-    left: 70px;
+    left: 0;
     right: 0;
-    top: 88px;
+    top: 84px;
     bottom: 0;
     background: $color-main2;
     padding: 0 0 0 0;
     overflow: hidden;
-    padding-top: 60px;
     box-sizing: border-box;
     cursor: pointer;
 }

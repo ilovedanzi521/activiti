@@ -8,10 +8,10 @@
       </el-button-group>
     </div>
 
-    <win_table ref="multipleTable" :data="pageVO.list" @cell-dblclick="dblclick" highlight-current-row tooltip-effect="dark" indexFixed selectionFixed max-height="440">
+    <win_table ref="multipleTable" :data="pageVO.list" @cell-dblclick="dblclick" @select-change="tableSelectionChange" @select-all="tableSelectionChange" max-height="150px">
       <win_table_column prop="escrowAccount" label="托管账号" width="260"></win_table_column>
       <win_table_column prop="escrowName" label="托管账户名称" width="260"></win_table_column>
-      <win_table_column prop="escrowParty" label="托管机构" width="240"></win_table_column>
+      <win_table_column prop="escrowParty" label="托管机构" :formatter="formatDic" width="240"></win_table_column>
       <win_table_column prop="stop" label="停用标志" :formatter="formatDic" width="240"></win_table_column>
       <win_table_column prop="createUserId" label="操作人" :formatter="formatDic" width="240"></win_table_column>
       <win_table_column prop="createTime" label="操作时间" :formatter="formatDic" width="240"></win_table_column>
@@ -23,7 +23,7 @@
       </win_table_column>
     </win_table>
     <!-- 分页组件 -->
-    <!-- <win_pagination v-bind:child-msg="pageVO" @callFather="pageQuery"></win_pagination> -->
+    <win_pagination v-bind:child-msg="pageVO" @callFather="pageQuery"></win_pagination>
     <!-- 创建/修改/删除 dialog -->
     <ParamRivalBankAccountDialog :fromFatherMsg="cardNumber" @bindSend="toFatherMsg" v-if="dialogVisible">
     </ParamRivalBankAccountDialog>

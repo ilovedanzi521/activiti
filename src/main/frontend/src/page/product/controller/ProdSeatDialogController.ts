@@ -186,8 +186,6 @@ export default class ProdSeatDialogController extends BaseController {
     }
     // 席位代码下拉选择处理
     private handleSelect(item) {
-        console.log(1555999);
-        console.log(item);
         // 带出该席位的信息
         this.service.seatMessage(item.key).then((response: WinResponseData) => {
             if (response.winRspType === "ERROR") {

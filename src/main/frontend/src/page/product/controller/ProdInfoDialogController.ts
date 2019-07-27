@@ -181,28 +181,18 @@ export default class ProdInfoDialogController extends BaseController {
      */
     public defaultConsignorList() {
         const consignorList = this.prodSelectEntity.consignorSelect;
-        // 如果没有选中目录，则默认选中第一项
-        if (
-            consignorList.length > 0 &&
-            this.mandator.type === ConsignorTypeEnum.NONETYPE
-        ) {
-            this.form.consignorNo = consignorList[0].no;
-            this.subConsignorSelectFun(this.form.consignorNo);
-        }
-        // 如果选中了一级委托人
-        if (this.mandator.type === ConsignorTypeEnum.CONSIGNORTYPE) {
-            this.form.consignorNo = this.mandator.firstMandator;
-            this.subConsignorSelectFun(this.form.consignorNo);
-            this.form.subConsignorNo = this.mandator.secondMandator;
-            this.prodDialogControl.isConsignorDisabled = true;
-        }
-        // 如果选中了二级委托人
-        if (this.mandator.type === ConsignorTypeEnum.SUBCONSIGNORTYPE) {
-            this.form.consignorNo = this.mandator.firstMandator;
-            this.subConsignorSelectFun(this.form.consignorNo);
-            this.form.subConsignorNo = this.mandator.secondMandator;
-            this.prodDialogControl.isConsignorDisabled = true;
-            this.prodDialogControl.isSubConsignorDisabled = true;
+        // 一级委托人下拉列表不为空
+        if (consignorList.length > 0) {
+            // 如果没有选中目录，则默认选中第一项
+            if (this.mandator.type === ConsignorTypeEnum.NONETYPE) {
+                this.form.consignorNo = consignorList[0].no;
+                this.subConsignorSelectFun(this.form.consignorNo);
+            } else {
+                // 如果选中了一级委托人或者二级委托人
+                this.form.consignorNo = this.mandator.firstMandator;
+                this.subConsignorSelectFun(this.form.consignorNo);
+                this.form.subConsignorNo = this.mandator.secondMandator;
+            }
         }
     }
 
@@ -231,13 +221,10 @@ export default class ProdInfoDialogController extends BaseController {
         }
         this.prodSelectEntity.subConsignorSelect = subConsignorSelect;
         if (subConsignorSelect.length < 1) {
-            this.form.subConsignorNo = 0;
+            this.form.subConsignorNo = null;
         }
-        // 如果没有选中目录,默认选中第一项
-        if (
-            this.prodSelectEntity.subConsignorSelect.length > 0 &&
-            this.mandator.type === ConsignorTypeEnum.NONETYPE
-        ) {
+        // 如果没有选中,默认选中第一项
+        if (this.prodSelectEntity.subConsignorSelect.length > 0) {
             this.form.subConsignorNo = this.prodSelectEntity.subConsignorSelect[0].no;
         }
     }

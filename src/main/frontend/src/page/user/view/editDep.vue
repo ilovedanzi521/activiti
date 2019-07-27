@@ -1,14 +1,14 @@
 <template>
     <div class="mask">
-        <win_fdialog :title="userReqVo.stateController.switchDepartment?'删除部门':'修改部门'" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px">
+        <win_fdialog :title="userReqVo.stateController.switchDepartment?'删除部门':'修改部门'" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win_dialogDrag>
             <win_form :inline="true" :model="department" :rules="rules" ref="department">
-                <div class="form_content">
+                <div>
                     <win_form_item label="所属公司">
                         <win_input :placeholder="userReqVo.company.companyName" :disabled="true"></win_input>
                     </win_form_item>
                 </div>
 
-                <div class="form_content">
+                <div>
                     <win_form_item label="部门名称" v-if="userReqVo.stateController.switchDepartment">
                         <win_input placeholder="请填写部门名称" v-model="department.departmentname" :disabled="true" :maxlength="50"></win_input>
                     </win_form_item>
@@ -17,7 +17,7 @@
                     </win_form_item>
                 </div>
 
-                <div class="form_content">
+                <div>
                     <win_form_item label="部门编号">
                         <win_input placeholder="请填写部门编号" v-model="userReqVo.department.departmentCode" :disabled="true"></win_input>
                     </win_form_item>

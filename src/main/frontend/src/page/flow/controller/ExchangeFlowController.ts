@@ -84,21 +84,18 @@ export default class ExchangeFlowController extends BaseController {
 
     /**开始时间、结束时间 */
     timeArray: Date[] = [new Date(), new Date()];
-    defaultExpandList: number[] = [];
+    expandList: number[] = [];
     treedata: any[] = [
         {
+            id: "1",
+            level: "1",
             label: "默认流程分类",
-            children: [
-                {
-                    label: "默认流程组"
-                }
-            ]
+            children: [{ id: "2", level: "2", label: "默认流程组" }]
         }
     ];
     //选中树形行
     handleNodeClick(data) {
         this.$refs.SlotTree.store.defaultExpandAll = true;
-        // console.info(data);
         this.flowGroupId = data.id;
         this.level = data.level;
         this.rownum = data.rownum;
@@ -126,7 +123,7 @@ export default class ExchangeFlowController extends BaseController {
         //1.获取流程组信息
         this.service.queryGroupCount(flowId).then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.msg);
+                this.errorMessage(res.msg);
             } else {
                 let msg = "";
                 let type = res.data;
@@ -151,9 +148,10 @@ export default class ExchangeFlowController extends BaseController {
                         .then(() => {
                             this.service.delflowgroup(flowId).then(res => {
                                 if (res.winRspType === "ERROR") {
-                                    console.log(res.msg);
+                                    this.errorMessage(res.msg);
                                 }
-                                this.queryflowgroup();
+                                // this.queryflowgroup();
+                                this.remove(flowId);
                             });
                         })
                         .catch();
@@ -161,68 +159,109 @@ export default class ExchangeFlowController extends BaseController {
             }
         });
     }
-    //选中树形后点击新增
-    addflowgroup() {
-        let that = this;
-        if (this.flowGroupId == 1) {
-            let s = document.createElement("input");
-            let d = this.$refs.SlotTree.$el;
-            d.appendChild(s);
-            s.focus();
-            s.addEventListener("blur", function() {
-                that.flowGroupVO.flowName = s.value;
-                that.flowGroupVO.level = "1";
-                s.remove();
-                AxiosFun.post(
-                    AxiosFun.commonBpmServiceName + "/param/flowgroup/",
-                    that.flowGroupVO
-                ).then(res => {
-                    if (res.winRspType === "ERROR") {
-                        console.log(res.msg);
-                    }
-                    that.queryflowgroup();
-                });
-            });
-        } else if (this.flowGroupId > 1) {
-            let s = document.createElement("input");
-            let d = this.$refs.SlotTree.$el.children[that.rownum];
-            console.log(that.rownum);
-            d.appendChild(s);
-            s.focus();
-            s.addEventListener("blur", function() {
-                console.log(s.value);
-                that.flowGroupVO.flowName = s.value;
-                that.flowGroupVO.level = "2";
-                that.flowGroupVO.fatherId = that.flowGroupId;
-                s.remove();
-                AxiosFun.post(
-                    AxiosFun.commonBpmServiceName + "/param/flowgroup/",
-                    that.flowGroupVO
-                ).then(res => {
-                    if (res.winRspType === "ERROR") {
-                        console.log(res.msg);
-                    }
 
-                    that.queryflowgroup();
-                });
-            });
-            // s.onkeyup = function (value){
-            //     console.log(value);
-            //     console.log(s.value)
-            //     that.flowGroupVO.flowName = s.value;
-            //     that.flowGroupVO.level = "2";
-            //     that.flowGroupVO.fatherId = that.flowGroupId;
-            //     s.remove();
-            //     AxiosFun.post("/param/flowgroup/", that.flowGroupVO).then(res => {
-            //         if (res.winRspType === "ERROR") {
-            //             console.log(res.msg);
-            //         }
-            //
-            //         that.queryflowgroup();
-            //     });
-            // };
+    remove(flowId) {
+        if (this.level == 1) {
+            for (let i = 0; i < this.treedata.length; i++) {
+                if (this.treedata[i].id == flowId) {
+                    this.treedata.splice(i, 1);
+                    this.successMessage("删除成功");
+                }
+            }
+        }
+        if (this.level == 2) {
+            for (let i = 0; i < this.treedata.length; i++) {
+                var children = this.treedata[i].children;
+                for (let j = 0; j < children.length; j++) {
+                    if (children[j].id == flowId) {
+                        this.treedata[i].children.splice(j, 1);
+                        this.successMessage("删除成功");
+                        return;
+                    }
+                }
+            }
+        }
+        // this.expandList = [flowId];
+    }
+
+    addNode(id, level, label, fatherId) {
+        //增加一级节点
+        if (this.flowGroupId == 1) {
+            let obj = {
+                id: "",
+                label: "",
+                level: "",
+                children: []
+            };
+            obj.id = id;
+            obj.label = label;
+            obj.children = [];
+            obj.level = level;
+            this.treedata.push(obj);
+            this.expandList = [id];
+            this.edit(obj);
+        } else {
+            //增加二级节点
+            for (let i = 0; i < this.treedata.length; i++) {
+                if (this.treedata[i].id == fatherId) {
+                    let obj = {
+                        id: "",
+                        label: "",
+                        fatherId: "",
+                        level: "",
+                        children: []
+                    };
+                    obj.id = id;
+                    obj.label = label;
+                    obj.children = [];
+                    obj.level = level;
+                    obj.fatherId = fatherId;
+                    this.treedata[i].children.push(obj);
+                    this.expandList = [fatherId];
+                    this.edit(obj);
+                    return;
+                }
+            }
         }
     }
+    //选中树形后点击新增
+    addflowgroup() {
+        if (this.flowGroupId == 1) {
+            this.service.getflowgroupid().then(res => {
+                if (res.winRspType === "ERROR") {
+                    this.errorMessage(res.msg);
+                }
+                var id = res.data;
+                this.addNode(id, "1", "新增流程类", null);
+            });
+        } else if (this.flowGroupId > 1) {
+            this.service.getflowgroupid().then(res => {
+                if (res.winRspType === "ERROR") {
+                    this.errorMessage(res.msg);
+                }
+                var id = res.data;
+                this.addNode(id, "2", "新增流程组", this.flowGroupId);
+            });
+        }
+    }
+
+    handleBlur(item) {
+        this.$set(item, "isEdit", false);
+        var flowGroupVO = new ParamFlowGroupVO();
+        flowGroupVO.flowName = item.label;
+        flowGroupVO.id = item.id;
+        flowGroupVO.level = item.level;
+        flowGroupVO.fatherId = item.fatherId;
+        this.service.updateFlowgroup(flowGroupVO).then(res => {
+            if (res.winRspType === "ERROR") {
+                this.errorMessage(res.msg);
+            }
+            this.expandList = [item.id];
+            this.successMessage(res.msg);
+            // this.queryflowgroup();
+        });
+    }
+
     //todo
     handleEdit(level, s, that) {
         that.flowGroupVO.flowName = s.value;
@@ -234,10 +273,14 @@ export default class ExchangeFlowController extends BaseController {
             that.flowGroupVO
         ).then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.msg);
+                this.errorMessage(res.msg);
             }
             that.queryflowgroup();
         });
+    }
+
+    edit(item) {
+        this.$set(item, "isEdit", true);
     }
 
     mounted() {
@@ -248,13 +291,13 @@ export default class ExchangeFlowController extends BaseController {
     }
     //查询流程组
     queryflowgroup() {
-        // let _this = this;
+        let _this = this;
         this.service.listFlowGroup().then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.data);
+                this.errorMessage(res.msg);
             }
             // _this.data = JSON.parse(res.data);
-            this.defaultExpandList = [res.data[0].id];
+            this.expandList = [res.data[0].id];
             this.treedata = res.data;
         });
     }
@@ -265,7 +308,7 @@ export default class ExchangeFlowController extends BaseController {
         this.reqVO.flowCode = flowGroupid;
         this.service.listFlowByGroupid(reqVo).then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.msg);
+                this.errorMessage(res.msg);
             }
             this.pageVO = res.data;
         });
@@ -283,18 +326,16 @@ export default class ExchangeFlowController extends BaseController {
         let _this = this;
         this.service.listExchangeFlow(reqVO).then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.msg);
+                this.errorMessage(res.msg);
             }
             _this.pageVO = res.data;
         });
     }
     selectAllEvent({ checked }) {
-        console.log(checked ? "所有勾选事件" : "所有取消事件");
         this.tableChecked = this.$refs.xTable1.getSelectRecords();
         this.tableChecked.length > 0
             ? (this.options = true)
             : (this.options = false);
-        console.log(this.level != 2 || this.options);
     }
     //流程实例批量选择
     handleSelectionChange({ checked, row }) {
@@ -302,7 +343,6 @@ export default class ExchangeFlowController extends BaseController {
         this.tableChecked.length > 0
             ? (this.options = true)
             : (this.options = false);
-        console.log(this.level != 2 || this.options);
     }
     //批量删除
     batchDelete(rows: Array<ParamFlowInstRepVO>) {
@@ -336,7 +376,7 @@ export default class ExchangeFlowController extends BaseController {
                 .then(() => {
                     this.service.deleteExchangeFlows(rows).then(res => {
                         if (res.winRspType === "ERROR") {
-                            console.log(res.msg);
+                            this.errorMessage(res.msg);
                         }
                         this.queryFlowByGroupid(this.flowGroupId);
                     });
@@ -438,10 +478,10 @@ export default class ExchangeFlowController extends BaseController {
             flowVO
         ).then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.msg);
+                this.errorMessage(res.data);
             } else {
                 this.dialogTableVisible = true;
-                console.log("/flow-editor/modeler.html?modelId=" + res.msg);
+                // console.log("/flow-editor/modeler.html?modelId=" + res.msg);
                 this.flowUrl =
                     AxiosFun.commonBpmServiceName +
                     "/flow-editor/modeler.html?modelId=" +
@@ -460,7 +500,6 @@ export default class ExchangeFlowController extends BaseController {
 
     closeFlowDialog() {
         this.queryFlowByGroupid(this.flowVO.flowCode);
-        console.log(this.flowVO);
     }
     /**重置 */
     reset() {
@@ -483,16 +522,15 @@ export default class ExchangeFlowController extends BaseController {
                 this.setFormTime();
                 this.service.addExchangeFlow(this.flowVO).then(res => {
                     if (res.winRspType === "ERROR") {
-                        // console.log(res.msg);
                         this.errorMessage(res.msg);
+                    } else {
+                        this.successMessage("添加流程成功");
                     }
-                    this.successMessage("添加流程成功");
                     this.dialogVisible = false;
                     this.queryFlowByGroupid(this.flowVO.flowCode);
                 });
             }
         });
-
     }
 
     /**打开删除弹出框 */
@@ -517,7 +555,7 @@ export default class ExchangeFlowController extends BaseController {
         this.setFormTime();
         this.service.updateExchangeFlow(this.flowVO).then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.msg);
+                this.errorMessage(res.msg);
             }
             this.dialogVisible = false;
         });
@@ -529,7 +567,7 @@ export default class ExchangeFlowController extends BaseController {
         let _this = this;
         this.service.deleteExchangeFlow(this.flowVO.id).then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.msg);
+                this.errorMessage(res.msg);
             }
             this.dialogVisible = false;
         });
@@ -597,10 +635,9 @@ export default class ExchangeFlowController extends BaseController {
     private loadSelectsItems() {
         this.service.loadSelectsItems().then(res => {
             if (res.winRspType === "ERROR") {
-                console.log(res.data);
+                this.errorMessage(res.msg);
             }
             this.flowTypeItems = res.data.flowTypeItems;
-            //  console.log(this.flowTypeItems)
             // 产品
             this.productItems = res.data.productItems;
             // 投资单位

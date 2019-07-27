@@ -39,7 +39,7 @@ export default class LoginController extends Vue {
                     path: "/"
                 });
             } else {
-                this.loginVO.tipMessage = "用户名或密码错误";
+                this.loginVO.tipMessage = res.msg || "用户名或密码错误";
             }
         }
     }

@@ -9,12 +9,20 @@
         <!---快速区域---->
         <!--头部--->
         <!--侧边栏--->
-        <Aside :layoutReqVO="layoutReqVO"></Aside>
+        <transition name="hide">
 
+            <Lmask @closeAll="closeAllPanle" v-if="layoutReqVO.secondMeunIsOpen"></Lmask>
+
+        </transition>
+        <transition name="fade">
+
+            <Aside :layoutReqVO="layoutReqVO" v-if="layoutReqVO.secondMeunIsOpen"></Aside>
+
+        </transition>
         <!--一级菜单-@changeSecondMenu点击切换面板事件--->
-        <div v-if="layoutReqVO.secondMeunIsOpen">
-            <Meun :layoutReqVO="layoutReqVO" @changeSecondMenu="changeSecondMenu"></Meun>
-        </div>
+        <transition name="fade">
+            <Meun :layoutReqVO="layoutReqVO" @changeSecondMenu="changeSecondMenu" v-if="layoutReqVO.secondMeunIsOpen"></Meun>
+        </transition>
 
         <!--二级菜单-@gotoPath跳转到选中的路由事件-@toggleFastItem切换添加删除快速键的事件----->
         <transition name="fade">
@@ -42,7 +50,9 @@
         <!--修改密码--->
         <!--锁频--->
         <Lock :layoutReqVO="layoutReqVO" @handleSubmitLock="handleLockScreen" @handleSolutionLock="handleSolutionScreen" @closeLock="closeLock" :inFullCreeen="inFullCreeen"></Lock>
+
         <!--锁频--->
+
     </div>
 </template>
 <script lang="ts">

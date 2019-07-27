@@ -15,7 +15,7 @@
             <div ref="mainHeader" style="background-color:#273049;height:20px;">
                 <win_row type="flex" style="" justify="center" align="middle">
                     <win_col style="text-align:center;">
-                        <el-button type="text" :icon="isShowClass" @click="showMore" style="background-color:#273049;color:#FF900D;padding: 0px 10px;" round>关联信息</el-button>
+                        <win_button type="text" :icon="isShowClass" @click="showMore" style="background-color:#273049;color:#FF900D;padding: 0px 10px;" round>关联信息</win_button>
                     </win_col>
                 </win_row>
             </div>
@@ -38,7 +38,7 @@ export default class Product extends ProductController {}
     flex-flow: row nowrap;
     flex: 1;
     flex-basis: auto;
-    height: 98%;
+    height: 830px;
 }
 .main {
     display: flex;
@@ -47,15 +47,15 @@ export default class Product extends ProductController {}
     flex-basis: auto;
     overflow: hidden;
     padding: 0 10px;
-    height: 98%;
+    height: 830px;
 
     .main-header {
         flex-grow: 1;
-        height: 48%;
+        height: 480px;
     }
 }
 .ps1 {
-    height: 35%;
+    height: 350px;
 }
 .tree /deep/ .el-tree {
     top: 0;

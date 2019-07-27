@@ -7,7 +7,7 @@
 <template>
     <section class="menu-container">
         <ul class="menu-first">
-            <li :class="{'active':layoutReqVO.firstMenuIndex===item.id}" v-for="( item,index ) in layoutReqVO.firstMents" :key="item.id" @mouseover="handleChangeTab(item.id,index)">
+            <li :class="{'active':layoutReqVO.firstMenuIndex===item.id}" v-for="( item,index ) in layoutReqVO.firstMents" :key="item.id" @mouseenter="handleChangeTab(item.id,index)">
                 <span>{{item.menuName}}</span>
                 <i class="icon-14"></i>
             </li>
@@ -19,9 +19,12 @@
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
 import { LayoutReqVO } from "./vo/LayoutVO";
+import { setTimeout, clearTimeout } from "timers";
 
 @Component({})
 export default class SecondMenus extends Vue {
+    time;
+    isSecondOpen: Boolean = false;
     @Prop()
     layoutReqVO: LayoutReqVO;
     /**
@@ -29,9 +32,32 @@ export default class SecondMenus extends Vue {
      * * */
     @Emit("changeSecondMenu")
     handleChangeTab(id) {
+        if (this.time) {
+            clearTimeout(this.time);
+        }
+        // // if (this.layoutReqVO.stwichController.switchsScondMeunIsDetailed) {
+        // //     this.layoutReqVO.firstMenuIndex = id;
+        // //     return id;
+        // // }
+        // //判断鼠标第一次进入二级目录的状态
+        // this.time = setTimeout(() => {
+        //     this.layoutReqVO.firstMenuIndex = id;
+        //     this.layoutReqVO.stwichController.switchsScondMeunIsDetailed = true;
+        //     this.isSecondOpen = true;
+        //     return id;
+        // }, 300);
         this.layoutReqVO.firstMenuIndex = id;
         this.layoutReqVO.stwichController.switchsScondMeunIsDetailed = true;
         return id;
+    }
+    secondIsClose() {
+        console.log(1111);
+        if (this.isSecondOpen) {
+            return;
+        } else {
+            clearTimeout(this.time);
+            this.isSecondOpen = false;
+        }
     }
 }
 </script>

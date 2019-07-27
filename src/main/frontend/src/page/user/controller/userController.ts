@@ -2,6 +2,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
+import PageVO from "../../common/vo/PageVO";
 // import { userServices } from "../../common/service/BaseService";
 import userService from "../service/userService";
 import { UserReqVO } from "../vo/UserVO";
@@ -11,15 +12,15 @@ import AddRole from "../view/addRole.vue";
 import AddUser from "../view/addUser.vue";
 import EditCom from "../view/editCom.vue";
 import EditDep from "../view/editDep.vue";
-import EditUser from "../view/editUser.vue";
 import EditRole from "../view/editRole.vue";
+import EditUser from "../view/editUser.vue";
 import DeleteRole from "../view/deleteRole.vue";
 import TabType from "../view/tabtype.vue";
 import UserTable from "../view/userTable.vue";
 import ForbidUser from "../view/forbidUser.vue";
 import CancelUser from "../view/cancelUser.vue";
 import ResetPassword from "../view/resetPassword.vue";
-
+import UserRoleRight from "../view/userRoleRight.vue";
 import AddRoleUser from "../view/addRoleUser.vue";
 import BaseController from "../../common/controller/BaseController";
 
@@ -39,19 +40,18 @@ import BaseController from "../../common/controller/BaseController";
         AddRoleUser,
         ForbidUser,
         CancelUser,
-        ResetPassword
+        ResetPassword,
+        UserRoleRight
     }
 })
 export default class UserController extends BaseController {
     $set;
     $refs;
     $forceUpdate;
+    userStates = ["1"];
     compayArray = [];
     filterText = "";
     userReqVo: UserReqVO = new UserReqVO();
-    // handleAddCom() {
-    //     this.userReqVo.stateController.switchFormType = "AddCom";
-    // }
 
     /**打开添加部门窗口生成部门编码并回填到窗口面板*/
     handleAddDep() {
@@ -84,7 +84,6 @@ export default class UserController extends BaseController {
     handleShowRole(params) {
         this.userReqVo.dialogFormVisible = true;
         this.userReqVo.roleInfo = params;
-        console.log(this.userReqVo.roleInfo);
     }
 
     /***点击切换树形菜单 */
@@ -110,7 +109,10 @@ export default class UserController extends BaseController {
                 this.userReqVo.company.companyId
             );
             this.userReqVo.showTab = this.userReqVo.company.companyId;
-            let params = { companyId: this.userReqVo.company.companyId };
+            let params = {
+                companyId: this.userReqVo.company.companyId,
+                userStates: this.userStates
+            };
             this.compayArray = [this.userReqVo.company.companyId];
             this.getUser(params);
         } else if (data.cid == 2) {
@@ -129,7 +131,8 @@ export default class UserController extends BaseController {
 
             let params = {
                 companyId: this.userReqVo.company.companyId,
-                departmentId: this.userReqVo.department.departmentId
+                departmentId: this.userReqVo.department.departmentId,
+                userStates: this.userStates
             };
             this.getUser(params);
         } else if (data.cid == 3) {
@@ -151,7 +154,8 @@ export default class UserController extends BaseController {
             let params = {
                 companyId: this.userReqVo.company.companyId,
                 departmentId: this.userReqVo.department.departmentId,
-                roleId: this.userReqVo.role.roleId
+                roleId: this.userReqVo.role.roleId,
+                userStates: this.userStates
             };
             this.getUser(params);
         } else {
@@ -165,11 +169,30 @@ export default class UserController extends BaseController {
      *
      * **/
     getUserTable(userState) {
+        let findItem;
+        let findIndex: number;
+        findItem = this.userStates.filter((item, index) => {
+            if (item === userState) {
+                findIndex = index;
+                return item;
+            }
+        });
+        if (findItem[0]) {
+            if (this.userStates.length == 1) {
+                return;
+            }
+            this.userStates.splice(findIndex, 1);
+        } else {
+            this.userStates.push(userState);
+        }
         this.userReqVo.stateController.switchingUserState = userState;
         let params = {
-            companyId: this.userReqVo.company.companyId,
-            departmentId: this.userReqVo.department.departmentId,
-            userState: userState
+            ...{
+                companyId: this.userReqVo.company.companyId,
+                departmentId: this.userReqVo.department.departmentId,
+                userStates: this.userStates
+            },
+            ...this.userReqVo.reqParam
         };
         this.getUser(params);
     }
@@ -398,6 +421,17 @@ export default class UserController extends BaseController {
             this.userReqVo.stateController.switchFormType = "";
         });
     }
+    /***剔除该用户*/
+    httpEliminateUser(roleId) {
+        userService
+            .eliminateUser({ userId: this.userReqVo.user.userCode, roleId })
+            .then(() => {
+                this.successMessage("该用户剔除成功");
+                let params = { companyId: this.userReqVo.company.companyId };
+                this.getUser(params);
+                this.userReqVo.stateController.switchFormType = "";
+            });
+    }
 
     /***展示当前公司下的所有部门*/
     showDepartment(companyId: string): any {
@@ -424,7 +458,6 @@ export default class UserController extends BaseController {
     changeDep(res) {
         this.userReqVo.department.departmentId = res.id;
         this.userReqVo.department.departmentCode = res.departmentCode;
-
         this.userReqVo.role.rolesArray = this.showRles(
             this.userReqVo.department.departmentArray
         );
@@ -529,46 +562,14 @@ export default class UserController extends BaseController {
             });
     }
 
-    async mounted() {
-        this.fristGetCompent();
-        console.log(this.userReqVo.company.companyId);
-    }
     /***加载树形公司结构 */
     async getCompent() {
-        let comps = await userService.getCompany();
-        this.userReqVo.companArray = comps.data.map(item => {
-            return {
-                id: item.companyId,
-                cid: 1,
-                label: item.companySimpleName,
-                companyName: item.companyFullName,
-                companyCode: item.companyCode,
-                children: item.departments.map(department => {
-                    return {
-                        id: department.departmentId,
-                        label: department.departmentName,
-                        cid: 2,
-                        departmentCode: department.departmentCode,
-                        children: department.roles.map(role => {
-                            return {
-                                cid: 3,
-                                id: role.roleId,
-                                label: role.roleName,
-                                roleCode: role.roleCode,
-                                roleType1: role.roleType,
-                                mutexRoleId: role.mutexRoleId,
-                                roleDescription: role.roleDescription
-                            };
-                        })
-                    };
-                })
-            };
-        });
+        await this.getTree();
         let params = { companyId: this.userReqVo.company.companyId };
         this.getUser(params);
     }
-
-    async fristGetCompent() {
+    /***加载公司结构树 */
+    async getTree() {
         let comps = await userService.getCompany();
         this.userReqVo.companArray = comps.data.map(item => {
             return {
@@ -598,6 +599,11 @@ export default class UserController extends BaseController {
                 })
             };
         });
+        return comps;
+    }
+    /***首次加载公司树结构 */
+    async fristGetCompent() {
+        await this.getTree();
         this.userReqVo.company.companyId = this.userReqVo.companArray[0].id;
         this.userReqVo.company.companySimpleName = this.userReqVo.companArray[0].label;
         this.userReqVo.company.companyName = this.userReqVo.companArray[0].companyName;
@@ -606,13 +612,36 @@ export default class UserController extends BaseController {
         this.userReqVo.department.departmentArray = this.showDepartment(
             this.userReqVo.company.companyId
         );
-        let params = { companyId: this.userReqVo.company.companyId };
+        let params = {
+            companyId: this.userReqVo.company.companyId,
+            userStates: this.userStates
+        };
         this.compayArray = [this.userReqVo.company.companyId];
+        this.getUser(params);
+    }
+
+    /**
+     * 用户分页查询
+     * @param vo
+     */
+    httpUserPageQuery(vo: PageVO) {
+        console.log("vo == " + vo.pageNum + " " + vo.pageSize);
+
+        var params = {
+            ...this.userReqVo.reqParam,
+            ...{ reqPageNum: vo.pageNum, reqPageSize: vo.pageSize }
+        };
+
         this.getUser(params);
     }
 
     /***加载查询user表格*/
     async getUser(params) {
+        params.reqPageNum = params.reqPageNum || 1;
+        params.reqPageSize = params.reqPageSize || 10;
+
+        this.userReqVo.reqParam = params;
+
         let users = await userService.getUsers(params);
         // console.log(users.data.data);
         let userArray;
@@ -631,6 +660,7 @@ export default class UserController extends BaseController {
                 userType: item.userType
             };
         });
+        this.userReqVo.userPageVO = users.data;
         this.userReqVo.userArray = userArray;
     }
 
@@ -659,14 +689,18 @@ export default class UserController extends BaseController {
     }
 
     /** 树形结构搜索功能*/
-    filterChange() {
-        this.userReqVo.companArray.forEach(item => {
-            if (item.label.indexOf(this.filterText) > -1) {
-                this.compayArray = [];
-                this.compayArray = [item.id];
-            }
-        });
-        console.log(this.compayArray);
+    // filterChange() {
+    //     this.userReqVo.companArray.forEach(item => {
+    //         if (item.label.indexOf(this.filterText) > -1) {
+    //             this.compayArray = [];
+    //             this.compayArray = [item.id];
+    //         }
+    //     });
+    // }
+
+    filterNode(value, data) {
+        if (!value) return true;
+        return data.label.indexOf(value) !== -1;
     }
 
     /***添加,删除，编辑成功 */
@@ -675,5 +709,9 @@ export default class UserController extends BaseController {
         this.compayArray = [this.userReqVo.company.companyId];
         this.userReqVo.stateController.switchFormType = "";
         this.getCompent();
+    }
+
+    async mounted() {
+        this.fristGetCompent();
     }
 }
