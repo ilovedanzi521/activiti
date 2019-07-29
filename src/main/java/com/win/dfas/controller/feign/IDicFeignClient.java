@@ -1,10 +1,7 @@
 package com.win.dfas.controller.feign;
 
 import com.win.dfas.common.vo.WinResponseData;
-import com.win.dfas.dto.InvestCompanyDTO;
-import com.win.dfas.dto.InvestConstituteDTO;
-import com.win.dfas.dto.SecurityTypeDTO;
-import com.win.dfas.dto.TransactionDirectionDTO;
+import com.win.dfas.dto.*;
 import com.win.dfas.vo.request.DepartmentInfoReqVO;
 import com.win.dfas.vo.request.UserInfoReqVO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -74,8 +71,8 @@ public interface IDicFeignClient {
      * @author wanglei
      * @Date 2019/7/26/11:54
      */
-    @GetMapping("/market/find/all")
-    WinResponseData queryMarketList();
+    @PostMapping("/api/market/find/market")
+    WinResponseData queryMarketList(MarketDTO dto);
     /**
      * @Title: queryInvestCompanyList
      * @Description: 查询投资单元

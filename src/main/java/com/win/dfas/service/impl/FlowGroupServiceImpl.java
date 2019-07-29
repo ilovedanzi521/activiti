@@ -15,6 +15,7 @@ import com.win.dfas.vo.request.ParamFlowGroupUpdateReqVO;
 import com.win.dfas.vo.response.DeleteEnum;
 import com.win.dfas.vo.response.ParamFlowGroupRepVO;
 import com.win.dfas.vo.response.ParamFlowRepVO;
+import com.win.dfas.vo.response.item.FlowTypeItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +91,10 @@ public class FlowGroupServiceImpl implements IFlowGroupService {
             flowGroupMapper.updateByPrimaryKey(entity);
             return 1;
         }
+    }
+
+    @Override
+    public List<FlowTypeItem> listFlowClass() {
+        return flowGroupMapper.listFlowClass();
     }
 }

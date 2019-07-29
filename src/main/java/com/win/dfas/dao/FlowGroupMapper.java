@@ -2,6 +2,7 @@ package com.win.dfas.dao;
 
 import com.win.dfas.entity.FlowGroup;
 import com.win.dfas.vo.response.ParamFlowGroupRepVO;
+import com.win.dfas.vo.response.item.FlowTypeItem;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface FlowGroupMapper {
 
 
     int selectCountFlowInst(Long flowId);
+
+    List<FlowTypeItem> listFlowClass();
 }

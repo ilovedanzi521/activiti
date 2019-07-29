@@ -51,6 +51,17 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
 
+  <resultMap id="flowTypeMap" type="com.win.dfas.vo.response.item.FlowTypeItem">
+    <id column="id" property="code"/>
+    <result column="flow_name" property="name"/>
+  </resultMap>
+  <select id="listFlowClass" resultMap="flowTypeMap">
+    select
+    id,flow_name
+    from param_flowgroup
+    where level ='1'
+  </select>
+
   <select id="selectCountGroup" resultType="java.lang.Integer" parameterType="java.lang.Long">
     select count(*) from param_flowgroup where father_id = #{id,jdbcType=BIGINT}
   </select>

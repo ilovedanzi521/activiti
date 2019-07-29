@@ -23,6 +23,6 @@ import lombok.Data;
  */
 @Data
 public class MarketDTO {
-    private String  marketCode;
-    private String  marketName;
+    private String  code;
+    private String  name;
 }

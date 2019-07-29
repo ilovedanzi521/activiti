@@ -19,6 +19,7 @@ import com.win.dfas.vo.request.ParamFlowReqVO;
 import com.win.dfas.vo.response.DeleteEnum;
 import com.win.dfas.vo.response.ParamFlowGroupRepVO;
 import com.win.dfas.vo.response.ParamFlowRepVO;
+import com.win.dfas.vo.response.item.FlowTypeItem;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -80,6 +81,23 @@ public interface IFlowGroupService {
     Long getFlowGroupId();
 
     DeleteEnum queryFlowByType(Long flowId);
-
+    /**
+     * @Title: merger
+     * @Description: 更新或插入流程信息
+     * @param reqVO
+     * @return int
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/29/13:23
+     */
     int merger(ParamFlowGroupReqVO reqVO);
+    /**
+     * @Title: listFlowClass
+     * @Description: 获取流程分类信息
+     * @return java.util.List<com.win.dfas.vo.response.item.FlowTypeItem>
+     * @throws
+     * @author wanglei
+     * @Date 2019/7/29/13:22
+     */
+    List<FlowTypeItem> listFlowClass();
 }

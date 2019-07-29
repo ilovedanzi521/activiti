@@ -3,6 +3,7 @@ package com.win.dfas.controller.feign;
 import com.alibaba.fastjson.JSONObject;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.dto.*;
+import com.win.dfas.service.IFlowGroupService;
 import com.win.dfas.vo.response.SelectorItemEnum;
 import com.win.dfas.vo.response.item.*;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ import java.util.List;
 public class ThirdFeignInterfaceController {
     @Autowired
     private IDicFeignClient dicFeignClient;
+    @Autowired
+    private IFlowGroupService paramFlowService;
 
     @RequestMapping("/feign/loadSelectsItems")
     public WinResponseData LoadSelectsItems() {
@@ -89,13 +92,7 @@ public class ThirdFeignInterfaceController {
      * @Date 2019/7/26/13:33
      */
     private List<FlowTypeItem> loadFlowTypes() {
-        List<FlowTypeItem> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            FlowTypeItem info = new FlowTypeItem();
-            info.setCode("11" + i);
-            info.setName("11" + i + "资金审批流程");
-            list.add(info);
-        }
+        List<FlowTypeItem> list = paramFlowService.listFlowClass();
         return list;
     }
 
@@ -162,13 +159,13 @@ public class ThirdFeignInterfaceController {
         List<MarketItem> list = new ArrayList<>();
         try {
             List<MarketDTO> rtnList = new ArrayList<>();
-            WinResponseData rtn = dicFeignClient.queryMarketList();
+            WinResponseData rtn = dicFeignClient.queryMarketList(new MarketDTO());
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
                 rtnList = JSONObject.parseArray(JSONObject.toJSONString(rtn.getData())).toJavaList(MarketDTO.class);
                 for (MarketDTO dto : rtnList) {
                     MarketItem info = new MarketItem();
-                    info.setCode(dto.getMarketCode());
-                    info.setName(dto.getMarketName());
+                    info.setCode(dto.getCode());
+                    info.setName(dto.getName());
                     list.add(info);
                 }
             } else {
