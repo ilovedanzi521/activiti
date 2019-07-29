@@ -81,6 +81,8 @@ export default class ExchangeFlowController extends BaseController {
     $refs;
     dialogVisible: boolean = false;
     deleteFlag: boolean = false;
+    //是否执行
+    isExecute: boolean = false;
 
     /**开始时间、结束时间 */
     timeArray: Date[] = [new Date(), new Date()];
@@ -246,6 +248,10 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     handleBlur(item) {
+        if (this.isExecute) {
+            return;
+        }
+        this.isExecute = true;
         this.$set(item, "isEdit", false);
         var flowGroupVO = new ParamFlowGroupVO();
         flowGroupVO.flowName = item.label;
@@ -259,6 +265,7 @@ export default class ExchangeFlowController extends BaseController {
             this.expandList = [item.id];
             this.successMessage(res.msg);
             // this.queryflowgroup();
+            this.isExecute = false;
         });
     }
 
