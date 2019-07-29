@@ -139,10 +139,10 @@
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">
-                    <win_form_item label="有效日期" prop="date">
+                    <win_form_item label="有效日期" prop="timeArray">
                         <!-- <el-date-picker v-model="flowVO.beginDate" value-format="yyyy-MM-dd" type="date" placeholder="开始日期"></el-date-picker>
                         <el-date-picker v-model="flowVO.endDate" value-format="yyyy-MM-dd" type="date" placeholder="结束日期"></el-date-picker> -->
-                        <win_date_picker v-model="timeArray" format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></win_date_picker>
+                        <win_date_picker v-model="flowVO.timeArray" format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></win_date_picker>
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">

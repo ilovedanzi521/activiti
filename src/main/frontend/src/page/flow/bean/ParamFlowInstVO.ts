@@ -124,4 +124,6 @@ export class ParamFlowInstRepVO extends BaseReqVO {
      *控制类型
      */
     controlType: string;
+
+    timeArray: Date[] = [new Date(), new Date()];
 }

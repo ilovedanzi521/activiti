@@ -662,8 +662,19 @@ export default class ExchangeFlowController extends BaseController {
                 message: "产品不能为空",
                 trigger: "change"
             }
+        ],
+        timeArray: [
+            {
+                validator: function(rule, value, callback) {
+                    if (value[0].getTime() < new Date().getTime())
+                        callback(new Error("开始日期需大于等于当前日期"));
+                },
+                trigger: "change"
+            }
         ]
     };
+    validateBeginDate(rule, value, callback) {}
+
     //开关
     change(flowVO: ParamFlowInstRepVO, value: boolean) {
         //启动
