@@ -14,7 +14,7 @@
                         @node-click="handleNodeClick" :highlight-current="true">
                         <div class="comp-tr-node" slot-scope="{ node, data }">
                             <template v-if="data.isEdit">
-                                <el-input size="mini" v-focus v-model.trim="data.label" @blur.stop="handleBlur(data)" @keyup.enter.native="handleBlur(data)" :ref="'slotTreeInput' +data.id" :id="data.id"></el-input>
+                                <el-input size="mini" v-focus v-model.trim="data.label" @blur.stop="handleBlur(data)" @keyup.enter.native="handleBlur(data)" :ref="'slotTreeInput' +data.id" :id="data.id" @change="handlerChange"></el-input>
                             </template>
                             <template v-else>
                                 <span @dblclick="edit(data)">

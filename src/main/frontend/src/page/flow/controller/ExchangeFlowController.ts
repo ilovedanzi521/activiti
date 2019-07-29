@@ -83,7 +83,12 @@ export default class ExchangeFlowController extends BaseController {
     deleteFlag: boolean = false;
     //是否执行
     isExecute: boolean = false;
-
+    //判断数据是否修改
+    isModify: boolean = false;
+    //存放原值，不进行双向绑定
+    oldLable: string = "";
+    //是否是新操作
+    isNew: boolean = false;
     /**开始时间、结束时间 */
     timeArray: Date[] = [new Date(), new Date()];
     expandList: number[] = [];
@@ -154,6 +159,7 @@ export default class ExchangeFlowController extends BaseController {
                                 }
                                 // this.queryflowgroup();
                                 this.remove(flowId);
+                                this.successMessage("删除成功");
                             });
                         })
                         .catch();
@@ -167,7 +173,6 @@ export default class ExchangeFlowController extends BaseController {
             for (let i = 0; i < this.treedata.length; i++) {
                 if (this.treedata[i].id == flowId) {
                     this.treedata.splice(i, 1);
-                    this.successMessage("删除成功");
                 }
             }
         }
@@ -177,7 +182,6 @@ export default class ExchangeFlowController extends BaseController {
                 for (let j = 0; j < children.length; j++) {
                     if (children[j].id == flowId) {
                         this.treedata[i].children.splice(j, 1);
-                        this.successMessage("删除成功");
                         return;
                     }
                 }
@@ -228,6 +232,7 @@ export default class ExchangeFlowController extends BaseController {
     }
     //选中树形后点击新增
     addflowgroup() {
+        this.isNew = true;
         if (this.flowGroupId == 1) {
             this.service.getflowgroupid().then(res => {
                 if (res.winRspType === "ERROR") {
@@ -248,11 +253,29 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     handleBlur(item) {
+        this.$set(item, "isEdit", false);
+        var updateFlag = true;
         if (this.isExecute) {
             return;
         }
+        if (!this.isModify) {
+            item.label = this.oldLable;
+            updateFlag = false;
+        }
+        if (!item.label || item.label === "") {
+            this.errorMessage("名称不能为空");
+            item.label = this.oldLable;
+            updateFlag = false;
+        }
+        //如果新增操作需要删除原节点
+        if (!updateFlag) {
+            if (this.isNew) {
+                this.isNew = false;
+                this.remove(item.id);
+            }
+            return;
+        }
         this.isExecute = true;
-        this.$set(item, "isEdit", false);
         var flowGroupVO = new ParamFlowGroupVO();
         flowGroupVO.flowName = item.label;
         flowGroupVO.id = item.id;
@@ -266,6 +289,7 @@ export default class ExchangeFlowController extends BaseController {
             this.successMessage(res.msg);
             // this.queryflowgroup();
             this.isExecute = false;
+            this.isModify = false;
         });
     }
 
@@ -287,9 +311,22 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     edit(item) {
+        this.oldLable = item.label;
         this.$set(item, "isEdit", true);
     }
 
+    handlerChange(e) {
+        this.isModify = true;
+        let reg = /^[\w\u4e00-\u9fa5]{1,80}$/g;
+        var _this = this;
+        if (e) {
+            if (new RegExp(reg).test(e) == false) {
+                setTimeout(() => {}, 500);
+                this.errorMessage("请输入正确的名称");
+                this.isModify = false;
+            }
+        }
+    }
     mounted() {
         this.$nextTick(() => {
             this.queryflowgroup();
