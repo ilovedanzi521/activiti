@@ -127,7 +127,8 @@
         </el-container>
 
         <!--修改、增加框 -->
-        <win_dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" class="dialogclass" :close-on-click-modal="false">
+
+        <win_dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" class="dialogclass" :close-on-click-modal="false" @close="closeDialog('exchangeForm')">
             <win_form :inline="true" label-position="left" ref="exchangeForm" :model="flowVO" :rules="rules">
                 <div class="form_content_flow">
                     <win_form_item label="流程名称" prop="flowName">
@@ -199,7 +200,7 @@
             <el-divider></el-divider>
             <div>
 
-                <win_button @click="closeDialog()" class="defaultButton">取消</win_button>
+                <win_button @click="closeDialog('exchangeForm')" class="defaultButton">取消</win_button>
                 <span v-if="deleteFlag">
                     <win_button @click="deleteExchangeFlow(true)" class="yellowButton">确认</win_button>
                 </span>

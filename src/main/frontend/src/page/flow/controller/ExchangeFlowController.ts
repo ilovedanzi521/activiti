@@ -601,7 +601,13 @@ export default class ExchangeFlowController extends BaseController {
             this.timeArray[1]
         );
     }
-    closeDialog() {
+    // closeDialog() {
+    //     this.dialogVisible = false;
+    //     this.deleteFlag = false;
+    //     this.queryFlowByGroupid(this.flowVO.flowCode);
+    // }
+    closeDialog(formRule) {
+        this.$refs[formRule].resetFields();
         this.dialogVisible = false;
         this.deleteFlag = false;
         this.queryFlowByGroupid(this.flowVO.flowCode);
