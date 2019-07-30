@@ -655,8 +655,12 @@ export default class ExchangeFlowController extends BaseController {
                     if (
                         value[0].getTime() + 24 * 3600 * 1000 - 1 <
                         new Date().getTime()
-                    )
+                    ) {
                         callback(new Error("开始日期需大于等于当前日期"));
+                    }
+                    if (value[1].getTime() <= value[0].getTime()) {
+                        callback(new Error("结束日期应选择大于开始日期"));
+                    }
                 },
                 trigger: "change"
             }
