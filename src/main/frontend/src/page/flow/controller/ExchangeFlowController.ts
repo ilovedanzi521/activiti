@@ -66,9 +66,9 @@ export default class ExchangeFlowController extends BaseController {
     userVOs: UserInfoVO[] = [];
     tableChecked: any = [];
     options: boolean = false;
-    flowGroupId: number;
+    flowGroupId: number = 2;
     //处理flowgroup的增加删除变量
-    level: number = 0;
+    level: number = 2;
     flowGroupVO: ParamFlowGroupVO = new ParamFlowGroupVO();
     //查询流程实例
     // flowCode: string = "";
