@@ -582,15 +582,20 @@ export default class ExchangeFlowController extends BaseController {
 
     /**修改流程*/
     updateExchangeFlow(isCallBack) {
-        let _this = this;
-        this.setFormTime(this.flowVO.timeArray);
-        this.service.updateExchangeFlow(this.flowVO).then(res => {
-            if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+        this.$refs["exchangeForm"].validate(valid => {
+            if (valid) {
+                this.setFormTime(this.flowVO.timeArray);
+                this.service.updateExchangeFlow(this.flowVO).then(res => {
+                    if (res.winRspType === "ERROR") {
+                        this.errorMessage(res.msg);
+                    } else {
+                        this.successMessage("修改流程成功");
+                    }
+                    this.dialogVisible = false;
+                    this.queryFlowByGroupid(this.flowVO.flowCode);
+                });
             }
-            this.dialogVisible = false;
         });
-        this.queryFlowByGroupid(this.flowVO.flowCode);
     }
 
     /**删除流程实例 */
