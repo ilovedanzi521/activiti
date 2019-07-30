@@ -85,7 +85,14 @@ export default class ExchangeFlowController extends BaseController {
     isExecute: boolean = false;
 
     /**开始时间、结束时间 */
-    timeArray: Date[] = [new Date(), new Date()];
+    // timeArray: Date[] = [
+    //     new Date(),
+    //     (function(): Date {
+    //         var myDate = new Date();
+    //         myDate.setDate(myDate.getDate() + 1);
+    //         return myDate;
+    //     })()
+    // ];
     expandList: number[] = [];
     treedata: any[] = [
         {
@@ -95,6 +102,7 @@ export default class ExchangeFlowController extends BaseController {
             children: [{ id: "2", level: "2", label: "默认流程组" }]
         }
     ];
+
     //选中树形行
     handleNodeClick(data) {
         this.$refs.SlotTree.store.defaultExpandAll = true;
@@ -658,7 +666,7 @@ export default class ExchangeFlowController extends BaseController {
                     ) {
                         callback(new Error("开始日期需大于等于当前日期"));
                     }
-                    if (value[1].getTime() <= value[0].getTime()) {
+                    if (value[1].getTime() < value[0].getTime()) {
                         callback(new Error("结束日期应选择大于开始日期"));
                     }
                 },
