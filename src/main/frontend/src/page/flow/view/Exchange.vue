@@ -54,7 +54,7 @@
                                 </win_select>
                             </win_form_item>
                         </el-row>
-                        <el-row style="margin-top:-10px;margin-left:5px">
+                        <el-row style="margin-top:-20px;margin-left:5px">
                             <win_form_item label="指令类型" style="margin-right:-5px;margin-left:-30px">
                                 <win_select v-model="reqVO.instructionType" filterable clearable placeholder="请选择">
                                     <win_option v-for="item in instructionTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
@@ -77,8 +77,8 @@
                             </win_form_item>
                         </el-row>
                         <el-row style="text-align:center;margin-top:-10px">
-                            <el-button @click="queryExchangeFlow(reqVO)" type="warning">查询</el-button>
-                            <el-button @click="reset()">重置</el-button>
+                            <el-button @click="queryExchangeFlow(reqVO)" type="primary">查询</el-button>
+                            <el-button @click="reset()" type="default">重置</el-button>
                         </el-row>
                         <el-row style="margin-left:0px ;margin-bottom:0px">
                             <!--<el-button @click="openAddDialog()">新增</el-button>-->
@@ -197,8 +197,19 @@
                     <win_input v-if="false" v-model="flowVO.flowCode"></win_input>
                 </div>
             </win_form>
-            <el-divider></el-divider>
-            <div>
+            <span slot="footer" class="dialog-footer">
+                <win_button @click="closeDialog('exchangeForm')" type="default">取消</win_button>
+                <span v-if="deleteFlag">
+                    <win_button @click="deleteExchangeFlow(true)" type="primary">确认</win_button>
+                </span>
+                <span v-else-if="flowVO.id">
+                    <win_button @click="updateExchangeFlow(true)" type="primary">确认</win_button>
+                </span>
+                <span v-else>
+                    <win_button @click="addExchangeFlow(true)" type="primary">确认</win_button>
+                </span>
+            </span>
+            <!-- <div>
 
                 <win_button @click="closeDialog('exchangeForm')" class="defaultButton">取消</win_button>
                 <span v-if="deleteFlag">
@@ -210,7 +221,7 @@
                 <span v-else>
                     <win_button @click="addExchangeFlow(true)" class="yellowButton">确认</win_button>
                 </span>
-            </div>
+            </div> -->
         </win_dialog>
         <!--end -->
         <!-- 流程弹出窗体-->
