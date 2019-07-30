@@ -487,6 +487,10 @@ export default class ExchangeFlowController extends BaseController {
     }
     //流程模型设计
     designFlow(flowVO) {
+        if (flowVO.startFlag) {
+            this.errorMessage("流程已启动不能修改");
+            return;
+        }
         this.flowVO = flowVO;
         // return AxiosFun.get("/service/editor?modelId="+this.flowVO.modleId);
         return AxiosFun.post(
@@ -559,6 +563,10 @@ export default class ExchangeFlowController extends BaseController {
 
     /**打开修改弹框 */
     openUpdateDialog(flowVO) {
+        if (flowVO.startFlag) {
+            this.errorMessage("流程已启动不能修改");
+            return;
+        }
         this.deleteFlag = false;
         this.dialogVisible = true;
         this.dialogTitle = "流程-修改";
