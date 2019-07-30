@@ -12,14 +12,14 @@
     },
     "dependencies": {
         "@types/node": "^12.6.6",
-        "@win-frond-frameworks/biz-common": "^1.0.7",
-        "@win-frond-frameworks/trade-biz": "^1.0.1",
+        "@win-frond-frameworks/biz-common": "^1.0.11",
+        "@win-frond-frameworks/trade-biz": "^1.0.13",
         "awe-dnd": "^0.3.4",
         "axios": "^0.18.0",
         "big-integer": "^1.6.44",
         "convertPinyin": "^1.1.0",
         "cross-env": "^5.2.0",
-        "element-ui": "^2.9.1",
+        "element-ui": "^2.11.1",
         "getmac": "^1.4.6",
         "os": "^0.1.1",
         "sortablejs": "^1.10.0-rc3",
@@ -30,8 +30,8 @@
         "vue-property-decorator": "^8.1.1",
         "vue-router": "^3.0.1",
         "vuex": "^3.1.1",
-        "vxe-table": "^1.7.8",
-        "xe-utils": "^1.9.6"
+        "vxe-table": "^1.11.4",
+        "xe-utils": "^1.9.7"
     },
     "devDependencies": {
         "autoprefixer": "^7.1.2",

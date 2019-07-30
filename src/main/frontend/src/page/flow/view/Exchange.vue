@@ -87,6 +87,7 @@
                             <!--<el-button @click="stopflow()">停止</el-button>-->
 
                             <el-button-group>
+
                                 <win_button :disabled="level!=2" type="warning" round @click="openAddDialog()" icon="el-icon-plus" class="iconAddbutton">新增</win_button>
                                 <win_button :disabled="!options" type="warning" icon="el-icon-delete" class="iconAddbutton" round @click="batchDelete(tableChecked)">删除</win_button>
                                 <win_button :disabled="!options" type="warning" icon="el-icon-video-play" class="iconAddbutton" round @click="startflow(tableChecked)">启用</win_button>
@@ -95,7 +96,7 @@
                         </el-row>
                     </win_form>
                     <!--返回数据列表-->
-                    <win_table ref="xTable1" :data="pageVO.list" :selection-width=20 :show-index="false" @select-all="selectAllEvent" @select-change="handleSelectionChange" border>
+                    <win_table ref="xTable1" :data="pageVO.list" :selection-width=20 max-height="680px" :show-index="false" @select-all="selectAllEvent" @select-change="handleSelectionChange" border>
                         <!-- <win_table_column type="selection"></win_table_column> -->
                         <win_table_column prop="flowName" label="流程名称" sortable></win_table_column>
                         <win_table_column prop="flowType" label="流程类型" sortable></win_table_column>
@@ -113,9 +114,9 @@
                         </win_table_column>
                         <win_table_column prop="publisherCode" label="操作">
                             <template slot-scope="scope">
-                                <el-button type="text" @click="openUpdateDialog(scope.row)" size="small">修改</el-button>
+                                <win_button type="text" @click="openUpdateDialog(scope.row)" size="small">修改</win_button>
 
-                                <el-button type="text" @click="designFlow(scope.row)" size="small">设计流程</el-button>
+                                <win_button type="text" @click="designFlow(scope.row)" size="small">设计流程</win_button>
                             </template>
                         </win_table_column>
                     </win_table>
