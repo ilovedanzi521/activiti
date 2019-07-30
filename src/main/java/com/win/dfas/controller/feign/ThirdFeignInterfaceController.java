@@ -92,7 +92,14 @@ public class ThirdFeignInterfaceController {
      * @Date 2019/7/26/13:33
      */
     private List<FlowTypeItem> loadFlowTypes() {
-        List<FlowTypeItem> list = paramFlowService.listFlowClass();
+//        List<FlowTypeItem> list = paramFlowService.listFlowClass();
+        List<FlowTypeItem> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            FlowTypeItem info = new FlowTypeItem();
+            info.setCode("12" + i);
+            info.setName("流程类型" + i);
+            list.add(info);
+        }
         return list;
     }
 
