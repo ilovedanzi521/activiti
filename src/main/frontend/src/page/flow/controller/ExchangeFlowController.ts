@@ -84,15 +84,6 @@ export default class ExchangeFlowController extends BaseController {
     //是否执行
     isExecute: boolean = false;
 
-    /**开始时间、结束时间 */
-    // timeArray: Date[] = [
-    //     new Date(),
-    //     (function(): Date {
-    //         var myDate = new Date();
-    //         myDate.setDate(myDate.getDate() + 1);
-    //         return myDate;
-    //     })()
-    // ];
     expandList: number[] = [];
     treedata: any[] = [
         {
@@ -317,12 +308,6 @@ export default class ExchangeFlowController extends BaseController {
             // _this.data = JSON.parse(res.data);
             this.expandList = [res.data[0].id];
             this.treedata = res.data;
-            // this.treedata.forEach(item => {
-            //     if (item.children.length == 0) {
-            //         item.children = new Array();
-            //     }
-            // });
-            // console.log(this.treedata);
         });
     }
     //查询流程ByGroupid
@@ -541,13 +526,22 @@ export default class ExchangeFlowController extends BaseController {
         this.dialogTitle = "流程-新增";
         this.flowVO = new ParamFlowInstRepVO();
         this.flowVO.flowCode = this.flowGroupId;
+        /**开始时间、结束时间 */
+        this.flowVO.timeArray = [
+            new Date(),
+            (function(): Date {
+                var myDate = new Date();
+                myDate.setDate(myDate.getDate() + 1);
+                return myDate;
+            })()
+        ];
     }
 
     /**新增流程 */
     addExchangeFlow(isCallBack) {
         this.$refs["exchangeForm"].validate(valid => {
             if (valid) {
-                this.setFormTime();
+                this.setFormTime(this.flowVO.timeArray);
                 this.service.addExchangeFlow(this.flowVO).then(res => {
                     if (res.winRspType === "ERROR") {
                         this.errorMessage(res.msg);
@@ -578,13 +572,18 @@ export default class ExchangeFlowController extends BaseController {
         this.deleteFlag = false;
         this.dialogVisible = true;
         this.dialogTitle = "流程-修改";
-        this.flowVO = flowVO;
+
+        var beginDate, endDate;
+        this.flowVO = {
+            ...flowVO,
+            timeArray: [flowVO.beginDate, flowVO.endDate]
+        };
     }
 
     /**修改流程*/
     updateExchangeFlow(isCallBack) {
         let _this = this;
-        this.setFormTime();
+        this.setFormTime(this.flowVO.timeArray);
         this.service.updateExchangeFlow(this.flowVO).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
@@ -607,15 +606,9 @@ export default class ExchangeFlowController extends BaseController {
         this.queryFlowByGroupid(this.flowGroupId);
     }
 
-    setFormTime() {
-        this.flowVO.beginDate = dateUtils.dateFtt(
-            "yyyy-MM-dd",
-            this.timeArray[0]
-        );
-        this.flowVO.endDate = dateUtils.dateFtt(
-            "yyyy-MM-dd",
-            this.timeArray[1]
-        );
+    setFormTime(timeArray) {
+        this.flowVO.beginDate = dateUtils.dateFtt("yyyy-MM-dd", timeArray[0]);
+        this.flowVO.endDate = dateUtils.dateFtt("yyyy-MM-dd", timeArray[1]);
     }
     // closeDialog() {
     //     this.dialogVisible = false;
@@ -666,9 +659,10 @@ export default class ExchangeFlowController extends BaseController {
                     ) {
                         callback(new Error("开始日期需大于等于当前日期"));
                     }
-                    if (value[1].getTime() < value[0].getTime()) {
+                    if (value[1].getTime() <= value[0].getTime()) {
                         callback(new Error("结束日期应选择大于开始日期"));
                     }
+                    callback();
                 },
                 trigger: "change"
             }
