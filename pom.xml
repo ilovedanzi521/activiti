@@ -186,7 +186,7 @@
                 <resources>
                     <resource>
                         <directory>src/main/frontend/dist</directory>
-                        <targetPath>static/dfas/dfas-common-bpm</targetPath>
+                        <targetPath>static/dfas/${project.artifactId}</targetPath>
                     </resource>
                     <resource>
                         <directory>src/main/resources</directory>
@@ -256,7 +256,7 @@
                 <resources>
                     <resource>
                         <directory>src/main/frontend/dist</directory>
-                        <targetPath>static</targetPath>
+                        <targetPath>static/dfas/${project.artifactId}</targetPath>
                     </resource>
                     <resource>
                         <directory>src/main/resources</directory>
