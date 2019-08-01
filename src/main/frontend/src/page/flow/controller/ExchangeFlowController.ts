@@ -253,6 +253,20 @@ export default class ExchangeFlowController extends BaseController {
         if (this.isExecute) {
             return;
         }
+        let reg = /^[\w\u4e00-\u9fa5]{1,80}$/g;
+
+        if (new RegExp(reg).test(item.label) == false) {
+            setTimeout(() => {}, 500);
+            //   this.$set(item, "isEdit", true);
+            this.errorMessage("请输入正确的名称");
+            return;
+        }
+        if (!item.label || item.label === "") {
+            this.errorMessage("名称不能为空");
+            // this.$set(item, "isEdit", true);
+            return;
+        }
+
         this.isExecute = true;
         this.$set(item, "isEdit", false);
         var flowGroupVO = new ParamFlowGroupVO();
