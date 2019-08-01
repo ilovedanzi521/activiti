@@ -561,6 +561,10 @@ export default class ExchangeFlowController extends BaseController {
         this.dialogVisible = true;
         this.dialogTitle = "流程-删除";
         this.flowVO = flowVO;
+        this.flowVO = {
+            ...flowVO,
+            timeArray: [new Date(flowVO.beginDate), new Date(flowVO.endDate)]
+        };
     }
 
     /**打开修改弹框 */
@@ -573,10 +577,9 @@ export default class ExchangeFlowController extends BaseController {
         this.dialogVisible = true;
         this.dialogTitle = "流程-修改";
 
-        var beginDate, endDate;
         this.flowVO = {
             ...flowVO,
-            timeArray: [flowVO.beginDate, flowVO.endDate]
+            timeArray: [new Date(flowVO.beginDate), new Date(flowVO.endDate)]
         };
     }
 
@@ -658,15 +661,17 @@ export default class ExchangeFlowController extends BaseController {
         timeArray: [
             {
                 validator: function(rule, value, callback) {
+                    // var beginDate = new Date(value[0]);
+                    // var endDate = new Date(value[1]);
                     if (
-                        value[0].getTime() + 24 * 3600 * 1000 - 1 <
+                        value[1].getTime() + 24 * 3600 * 1000 - 1 <
                         new Date().getTime()
                     ) {
-                        callback(new Error("开始日期需大于等于当前日期"));
+                        callback(new Error("结束日期应选择大于系统日期"));
                     }
-                    if (value[1].getTime() <= value[0].getTime()) {
-                        callback(new Error("结束日期应选择大于开始日期"));
-                    }
+                    // if (value[1].getTime() <= value[0].getTime()) {
+                    //     callback(new Error("结束日期应选择大于开始日期"));
+                    // }
                     callback();
                 },
                 trigger: "change"
