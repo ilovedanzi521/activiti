@@ -533,6 +533,7 @@ export default class ExchangeFlowController extends BaseController {
     /**重置 */
     reset() {
         this.reqVO = new ParamFlowInstReqVO();
+        this.queryExchangeFlow(this.reqVO);
     }
 
     /**打开新增弹框 */
