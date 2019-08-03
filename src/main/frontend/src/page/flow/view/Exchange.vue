@@ -31,7 +31,12 @@
                     <win_form :inline="true" :model="reqVO" class="demo-form-inline">
                         <el-row>
                             <win_form_item label="流程名称" style="margin-right:-5px;margin-left:-25px">
-                                <el-input v-model="reqVO.flowName" :maxlength="80"></el-input>
+                                <!-- <el-input v-model="reqVO.flowName" :maxlength="80"></el-input> -->
+
+                                <win_select v-model="reqVO.flowName" filterable clearable placeholder="请选择">
+                                    <win_option v-for="item in flowNameItems" :key="item.code" :label="item.name" :value="item.name"></win_option>
+                                </win_select>
+
                             </win_form_item>
                             <win_form_item label="流程类型" style="margin-right:-15px">
                                 <win_select v-model="reqVO.flowType" filterable clearable placeholder="请选择">
@@ -39,16 +44,16 @@
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="产品" style="margin-right:-15px">
-                                <win_select v-model="reqVO.productCode" filterable clearable placeholder="请选择">
+                                <win_select v-model="reqVO.productCode" filterable clearable placeholder="请选择" @change="changeItems('PRO',reqVO.productCode)">
                                     <win_option v-for="item in productItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
-                            <win_form_item label="投资单位" style="margin-right:-15px">
-                                <win_select v-model="reqVO.investCompany" filterable clearable placeholder="请选择">
+                            <win_form_item label="资产单元" style="margin-right:-15px">
+                                <win_select v-model="reqVO.investCompany" filterable clearable placeholder="请选择" @change="changeItems('COM',reqVO.investCompany)">
                                     <win_option v-for="item in investCompanyItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
-                            <win_form_item label="组合" style="margin-right:-15px">
+                            <win_form_item label="投资组合" style="margin-right:-15px">
                                 <win_select v-model="reqVO.investConstitute" filterable clearable placeholder="请选择">
                                     <win_option v-for="item in investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
@@ -61,7 +66,7 @@
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="交易市场" style="margin-right:-15px">
-                                <win_select v-model="reqVO.marketCode" filterable clearable placeholder="请选择">
+                                <win_select v-model="reqVO.marketCode" filterable clearable placeholder="请选择" @change="changeItems('MAK',reqVO.marketCode)">
                                     <win_option v-for="item in marketItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
@@ -101,8 +106,8 @@
                         <win_table_column prop="flowName" label="流程名称" sortable></win_table_column>
                         <win_table_column prop="flowType" label="流程类型" sortable></win_table_column>
                         <win_table_column prop="productCode" label="产品" sortable></win_table_column>
-                        <win_table_column prop="investCompany" label="投资单位" sortable width="180"></win_table_column>
-                        <win_table_column prop="investConstitute" label="组合资产" sortable></win_table_column>
+                        <win_table_column prop="investCompany" label="资产单元" sortable width="180"></win_table_column>
+                        <win_table_column prop="investConstitute" label="投资组合" sortable></win_table_column>
                         <win_table_column prop="instructionType" label="指令类型" sortable></win_table_column>
                         <win_table_column prop="marketCode" label="交易市场" sortable></win_table_column>
                         <win_table_column prop="securityType" label="证券类型" sortable></win_table_column>
@@ -145,53 +150,53 @@
                     <win_form_item label="有效日期" prop="timeArray">
                         <!-- <el-date-picker v-model="flowVO.beginDate" value-format="yyyy-MM-dd" type="date" placeholder="开始日期"></el-date-picker>
                         <el-date-picker v-model="flowVO.endDate" value-format="yyyy-MM-dd" type="date" placeholder="结束日期"></el-date-picker> -->
-                        <win_date_picker v-model="flowVO.timeArray" format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></win_date_picker>
+                        <win_date_picker v-model="flowVO.timeArray" format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :disabled="deleteFlag"></win_date_picker>
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">
                     <win_form_item label="产品" prop="productCode">
-                        <win_select v-model="flowVO.productCode" :disabled="flowVO.id!=null" filterable clearable placeholder="请选择">
+                        <win_select v-model="flowVO.productCode" :disabled="flowVO.id!=null" filterable clearable placeholder="请选择" @change="changeItems('PRO',flowVO.productCode)">
                             <win_option v-for="item in productItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_form_item label="投资单位">
-                        <win_select v-model="flowVO.investCompany" filterable clearable placeholder="请选择">
+                        <win_select v-model="flowVO.investCompany" filterable clearable placeholder="请选择" :disabled="deleteFlag">
                             <win_option v-for="item in investCompanyItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">
                     <win_form_item label="组合">
-                        <win_select v-model="flowVO.investConstitute" filterable clearable placeholder="请选择">
+                        <win_select v-model="flowVO.investConstitute" filterable clearable placeholder="请选择" :disabled="deleteFlag">
                             <win_option v-for="item in investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_form_item label="指令类型">
-                        <win_select v-model="flowVO.instructionType" filterable clearable placeholder="请选择">
+                        <win_select v-model="flowVO.instructionType" filterable clearable placeholder="请选择" :disabled="deleteFlag">
                             <win_option v-for="item in instructionTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">
                     <win_form_item label="交易市场">
-                        <win_select v-model="flowVO.marketCode" filterable clearable placeholder="请选择">
+                        <win_select v-model="flowVO.marketCode" filterable clearable placeholder="请选择" @change="changeItems('MAK',flowVO.marketCode)" :disabled="deleteFlag">
                             <win_option v-for="item in marketItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_form_item label="证券类型">
-                        <win_select v-model="flowVO.securityType" filterable clearable placeholder="请选择">
+                        <win_select v-model="flowVO.securityType" filterable clearable placeholder="请选择" :disabled="deleteFlag">
                             <win_option v-for="item in securityTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">
                     <win_form_item label="交易方向">
-                        <win_select v-model="flowVO.transactionDirection" filterable clearable placeholder="请选择">
+                        <win_select v-model="flowVO.transactionDirection" filterable clearable placeholder="请选择" :disabled="deleteFlag">
                             <win_option v-for="item in transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_form_item label="控制类型">
-                        <win_select v-model="flowVO.controlType" filterable clearable placeholder="请选择">
+                        <win_select v-model="flowVO.controlType" filterable clearable placeholder="请选择" :disabled="deleteFlag">
                             <win_option v-for="item in controlTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>

@@ -2,6 +2,7 @@ package com.win.dfas.dao;
 
 import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.vo.request.ParamFlowReqVO;
+import com.win.dfas.vo.response.item.FlowNameItem;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface ParamFlowInstMapper {
     String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO);
 
     int queryCountFromFlowInst(ParamFlowReqVO queryVO);
+
+    List<FlowNameItem> listFlowName();
 }

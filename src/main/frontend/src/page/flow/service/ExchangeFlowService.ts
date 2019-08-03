@@ -131,4 +131,21 @@ export default class ExchangeFlowService {
             flowVO
         );
     }
+    //loadSelectsTransactionDirectionItemsItems
+    loadSelectsTransactionDirectionItemsItems(marketNo) {
+        return AxiosFun.get(
+            AxiosFun.commonBpmServiceName +
+                "/param/feign/loadSelectsTransactionDirectionItemsItems",
+            {
+                marketNo
+            }
+        );
+    }
+    // loadSelectschangeProductItemsItems
+    loadItems(itemType, param) {
+        return AxiosFun.get(
+            AxiosFun.commonBpmServiceName + "/param/feign/" + itemType,
+            { param }
+        );
+    }
 }

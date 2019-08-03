@@ -45,6 +45,12 @@
     and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
      limit 1
   </select>
+  <select id="listFlowName"
+          resultType="com.win.dfas.vo.response.item.FlowNameItem">
+  SELECT id as code,flow_name as name
+  FROM param_flowInst
+  </select>
+
   <select id="list" parameterType="com.win.dfas.vo.request.ParamFlowReqVO"
           resultMap="BaseResultMap">
     SELECT  <include refid="Base_Column_List" />

@@ -14,6 +14,7 @@ import dateUtils from "../../common/util/DateUtils";
 import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
 import {
+    FlowNameItems,
     FlowTypeItem,
     InstructionTypeItem,
     InvestCompanyItem,
@@ -29,6 +30,7 @@ import {
 })
 export default class ExchangeFlowController extends BaseController {
     /**下拉框数据**/
+    flowNameItems: FlowNameItems[] = [];
     // 流程类型
     flowTypeItems: FlowTypeItem[] = [];
     // 产品
@@ -378,7 +380,7 @@ export default class ExchangeFlowController extends BaseController {
         });
         if (startFlag.length > 0) {
             this.win_message_box_warning(
-                "存在流程运行中,无法删除",
+                "目前流程有正在被使用,无法删除,请确认。",
                 "提示",
                 false,
                 null,
@@ -390,7 +392,7 @@ export default class ExchangeFlowController extends BaseController {
             this.openDeleteDialog(rows[0]);
         } else {
             this.win_message_box_warning(
-                "请确认删除此流程数据信息",
+                "请确认批量删除流程信息",
                 "提示",
                 false,
                 null,
@@ -401,7 +403,7 @@ export default class ExchangeFlowController extends BaseController {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
                         }
-                        this.queryFlowByGroupid(this.flowGroupId);
+                        this.queryExchangeFlow(this.reqVO);
                     });
                 })
                 .catch();
@@ -422,7 +424,7 @@ export default class ExchangeFlowController extends BaseController {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
                         }
-                        this.queryFlowByGroupid(this.flowGroupId);
+                        this.queryExchangeFlow(this.reqVO);
                     });
                 })
                 .catch();
@@ -447,7 +449,7 @@ export default class ExchangeFlowController extends BaseController {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
                         }
-                        this.queryFlowByGroupid(this.flowGroupId);
+                        this.queryExchangeFlow(this.reqVO);
                     });
                 })
                 .catch();
@@ -526,7 +528,7 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     closeFlowDialog() {
-        this.queryFlowByGroupid(this.flowVO.flowCode);
+        this.queryExchangeFlow(this.reqVO);
     }
     /**重置 */
     reset() {
@@ -563,7 +565,7 @@ export default class ExchangeFlowController extends BaseController {
                         this.successMessage("添加流程成功");
                     }
                     this.dialogVisible = false;
-                    this.queryFlowByGroupid(this.flowVO.flowCode);
+                    this.queryExchangeFlow(this.reqVO);
                 });
             }
         });
@@ -609,7 +611,7 @@ export default class ExchangeFlowController extends BaseController {
                         this.successMessage("修改流程成功");
                     }
                     this.dialogVisible = false;
-                    this.queryFlowByGroupid(this.flowVO.flowCode);
+                    this.queryExchangeFlow(this.reqVO);
                 });
             }
         });
@@ -625,7 +627,7 @@ export default class ExchangeFlowController extends BaseController {
             this.dialogVisible = false;
         });
 
-        this.queryFlowByGroupid(this.flowGroupId);
+        this.queryExchangeFlow(this.reqVO);
     }
 
     setFormTime(timeArray) {
@@ -641,7 +643,7 @@ export default class ExchangeFlowController extends BaseController {
         this.$refs[formRule].resetFields();
         this.dialogVisible = false;
         this.deleteFlag = false;
-        this.queryFlowByGroupid(this.flowVO.flowCode);
+        this.queryExchangeFlow(this.reqVO);
     }
 
     /**新增、修改，表单验证规则 */
@@ -698,9 +700,9 @@ export default class ExchangeFlowController extends BaseController {
         let startFlag = flowVO.startFlag;
         this.service.startOrStopFlow(flowVO).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.warningMessage(res.msg);
             }
-            this.queryFlowByGroupid(this.flowGroupId);
+            this.queryExchangeFlow(this.reqVO);
         });
     }
 
@@ -709,6 +711,7 @@ export default class ExchangeFlowController extends BaseController {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
             }
+            this.flowNameItems = res.data.flowNameItems;
             this.flowTypeItems = res.data.flowTypeItems;
             // 产品
             this.productItems = res.data.productItems;
@@ -727,13 +730,43 @@ export default class ExchangeFlowController extends BaseController {
             this.controlTypeItems = res.data.controlTypeItems;
         });
     }
-    closeCallback() {
-        if (this.deleteFlag) {
-            // this.deleteExchangeFlow(false);
-        } else if (this.flowVO.id) {
-            // this.updateExchangeFlow(false);
-        } else {
-            // this.addExchangeFlow(false);
-        }
+    /**
+     * 交易市场下拉框联动操作
+     */
+    changeMarket(value) {
+        this.service
+            .loadSelectsTransactionDirectionItemsItems(value)
+            .then(res => {
+                if (res.winRspType === "ERROR") {
+                    this.errorMessage(res.msg);
+                } else {
+                    this.transactionDirectionItems = res.data;
+                }
+            });
+    }
+
+    /**
+     * 产品下拉框联动操作
+     */
+    changeItems(itemType, value) {
+        this.service.loadItems(itemType, value).then(res => {
+            if (res.winRspType === "ERROR") {
+                this.errorMessage(res.msg);
+            } else {
+                if (itemType === "PRO") {
+                    this.investCompanyItems = res.data;
+                }
+                if (itemType === "COM") {
+                    this.investConstituteItems = res.data;
+                }
+                if (itemType === "MAK") {
+                    //证券类型
+                    this.securityTypeItems = res.data.securityTypeItems;
+                    // 交易方向
+                    this.transactionDirectionItems =
+                        res.data.transactionDirectionItems;
+                }
+            }
+        });
     }
 }

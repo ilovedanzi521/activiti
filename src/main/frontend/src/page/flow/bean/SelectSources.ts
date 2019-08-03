@@ -123,3 +123,17 @@ export class ControlTypeItem {
      */
     name: string;
 }
+
+/**
+ * 流程名称
+ */
+export class FlowNameItems {
+    /**
+     * code
+     */
+    code: string;
+    /**
+     * 名称
+     */
+    name: string;
+}
