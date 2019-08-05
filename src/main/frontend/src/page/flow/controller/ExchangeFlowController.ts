@@ -752,8 +752,8 @@ export default class ExchangeFlowController extends BaseController {
      * 产品下拉框联动操作
      */
     changeItems(itemType, value) {
-        this.loadItemData(itemType, value);
         this.clear(itemType);
+        this.loadItemData(itemType, value);
     }
     loadItemData(itemType, value) {
         this.service.loadItems(itemType, value).then(res => {
@@ -761,17 +761,18 @@ export default class ExchangeFlowController extends BaseController {
                 this.errorMessage(res.msg);
             } else {
                 if (itemType === "PRO") {
-                    this.investCompanyItems = res.data;
+                    this.investCompanyItems = { ...res.data };
                 }
                 if (itemType === "COM") {
-                    this.investConstituteItems = res.data;
+                    this.investConstituteItems = { ...res.data };
                 }
                 if (itemType === "MAK") {
                     //证券类型
-                    this.securityTypeItems = res.data.securityTypeItems;
+                    this.securityTypeItems = { ...res.data.securityTypeItems };
                     // 交易方向
-                    this.transactionDirectionItems =
-                        res.data.transactionDirectionItems;
+                    this.transactionDirectionItems = {
+                        ...res.data.transactionDirectionItems
+                    };
                 }
             }
         });
