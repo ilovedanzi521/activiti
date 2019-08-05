@@ -54,7 +54,7 @@
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="投资组合" style="margin-right:-15px">
-                                <win_select v-model="reqVO.investConstitute" filterable clearable placeholder="请选择">
+                                <win_select v-model="reqVO.investConstitute" filterable clearable placeholder="请选择" @change="changeLink">
                                     <win_option v-for="item in investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
@@ -71,12 +71,12 @@
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="证券类型" style="margin-right:-15px">
-                                <win_select v-model="reqVO.securityType" filterable clearable placeholder="请选择">
+                                <win_select v-model="reqVO.securityType" filterable clearable placeholder="请选择" @change="changeLink">
                                     <win_option v-for="item in securityTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="交易方向" style="margin-right:-15px">
-                                <win_select v-model="reqVO.transactionDirection" filterable clearable placeholder="请选择">
+                                <win_select v-model="reqVO.transactionDirection" filterable clearable placeholder="请选择" @change="changeLink">
                                     <win_option v-for="item in transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
@@ -101,7 +101,7 @@
                         </el-row>
                     </win_form>
                     <!--返回数据列表-->
-                    <win_table ref="xTable1" :data="pageVO.list" :selection-width=20 max-height="680px" :show-index="false" @select-all="selectAllEvent" @select-change="handleSelectionChange" border>
+                    <win_table ref="xTable1" :data="pageVO.list" :selection-width="20" max-height="680px" :show-index="false" @select-all="selectAllEvent" @select-change="handleSelectionChange" border>
                         <!-- <win_table_column type="selection"></win_table_column> -->
                         <win_table_column prop="flowName" label="流程名称" sortable></win_table_column>
                         <win_table_column prop="flowType" label="流程类型" sortable></win_table_column>
@@ -117,7 +117,7 @@
                                 <el-switch v-model="scope.row.startFlag" :active-value="true" :inactive-value="false" active-color="#13ce66" inactive-color="#ff4949" @change="change(scope.row,scope.row.startFlag)"></el-switch>
                             </template>
                         </win_table_column>
-                        <win_table_column prop="publisherCode" label="操作">
+                        <win_table_column prop="publisherCode" label="操作" :width="200">
                             <template slot-scope="scope">
                                 <win_button type="text" @click="openUpdateDialog(scope.row)" size="small" icon="el-icon-edit-outline">修改</win_button>
 

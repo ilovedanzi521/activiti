@@ -598,6 +598,8 @@ export default class ExchangeFlowController extends BaseController {
             ...flowVO,
             timeArray: [new Date(flowVO.beginDate), new Date(flowVO.endDate)]
         };
+
+        this.loadStartItemsData(flowVO);
     }
 
     /**修改流程*/
@@ -717,17 +719,17 @@ export default class ExchangeFlowController extends BaseController {
             // 产品
             this.productItems = res.data.productItems;
             // 投资单位
-            this.investCompanyItems = res.data.investCompanyItems;
+            // this.investCompanyItems = res.data.investCompanyItems;
             // 组合资产
-            this.investConstituteItems = res.data.investConstituteItems;
+            // this.investConstituteItems = res.data.investConstituteItems;
             // 指令类型
             this.instructionTypeItems = res.data.instructionTypeItems;
             // 交易市场
             this.marketItems = res.data.marketItems;
             //证券类型
-            this.securityTypeItems = res.data.securityTypeItems;
+            // this.securityTypeItems = res.data.securityTypeItems;
             // 交易方向
-            this.transactionDirectionItems = res.data.transactionDirectionItems;
+            // this.transactionDirectionItems = res.data.transactionDirectionItems;
             this.controlTypeItems = res.data.controlTypeItems;
         });
     }
@@ -750,18 +752,10 @@ export default class ExchangeFlowController extends BaseController {
      * 产品下拉框联动操作
      */
     changeItems(itemType, value) {
-        if (itemType === "PRO") {
-            this.flowVO.investCompany = null;
-            this.flowVO.investConstitute = null;
-        }
-        if (itemType === "COM") {
-            this.flowVO.investConstitute = null;
-            this.changeLink();
-        }
-        if (itemType === "MAK") {
-            this.flowVO.securityType = null;
-            this.flowVO.transactionDirection = null;
-        }
+        this.loadItemData(itemType, value);
+        this.clear(itemType);
+    }
+    loadItemData(itemType, value) {
         this.service.loadItems(itemType, value).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
@@ -782,8 +776,38 @@ export default class ExchangeFlowController extends BaseController {
             }
         });
     }
-
+    /**
+     * 联动清理数据后反转
+     */
     changeLink() {
         this.$forceUpdate();
+    }
+    /**
+     *
+     * @param itemType 清理数据
+     */
+    clear(itemType: string) {
+        if (itemType === "PRO") {
+            this.flowVO.investCompany = null;
+            this.flowVO.investConstitute = null;
+            this.reqVO.investCompany = null;
+            this.reqVO.investConstitute = null;
+        }
+        if (itemType === "COM") {
+            this.flowVO.investConstitute = null;
+            this.reqVO.investConstitute = null;
+            this.changeLink();
+        }
+        if (itemType === "MAK") {
+            this.flowVO.securityType = null;
+            this.flowVO.transactionDirection = null;
+            this.reqVO.securityType = null;
+            this.reqVO.transactionDirection = null;
+        }
+    }
+    loadStartItemsData(flowVO) {
+        this.loadItemData("PRO", flowVO.productCode);
+        this.loadItemData("COM", flowVO.investCompany);
+        this.loadItemData("MAK", flowVO.marketCode);
     }
 }

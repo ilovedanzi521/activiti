@@ -142,6 +142,7 @@ public class ThirdFeignInterfaceController {
                 return WinResponseData.handleError("失败");
 
         }
+        log.info("feign接口返回数据:{}",list);
         return WinResponseData.handleSuccess("成功返回", list);
     }
 
