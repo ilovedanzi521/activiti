@@ -750,6 +750,18 @@ export default class ExchangeFlowController extends BaseController {
      * 产品下拉框联动操作
      */
     changeItems(itemType, value) {
+        if (itemType === "PRO") {
+            this.flowVO.investCompany = null;
+            this.flowVO.investConstitute = null;
+        }
+        if (itemType === "COM") {
+            this.flowVO.investConstitute = null;
+            this.changeLink();
+        }
+        if (itemType === "MAK") {
+            this.flowVO.securityType = null;
+            this.flowVO.transactionDirection = null;
+        }
         this.service.loadItems(itemType, value).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
@@ -769,5 +781,9 @@ export default class ExchangeFlowController extends BaseController {
                 }
             }
         });
+    }
+
+    changeLink() {
+        this.$forceUpdate();
     }
 }
