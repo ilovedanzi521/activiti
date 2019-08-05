@@ -38,8 +38,8 @@
     and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
      limit 1
   </select>
-  <select id="queryCountFromFlowInst" resultType="java.lang.Integer" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
-    select count(1) from param_flowInst where
+  <select id="queryIdFromFlowInst" resultType="java.lang.Long" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
+    select id from param_flowInst where
      product_code = #{productCode,jdbcType=BIGINT}
     and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
     and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
