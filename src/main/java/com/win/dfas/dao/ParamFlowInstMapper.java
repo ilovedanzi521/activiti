@@ -31,7 +31,7 @@ public interface ParamFlowInstMapper {
 
     String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO);
 
-    int queryCountFromFlowInst(ParamFlowReqVO queryVO);
+    Long queryIdFromFlowInst(ParamFlowReqVO queryVO);
 
     List<FlowNameItem> listFlowName();
 }

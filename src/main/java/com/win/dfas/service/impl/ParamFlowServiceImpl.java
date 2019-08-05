@@ -65,7 +65,7 @@ public class ParamFlowServiceImpl implements IParamFlowService {
         entity.preInsert();
         ParamFlowReqVO reqVO = new ParamFlowReqVO();
         BeanUtils.copyProperties(vo, reqVO);
-        if(paramFlowMapper.queryCountFromFlowInst(reqVO)>0){
+        if(paramFlowMapper.queryIdFromFlowInst(reqVO)!=null){
             throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
         }else {
             paramFlowMapper.insert(entity);
@@ -76,12 +76,13 @@ public class ParamFlowServiceImpl implements IParamFlowService {
     public void update(ParamFlowRepVO vo) {
         ParamFlowReqVO reqVO = new ParamFlowReqVO();
         BeanUtils.copyProperties(vo, reqVO);
-        if(paramFlowMapper.queryCountFromFlowInst(reqVO)>0){
-            throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
-        }else {
+        Long id = paramFlowMapper.queryIdFromFlowInst(reqVO);
+        if(id==null || id.equals(vo.getId())){
             ParamFlowInst entity = new ParamFlowInst();
             BeanUtils.copyProperties(vo, entity);
             paramFlowMapper.updateByPrimaryKeySelective(entity);
+        }else{
+            throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
         }
     }
 
