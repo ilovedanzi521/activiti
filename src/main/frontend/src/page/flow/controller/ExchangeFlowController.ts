@@ -738,20 +738,16 @@ export default class ExchangeFlowController extends BaseController {
      */
     clear(vo: string, itemType: string) {
         if (itemType === "PRO") {
-            this.init(vo, "investCompany", this.flowVO.investCompany);
-            this.init(vo, "investConstitute", this.flowVO.investConstitute);
+            this.init(vo, "investCompany");
+            this.init(vo, "investConstitute");
         }
         if (itemType === "COM") {
-            this.init(vo, "investConstitute", this.flowVO.investConstitute);
+            this.init(vo, "investConstitute");
             this.changeLink();
         }
         if (itemType === "MAK") {
-            this.init(vo, "securityType", this.flowVO.securityType);
-            this.init(
-                vo,
-                "transactionDirection",
-                this.flowVO.transactionDirection
-            );
+            this.init(vo, "securityType");
+            this.init(vo, "transactionDirection");
         }
     }
     /**
@@ -791,13 +787,8 @@ export default class ExchangeFlowController extends BaseController {
         // this.closeDialog(formRule);
     }
 
-    init(vo: string, lable: string, value: string) {
-        if (value && value.trim().length > 0) {
-            // s = null;
-            if (this[vo][lable]) {
-                this[vo][lable] = null;
-            }
-        }
+    init(vo: string, lable: string) {
+        this[vo][lable] = null;
     }
 
 }
