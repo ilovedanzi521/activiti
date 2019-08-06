@@ -54,7 +54,8 @@ public class ModelEditorJsonRestResource implements ModelDataJsonConstants {
         modelNode.put(MODEL_ID, model.getId());
         ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(
             new String(repositoryService.getModelEditorSource(model.getId()), "utf-8"));
-        modelNode.putPOJO("model",editorJsonNode);
+//        modelNode.putPOJO("model",editorJsonNode);
+        modelNode.put("model", editorJsonNode);
       } catch (Exception e) {
         LOGGER.error("Error creating model JSON", e);
         throw new ActivitiException("Error creating model JSON", e);

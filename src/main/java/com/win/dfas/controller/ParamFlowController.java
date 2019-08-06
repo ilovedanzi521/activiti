@@ -244,7 +244,7 @@ public class ParamFlowController {
         editorNode.put("resourceId", "canvas");
         ObjectNode stencilSetNode = objectMapper.createObjectNode();
         stencilSetNode.put("namespace","http://b3mn.org/stencilset/bpmn2.0#");
-        editorNode.putPOJO("stencilset", stencilSetNode);
+        editorNode.put("stencilset", stencilSetNode);
         try {
             repositoryService.addModelEditorSource(modelId,editorNode.toString().getBytes("utf-8"));
         } catch (Exception e) {
