@@ -19,8 +19,7 @@ import {DynamicSelectItemVO, StaticSelectItemVO} from "../vo/SelectItemVO";
 })
 export default class ExchangeFlowController extends BaseController {
     staticSelectItemVO: StaticSelectItemVO = new StaticSelectItemVO();
-    dynamicselectItemVO: DynamicSelectItemVO = new DynamicSelectItemVO();
-    items={"reqVO":this.dynamicselectItemVO,"flowVO":this.dynamicselectItemVO};
+    items={"reqVO":new DynamicSelectItemVO(),"flowVO":new DynamicSelectItemVO()};
 
     // selectItemFormVO: SelectItemVO = new SelectItemVO();
     /**下拉框数据end**/
