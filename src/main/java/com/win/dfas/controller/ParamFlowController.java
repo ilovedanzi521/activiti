@@ -70,24 +70,23 @@ import java.util.Map;
 @RequestMapping("/param/exchangeFlow")
 @Slf4j
 public class ParamFlowController {
-
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private HistoryService historyService;
-    @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
     private IParamFlowService paramFlowService;
     @Autowired
     private IActivitiService activitiService;
-
-    @Autowired
-    private TaskService taskService;
-
+    /**
+     * @Title: list
+     * @Description 查询
+     * @param queryVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:32
+     */
     @ApiOperation(value = "流程实例查询", notes = "<br/>1. 分页查询 ")
     @PostMapping("/list")
     public WinResponseData list(@ApiParam(value = "流程查询参数") @RequestBody ParamFlowReqVO queryVO) {
@@ -96,7 +95,15 @@ public class ParamFlowController {
         log. info(list.toString());
         return WinResponseData.handleSuccess(list);
     }
-
+    /**
+     * @Title: queryFlowByGroupid
+     * @Description 根据流程组id查询流程信息
+     * @param queryVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:31
+     */
     @ApiOperation(value = "流程组实例查询")
     @PostMapping("/listFlowByGroupid")
     public WinResponseData queryFlowByGroupid(@RequestBody ParamFlowReqVO queryVO) {
@@ -109,8 +116,16 @@ public class ParamFlowController {
         log. info(data.toString());
         return WinResponseData.handleSuccess(data);
     }
-
-    @ApiOperation(value = "流程新增", notes = "<br/>1. 货币数据库保留8位小数;<br/>")
+    /**
+     * @Title: add
+     * @Description 流程新增
+     * @param paramFlowRepVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:31
+     */
+    @ApiOperation(value = "流程新增", notes = "<br/>1. add;<br/>")
     @PostMapping
     public WinResponseData add(@ApiParam(value = "流程新增参数") @RequestBody ParamFlowRepVO paramFlowRepVO) {
         log. info(paramFlowRepVO.toString());
@@ -129,20 +144,45 @@ public class ParamFlowController {
         paramFlowService.add(paramFlowRepVO);
         return WinResponseData.handleSuccess("流程新增成功");
     }
-
+    /**
+     * @Title: update
+     * @Description 流程更新
+     * @param paramFlowRepVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:30
+     */
     @ApiOperation(value = "流程更新", notes = "<br/>1. 流程ID必传")
     @PutMapping
     public WinResponseData update(@ApiParam(value = "流程更新参数") @RequestBody ParamFlowRepVO paramFlowRepVO) {
         paramFlowService.update(paramFlowRepVO);
         return WinResponseData.handleSuccess("流程修改成功");
     }
-
+    /**
+     * @Title: delete
+     * @Description 流程数据删除
+     * @param id
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:30
+     */
     @ApiOperation(value = "流程删除", notes = "流程物理删除")
     @DeleteMapping("/{id}")
     public WinResponseData delete(@ApiParam(value = "流程ID") @PathVariable("id") Long id) {
         paramFlowService.delete(id);
         return WinResponseData.handleSuccess("流程删除成功");
     }
+    /**
+     * @Title: deletes
+     * @Description 批量删除
+     * @param paramFlowRepVOS
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:30
+     */
     @PostMapping("/batchDelete")
     public WinResponseData deletes(@ApiParam(value = "流程新增参数") @RequestBody  List<ParamFlowRepVO> paramFlowRepVOS) {
         List<Long> ids = new ArrayList<>();
