@@ -23,6 +23,15 @@ import java.util.List;
 @RestController
 @RequestMapping({"/service/bpm/processDef"})
 public class ProcessDefController {
+    /**
+     * @Title: getSubjectVariable
+     * @Description 流程信息
+     * @param defId
+     * @return com.alibaba.fastjson.JSONArray
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/14:58
+     */
     @RequestMapping({"/getSubjectVariable"})
     public JSONArray getSubjectVariable(@RequestParam String defId) throws Exception {
         JSONArray jsonArray = new JSONArray();

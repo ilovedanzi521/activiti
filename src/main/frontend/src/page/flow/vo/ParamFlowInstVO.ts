@@ -1,5 +1,7 @@
 import { BaseReqVO, BaseRepVO } from "../../common/vo/BaseVO";
+import { DynamicSelectItemVO } from "../vo/SelectItemVO";
 export class ParamFlowInstReqVO extends BaseReqVO {
+    selectItemVO: DynamicSelectItemVO = new DynamicSelectItemVO();
     /**
      * 流程名称
      */
@@ -52,6 +54,7 @@ export class ParamFlowInstReqVO extends BaseReqVO {
 
 /*流程实例列表返回响应*/
 export class ParamFlowInstRepVO extends BaseReqVO {
+    selectItemVO: DynamicSelectItemVO = new DynamicSelectItemVO();
     /**
      * 流程名称
      */

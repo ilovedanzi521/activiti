@@ -3,9 +3,9 @@ import ExchangeFlowService from "../service/ExchangeFlowService";
 import {
     ParamFlowInstReqVO,
     ParamFlowInstRepVO
-} from "../bean/ParamFlowInstVO";
-import { ParamFlowGroupVO } from "../bean/ParamFlowGroupVO";
-import { UserInfoVO } from "../bean/UserInfoVO";
+} from "../vo/ParamFlowInstVO";
+import { ParamFlowGroupVO } from "../vo/ParamFlowGroupVO";
+import { UserInfoVO } from "../vo/UserInfoVO";
 import AxiosFun from "../../../api/AxiosFun";
 import BaseController from "../../common/controller/BaseController";
 import { DeleteEnum } from "../../flow/enum/DeleteEnum";
@@ -13,12 +13,13 @@ import PageVO from "../../common/vo/PageVO";
 import dateUtils from "../../common/util/DateUtils";
 import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
-import { SelectItemVO } from "../bean/SelectItemVO";
+import { StaticSelectItemVO } from "../vo/SelectItemVO";
 @Component({
     components: {}
 })
 export default class ExchangeFlowController extends BaseController {
-    selectItemVO: SelectItemVO = new SelectItemVO();
+    staticSelectItemVO: StaticSelectItemVO = new StaticSelectItemVO();
+    // selectItemFormVO: SelectItemVO = new SelectItemVO();
     /**下拉框数据end**/
     dialogTableVisible = false;
     flowUrl: string = "";
@@ -504,6 +505,7 @@ export default class ExchangeFlowController extends BaseController {
     reset() {
         this.reqVO = new ParamFlowInstReqVO();
         this.queryExchangeFlow(this.reqVO);
+        this.clearItemsData('reqVO');
     }
 
     /**打开新增弹框 */
@@ -678,29 +680,21 @@ export default class ExchangeFlowController extends BaseController {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
             }
-            this.selectItemVO.flowNameItems = res.data.flowNameItems;
-            this.selectItemVO.flowTypeItems = res.data.flowTypeItems;
-            // 产品
-
-            this.selectItemVO.productItems = res.data.productItems;
-            // 投资单位
-            // this.selectItemVO.investCompanyItems = res.data.investCompanyItems;
-            // // 组合资产
-            // this.selectItemVO.investConstituteItems =
-            //     res.data.investConstituteItems;
-            // 指令类型
-            this.selectItemVO.instructionTypeItems =
-                res.data.instructionTypeItems;
-            // 交易市场
-            this.selectItemVO.marketItems = res.data.marketItems;
-            // //证券类型
-            // this.selectItemVO.securityTypeItems = res.data.securityTypeItems;
-            // // 交易方向
-            // this.selectItemVO.transactionDirectionItems =
-            //     res.data.transactionDirectionItems;
-            this.selectItemVO.controlTypeItems = res.data.controlTypeItems;
-            console.info(this.selectItemVO);
+            this.setItemsValue(res.data);
         });
+    }
+
+    setItemsValue(data){
+            this.staticSelectItemVO.flowNameItems = data.flowNameItems;
+            this.staticSelectItemVO.flowTypeItems = data.flowTypeItems;
+            // 产品
+            this.staticSelectItemVO.productItems = data.productItems;
+            // 指令类型
+            this.staticSelectItemVO.instructionTypeItems =
+                data.instructionTypeItems;
+            // 交易市场
+            this.staticSelectItemVO.marketItems = data.marketItems;
+            this.staticSelectItemVO.controlTypeItems = data.controlTypeItems;
     }
 
     /**
@@ -708,25 +702,25 @@ export default class ExchangeFlowController extends BaseController {
      */
     changeItems(vo: string, itemType, value) {
         this.clear(vo, itemType);
-        this.loadItemData(itemType, value);
+        this.loadItemData(vo,itemType, value);
     }
-    loadItemData(itemType, value) {
+    loadItemData(vo,itemType, value) {
         this.service.loadItems(itemType, value).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
             } else {
                 if (itemType === "PRO") {
-                    this.selectItemVO.investCompanyItems = res.data;
+                    this[vo].selectItemVO.investCompanyItems = res.data;
                 }
                 if (itemType === "COM") {
-                    this.selectItemVO.investConstituteItems = res.data;
+                    this[vo].selectItemVO.investConstituteItems = res.data;
                 }
                 if (itemType === "MAK") {
                     //证券类型
-                    this.selectItemVO.securityTypeItems =
+                    this[vo].selectItemVO.securityTypeItems =
                         res.data.securityTypeItems;
                     // 交易方向
-                    this.selectItemVO.transactionDirectionItems =
+                    this[vo].selectItemVO.transactionDirectionItems =
                         res.data.transactionDirectionItems;
                 }
             }
@@ -765,22 +759,22 @@ export default class ExchangeFlowController extends BaseController {
      * @param flowVO 修改数据时，加载数据
      */
     loadStartItemsData(flowVO) {
-        this.loadItemData("PRO", flowVO.productCode);
-        this.loadItemData("COM", flowVO.investCompany);
-        this.loadItemData("MAK", flowVO.marketCode);
+        this.loadItemData('flowVO',"PRO", flowVO.productCode);
+        this.loadItemData('flowVO',"COM", flowVO.investCompany);
+        this.loadItemData('flowVO',"MAK", flowVO.marketCode);
     }
     /**
      * 清理items数据
      */
-    clearItemsData() {
+    clearItemsData(selectVO :string) {
         //投资单元
-        this.selectItemVO.investCompanyItems = [];
+        this[selectVO].investCompanyItems = [];
         // 组合资产
-        this.selectItemVO.investConstituteItems = [];
+        this[selectVO].investConstituteItems = [];
         //证券类型
-        this.selectItemVO.securityTypeItems = [];
+        this[selectVO].securityTypeItems = [];
         // 交易方向
-        this.selectItemVO.transactionDirectionItems = [];
+        this[selectVO].transactionDirectionItems = [];
     }
     /**
      * 清理数据以及对规则和弹框的清理
@@ -789,7 +783,7 @@ export default class ExchangeFlowController extends BaseController {
     closeDialog(formRule) {
         this.$refs[formRule].resetFields();
         this.deleteFlag = false;
-        // this.clearItemsData();
+        this.clearItemsData('flowVO');
         this.queryExchangeFlow(this.reqVO);
     }
     closeDia(formRule) {
@@ -805,4 +799,5 @@ export default class ExchangeFlowController extends BaseController {
             }
         }
     }
+
 }

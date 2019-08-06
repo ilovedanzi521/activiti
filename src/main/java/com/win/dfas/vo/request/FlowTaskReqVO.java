@@ -2,6 +2,7 @@ package com.win.dfas.vo.request;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
  * 创建时间：2019/6/27/14:18
  */
 @Data
-public class FlowTaskReqVO {
+public class FlowTaskReqVO implements Serializable {
     /**
      * 流程用户
      */

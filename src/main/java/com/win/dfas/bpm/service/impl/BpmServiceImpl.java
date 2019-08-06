@@ -1,5 +1,6 @@
 package com.win.dfas.bpm.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.win.dfas.bpm.constant.BpmConstant;
 
@@ -10,6 +11,7 @@ import com.win.dfas.bpm.service.BpmService;
 import com.win.dfas.bpm.vo.request.FlowAssignersReqVO;
 import com.win.dfas.bpm.vo.response.AllFlowAssignersRepVO;
 import com.win.dfas.bpm.vo.response.FlowAssignersRepVO;
+import com.win.dfas.bpm.vo.response.FlowNodeTaskTypeRepVO;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.controller.feign.IuserFeignClient;
 import com.win.dfas.dao.FlowAssignersMapper;
@@ -19,9 +21,11 @@ import com.win.dfas.vo.response.DepartmentInfoRepVO;
 import com.win.dfas.vo.response.RoleInfoRepVO;
 import com.win.dfas.vo.response.UserInfoRepVO;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
@@ -53,6 +57,8 @@ public class BpmServiceImpl implements BpmService {
     private TaskService taskService;
     @Autowired
     private RuntimeService runtimeService;
+    @Autowired
+    private HistoryService historyService;
 
     @Autowired
     private RepositoryService repositoryService;
@@ -162,6 +168,37 @@ public class BpmServiceImpl implements BpmService {
         ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey());
         String taskType = (String) activityImpl.getProperties().get(BpmConstant.NAME);
         return taskType;
+    }
+
+    @Override
+    public FlowNodeTaskTypeRepVO complete(FlowTaskReqVO flowTaskReqVO) {
+        String processId = flowTaskReqVO.getProcessId();
+        FlowNodeTaskTypeRepVO repVO = new FlowNodeTaskTypeRepVO(processId);
+        try {
+            Map map = BeanUtil.beanToMap(flowTaskReqVO);
+            log.info(map.toString());
+            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
+            if (historicProcessInstance.getEndTime() != null) {
+                log.info("流程已经结束！");
+                return repVO.setStatu(FlowNodeTaskTypeRepVO.EnumRunStatu.CLOSE);
+            } else {
+                Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
+
+                taskService.complete(task.getId(), map);
+                historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
+                if (historicProcessInstance.getEndTime() != null) {
+                    log.info("最后节点已完成！");
+                    return repVO.setStatu(FlowNodeTaskTypeRepVO.EnumRunStatu.END);
+                }
+                String taskType = nextTaskType(processId);
+                repVO.setTaskType(taskType);
+                repVO.setStatu(FlowNodeTaskTypeRepVO.EnumRunStatu.RUNNING);
+                return repVO;
+            }
+        }catch(Throwable throwable){
+            log.error("异常返回{}",throwable);
+            return repVO.setStatu(FlowNodeTaskTypeRepVO.EnumRunStatu.EXCEPTION);
+        }
     }
 
     private List<String> getUserInfo(Set<Expression> expressions) {

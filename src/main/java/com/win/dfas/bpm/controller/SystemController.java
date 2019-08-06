@@ -44,7 +44,16 @@ public class SystemController {
     }
 
 
-
+    /**
+     * @Title: getInterFaceImpls
+     * @Description 节点人员信息的下拉框的列表信息
+     * @param request
+     * @param response
+     * @return java.lang.Object
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/14:56
+     */
     @RequestMapping("/sys/tools/getInterFaceImpls")
     public Object getInterFaceImpls(HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<Map<String,String>> list = new ArrayList<>();

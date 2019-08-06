@@ -7,6 +7,7 @@ import com.win.dfas.bpm.constant.BpmConstant;
 import com.win.dfas.bpm.dto.QueryAndStartFlowReqDTO;
 import com.win.dfas.bpm.entity.FlowAssigners;
 import com.win.dfas.bpm.service.BpmService;
+import com.win.dfas.bpm.util.EnumUtil;
 import com.win.dfas.bpm.vo.response.FlowNodeTaskTypeRepVO;
 import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.common.vo.WinResponseData;
@@ -60,7 +61,15 @@ public class BpmTaskController {
 
     @Autowired
     private IParamFlowService paramFlowService;
-
+    /**
+     * @Title: queryAndStart
+     * @Description 流程查询和启动
+     * @param queryAndStartFlowReqDTO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/14:59
+     */
     @PostMapping("/runFlow")
     public WinResponseData queryAndStart(@RequestBody QueryAndStartFlowReqDTO queryAndStartFlowReqDTO) {
         try {
@@ -92,7 +101,15 @@ public class BpmTaskController {
         return WinResponseData.handleError("失败");
 
     }
-
+    /**
+     * @Title: run
+     * @Description 根据流程定义id启动流程
+     * @param flowTaskReqVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/15:00
+     */
     @PostMapping("/run")
     public WinResponseData run(@RequestBody FlowTaskReqVO flowTaskReqVO) {
         log.info("运行参数======" + BeanUtil.beanToMap(flowTaskReqVO).toString());
@@ -123,15 +140,15 @@ public class BpmTaskController {
     }
 
 
-    /**
-     * @param queryVO
-     * @return com.win.dfas.common.vo.WinResponseData
-     * @throws
-     * @Title: queryprocessDef
-     * @Description: 获取流程定义id
-     * @author wanglei
-     * @Date 2019/7/9/13:44
-     */
+   /**
+    * @Title: queryprocessDef
+    * @Description 获取流程定义id
+    * @param queryVO
+    * @return com.win.dfas.common.vo.WinResponseData
+    * @throws
+    * @author wanglei
+    * @Date 2019/8/6/14:59
+    */
     @PostMapping("/queryprocessDef")
     public WinResponseData queryprocessDef(@RequestBody ParamFlowReqVO queryVO) {
         log.info("queryprocessDef入参：" + BeanUtil.beanToMap(queryVO).toString());
@@ -144,15 +161,15 @@ public class BpmTaskController {
 
     }
 
-    /**
-     * @param flowTaskReqVO
-     * @return com.win.dfas.common.vo.WinResponseData
-     * @throws
-     * @Title: queryTaskInfoByTask
-     * @Description: 查询未完成任务
-     * @author wanglei
-     * @Date 2019/7/9/14:16
-     */
+   /**
+    * @Title: queryTaskInfoByTask
+    * @Description 查询未完成任务
+    * @param flowTaskReqVO
+    * @return com.win.dfas.common.vo.WinResponseData
+    * @throws
+    * @author wanglei
+    * @Date 2019/8/6/14:59
+    */
     @PostMapping("/getTaskInfo")
     public WinResponseData queryTaskInfoByTask(@RequestBody FlowTaskReqVO flowTaskReqVO) {
         try {
@@ -176,45 +193,72 @@ public class BpmTaskController {
     }
 
     /**
+     * @Title: complete
+     * @Description 完成任务, 并返回下一节点信息
      * @param flowTaskReqVO
      * @return com.win.dfas.common.vo.WinResponseData
      * @throws
-     * @Title: complete
-     * @Description: 完成任务, 并返回下一节点信息
      * @author wanglei
-     * @Date 2019/7/9/14:22
+     * @Date 2019/8/6/14:58
      */
     @PostMapping("/complete")
     public WinResponseData complete(@RequestBody FlowTaskReqVO flowTaskReqVO) {
         try {
-            String processId = flowTaskReqVO.getProcessId();
-            Map map = BeanUtil.beanToMap(flowTaskReqVO);
-            log.info(map.toString());
-            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
-            if (historicProcessInstance.getEndTime() != null) {
-                log.info("流程已经结束！");
-                return WinResponseData.handleError("流程已经结束", historicProcessInstance.getEndTime());
-            } else {
-                Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
-
-                taskService.complete(task.getId(), map);
-                historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
-                if (historicProcessInstance.getEndTime() != null) {
-                    log.info("最后节点已完成！");
-                    return WinResponseData.handleSuccess("最后节点已完成", historicProcessInstance.getEndTime());
-                }
-                String taskType = bpmService.nextTaskType(processId);
-                FlowNodeTaskTypeRepVO repVO = new FlowNodeTaskTypeRepVO();
-                repVO.setProcessId(processId);
-                repVO.setTaskType(taskType);
-                return WinResponseData.handleSuccess("成功", repVO);
+            FlowNodeTaskTypeRepVO repVO = bpmService.complete(flowTaskReqVO);
+            switch(repVO.getStatu()){
+                case RUNNING:
+                    return WinResponseData.handleSuccess("成功", repVO);
+                case END:
+                    return WinResponseData.handleSuccess("最后节点已完成", repVO);
+                case CLOSE:
+                    return WinResponseData.handleError("流程已经结束",repVO);
+                default:
+                    throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
             }
         } catch (Throwable throwable) {
             throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
         }
     }
+    /**
+     * @Title: batchComplete
+     * @Description 批量审批
+     * @param flowTaskReqVOs
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/15:01
+     */
+    @PostMapping("/batchComplete")
+    public WinResponseData batchComplete(@RequestBody List<FlowTaskReqVO> flowTaskReqVOs) {
+        List<FlowNodeTaskTypeRepVO> list = new ArrayList<>();
+        //记录失败数据
+        int errorNum = 0;
+        for (FlowTaskReqVO flowTaskReqVO : flowTaskReqVOs) {
+            FlowNodeTaskTypeRepVO repVO = bpmService.complete(flowTaskReqVO);
+            list.add(repVO);
+            if(FlowNodeTaskTypeRepVO.EnumRunStatu.CLOSE.equals(repVO.getStatu())||
+                    FlowNodeTaskTypeRepVO.EnumRunStatu.EXCEPTION.equals(repVO.getStatu())){
+                errorNum++;
+            }
+        }
+        if(errorNum==list.size()){
+            return WinResponseData.handleError("批量审批全部失败",list);
+        }
+        if(errorNum>0){
+            return WinResponseData.handleError("批量审批有部分失败",list);
+        }
+        return WinResponseData.handleSuccess("批量审批成功完成",list);
+    }
 
-
+    /**
+     * @Title: listUserInfoToType
+     * @Description 获取流程的用户信息
+     * @param taskType
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/15:00
+     */
     @GetMapping("/listUserInfoToType")
     public WinResponseData listUserInfoToType(@ApiParam(value = "组类型") @RequestParam String taskType) {
         if (ObjectUtil.isEmpty(taskType)) {
