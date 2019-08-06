@@ -34,56 +34,56 @@
                                 <!-- <el-input v-model="reqVO.flowName" :maxlength="80"></el-input> -->
 
                                 <win_select v-model="reqVO.flowName" filterable clearable placeholder="请选择">
-                                    <win_option v-for="item in flowNameItems" :key="item.code" :label="item.name" :value="item.name"></win_option>
+                                    <win_option v-for="item in selectItemVO.flowNameItems" :key="item.code" :label="item.name" :value="item.name"></win_option>
                                 </win_select>
 
                             </win_form_item>
                             <win_form_item label="流程类型" style="margin-right:-15px">
                                 <win_select v-model="reqVO.flowType" filterable clearable placeholder="请选择">
-                                    <win_option v-for="item in flowTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                                    <win_option v-for="item in selectItemVO.flowTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="产品" style="margin-right:-15px">
-                                <win_select v-model="reqVO.productCode" filterable clearable placeholder="请选择" @change="changeItems('PRO',reqVO.productCode)">
-                                    <win_option v-for="item in productItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                                <win_select v-model="reqVO.productCode" filterable clearable placeholder="请选择" @change="changeItems('reqVO','PRO',reqVO.productCode)">
+                                    <win_option v-for="item in selectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="资产单元" style="margin-right:-15px">
-                                <win_select v-model="reqVO.investCompany" filterable clearable placeholder="请选择" @change="changeItems('COM',reqVO.investCompany)">
-                                    <win_option v-for="item in investCompanyItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                                <win_select v-model="reqVO.investCompany" filterable clearable placeholder="请选择" @change="changeItems('reqVO','COM',reqVO.investCompany)">
+                                    <win_option v-for="item in selectItemVO.investCompanyItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="投资组合" style="margin-right:-15px">
                                 <win_select v-model="reqVO.investConstitute" filterable clearable placeholder="请选择" @change="changeLink">
-                                    <win_option v-for="item in investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                                    <win_option v-for="item in selectItemVO.investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                         </el-row>
                         <el-row style="margin-top:-20px;margin-left:5px">
                             <win_form_item label="指令类型" style="margin-right:-5px;margin-left:-30px">
                                 <win_select v-model="reqVO.instructionType" filterable clearable placeholder="请选择">
-                                    <win_option v-for="item in instructionTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                                    <win_option v-for="item in selectItemVO.instructionTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="交易市场" style="margin-right:-15px">
-                                <win_select v-model="reqVO.marketCode" filterable clearable placeholder="请选择" @change="changeItems('MAK',reqVO.marketCode)">
-                                    <win_option v-for="item in marketItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                                <win_select v-model="reqVO.marketCode" filterable clearable placeholder="请选择" @change="changeItems('reqVO','MAK',reqVO.marketCode)">
+                                    <win_option v-for="item in selectItemVO.marketItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="证券类型" style="margin-right:-15px">
                                 <win_select v-model="reqVO.securityType" filterable clearable placeholder="请选择" @change="changeLink">
-                                    <win_option v-for="item in securityTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                                    <win_option v-for="item in selectItemVO.securityTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                             <win_form_item label="交易方向" style="margin-right:-15px">
                                 <win_select v-model="reqVO.transactionDirection" filterable clearable placeholder="请选择" @change="changeLink">
-                                    <win_option v-for="item in transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                                    <win_option v-for="item in selectItemVO.transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                                 </win_select>
                             </win_form_item>
                         </el-row>
                         <el-row style="text-align:center;margin-top:-10px">
-                            <el-button @click="queryExchangeFlow(reqVO)" type="primary">查询</el-button>
-                            <el-button @click="reset()" type="default">重置</el-button>
+                            <win_button @click="queryExchangeFlow(reqVO)" type="primary">查询</win_button>
+                            <win_button @click="reset()" type="default">重置</win_button>
                         </el-row>
                         <el-row style="margin-left:0px ;margin-bottom:0px">
                             <!--<el-button @click="openAddDialog()">新增</el-button>-->
@@ -142,7 +142,7 @@
                     </win_form_item>
                     <win_form_item label="流程类型" prop="flowType">
                         <win_select v-model="flowVO.flowType" :disabled="flowVO.id!=null" filterable clearable placeholder="请选择">
-                            <win_option v-for="item in flowTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                            <win_option v-for="item in selectItemVO.flowTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                 </div>
@@ -155,64 +155,64 @@
                 </div>
                 <div class="form_content_flow">
                     <win_form_item label="产品" prop="productCode">
-                        <win_select v-model="flowVO.productCode" :disabled="flowVO.id!=null" filterable clearable placeholder="请选择" @change="changeItems('PRO',flowVO.productCode)">
-                            <win_option v-for="item in productItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                        <win_select v-model="flowVO.productCode" :disabled="flowVO.id!=null" filterable clearable placeholder="请选择" @change="changeItems('flowVO','PRO',flowVO.productCode)">
+                            <win_option v-for="item in selectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_form_item label="资产单元">
-                        <win_select v-model="flowVO.investCompany" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeItems('COM',flowVO.investCompany)">
-                            <win_option v-for="item in investCompanyItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                        <win_select v-model="flowVO.investCompany" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeItems('flowVO','COM',flowVO.investCompany)">
+                            <win_option v-for="item in selectItemVO.investCompanyItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">
                     <win_form_item label="投资组合">
                         <win_select v-model="flowVO.investConstitute" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeLink">
-                            <win_option v-for="item in investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                            <win_option v-for="item in selectItemVO.investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_form_item label="指令类型">
                         <win_select v-model="flowVO.instructionType" filterable clearable placeholder="请选择" :disabled="deleteFlag">
-                            <win_option v-for="item in instructionTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                            <win_option v-for="item in selectItemVO.instructionTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">
                     <win_form_item label="交易市场">
-                        <win_select v-model="flowVO.marketCode" filterable clearable placeholder="请选择" @change="changeItems('MAK',flowVO.marketCode)" :disabled="deleteFlag">
-                            <win_option v-for="item in marketItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                        <win_select v-model="flowVO.marketCode" filterable clearable placeholder="请选择" @change="changeItems('flowVO','MAK',flowVO.marketCode)" :disabled="deleteFlag">
+                            <win_option v-for="item in selectItemVO.marketItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_form_item label="证券类型">
                         <win_select v-model="flowVO.securityType" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeLink">
-                            <win_option v-for="item in securityTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                            <win_option v-for="item in selectItemVO.securityTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                 </div>
                 <div class="form_content_flow">
                     <win_form_item label="交易方向">
                         <win_select v-model="flowVO.transactionDirection" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeLink">
-                            <win_option v-for="item in transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                            <win_option v-for="item in selectItemVO.transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_form_item label="控制类型">
                         <win_select v-model="flowVO.controlType" filterable clearable placeholder="请选择" :disabled="deleteFlag">
-                            <win_option v-for="item in controlTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
+                            <win_option v-for="item in selectItemVO.controlTypeItems" :key="item.code" :label="item.name" :value="item.code"></win_option>
                         </win_select>
                     </win_form_item>
                     <win_input v-if="false" v-model="flowVO.flowCode"></win_input>
                 </div>
             </win_form>
             <span slot="footer" class="dialog-footer">
-                <win_button @click="closeDialog('exchangeForm')" type="default">取消</win_button>
+                <win_button @click="closeDia('exchangeForm')" type="default">取消</win_button>
                 <span v-if="deleteFlag">
-                    <win_button @click="deleteExchangeFlow(true)" type="primary">确认</win_button>
+                    <win_button @click="deleteExchangeFlow('exchangeForm')" type="primary">确认</win_button>
                 </span>
                 <span v-else-if="flowVO.id">
-                    <win_button @click="updateExchangeFlow(true)" type="primary">确认</win_button>
+                    <win_button @click="updateExchangeFlow('exchangeForm')" type="primary">确认</win_button>
                 </span>
                 <span v-else>
-                    <win_button @click="addExchangeFlow(true)" type="primary">确认</win_button>
+                    <win_button @click="addExchangeFlow('exchangeForm')" type="primary">确认</win_button>
                 </span>
             </span>
             <!-- <div>
