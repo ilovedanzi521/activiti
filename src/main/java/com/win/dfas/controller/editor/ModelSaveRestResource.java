@@ -18,9 +18,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+
 /**
- * 流程信息入库
- * liuzhize 2019年3月7日下午3:32:32
+ * 包名称：com.win.dfas.controller.editor
+ * 类名称：ModelSaveRestResource
+ * 类描述：流程信息入库
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
  */
 @RestController
 @RequestMapping("service")
@@ -39,14 +43,14 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
    * @param modelId 模型ID
    * @param name 流程模型名称
    * @param description
-   * @param json_xml 流程文件
-   * @param svg_xml 图片
+   * @param jsonXml 流程文件
+   * @param svgXml 图片
    */
   @RequestMapping(value="/model/{modelId}/save", method = RequestMethod.PUT)
   @ResponseStatus(value = HttpStatus.OK)
   public void saveModel(@PathVariable String modelId
           , String name, String description
-          , String json_xml, String svg_xml) {
+          , String jsonXml, String svgXml) {
     try {
 
       Model model = repositoryService.getModel(modelId);
@@ -59,9 +63,9 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
       model.setName(name);
       repositoryService.saveModel(model);
 
-      repositoryService.addModelEditorSource(model.getId(), json_xml.getBytes("utf-8"));
+      repositoryService.addModelEditorSource(model.getId(), jsonXml.getBytes("utf-8"));
 
-      InputStream svgStream = new ByteArrayInputStream(svg_xml.getBytes("utf-8"));
+      InputStream svgStream = new ByteArrayInputStream(svgXml.getBytes("utf-8"));
       TranscoderInput input = new TranscoderInput(svgStream);
 
       PNGTranscoder transcoder = new PNGTranscoder();

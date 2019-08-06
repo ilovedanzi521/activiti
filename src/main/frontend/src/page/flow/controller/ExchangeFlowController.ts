@@ -800,7 +800,9 @@ export default class ExchangeFlowController extends BaseController {
     init(vo: string, lable: string, value: string) {
         if (value && value.trim().length > 0) {
             // s = null;
-            this[vo][lable] = null;
+            if (this[vo][lable]) {
+                this[vo][lable] = null;
+            }
         }
     }
 }

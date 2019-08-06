@@ -55,13 +55,8 @@ public class ParamFlowServiceImpl implements IParamFlowService {
 
     @Override
     public void add(ParamFlowRepVO vo) {
-//        if(StrUtil.isBlank(vo.get)) {
-//            throw ParameterExceptionUtil.winException(WinRspTypeEnum.EXCHANGE_RATE_SOURCE_NOT_NULL);
-//        }
-//        vo.setId(PrimaryKeyUtil.generateId());
         ParamFlowInst entity = new ParamFlowInst();
         BeanUtils.copyProperties(vo, entity);
-//        entity.setId(PrimaryKeyUtil.generateId());
         entity.preInsert();
         ParamFlowReqVO reqVO = new ParamFlowReqVO();
         BeanUtils.copyProperties(vo, reqVO);

@@ -8,7 +8,9 @@ package com.win.dfas.vo.response;
  * 创建时间：2019/6/20/9:03
  */
 public enum SelectorItemEnum {
+    //流程名称
     NAM("flowNameItems"),
+    //流程类型
     FLW("flowTypeItems"),
     // 产品
     PRO("productItems"),

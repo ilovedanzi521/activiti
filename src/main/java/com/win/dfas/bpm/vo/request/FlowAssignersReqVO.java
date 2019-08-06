@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 包名称：com.win.dfas.bpm.vo.request
  * 类名称：FlowAssignersReqVO
- * 类描述：${TODO}
+ * 类描述：节点用户信息
  * 创建人：@author wanglei
  * 创建时间：2019/7/1/13:23
  */

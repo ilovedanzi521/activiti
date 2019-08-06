@@ -6,6 +6,14 @@ import com.win.dfas.vo.response.item.FlowNameItem;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
+/**
+ * 包名称：com.win.dfas.dao
+ * 类名称：ParamFlowInstMapper
+ * 类描述：ParamFlowInstMapper
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 @Mapper
 public interface ParamFlowInstMapper {
     int deleteByPrimaryKey(Long id);

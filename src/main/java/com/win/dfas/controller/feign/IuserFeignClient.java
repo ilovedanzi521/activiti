@@ -24,8 +24,8 @@ public interface IuserFeignClient {
     /**
      * @Title: queryUserInfoList
      * @Description: fegin接口-获取用户信息
-     * @param userInoReq
-     * @return java.util.List<java.lang.String>
+     * @param userInoReq 用户信息
+     * @return java.util.List<java.lang.String> 统一返回
      * @throws
      * @author wanglei
      * @Date 2019/7/10/15:35

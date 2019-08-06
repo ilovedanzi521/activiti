@@ -1,7 +1,6 @@
 package com.win.dfas.bpm.api.model.custdialog;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -16,21 +15,23 @@ import java.io.Serializable;
  */
 @Data
 public class FormCustDialogConditionField implements Serializable {
-    //列名称
-    @NotEmpty
+    /**
+     * 列名称
+     */
     private String columnName;
-//    数据类型
-    @NotEmpty
+    /**
+     *  数据类型
+     */
     private String dbType;
-//    显示名称
-    @NotEmpty
+    /**
+     * 显示名称
+     */
     private String showName;
-//    条件值
-    @NotEmpty
+    /**
+     *  条件值
+     */
     private String condition;
-    @NotEmpty
     private String valueSource;
-    @NotEmpty
     private FormCustDialogConditionField.Value value;
 
     public FormCustDialogConditionField() {

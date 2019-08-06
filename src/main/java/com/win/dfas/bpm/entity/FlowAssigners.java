@@ -2,6 +2,13 @@ package com.win.dfas.bpm.entity;
 
 import java.util.Date;
 
+/**
+ * 包名称：com.win.dfas.bpm.entity;
+ * 类名称：FlowAssigners
+ * 类描述：FlowAssigners
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 public class FlowAssigners extends FlowAssignersKey {
     private String description;
     private String taskType;

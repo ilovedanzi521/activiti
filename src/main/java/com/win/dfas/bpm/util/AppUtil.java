@@ -12,7 +12,13 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 包名称：com.win.dfas.bpm.util
+ * 类名称：AppUtil
+ * 类描述：AppUtil
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 @Component
 public class AppUtil implements ApplicationContextAware {
 
@@ -22,10 +28,9 @@ public class AppUtil implements ApplicationContextAware {
 
 
     @Override
-    public void setApplicationContext(ApplicationContext _context)
+    public void setApplicationContext(ApplicationContext context)
             throws BeansException {
-        AppUtil.context = _context;
-//        context.publishEvent(new GroovyStartEvent(context));
+        AppUtil.context = context;
     }
 
     /**

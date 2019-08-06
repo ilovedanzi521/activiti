@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 获取model的节点信息，编辑器根据返回的json进行绘图
- * liuzhize 2019年3月7日下午3:29:15
+ * 包名称：com.win.dfas.controller.editor
+ * 类名称：ModelEditorJsonRestResource
+ * 类描述：获取model的节点信息，编辑器根据返回的json进行绘图
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
  */
 @RestController
 @RequestMapping("service")
@@ -51,7 +54,7 @@ public class ModelEditorJsonRestResource implements ModelDataJsonConstants {
         modelNode.put(MODEL_ID, model.getId());
         ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(
             new String(repositoryService.getModelEditorSource(model.getId()), "utf-8"));
-        modelNode.put("model", editorJsonNode);
+        modelNode.putPOJO("model",editorJsonNode);
       } catch (Exception e) {
         LOGGER.error("Error creating model JSON", e);
         throw new ActivitiException("Error creating model JSON", e);

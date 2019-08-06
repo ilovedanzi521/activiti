@@ -3,28 +3,23 @@ package com.win.dfas.bpm.api.model.def.form;
 import com.win.dfas.bpm.api.model.custdialog.*;
 import com.win.dfas.bpm.util.JsonUtil;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * @author wanglei
+ */
 @Data
 public class FormCustDialog {
     public static final String DATA_SOURCE_INTERFACE = "interface";
-    @NotEmpty
     private String key;
-    @NotEmpty
     private String name;
     private String desc;
-    @NotEmpty
     private String style;
-    @NotEmpty
     private String dsKey;
-    @NotEmpty
     private String dsName;
-    @NotEmpty
     private String objType;
-    @NotEmpty
     private String objName;
     private String id;
     private boolean page;

@@ -8,7 +8,9 @@ package com.win.dfas.bpm.constant;
  * 创建时间：2019/7/3/17:03
  */
 public enum  UserClassEnum {
+    //用户信息
     USER("user","[姓名]"),
+    //部门信息
     GROUP("group","[部门]");
 
     private String key;

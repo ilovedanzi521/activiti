@@ -1,7 +1,6 @@
 package com.win.dfas.bpm.api.model.custdialog;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -16,11 +15,13 @@ import java.io.Serializable;
  */
 @Data
 public class FormCustDialogDisplayField implements Serializable {
-    //字段名称
-    @NotEmpty
+    /**
+     * 字段名称
+     */
     private String columnName;
-    @NotEmpty
-//    显示名称
+    /**
+     * 显示名称
+     */
     private String showName;
     private String formatter;
 

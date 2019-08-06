@@ -83,7 +83,6 @@ public class BpmServiceImpl implements BpmService {
     public int add(FlowAssignersReqVO flowAssignersReqVO) {
         FlowAssigners entity = new FlowAssigners();
         BeanUtils.copyProperties(flowAssignersReqVO, entity);
-//        entity.setId(PrimaryKeyUtil.generateId());
         //todo
         if(flowAssignersMapper.selectByPrimaryKey(entity)!=null){
             return flowAssignersMapper.updateByPrimaryKeySelective(entity);
@@ -119,14 +118,16 @@ public class BpmServiceImpl implements BpmService {
     @Override
     public List<String> nextUserInfo(String processId) {
         Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
-        String processDefinitionId=task.getProcessDefinitionId(); // 获取流程定义id
+        // 获取流程定义id
+        String processDefinitionId=task.getProcessDefinitionId();
         ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
-        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey()); // 根据活动id获取活动实例
-
+        // 根据活动id获取活动实例
+        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey());
         TaskDefinition taskDef = (TaskDefinition)activityImpl.getProperties().get("taskDefinition");
-        Set<Expression> userCodes = taskDef.getCandidateUserIdExpressions();//候选人
-        Set<Expression> roleCodes = taskDef.getCandidateGroupIdExpressions();//候选组
-//        activityImpl.getProperty(Ac)
+        //候选人
+        Set<Expression> userCodes = taskDef.getCandidateUserIdExpressions();
+        //候选组
+        Set<Expression> roleCodes = taskDef.getCandidateGroupIdExpressions();
         List<String> list = getUserInfofromDepartment(getUserInfo(roleCodes));
         List<String> userList = getUserInfo(userCodes);
         userList.addAll(list);
@@ -148,19 +149,17 @@ public class BpmServiceImpl implements BpmService {
 
     @Override
     public int updateTaskTypeToModel(FlowAssignersReqVO flowAssignersReqVO) {
-//        List<FlowAssigners> list = flowAssignersMapper.selectByNodeId(flowAssignersReqVO);
-//        if(list.size()<=0){
-//            return 0;
-//        }
         return  flowAssignersMapper.updateTaskTypeToModel(flowAssignersReqVO);
     }
 
     @Override
     public String nextTaskType(String processId) {
         Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
-        String processDefinitionId=task.getProcessDefinitionId(); // 获取流程定义id
+        // 获取流程定义id
+        String processDefinitionId=task.getProcessDefinitionId();
         ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
-        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey()); // 根据活动id获取活动实例
+        // 根据活动id获取活动实例
+        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey());
         String taskType = (String) activityImpl.getProperties().get(BpmConstant.NAME);
         return taskType;
     }
@@ -179,7 +178,8 @@ public class BpmServiceImpl implements BpmService {
         for (String departmentCode : departmentCodes) {
             UserInfoReqVO userInfoReq = new UserInfoReqVO();
             userInfoReq.setDepartmentId(departmentCode);
-            userInfoReq.setUserState("1"); //1表示用户状态为正常
+            //1表示用户状态为正常
+            userInfoReq.setUserState("1");
             WinResponseData rtn = userFeignClient.queryUserInfoList(userInfoReq);
             if(WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())){
                 List<UserInfoRepVO> repVOS = (List<UserInfoRepVO>) rtn.getData();

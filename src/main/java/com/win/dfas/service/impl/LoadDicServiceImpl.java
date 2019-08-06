@@ -40,7 +40,7 @@ import java.util.List;
 public class LoadDicServiceImpl implements ILoadDicService {
     @Autowired
     private ParamFlowInstMapper paramFlowMapper;
-
+    @Override
     public <T> List<T> converterVO(Object data, Class clazz, Class afterClazz, String... fields) throws IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException {
         List<T> list = new ArrayList<T>();
         List<T> rtnList = new ArrayList<T>();

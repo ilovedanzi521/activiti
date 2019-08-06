@@ -27,7 +27,9 @@ import java.util.Map;
 @RestController
 @Slf4j
 public class UserRoleController {
-    //fegin接口
+    /**
+     * user feign 接口
+     */
     @Autowired
     private IuserFeignClient userFeignClient;
     /**
@@ -41,7 +43,8 @@ public class UserRoleController {
     @RequestMapping("/param/userList")
     public WinResponseData getUserInfoList(){
         UserInfoReqVO userInoReq = new UserInfoReqVO();
-        userInoReq.setUserState("1"); //用户正常状态
+        //用户正常状态
+        userInoReq.setUserState("1");
         WinResponseData rtn = userFeignClient.queryUserInfoList(userInoReq);
         if(WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())){
             log.info("fegin接口返回===="+rtn.getData().toString());
@@ -75,15 +78,8 @@ public class UserRoleController {
         DepartmentInfoReqVO reqVO = new DepartmentInfoReqVO();
         WinResponseData rtn = userFeignClient.queryDepartmentList(reqVO);
         if(WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())){
-//            List<DepartmentInfoRepVO> repVOS = (List<DepartmentInfoRepVO>) rtn.getData();
             List<Map<String,String>> repVOS = (List) rtn.getData();
             List<RoleInfoRepVO> departmentList = new ArrayList<>();
-//            for (DepartmentInfoRepVO repVO : repVOS) {
-//                RoleInfoRepVO roleInfoRepVO = new RoleInfoRepVO();
-//                roleInfoRepVO.setAccount(repVO.getDepartmentId());
-//                roleInfoRepVO.setName(repVO.getDepartmentName());
-//                departmentList.add(roleInfoRepVO);
-//            }
             for (int i = 0; i < repVOS.size(); i++) {
                 DepartmentInfoRepVO departmentInfoRepVO= (DepartmentInfoRepVO) BeanUtil.mapToBean(repVOS.get(i), DepartmentInfoRepVO.class,false);
                 RoleInfoRepVO roleInfoRepVO = new RoleInfoRepVO();

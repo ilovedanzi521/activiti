@@ -35,7 +35,7 @@ public enum GroupTypeConstant {
     public static GroupTypeConstant fromStr(String key) {
 
         for (GroupTypeConstant e : GroupTypeConstant.values()) {
-            if (key.equals(e.key)) return e;
+            if (key.equals(e.key)) {return e;}
         }
 
         throw new RuntimeException("获取 GroupType 失败".concat(key));

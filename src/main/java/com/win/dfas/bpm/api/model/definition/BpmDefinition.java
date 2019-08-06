@@ -46,7 +46,9 @@ public class BpmDefinition implements IBpmDefinition {
     @XmlAttribute(
             name = "supportMobile"
     )
-    //流程定义json数据
+    /**
+     * 流程定义json数据
+     */
     protected Integer supportMobile = 0;
     @XmlElement(
             name = "defSetting"
@@ -70,7 +72,7 @@ public class BpmDefinition implements IBpmDefinition {
 
     public BpmDefinition() {
     }
-
+    @Override
     public String toString() {
         return (new ToStringBuilder(this)).append("id", this.id).append("name", this.name).append("key", this.key).append("desc", this.desc).append("typeId", this.typeId).append("status", this.status).append("actDefId", this.actDefId).append("actModelId", this.actModelId).append("actDeployId", this.actDeployId).append("version", this.version).append("mainDefId", this.mainDefId).append("isMain", this.isMain).append("createBy", this.createBy).append("createTime", this.createTime).append("createOrgId", this.createOrgId).append("updateBy", this.updateBy).append("updateTime", this.updateTime).append("supportMobile", this.supportMobile).append("defSetting", this.defSetting).append("rev", this.rev).toString();
     }

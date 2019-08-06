@@ -13,14 +13,37 @@ import java.math.BigDecimal;
  */
 @Data
 public class FlowTaskReqVO {
-    private String userId; //流程用户
-    private String groupId; //流程用户组
-//    private String
+    /**
+     * 流程用户
+     */
+    private String userId;
+    /**
+     * 流程用户组
+     */
+    private String groupId;
+    /**
+     * 节点用户组信息
+     */
     private String taskType;
+    /**
+     * 审批金额
+     */
     private BigDecimal amt;
+    /**
+     * 流程实例id
+     */
     private String processId;
+    /**
+     * 流程定义id
+     */
     private String processDefId;
+    /**
+     * 任务id
+     */
     private String taskId;
-    private String permit="0"; //0-通过，1-是不通过
+    /**
+     * 审批标志 0-通过，1-是不通过
+     */
+    private String permit="0";
     //todo
 }

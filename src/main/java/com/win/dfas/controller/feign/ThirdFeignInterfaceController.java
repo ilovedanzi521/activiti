@@ -2,6 +2,7 @@ package com.win.dfas.controller.feign;
 
 import com.alibaba.fastjson.JSONObject;
 import com.win.dfas.common.vo.WinResponseData;
+import com.win.dfas.constant.InitDataConstant;
 import com.win.dfas.dto.*;
 import com.win.dfas.service.IFlowGroupService;
 import com.win.dfas.service.ILoadDicService;
@@ -39,8 +40,8 @@ public class ThirdFeignInterfaceController {
     private ILoadDicService loadDicService;
 
     @RequestMapping("/feign/loadSelectsItems")
-    public WinResponseData LoadSelectsItems() {
-        HashMap<String, List> map = new HashMap<>();
+    public WinResponseData loadSelectsItems() {
+        HashMap<String, List> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
         List<FlowNameItem> list0 = queryFlow();
         //获取流程类型
         List<FlowTypeItem> list = loadFlowTypes();
@@ -65,12 +66,8 @@ public class ThirdFeignInterfaceController {
 
         map.put(SelectorItemEnum.FLW.getValue(), list);
         map.put(SelectorItemEnum.INS.getValue(), list1);
-//        map.put(SelectorItemEnum.COM.getValue(), list2);
-//        map.put(SelectorItemEnum.CON.getValue(), list3);
         map.put(SelectorItemEnum.MAK.getValue(), list4);
         map.put(SelectorItemEnum.PRO.getValue(), list5);
-//        map.put(SelectorItemEnum.SEC.getValue(), list6);
-//        map.put(SelectorItemEnum.TRN.getValue(), list7);
         map.put(SelectorItemEnum.CTR.getValue(), list8);
         return WinResponseData.handleSuccess(map);
     }
@@ -88,7 +85,8 @@ public class ThirdFeignInterfaceController {
     public WinResponseData loadSelectsItems(@PathVariable("loadItems") String loadItems, @RequestParam("param") String param) {
         List list = new ArrayList<>();
         switch (EnumUtils.getEnum(SelectorItemEnum.class, loadItems)) {
-            case PRO://产品
+            //产品
+            case PRO:
                 InvestCompanyDTO dto = new InvestCompanyDTO();
                 dto.setFundNo(param);
                 try {
@@ -100,7 +98,8 @@ public class ThirdFeignInterfaceController {
                     log.error("feign接口异常", throwable);
                 }
                 break;
-            case COM://单位
+            //单位
+            case COM:
                 InvestConstituteDTO investConstituteDTO = new InvestConstituteDTO();
                 investConstituteDTO.setAssetUnitNo(param);
                 try {
@@ -112,8 +111,9 @@ public class ThirdFeignInterfaceController {
                     log.error("feign接口异常", throwable);
                 }
                 break;
-            case MAK://市场类型
-                HashMap<String, List> map = new HashMap<>();
+            //市场类型
+            case MAK:
+                HashMap<String, List> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
                 SecurityTypeDTO securityTypeDTO = new SecurityTypeDTO();
                 securityTypeDTO.setMarketCode(param);
                 try {
@@ -156,7 +156,7 @@ public class ThirdFeignInterfaceController {
      */
     private List<InstructionTypeItem> loadInstructionTypes() {
         List<InstructionTypeItem> list1 = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < InitDataConstant.FOR_INIT_CAPACITY; i++) {
             InstructionTypeItem info = new InstructionTypeItem();
             info.setCode("12" + i);
             info.setName("指令" + i);
@@ -174,9 +174,8 @@ public class ThirdFeignInterfaceController {
      * @Date 2019/7/26/13:33
      */
     private List<FlowTypeItem> loadFlowTypes() {
-//        List<FlowTypeItem> list = paramFlowService.listFlowClass();
         List<FlowTypeItem> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < InitDataConstant.FOR_INIT_CAPACITY; i++) {
             FlowTypeItem info = new FlowTypeItem();
             info.setCode("12" + i);
             info.setName("流程类型" + i);
@@ -317,13 +316,6 @@ public class ThirdFeignInterfaceController {
                     info.setName(transactionDirectionDTO.getTransactionDirectionName());
                     list.add(info);
                 }
-            } else {
-                for (int i = 0; i < 5; i++) {
-                    TransactionDirectionItem info = new TransactionDirectionItem();
-                    info.setCode("11" + i);
-                    info.setName("交易方向" + i);
-                    list.add(info);
-                }
             }
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
@@ -351,13 +343,6 @@ public class ThirdFeignInterfaceController {
                     InvestConstituteItem info = new InvestConstituteItem();
                     info.setCode(investConstituteDTO.getNo() + "");
                     info.setName(investConstituteDTO.getPortfolioName());
-                    list.add(info);
-                }
-            } else {
-                for (int i = 0; i < 5; i++) {
-                    InvestConstituteItem info = new InvestConstituteItem();
-                    info.setCode("11" + i);
-                    info.setName("组合资产" + i);
                     list.add(info);
                 }
             }

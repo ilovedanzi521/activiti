@@ -27,10 +27,6 @@ public class CustomUserTaskJsonConverter extends UserTaskJsonConverter {
         super.convertElementToJson(propertiesNode, baseElement);
         UserTask userTask = (UserTask) baseElement;
         //解析新增属性的业务逻辑
-//        userTask.setFormProperties();
-//        String taskType = userTask.getAttributeValue(BpmConstant.NAMESPACE,BpmConstant.NAME);
-//        propertiesNode.put("taskType",taskType);
-//        userTask.set
         log.info(userTask.getAttributeValue(BpmConstant.NAMESPACE, BpmConstant.NAME));
     }
 

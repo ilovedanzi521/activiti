@@ -11,6 +11,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface IActivitiService {
-    //根据流程部署ID 查询流程定义
+    /**
+     * @Title: queryProcessDefId
+     * @Description 根据流程部署ID 查询流程定义
+     * @param deploymentId
+     * @return java.lang.String
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/11:07
+     */
     String queryProcessDefId(String deploymentId);
 }

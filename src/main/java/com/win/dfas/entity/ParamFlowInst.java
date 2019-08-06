@@ -4,6 +4,13 @@ import com.win.dfas.common.entity.BaseEntity;
 
 import java.util.Date;
 
+/**
+ * 包名称：com.win.dfas.entity
+ * 类名称：ParamFlowInst
+ * 类描述：ParamFlowInst
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 public class ParamFlowInst extends BaseEntity {
 
     private String flowName;
