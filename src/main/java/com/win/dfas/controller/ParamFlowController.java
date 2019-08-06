@@ -129,10 +129,6 @@ public class ParamFlowController {
     @PostMapping
     public WinResponseData add(@ApiParam(value = "流程新增参数") @RequestBody ParamFlowRepVO paramFlowRepVO) {
         log. info(paramFlowRepVO.toString());
-        //判断ID不能为空
-        if(ObjectUtil.isEmpty(paramFlowRepVO.getId())){
-            throw WinExceptionUtil.winException(BpmExceptionEnum.ID_IS_NOTNULL);
-        }
         //判断name不能为空
         if(ObjectUtil.isEmpty(paramFlowRepVO.getFlowName())){
             throw WinExceptionUtil.winException(BpmExceptionEnum.NAME_IS_NOTNULL);

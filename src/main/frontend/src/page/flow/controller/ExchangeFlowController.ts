@@ -13,12 +13,15 @@ import PageVO from "../../common/vo/PageVO";
 import dateUtils from "../../common/util/DateUtils";
 import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
-import { StaticSelectItemVO } from "../vo/SelectItemVO";
+import {DynamicSelectItemVO, StaticSelectItemVO} from "../vo/SelectItemVO";
 @Component({
     components: {}
 })
 export default class ExchangeFlowController extends BaseController {
     staticSelectItemVO: StaticSelectItemVO = new StaticSelectItemVO();
+    dynamicselectItemVO: DynamicSelectItemVO = new DynamicSelectItemVO();
+    items={"reqVO":this.dynamicselectItemVO,"flowVO":this.dynamicselectItemVO};
+
     // selectItemFormVO: SelectItemVO = new SelectItemVO();
     /**下拉框数据end**/
     dialogTableVisible = false;
@@ -710,17 +713,17 @@ export default class ExchangeFlowController extends BaseController {
                 this.errorMessage(res.msg);
             } else {
                 if (itemType === "PRO") {
-                    this[vo].selectItemVO.investCompanyItems = res.data;
+                    this.items[vo].investCompanyItems = res.data;
                 }
                 if (itemType === "COM") {
-                    this[vo].selectItemVO.investConstituteItems = res.data;
+                    this.items[vo].investConstituteItems = res.data;
                 }
                 if (itemType === "MAK") {
                     //证券类型
-                    this[vo].selectItemVO.securityTypeItems =
+                    this.items[vo].securityTypeItems =
                         res.data.securityTypeItems;
                     // 交易方向
-                    this[vo].selectItemVO.transactionDirectionItems =
+                    this.items[vo].transactionDirectionItems =
                         res.data.transactionDirectionItems;
                 }
             }
@@ -762,15 +765,15 @@ export default class ExchangeFlowController extends BaseController {
     /**
      * 清理items数据
      */
-    clearItemsData(selectVO :string) {
+    clearItemsData(vo :string) {
         //投资单元
-        this[selectVO].investCompanyItems = [];
+        this.items[vo].investCompanyItems = [];
         // 组合资产
-        this[selectVO].investConstituteItems = [];
+        this.items[vo].investConstituteItems = [];
         //证券类型
-        this[selectVO].securityTypeItems = [];
+        this.items[vo].securityTypeItems = [];
         // 交易方向
-        this[selectVO].transactionDirectionItems = [];
+        this.items[vo].transactionDirectionItems = [];
     }
     /**
      * 清理数据以及对规则和弹框的清理
