@@ -93,21 +93,15 @@ public class FlowGroupController {
      * @author wanglei
      * @Date 2019/8/6/17:28
      */
-    @ApiOperation(value = "流程组更新", notes = "<br/>1. 流程组CODE必传")
+    @ApiOperation(value = "流程组更新", notes = "<br/>1. 流程组NAME必传")
     @PutMapping
     public WinResponseData update(@ApiParam(value = "流程组更新参数") @RequestBody ParamFlowGroupReqVO reqVO) {
         log.info("updateReqVO:{}",reqVO);
         if(ObjectUtil.isEmpty(reqVO.getFlowName())){
             throw WinExceptionUtil.winException(BpmExceptionEnum.NAME_IS_NOTNULL);
         }
-        int ret = paramFlowService.merger(reqVO);
-        String msg ="";
-        if(ret==0){
-            msg="流程信息新增成功";
-        }else{
-            msg="流程信息修改成功";
-        }
-        return WinResponseData.handleSuccess(msg);
+        paramFlowService.update(reqVO);
+        return WinResponseData.handleSuccess("流程信息修改成功");
     }
     /**
      * @Title: delete

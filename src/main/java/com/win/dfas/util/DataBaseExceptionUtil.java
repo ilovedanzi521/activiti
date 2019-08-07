@@ -44,7 +44,7 @@ public class DataBaseExceptionUtil {
             DataTruncation dataTruncation = ((DataTruncation)throwable);
             String sqlCode = dataTruncation.getSQLState();
             int sqlError = dataTruncation.getErrorCode();
-            log.error("数据库返回错误信息,SQL_ERROR:{},SQL_STATE:{},错误信息:{}",sqlError,sqlCode,dataTruncation.getCause());
+            log.error("数据库返回错误信息,SQL_ERROR:{},SQL_STATE:{},错误信息:{}",sqlError,sqlCode,dataTruncation.getMessage());
             //1406 MYSQL 数据过长错误码
             if(InitDataConstant.DATA_LONG_MYSQL_SQL_CODE==sqlError){
                 throw WinExceptionUtil.winException(BpmExceptionEnum.DATA_TOO_LONG);
