@@ -512,6 +512,9 @@ export default class ExchangeFlowController extends BaseController {
 
     /**打开新增弹框 */
     openAddDialog() {
+        this.$nextTick(()=>{
+            this.$refs.exchangeForm.resetFields();
+        });
         this.deleteFlag = false;
         this.dialogVisible = true;
         this.dialogTitle = "流程-新增";
