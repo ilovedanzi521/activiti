@@ -561,7 +561,7 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     /**打开修改弹框 */
-    openUpdateDialog(flowVO) {
+    async  openUpdateDialog(flowVO) {
         if (flowVO.startFlag) {
             this.errorMessage("流程已启动不能修改");
             return;
@@ -575,7 +575,7 @@ export default class ExchangeFlowController extends BaseController {
             timeArray: [new Date(flowVO.beginDate), new Date(flowVO.endDate)]
         };
 
-        this.loadStartItemsData(flowVO);
+       let resulut=await this.loadStartItemsData(flowVO);
     }
 
     /**修改流程*/
@@ -760,9 +760,15 @@ export default class ExchangeFlowController extends BaseController {
      * @param flowVO 修改数据时，加载数据
      */
     loadStartItemsData(flowVO) {
-        this.loadItemData('flowVO',"PRO", flowVO.productCode);
-        this.loadItemData('flowVO',"COM", flowVO.investCompany);
-        this.loadItemData('flowVO',"MAK", flowVO.marketCode);
+        if(flowVO.productCode){
+            this.loadItemData('flowVO',"PRO", flowVO.productCode);
+        }
+        if(flowVO.investCompany){
+            this.loadItemData('flowVO',"COM", flowVO.investCompany);
+        }
+        if(flowVO.marketCode){
+            this.loadItemData('flowVO',"MAK", flowVO.marketCode);
+        }
     }
     /**
      * 清理items数据
