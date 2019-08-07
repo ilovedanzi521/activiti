@@ -33,6 +33,9 @@ public enum BpmExceptionEnum implements IExceptionEnum {
     ID_IS_NOTNULL("800005", "ID不能为空"),
     NAME_IS_NOTNULL("800006", "NAME不能为空"),
     TYPE_IS_NOTNULL("800007", "TYPE不能为空"),
+    DATABASE_EXCEPTION("800008", "TYPE不能为空"),
+    REQ_DATABASE_EXCE("800009", "请求数据库异常"),
+    DATA_TOO_LONG("800010", "存在字段过长")
 
 //    ID_NOT_NULL("100000", "ID不能为空")
     ;

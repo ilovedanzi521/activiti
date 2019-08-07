@@ -44,4 +44,9 @@ public class InitDataConstant {
      */
     public static final int FOR_INIT_CAPACITY =5;
 
+    /**
+     * MYSQL 数据过长时，数据库返回异常错误代码
+     */
+    public static final int DATA_LONG_MYSQL_SQL_CODE =1406;
+
 }

@@ -5,11 +5,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.win.dfas.common.util.ObjectUtils;
 import com.win.dfas.common.util.PrimaryKeyUtil;
+import com.win.dfas.common.util.WinExceptionUtil;
+import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.dao.FlowGroupMapper;
 import com.win.dfas.dao.ParamFlowInstMapper;
 import com.win.dfas.entity.FlowGroup;
 import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.service.IFlowGroupService;
+import com.win.dfas.util.DataBaseExceptionUtil;
 import com.win.dfas.vo.request.ParamFlowGroupReqVO;
 import com.win.dfas.vo.request.ParamFlowGroupUpdateReqVO;
 import com.win.dfas.vo.response.DeleteEnum;
@@ -21,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.DataTruncation;
 import java.util.List;
 
 /**
@@ -46,14 +50,22 @@ public class FlowGroupServiceImpl implements IFlowGroupService {
         vo.setId(PrimaryKeyUtil.generateId());
         FlowGroup entity = new FlowGroup();
         BeanUtils.copyProperties(vo, entity);
-        flowGroupMapper.insert(entity);
+        try {
+            flowGroupMapper.insert(entity);
+        }catch (Throwable throwable){
+            DataBaseExceptionUtil.exceptionHandler(throwable);
+        }
     }
 
     @Override
     public void update(ParamFlowGroupReqVO vo) {
         FlowGroup entity = new FlowGroup();
         BeanUtils.copyProperties(vo, entity);
-        flowGroupMapper.updateByPrimaryKey(entity);
+        try {
+            flowGroupMapper.updateByPrimaryKey(entity);
+        }catch (Throwable throwable){
+            DataBaseExceptionUtil.exceptionHandler(throwable);
+        }
     }
 
     @Override
@@ -84,11 +96,20 @@ public class FlowGroupServiceImpl implements IFlowGroupService {
         FlowGroup flowGroup = flowGroupMapper.selectByPrimaryKey(reqVO.getId());
         FlowGroup entity = new FlowGroup();
         BeanUtils.copyProperties(reqVO, entity);
+
         if(flowGroup==null){
-            flowGroupMapper.insert(entity);
+            try {
+                flowGroupMapper.insert(entity);
+            }catch (Throwable throwable){
+                DataBaseExceptionUtil.exceptionHandler(throwable);
+            }
             return 0;
         }else{
-            flowGroupMapper.updateByPrimaryKey(entity);
+            try {
+                flowGroupMapper.updateByPrimaryKey(entity);
+            }catch (Throwable throwable){
+                DataBaseExceptionUtil.exceptionHandler(throwable);
+            }
             return 1;
         }
     }

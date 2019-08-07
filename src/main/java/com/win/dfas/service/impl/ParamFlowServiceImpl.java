@@ -23,6 +23,7 @@ import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.dao.ParamFlowInstMapper;
 import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.service.IParamFlowService;
+import com.win.dfas.util.DataBaseExceptionUtil;
 import com.win.dfas.vo.request.ParamFlowReqVO;
 import com.win.dfas.vo.response.ParamFlowRepVO;
 import org.springframework.beans.BeanUtils;
@@ -63,7 +64,11 @@ public class ParamFlowServiceImpl implements IParamFlowService {
         if(paramFlowMapper.queryIdFromFlowInst(reqVO)!=null){
             throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
         }else {
-            paramFlowMapper.insert(entity);
+            try {
+                paramFlowMapper.insert(entity);
+            }catch (Throwable throwable){
+                DataBaseExceptionUtil.exceptionHandler(throwable);
+            }
         }
     }
 
@@ -75,7 +80,11 @@ public class ParamFlowServiceImpl implements IParamFlowService {
         if(id==null || id.equals(vo.getId())){
             ParamFlowInst entity = new ParamFlowInst();
             BeanUtils.copyProperties(vo, entity);
-            paramFlowMapper.updateByPrimaryKeySelective(entity);
+            try{
+                paramFlowMapper.updateByPrimaryKeySelective(entity);
+            }catch (Throwable throwable){
+                DataBaseExceptionUtil.exceptionHandler(throwable);
+            }
         }else{
             throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
         }
