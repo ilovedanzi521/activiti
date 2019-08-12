@@ -78,16 +78,13 @@ public class BpmPngController {
             HistoricProcessInstance currProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(executionId).singleResult();
             String deploymentId = currProcessInstance.getDeploymentId();
             List<String> list = repositoryService.getDeploymentResourceNames(deploymentId);
-            //定义图片资源的名称
-            String resourceName = "";
-            if(list!=null && list.size()>0){
-                for(String name:list){
-                    if(name.indexOf(".png")>=0){
-                        resourceName = name;
-                    }
-                }
-            }
-            imageStream = repositoryService.getResourceAsStream(deploymentId, resourceName);
+            proDefId = currProcessInstance.getProcessDefinitionId();
+            BpmnModel bpmnModel = repositoryService.getBpmnModel(proDefId);
+            ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
+            String activityFontName=processEngineConfiguration.getActivityFontName();
+            String labelFontName=processEngineConfiguration.getLabelFontName();
+            imageStream =diagramGenerator.generateDiagram(bpmnModel, "png",activityFontName,labelFontName,null, null, 1.0);
+
         }else{
             proDefId = processInstance.getProcessDefinitionId();
             processId = processInstance.getId();
