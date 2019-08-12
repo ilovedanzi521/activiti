@@ -75,6 +75,7 @@ export default class ExchangeFlowController extends BaseController {
         this.flowGroupId = data.id;
         this.level = data.level;
         this.rownum = data.rownum;
+        this.reqVO.flowCode = data.id;
         this.queryFlowByGroupid(data.id);
     }
     //选中树形行后点击删除
@@ -305,7 +306,7 @@ export default class ExchangeFlowController extends BaseController {
     queryFlowByGroupid(flowGroupid) {
         let reqVo: ParamFlowInstReqVO = new ParamFlowInstReqVO();
         reqVo.flowCode = flowGroupid;
-        this.reqVO.flowCode = flowGroupid;
+        // this.reqVO.flowCode = flowGroupid;
         this.service.listFlowByGroupid(reqVo).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
