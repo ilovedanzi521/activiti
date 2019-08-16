@@ -96,8 +96,14 @@ public class FlowGroupController {
     @PutMapping
     public WinResponseData update(@ApiParam(value = "流程组更新参数") @RequestBody @Validated ParamFlowGroupReqVO reqVO) {
         log.info("updateReqVO:{}",reqVO);
-        paramFlowService.update(reqVO);
-        return WinResponseData.handleSuccess("流程信息修改成功");
+        int ret = paramFlowService.merger(reqVO);
+        String msg ="";
+        if(ret==0){
+            msg="流程信息新增成功";
+        }else{
+            msg="流程信息修改成功";
+        }
+        return WinResponseData.handleSuccess(msg);
     }
     /**
      * @Title: delete
