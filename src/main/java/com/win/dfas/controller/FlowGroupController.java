@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -77,12 +78,10 @@ public class FlowGroupController {
      */
     @ApiOperation(value = "流程组新增")
     @PostMapping
-    public WinResponseData add(@ApiParam(value = "流程组新增参数") @RequestBody ParamFlowGroupReqVO paramFlowGroupReqVO) {
-        if(ObjectUtil.isEmpty(paramFlowGroupReqVO.getFlowName())){
-            throw WinExceptionUtil.winException(BpmExceptionEnum.NAME_IS_NOTNULL);
-        }
-        paramFlowService.add(paramFlowGroupReqVO);
-        return WinResponseData.handleSuccess("流程组新增成功",paramFlowGroupReqVO);
+    public WinResponseData add(@ApiParam(value = "流程组新增参数") @RequestBody @Validated  ParamFlowGroupReqVO paramFlowGroupReqVO) {
+            paramFlowService.add(paramFlowGroupReqVO);
+            return WinResponseData.handleSuccess("流程组新增成功", paramFlowGroupReqVO);
+
     }
     /**
      * @Title: update
@@ -95,11 +94,8 @@ public class FlowGroupController {
      */
     @ApiOperation(value = "流程组更新", notes = "<br/>1. 流程组NAME必传")
     @PutMapping
-    public WinResponseData update(@ApiParam(value = "流程组更新参数") @RequestBody ParamFlowGroupReqVO reqVO) {
+    public WinResponseData update(@ApiParam(value = "流程组更新参数") @RequestBody @Validated ParamFlowGroupReqVO reqVO) {
         log.info("updateReqVO:{}",reqVO);
-        if(ObjectUtil.isEmpty(reqVO.getFlowName())){
-            throw WinExceptionUtil.winException(BpmExceptionEnum.NAME_IS_NOTNULL);
-        }
         paramFlowService.update(reqVO);
         return WinResponseData.handleSuccess("流程信息修改成功");
     }

@@ -8,6 +8,9 @@ import com.win.dfas.common.vo.BaseReqVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 包名称：com.win.dfas.vo.request
@@ -24,6 +27,8 @@ public class ParamFlowGroupReqVO extends BaseReqVO {
     /**
      * 流程名称
      */
+    @NotNull(message = "name(流程名称)不能为空")
+    @Length(min = 1, max = 15, message = "name(名称)长度需要在1和15之间")
     @ApiModelProperty(value = "流程名称")
     private String flowName;
     /**

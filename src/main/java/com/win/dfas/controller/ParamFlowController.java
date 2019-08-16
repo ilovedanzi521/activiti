@@ -48,6 +48,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -127,16 +128,8 @@ public class ParamFlowController {
      */
     @ApiOperation(value = "流程新增", notes = "<br/>1. add;<br/>")
     @PostMapping
-    public WinResponseData add(@ApiParam(value = "流程新增参数") @RequestBody ParamFlowRepVO paramFlowRepVO) {
+    public WinResponseData add(@ApiParam(value = "流程新增参数") @RequestBody @Validated ParamFlowRepVO paramFlowRepVO) {
         log. info(paramFlowRepVO.toString());
-        //判断name不能为空
-        if(ObjectUtil.isEmpty(paramFlowRepVO.getFlowName())){
-            throw WinExceptionUtil.winException(BpmExceptionEnum.NAME_IS_NOTNULL);
-        }
-        //判断type不能为空
-        if(ObjectUtil.isEmpty(paramFlowRepVO.getFlowType())){
-            throw WinExceptionUtil.winException(BpmExceptionEnum.TYPE_IS_NOTNULL);
-        }
         paramFlowService.add(paramFlowRepVO);
         return WinResponseData.handleSuccess("流程新增成功");
     }
@@ -151,7 +144,7 @@ public class ParamFlowController {
      */
     @ApiOperation(value = "流程更新", notes = "<br/>1. 流程ID必传")
     @PutMapping
-    public WinResponseData update(@ApiParam(value = "流程更新参数") @RequestBody ParamFlowRepVO paramFlowRepVO) {
+    public WinResponseData update(@ApiParam(value = "流程更新参数") @RequestBody @Validated  ParamFlowRepVO paramFlowRepVO) {
         paramFlowService.update(paramFlowRepVO);
         return WinResponseData.handleSuccess("流程修改成功");
     }
