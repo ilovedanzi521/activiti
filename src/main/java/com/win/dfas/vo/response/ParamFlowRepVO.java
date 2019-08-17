@@ -9,6 +9,9 @@ package com.win.dfas.vo.response;
  */
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.win.dfas.common.annotation.WinFormat;
+import com.win.dfas.common.constant.DicConstants;
+import com.win.dfas.common.enumeration.FormatEnum;
 import com.win.dfas.common.util.LongJsonDeserializer;
 import com.win.dfas.common.util.LongJsonSerializer;
 import com.win.dfas.common.vo.BaseRepVO;
@@ -39,7 +42,7 @@ public class ParamFlowRepVO extends BaseRepVO {
     @ApiModelProperty(value = "流程名称")
     @NotNull(message = "name(流程名称)不能为空")
     @Length(min = 1, max = 80, message = "name(流程名称)长度需要在1和80之间")
-    @Pattern(regexp = "^[\\w\\u4e00-\\u9fa5]{1,80}$", message = "name(流程名称)格式错误")
+    @Pattern(regexp = "^[\\w\\u4e00-\\u9fa5]+$", message = "name(流程名称)格式错误")
 
     private String flowName;
     /**
@@ -57,18 +60,25 @@ public class ParamFlowRepVO extends BaseRepVO {
     @Length(min = 1, max = 22, message = "productCode(产品)长度需要在1和22之间")
     @ApiModelProperty(value = "产品")
     private String productCode;
+    @WinFormat(value = FormatEnum.FUND_NO_T_NAME, fromField = "productCode")
+    private String productName;
     /**
      * 投资单位
      */
     @Length(max = 22, message = "investCompany(资产单元)长度需要在1和22之间")
     @ApiModelProperty(value = "资产单元")
     private String investCompany;
+//    @WinFormat(value = FormatEnum.DIC_CODE_T_EXPLAIN, fromField = "investCompany", prefixParam = {DicConstants.PDIC_1000278})
+//    private String investCompanyName;
     /**
      * 组合资产
      */
     @Length( max = 22, message = "investConstitute(投资组合)长度需要在1和22之间")
     @ApiModelProperty(value = "投资组合")
     private String investConstitute;
+    @WinFormat(value = FormatEnum.PORTFOLIO_NO_T_NAME, fromField = "investConstitute")
+    private String investConstituteName;
+
     /**
      * 指令类型
      */
@@ -93,18 +103,26 @@ public class ParamFlowRepVO extends BaseRepVO {
     @Length( max = 8, message = "marketCode(交易市场)长度需要在1和8之间")
     @ApiModelProperty(value = "交易市场")
     private String marketCode;
+    @WinFormat(value = FormatEnum.TRADEDIRECTION_CODE_T_MARKETCODENAME, fromField = "transactionDirection")
+    private String marketCodeName;
+
     /**
      * 证券类型
      */
     @Length(max = 16, message = "securityType(证券类型)长度需要在1和16之间")
     @ApiModelProperty(value = "证券类型")
     private String securityType;
+    @WinFormat(value = FormatEnum.SECURITY_CODE_T_NAME, fromField = "securityType")
+    private String securityTypeName;
+
     /**
      * 交易方向
      */
     @Length(max = 8, message = "transactionDirection(交易方向)长度需要在1和8之间")
     @ApiModelProperty(value = "交易方向")
     private String transactionDirection;
+    @WinFormat(value = FormatEnum.TRADEDIRECTION_CODE_T_NAME, fromField = "transactionDirection")
+    private String transactionDirectionName;
 
     /**
      * 流程模型id

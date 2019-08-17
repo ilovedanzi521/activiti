@@ -2,6 +2,7 @@ package com.win.dfas.dao;
 
 import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.vo.request.ParamFlowReqVO;
+import com.win.dfas.vo.response.ParamFlowRepVO;
 import com.win.dfas.vo.response.item.FlowNameItem;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,11 +28,11 @@ public interface ParamFlowInstMapper {
     int updateByPrimaryKeySelective(ParamFlowInst record);
 
     int updateByPrimaryKey(ParamFlowInst record);
-    List<ParamFlowInst> list(ParamFlowReqVO queryVO);
+    List<ParamFlowRepVO> list(ParamFlowReqVO queryVO);
 
     int batchDelete(List ids);
 
-    List<ParamFlowInst> queryFlowByGroupid(Long flowGroupId);
+    List<ParamFlowRepVO> queryFlowByGroupid(Long flowGroupId);
 
     int updateStartFlagToStop(List<Long> ids);
 

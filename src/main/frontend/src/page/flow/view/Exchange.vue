@@ -105,13 +105,13 @@
                         <!-- <win_table_column type="selection"></win_table_column> -->
                         <win_table_column prop="flowName" label="流程名称" sortable></win_table_column>
                         <win_table_column prop="flowType" label="流程类型" sortable></win_table_column>
-                        <win_table_column prop="productCode" label="产品" sortable></win_table_column>
+                        <win_table_column prop="productName" label="产品" sortable></win_table_column>
                         <win_table_column prop="investCompany" label="资产单元" sortable></win_table_column>
-                        <win_table_column prop="investConstitute" label="投资组合" sortable></win_table_column>
+                        <win_table_column prop="investConstituteName" label="投资组合" sortable></win_table_column>
                         <win_table_column prop="instructionType" label="指令类型" sortable></win_table_column>
-                        <win_table_column prop="marketCode" label="交易市场" sortable></win_table_column>
-                        <win_table_column prop="securityType" label="证券类型" sortable></win_table_column>
-                        <win_table_column prop="transactionDirection" label="交易方向" sortable></win_table_column>
+                        <win_table_column prop="marketCodeName" label="交易市场" sortable></win_table_column>
+                        <win_table_column prop="securityTypeName" label="证券类型" sortable></win_table_column>
+                        <win_table_column prop="transactionDirectionName" label="交易方向" sortable></win_table_column>
                         <win_table_column label="启用标志" prop="startFlag">
                             <template slot-scope="scope">
                                 <el-switch v-model="scope.row.startFlag" :active-value="true" :inactive-value="false" active-color="#13ce66" inactive-color="#ff4949" @change="change(scope.row,scope.row.startFlag)"></el-switch>
