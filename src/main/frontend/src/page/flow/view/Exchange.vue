@@ -135,7 +135,7 @@
         <!--修改、增加框 -->
 
         <win_dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" class="dialogclass" :close-on-click-modal="false" @close="closeDialog('exchangeForm')">
-            <win_form :inline="true" label-position="left" ref="exchangeForm" :model="flowVO" :rules="rules"  v-testName="{'TEST_NAME':'WLL'}">
+            <win_form :inline="true" label-position="right" ref="exchangeForm" :model="flowVO" :rules="rules"  v-testName="{'TEST_NAME':'WLL'}">
                 <div class="form_content_flow">
                     <win_form_item label="流程名称" prop="flowName">
                         <win_input v-model.trim="flowVO.flowName" :disabled="flowVO.id!=null" :maxlength="80"></win_input>
