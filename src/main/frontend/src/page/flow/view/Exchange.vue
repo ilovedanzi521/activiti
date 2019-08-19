@@ -104,11 +104,11 @@
                     <win_table ref="xTable1" :data="pageVO.list" :selection-width="20" max-height="680px" :show-index="false" @select-all="selectAllEvent" @select-change="handleSelectionChange" border>
                         <!-- <win_table_column type="selection"></win_table_column> -->
                         <win_table_column prop="flowName" label="流程名称" sortable></win_table_column>
-                        <win_table_column prop="flowType" label="流程类型" sortable></win_table_column>
+                        <win_table_column prop="flowTypeName" label="流程类型" sortable></win_table_column>
                         <win_table_column prop="productName" label="产品" sortable></win_table_column>
                         <win_table_column prop="investCompanyName" label="资产单元" sortable></win_table_column>
                         <win_table_column prop="investConstituteName" label="投资组合" sortable></win_table_column>
-                        <win_table_column prop="instructionType" label="指令类型" sortable></win_table_column>
+                        <win_table_column prop="instructionTypeName" label="指令类型" sortable></win_table_column>
                         <win_table_column prop="marketCodeName" label="交易市场" sortable></win_table_column>
                         <win_table_column prop="securityTypeName" label="证券类型" sortable></win_table_column>
                         <win_table_column prop="transactionDirectionName" label="交易方向" sortable></win_table_column>

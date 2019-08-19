@@ -1,6 +1,7 @@
 package com.win.dfas.controller.feign;
 
 import com.alibaba.fastjson.JSONObject;
+import com.win.dfas.common.constant.DicConstants;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.constant.InitDataConstant;
 import com.win.dfas.dto.*;
@@ -20,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 包名称：com.win.dfas.controller
@@ -41,12 +43,14 @@ public class ThirdFeignInterfaceController {
 
     @RequestMapping("/feign/loadSelectsItems")
     public WinResponseData loadSelectsItems() {
-        HashMap<String, List> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
+        HashMap<String, List> map = new HashMap<>();
         List<FlowNameItem> list0 = queryFlow();
+        //加载数据字典
+        Map dicData=loadDicData();
         //获取流程类型
-        List<FlowTypeItem> list = loadFlowTypes();
-        //获取执行类型
-        List<InstructionTypeItem> list1 = loadInstructionTypes();
+        List list = getDataDic(dicData,DicConstants.PDIC_1000297);
+        //获取指令类型
+        List list1 = getDataDic(dicData,DicConstants.PDIC_1000295);
 //        //获取投资单位
 //        List<InvestCompanyItem> list2 = loadInvestCompanys();
 //        //获取投资组合
@@ -59,11 +63,9 @@ public class ThirdFeignInterfaceController {
 //        List<SecurityTypeItem> list6 = loadSecurityTypes();
         //获取交易方向
 //        List<TransactionDirectionItem> list7 = loadTransactionDirections();
-        //指令类型
+        //控制类型
         List<ControlTypeItem> list8 = loadControlTypes();
-        log.info(list.toString());
         map.put(SelectorItemEnum.NAM.getValue(), list0);
-
         map.put(SelectorItemEnum.FLW.getValue(), list);
         map.put(SelectorItemEnum.INS.getValue(), list1);
         map.put(SelectorItemEnum.MAK.getValue(), list4);
@@ -92,7 +94,9 @@ public class ThirdFeignInterfaceController {
                 try {
                     WinResponseData rtn = dicFeignClient.queryInvestCompanyList(dto);
                     if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                        list = loadDicService.converterVO(rtn.getData(), InvestCompanyDTO.class, InvestCompanyItem.class, new String[]{"no", "assetUnitName"});
+                        list = loadDicService.converterVO(rtn.getData(), InvestCompanyDTO.class,
+                                InvestCompanyItem.class,
+                                new String[]{"no", "assetUnitName"});
                     }
                 } catch (Throwable throwable) {
                     log.error("feign接口异常", throwable);
@@ -105,7 +109,9 @@ public class ThirdFeignInterfaceController {
                 try {
                     WinResponseData rtn = dicFeignClient.queryInvestConstituteList(investConstituteDTO);
                     if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                        list = loadDicService.converterVO(rtn.getData(), InvestConstituteDTO.class, InvestConstituteItem.class, new String[]{"no", "portfolioName"});
+                        list = loadDicService.converterVO(rtn.getData(), InvestConstituteDTO.class,
+                                InvestConstituteItem.class,
+                                new String[]{"no", "portfolioName"});
                     }
                 } catch (Throwable throwable) {
                     log.error("feign接口异常", throwable);
@@ -119,7 +125,9 @@ public class ThirdFeignInterfaceController {
                 try {
                     WinResponseData rtn = dicFeignClient.querySecurityTypeList(securityTypeDTO);
                     if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                        list = loadDicService.converterVO(rtn.getData(), SecurityTypeDTO.class, SecurityTypeItem.class, new String[]{"securityCode", "securityName"});
+                        list = loadDicService.converterVO(rtn.getData(),
+                                SecurityTypeDTO.class, SecurityTypeItem.class,
+                                new String[]{"securityCode", "securityName"});
                         map.put(SelectorItemEnum.SEC.getValue(), list);
                     }
                 } catch (Throwable throwable) {
@@ -131,7 +139,9 @@ public class ThirdFeignInterfaceController {
                 try {
                     WinResponseData rtn = dicFeignClient.queryDirectionList(transactionDirectionDTO);
                     if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                        list=loadDicService.converterVO(rtn.getData(),TransactionDirectionDTO.class,TransactionDirectionItem.class,new String[]{"transactionDirection","transactionDirectionName"});
+                        list=loadDicService.converterVO(rtn.getData(),TransactionDirectionDTO.class,
+                                TransactionDirectionItem.class,
+                                new String[]{"transactionDirection","transactionDirectionName"});
                         map.put(SelectorItemEnum.TRN.getValue(), list);
                     }
                 } catch (Throwable throwable) {
@@ -148,38 +158,53 @@ public class ThirdFeignInterfaceController {
 
     /**
      * @Title: loadInstructionTypes
-     * @Description: 加载指令类型
+     * @Description: 加载数据字典
      * @return java.util.List<com.win.dfas.vo.response.item.InstructionTypeItem>
      * @throws
      * @author wanglei
      * @Date 2019/7/26/13:34
      */
-    private List<InstructionTypeItem> loadInstructionTypes() {
-        List<InstructionTypeItem> list1 = new ArrayList<>();
-        for (int i = 0; i < InitDataConstant.FOR_INIT_CAPACITY; i++) {
-            InstructionTypeItem info = new InstructionTypeItem();
-            info.setCode("12" + i);
-            info.setName("指令" + i);
-            list1.add(info);
+    private Map loadDicData() {
+        Map map = new HashMap(InitDataConstant.MAP_INIT_CAPACITY);
+        DataDicDTO dto = new DataDicDTO();
+        List<String> params = new ArrayList<>();
+        params.add(DicConstants.PDIC_1000295);
+        params.add(DicConstants.PDIC_1000297);
+        dto.setParentDicCodeList(params);
+        try {
+            WinResponseData rtn = dicFeignClient.queryInstructionTypeList(dto);
+            if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
+                return JSONObject.parseObject(JSONObject.toJSONString(rtn.getData()),Map.class);
+            } else {
+                log.error("feign接口queryMarketList异常, 返回{}", rtn.getMsg());
+            }
+        } catch (Throwable throwable) {
+            log.error("feign接口异常", throwable.getCause());
         }
-        return list1;
+        return map;
     }
-
     /**
-     * @Title: loadFlowTypes
-     * @Description: 获取流程类型
+     * @Title: loadInstructionTypes
+     * @Description 从字典中获取指令类型
+     * @param dicData
+     * @param key
      * @return java.util.List<com.win.dfas.vo.response.item.FlowTypeItem>
      * @throws
      * @author wanglei
-     * @Date 2019/7/26/13:33
+     * @Date 2019/8/19/13:43
      */
-    private List<FlowTypeItem> loadFlowTypes() {
-        List<FlowTypeItem> list = new ArrayList<>();
-        for (int i = 0; i < InitDataConstant.FOR_INIT_CAPACITY; i++) {
-            FlowTypeItem info = new FlowTypeItem();
-            info.setCode("12" + i);
-            info.setName("流程类型" + i);
-            list.add(info);
+    private List<CommonItem> getDataDic(Map dicData, String key) {
+        List<CommonItem> list = new ArrayList<>();
+        try {
+            Object object = dicData.get(key);
+            if(object==null){
+                log.error("dicData:{},get:{} is null",dicData,key);
+                return list;
+            }
+            list=loadDicService.converterVO(object,DataDicDTO.class,
+                    CommonItem.class,new String[]{"dicCode","dicExplain"});
+        } catch (Exception e) {
+            log.error("loadInstructionTypes异常{}", e);
         }
         return list;
     }
@@ -218,7 +243,7 @@ public class ThirdFeignInterfaceController {
 
     /**
      * @Title: loadControlTypes
-     * @Description: 指令类型
+     * @Description: 控制类型
      * @return java.util.List<com.win.dfas.vo.response.item.ControlTypeItem>
      * @throws
      * @author wanglei
@@ -226,22 +251,11 @@ public class ThirdFeignInterfaceController {
      */
     private List<ControlTypeItem> loadControlTypes() {
         List<ControlTypeItem> list = new ArrayList<>();
-        try {
-            List<ControlTypeDTO> rtnList = new ArrayList<>();
-            WinResponseData rtn = dicFeignClient.queryControlTypes(new ControlTypeDTO());
-            if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                rtnList = JSONObject.parseArray(JSONObject.toJSONString(rtn.getData())).toJavaList(ControlTypeDTO.class);
-                for (ControlTypeDTO dto : rtnList) {
-                    ControlTypeItem info = new ControlTypeItem();
-                    info.setCode(dto.getDicCode());
-                    info.setName(dto.getDicExplain());
-                    list.add(info);
-                }
-            } else {
-                log.error("feign接口queryMarketList异常, 返回{}", rtn.getMsg());
-            }
-        } catch (Throwable throwable) {
-            log.error("feign接口异常", throwable);
+        for (int i = 0; i < 1; i++) {
+            ControlTypeItem info = new ControlTypeItem();
+            info.setCode("11" + i);
+            info.setName("指令金额");
+            list.add(info);
         }
         return list;
     }

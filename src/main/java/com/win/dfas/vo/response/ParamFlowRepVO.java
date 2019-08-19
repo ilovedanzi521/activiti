@@ -52,6 +52,9 @@ public class ParamFlowRepVO extends BaseRepVO {
     @Length(min = 1, max = 12, message = "flowType(流程类型)长度需要在1和12之间")
     @ApiModelProperty(value = "流程类型")
     private String flowType;
+    @WinFormat(value = FormatEnum.DIC_CODE_T_EXPLAIN, fromField = "flowType", prefixParam = {DicConstants.PDIC_1000297})
+    private String flowTypeName;
+
 
     /**
      * 产品
