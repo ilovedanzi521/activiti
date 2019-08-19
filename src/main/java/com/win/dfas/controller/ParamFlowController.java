@@ -286,7 +286,7 @@ public class ParamFlowController {
         }
         //批量更新启动状态
         paramFlowService.updateStartFlagToStart(ids);
-        return WinResponseData.handleSuccess("成功");
+        return WinResponseData.handleSuccess("批量启用成功");
     }
     /**
      * @Title: updatePublish
@@ -363,7 +363,7 @@ public class ParamFlowController {
             ids.add(paramFlowRepVO.getId());
         }
         paramFlowService.updateStartFlagToStop(ids);
-        return WinResponseData.handleSuccess("成功");
+        return WinResponseData.handleSuccess("批量停用成功");
     }
 
     /**
@@ -379,12 +379,15 @@ public class ParamFlowController {
     public WinResponseData start(@ApiParam(value = "启动/停止流程") @RequestBody ParamFlowRepVO paramFlowRepVO) {
         List<ParamFlowRepVO> paramFlowRepVOS = new ArrayList<>();
         paramFlowRepVOS.add(paramFlowRepVO);
+        String rtnMsg = "";
         if(paramFlowRepVO.getStartFlag()){
             start(paramFlowRepVOS);
+            rtnMsg="流程启用成功";
         }else{
             stop(paramFlowRepVOS);
+            rtnMsg="流程停用成功";
         }
-        return WinResponseData.handleSuccess("成功");
+        return WinResponseData.handleSuccess(rtnMsg);
     }
 
 }

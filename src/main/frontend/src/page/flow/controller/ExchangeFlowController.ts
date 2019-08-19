@@ -254,9 +254,10 @@ export default class ExchangeFlowController extends BaseController {
         this.service.updateFlowgroup(flowGroupVO).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
+            }else{
+                this.successMessage(res.msg);
             }
             this.expandList = [item.id];
-            this.successMessage(res.msg);
             // this.queryflowgroup();
             this.isExecute = false;
         });
@@ -379,6 +380,8 @@ export default class ExchangeFlowController extends BaseController {
                     this.service.deleteExchangeFlows(rows).then(res => {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
+                        }else{
+                            this.successMessage(res.msg)
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -401,8 +404,11 @@ export default class ExchangeFlowController extends BaseController {
                         if (res.winRspType === "ERROR") {
                             if(res.code==FlowConstant.DESIGN_PROBLEMS){
                                 this.warningMessage(res.msg);
+                            }else{
+                                this.errorMessage(res.msg);
                             }
-                            this.errorMessage(res.msg);
+                        }else{
+                            this.successMessage(res.msg)
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -428,6 +434,8 @@ export default class ExchangeFlowController extends BaseController {
                     this.service.batchStopFlow(rows).then(res => {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
+                        }else{
+                            this.successMessage(res.msg)
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -681,7 +689,13 @@ export default class ExchangeFlowController extends BaseController {
         let startFlag = flowVO.startFlag;
         this.service.startOrStopFlow(flowVO).then(res => {
             if (res.winRspType === "ERROR") {
-                this.warningMessage(res.msg);
+                if(res.code==FlowConstant.DESIGN_PROBLEMS){
+                    this.warningMessage(res.msg);
+                }else{
+                    this.errorMessage(res.msg);
+                }
+            }else{
+                this.successMessage(res.msg)
             }
             this.queryExchangeFlow(this.reqVO);
         });
