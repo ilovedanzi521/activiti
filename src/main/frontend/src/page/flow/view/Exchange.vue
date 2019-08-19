@@ -5,8 +5,8 @@
             <el-aside width="185px">
                 <div ref="userinfo">
                     <el-button-group style="width:200px;margin-bottom:-18px ">
-                        <win_button :disabled="level!=1" type="warning" round @click="addflowgroup" icon="el-icon-plus" class="iconAddbutton">新增</win_button>
-                        <win_button type="warning" icon="el-icon-delete" class="iconAddbutton" round @click="delflowgroup">删除</win_button>
+                        <win_button :disabled="level!=1" type="info" round @click="addflowgroup" icon="el-icon-plus" >新增</win_button>
+                        <win_button type="info" icon="el-icon-delete" round @click="delflowgroup">删除</win_button>
                     </el-button-group>
 
                     <!--左侧树形列表 -->
@@ -93,10 +93,10 @@
 
                             <el-button-group>
 
-                                <win_button :disabled="level!=2" type="warning" round @click="openAddDialog()" icon="el-icon-plus" class="iconAddbutton">新增</win_button>
-                                <win_button :disabled="!options" type="warning" icon="el-icon-delete" class="iconAddbutton" round @click="batchDelete(tableChecked)">删除</win_button>
-                                <win_button :disabled="!options" type="warning" icon="el-icon-video-play" class="iconAddbutton" round @click="startflow(tableChecked)">启用</win_button>
-                                <win_button :disabled="!options" type="warning" icon="el-icon-video-pause" class="iconAddbutton" round @click="stopflow(tableChecked)">停用</win_button>
+                                <win_button :disabled="level!=2" type="info" round @click="openAddDialog()" icon="el-icon-plus">新增</win_button>
+                                <win_button :disabled="!options" type="info" icon="el-icon-delete" round @click="batchDelete(tableChecked)">删除</win_button>
+                                <win_button :disabled="!options" type="info" icon="el-icon-video-play" round @click="startflow(tableChecked)">启用</win_button>
+                                <win_button :disabled="!options" type="info" icon="el-icon-video-pause" round @click="stopflow(tableChecked)">停用</win_button>
                             </el-button-group>
                         </el-row>
                     </win_form>
@@ -267,15 +267,6 @@ export default class Exchange extends ExchangeFlowController {
 .win_header {
     background-color: #000;
     height: 20%;
-}
-.el-icon-plus {
-    color: #ffffff;
-}
-
-.iconAddbutton {
-    color: #fff;
-    background: #2b3551;
-    border: #2b3551;
 }
 .form_content_flow {
     height: 12%;
