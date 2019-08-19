@@ -226,11 +226,22 @@ public class ThirdFeignInterfaceController {
      */
     private List<ControlTypeItem> loadControlTypes() {
         List<ControlTypeItem> list = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            ControlTypeItem info = new ControlTypeItem();
-            info.setCode("11" + i);
-            info.setName("指令金额");
-            list.add(info);
+        try {
+            List<ControlTypeDTO> rtnList = new ArrayList<>();
+            WinResponseData rtn = dicFeignClient.queryControlTypes(new ControlTypeDTO());
+            if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
+                rtnList = JSONObject.parseArray(JSONObject.toJSONString(rtn.getData())).toJavaList(ControlTypeDTO.class);
+                for (ControlTypeDTO dto : rtnList) {
+                    ControlTypeItem info = new ControlTypeItem();
+                    info.setCode(dto.getDicCode());
+                    info.setName(dto.getDicExplain());
+                    list.add(info);
+                }
+            } else {
+                log.error("feign接口queryMarketList异常, 返回{}", rtn.getMsg());
+            }
+        } catch (Throwable throwable) {
+            log.error("feign接口异常", throwable);
         }
         return list;
     }

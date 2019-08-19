@@ -86,6 +86,8 @@ public class ParamFlowRepVO extends BaseRepVO {
     @Length( max = 20, message = "instructionType(指令类型)长度需要在1和20之间")
     @ApiModelProperty(value = "指令类型")
     private String instructionType;
+    @WinFormat(value = FormatEnum.DIC_CODE_T_EXPLAIN, fromField = "instructionType", prefixParam = {DicConstants.PDIC_1000295})
+    private String instructionTypeName;
     /**
      * 开始日期
      */

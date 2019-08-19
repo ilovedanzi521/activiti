@@ -84,4 +84,15 @@ public interface IDicFeignClient {
      */
     @PostMapping("/api/prod/assetUnit/list")
     WinResponseData queryInvestCompanyList(InvestCompanyDTO investCompanyDTO);
+    /**
+     * @Title: queryControlTypes
+     * @Description 获取指令类型
+     * @param controlTypeDTO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/19/11:03
+     */
+    @PostMapping("/dics/listAllSub")
+    WinResponseData queryControlTypes(ControlTypeDTO controlTypeDTO);
 }
