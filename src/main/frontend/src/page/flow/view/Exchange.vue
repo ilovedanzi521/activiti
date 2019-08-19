@@ -106,7 +106,7 @@
                         <win_table_column prop="flowName" label="流程名称" sortable></win_table_column>
                         <win_table_column prop="flowType" label="流程类型" sortable></win_table_column>
                         <win_table_column prop="productName" label="产品" sortable></win_table_column>
-                        <win_table_column prop="investCompany" label="资产单元" sortable></win_table_column>
+                        <win_table_column prop="investCompanyName" label="资产单元" sortable></win_table_column>
                         <win_table_column prop="investConstituteName" label="投资组合" sortable></win_table_column>
                         <win_table_column prop="instructionType" label="指令类型" sortable></win_table_column>
                         <win_table_column prop="marketCodeName" label="交易市场" sortable></win_table_column>

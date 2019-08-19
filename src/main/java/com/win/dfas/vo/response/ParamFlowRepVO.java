@@ -68,8 +68,9 @@ public class ParamFlowRepVO extends BaseRepVO {
     @Length(max = 22, message = "investCompany(资产单元)长度需要在1和22之间")
     @ApiModelProperty(value = "资产单元")
     private String investCompany;
-//    @WinFormat(value = FormatEnum.DIC_CODE_T_EXPLAIN, fromField = "investCompany", prefixParam = {DicConstants.PDIC_1000278})
-//    private String investCompanyName;
+    @WinFormat(value = FormatEnum.PROD_ASSET_UNIT, fromField = "investCompany")
+    private String investCompanyName;
+
     /**
      * 组合资产
      */

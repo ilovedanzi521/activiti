@@ -14,6 +14,7 @@ import dateUtils from "../../common/util/DateUtils";
 import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
 import {DynamicSelectItemVO, StaticSelectItemVO} from "../vo/SelectItemVO";
+import {FlowConstant} from "../../flow/constant/FlowConstant";
 @Component({
     components: {}
 })
@@ -398,6 +399,9 @@ export default class ExchangeFlowController extends BaseController {
                 .then(() => {
                     this.service.batchStartFlow(rows).then(res => {
                         if (res.winRspType === "ERROR") {
+                            if(res.code==FlowConstant.DESIGN_PROBLEMS){
+                                this.warningMessage(res.msg);
+                            }
                             this.errorMessage(res.msg);
                         }
                         this.queryExchangeFlow(this.reqVO);
