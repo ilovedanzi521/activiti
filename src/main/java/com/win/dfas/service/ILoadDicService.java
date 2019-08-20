@@ -15,6 +15,7 @@ package com.win.dfas.service;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.util.StringUtil;
+import com.win.dfas.common.enumeration.FormatEnum;
 import com.win.dfas.dto.TransactionDirectionDTO;
 import com.win.dfas.vo.response.item.FlowNameItem;
 import com.win.dfas.vo.response.item.TransactionDirectionItem;
@@ -37,8 +38,30 @@ import java.util.List;
 @Service
 public interface ILoadDicService {
 
-    public <T> List<T> converterVO(Object data, Class clazz, Class afterClazz, String... fields) throws Exception;
+   /**
+    * @Title: queryDataList
+    * @Description 查询数据字典项，首先从缓存查询，缓存没数据从feign接口查询
+    * @param param
+    * @param relation
+    * @param strategy
+    * @param formatEnum
+    * @return java.util.List
+    * @throws
+    * @author wanglei
+    * @Date 2019/8/20/15:24
+    */
+    List queryDataList(String param, String relation, String strategy, FormatEnum formatEnum);
 
-    List<FlowNameItem> queryFlow() throws InvocationTargetException, NoSuchMethodException, NoSuchFieldException, InstantiationException, IllegalAccessException;
+    /**
+     * @Title: queryFlow
+     * @Description 查询流程名称
+     * @param
+     * @return java.util.List<com.win.dfas.vo.response.item.FlowNameItem>
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/20/15:19
+     */
+    List<FlowNameItem> queryFlow();
 
+    public <T> List<T> converterVO(Object data, Class afterClazz, String... fields) throws Exception;
 }

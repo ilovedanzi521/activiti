@@ -49,4 +49,35 @@ public class InitDataConstant {
      */
     public static final int DATA_LONG_MYSQL_SQL_CODE =1406;
 
+    /**
+     *用户模糊查询redis数据的正则表达式
+     */
+    public static final String REDIS_PATTERN_AS ="*";
+
+    /**
+     *redis key前缀和no之间的'-'连接符号
+     */
+    public static final String JOIN_MARK ="-";
+
+    /**
+     *获取产品和资产单元的映射关系
+     */
+    public static final String PRO_ASSET_RELA ="PRO_ASSET_RELA";
+    /**
+     *获取产品和投资组合的映射关系
+     */
+    public static final String PRO_PORTFOLIO_RELA ="PRO_PORTFOLIO_RELA";
+    /**
+     *获取交易市场和证券类型映射关系
+     */
+    public static final String MARK_SECURITY_RELA ="MARK_SECURITY_RELA";
+    /**
+     *获取交易市场和交易方向映射关系
+     */
+    public static final String MARK_TRA_DIR_RELA ="MARK_TRA_DIR_RELA";
+
+    /**
+     *映射关系
+     */
+    public static final String RELATION ="relation";
 }

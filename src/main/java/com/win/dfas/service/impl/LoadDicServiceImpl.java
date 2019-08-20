@@ -13,21 +13,19 @@
 package com.win.dfas.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.win.dfas.common.enumeration.FormatEnum;
+import com.win.dfas.controller.feign.IDicFeignClient;
 import com.win.dfas.dao.ParamFlowInstMapper;
-import com.win.dfas.dto.InvestCompanyDTO;
-import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.service.ILoadDicService;
-import com.win.dfas.vo.request.ParamFlowReqVO;
+import com.win.dfas.service.strategy.StrategyFactory;
 import com.win.dfas.vo.response.item.FlowNameItem;
-import com.win.dfas.vo.response.item.InvestCompanyItem;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 包名称：com.win.dfas.service.impl
@@ -37,29 +35,88 @@ import java.util.List;
  * 创建时间：2019/8/3/10:37
  */
 @Service
+@Slf4j
 public class LoadDicServiceImpl implements ILoadDicService {
     @Autowired
     private ParamFlowInstMapper paramFlowMapper;
+    @Autowired
+    private IDicFeignClient dicFeignClient;
+
     @Override
-    public <T> List<T> converterVO(Object data, Class clazz, Class afterClazz, String... fields) throws IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException {
-        List<T> list = new ArrayList<T>();
-        List<T> rtnList = new ArrayList<T>();
-        rtnList = JSONObject.parseArray(JSONObject.toJSONString(data)).toJavaList(clazz);
-        for (Object t : rtnList) {
-            Constructor<?> constructor = afterClazz.getConstructor();
-            Object newInstance = constructor.newInstance();
-            Object code = String.valueOf(setAccessibleIsTrue(clazz.getDeclaredField(fields[0])).get(t));
-            setAccessibleIsTrue(afterClazz.getDeclaredField("code")).set(newInstance, code);
-            Object name = String.valueOf(setAccessibleIsTrue(clazz.getDeclaredField(fields[1])).get(t));
-            setAccessibleIsTrue(afterClazz.getDeclaredField("name")).set(newInstance, name);
-            list.add((T) newInstance);
+    public List queryDataList(String param, String relation, String strategy, FormatEnum formatEnum) {
+        List<Object> list = null;
+        //1.使用缓存查询
+        list = redisQuery(param,relation,strategy,formatEnum);
+        //2.使用feign接口
+        log.info("redis查询结果为{}",list);
+        if(list==null){
+            list =  feignQuery(param, strategy);
+            log.info("redis查询结果为null,feign查询结果{}",list);
         }
         return list;
     }
 
+    /**
+     * @Title: feignQuery
+     * @Description fegin接口查询
+     * @param param
+     * @param relaParam
+     * @return java.util.List<java.lang.Object>
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/20/15:16
+     */
+    private List<Object> feignQuery(String param, String relaParam) {
+        List<Object> list = null;
+        try{
+            list= StrategyFactory.getPromotionStrategy(relaParam).feignAndConverterVO(param);
+        }catch (Exception e){
+            log.error("feign查询异常:{}",e);
+        }
+        return list;
+    }
+    /**
+     * @Title: redisQuery
+     * @Description redis缓存查询
+     * @param param
+     * @param relation
+     * @param formatEnum
+     * @return java.util.List<java.lang.Object>
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/20/15:16
+     */
+    private List<Object> redisQuery(String param, String relation, String strategy, FormatEnum formatEnum) {
+        List<Object> list = null;
+        try{
+            list= StrategyFactory.getPromotionStrategy(strategy).redisAndConverterVO(param,relation,formatEnum);
+        }catch (Exception e){
+            log.error("feign查询异常:{}",e);
+        }
+        return list;
+    }
+
+
     @Override
     public List<FlowNameItem> queryFlow() {
         return paramFlowMapper.listFlowName();
+    }
+
+    @Override
+    public <T> List<T> converterVO(Object data,Class afterClazz, String... fields) throws Exception {
+        List<T> list = new ArrayList<T>();
+        List<Map> rtnList = new ArrayList<>();
+        rtnList = JSONObject.parseArray(JSONObject.toJSONString(data)).toJavaList(Map.class);
+        for (Map t : rtnList) {
+            Constructor<?> constructor = afterClazz.getConstructor();
+            Object newInstance = constructor.newInstance();
+            Object code =String.valueOf(t.get(fields[0]));
+            setAccessibleIsTrue(afterClazz.getDeclaredField("code")).set(newInstance, code);
+            Object name = String.valueOf(t.get(fields[1]));
+            setAccessibleIsTrue(afterClazz.getDeclaredField("name")).set(newInstance, name);
+            list.add((T) newInstance);
+        }
+        return list;
     }
 
     /**

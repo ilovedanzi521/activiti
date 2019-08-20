@@ -2,11 +2,13 @@ package com.win.dfas.controller.feign;
 
 import com.alibaba.fastjson.JSONObject;
 import com.win.dfas.common.constant.DicConstants;
+import com.win.dfas.common.enumeration.FormatEnum;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.constant.InitDataConstant;
 import com.win.dfas.dto.*;
 import com.win.dfas.service.IFlowGroupService;
 import com.win.dfas.service.ILoadDicService;
+import com.win.dfas.service.strategy.StrategyFactory;
 import com.win.dfas.vo.response.SelectorItemEnum;
 import com.win.dfas.vo.response.item.*;
 import lombok.extern.slf4j.Slf4j;
@@ -89,70 +91,29 @@ public class ThirdFeignInterfaceController {
         switch (EnumUtils.getEnum(SelectorItemEnum.class, loadItems)) {
             //产品
             case PRO:
-                InvestCompanyDTO dto = new InvestCompanyDTO();
-                dto.setFundNo(param);
-                try {
-                    WinResponseData rtn = dicFeignClient.queryInvestCompanyList(dto);
-                    if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                        list = loadDicService.converterVO(rtn.getData(), InvestCompanyDTO.class,
-                                InvestCompanyItem.class,
-                                new String[]{"no", "assetUnitName"});
-                    }
-                } catch (Throwable throwable) {
-                    log.error("feign接口异常", throwable);
-                }
+//                list = loadDicService.queryInvestCompanyList(param);
+                list = loadDicService.queryDataList(param, InitDataConstant.PRO_ASSET_RELA,
+                        StrategyFactory.FeginKey.ASSET, FormatEnum.PROD_ASSET_UNIT);
                 break;
             //单位
             case COM:
-                InvestConstituteDTO investConstituteDTO = new InvestConstituteDTO();
-                investConstituteDTO.setAssetUnitNo(param);
-                try {
-                    WinResponseData rtn = dicFeignClient.queryInvestConstituteList(investConstituteDTO);
-                    if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                        list = loadDicService.converterVO(rtn.getData(), InvestConstituteDTO.class,
-                                InvestConstituteItem.class,
-                                new String[]{"no", "portfolioName"});
-                    }
-                } catch (Throwable throwable) {
-                    log.error("feign接口异常", throwable);
-                }
+                list = loadDicService.queryDataList(param, InitDataConstant.PRO_PORTFOLIO_RELA,
+                        StrategyFactory.FeginKey.PORTFOLIO, FormatEnum.PORTFOLIO_NO_T_NAME);
                 break;
             //市场类型
             case MAK:
                 HashMap<String, List> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
-                SecurityTypeDTO securityTypeDTO = new SecurityTypeDTO();
-                securityTypeDTO.setMarketCode(param);
-                try {
-                    WinResponseData rtn = dicFeignClient.querySecurityTypeList(securityTypeDTO);
-                    if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                        list = loadDicService.converterVO(rtn.getData(),
-                                SecurityTypeDTO.class, SecurityTypeItem.class,
-                                new String[]{"securityCode", "securityName"});
-                        map.put(SelectorItemEnum.SEC.getValue(), list);
-                    }
-                } catch (Throwable throwable) {
-                    log.error("feign接口异常", throwable);
-                }
-                //获取交易方向
-                TransactionDirectionDTO transactionDirectionDTO = new TransactionDirectionDTO();
-                transactionDirectionDTO.setMarketCode(param);
-                try {
-                    WinResponseData rtn = dicFeignClient.queryDirectionList(transactionDirectionDTO);
-                    if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                        list=loadDicService.converterVO(rtn.getData(),TransactionDirectionDTO.class,
-                                TransactionDirectionItem.class,
-                                new String[]{"transactionDirection","transactionDirectionName"});
-                        map.put(SelectorItemEnum.TRN.getValue(), list);
-                    }
-                } catch (Throwable throwable) {
-                    log.error("feign接口异常", throwable);
-                }
+                list = loadDicService.queryDataList(param, InitDataConstant.MARK_SECURITY_RELA,
+                        StrategyFactory.FeginKey.SECURITY, FormatEnum.SECURITY_CODE_T_NAME);
+                map.put(SelectorItemEnum.SEC.getValue(), list);
+                list = loadDicService.queryDataList(param, InitDataConstant.MARK_TRA_DIR_RELA,
+                        StrategyFactory.FeginKey.TRA_DIR, FormatEnum.TRADEDIRECTION_CODE_T_NAME);
+                map.put(SelectorItemEnum.TRN.getValue(), list);
                 return WinResponseData.handleSuccess("成功返回", map);
             default:
                 return WinResponseData.handleError("失败");
-
         }
-        log.info("feign接口返回数据:{}",list);
+        log.info("接口返回数据:{}",list);
         return WinResponseData.handleSuccess("成功返回", list);
     }
 
@@ -201,7 +162,7 @@ public class ThirdFeignInterfaceController {
                 log.error("dicData:{},get:{} is null",dicData,key);
                 return list;
             }
-            list=loadDicService.converterVO(object,DataDicDTO.class,
+            list=loadDicService.converterVO(object,
                     CommonItem.class,new String[]{"dicCode","dicExplain"});
         } catch (Exception e) {
             log.error("loadInstructionTypes异常{}", e);
