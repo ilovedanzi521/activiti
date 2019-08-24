@@ -8,15 +8,17 @@ package com.win.dfas.vo.response;
  * 创建时间：2019/6/20/9:03
  */
 public enum SelectorItemEnum {
-
-   FLW ("flowTypeItems"),
+    //流程名称
+    NAM("flowNameItems"),
+    //流程类型
+    FLW("flowTypeItems"),
     // 产品
-   PRO("productItems"),
+    PRO("productItems"),
     // 投资单位
     COM("investCompanyItems"),
     // 组合资产
     CON("investConstituteItems"),
-     // 指令类型
+    // 指令类型
     INS("instructionTypeItems"),
     // 交易市场
     MAK("marketItems"),
@@ -29,13 +31,11 @@ public enum SelectorItemEnum {
 
     private String value;
 
-    SelectorItemEnum(String value)
-    {
+    SelectorItemEnum(String value) {
         this.value = value;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
-    }
+}

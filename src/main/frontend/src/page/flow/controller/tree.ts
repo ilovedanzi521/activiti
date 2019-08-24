@@ -4,9 +4,9 @@ import ExchangeFlowService from "../service/ExchangeFlowService";
 import {
     ParamFlowInstReqVO,
     ParamFlowInstRepVO
-} from "../bean/ParamFlowInstVO";
-import { ParamFlowGroupVO } from "../bean/ParamFlowGroupVO";
-import { UserInfoVO } from "../bean/UserInfoVO";
+} from "../vo/ParamFlowInstVO";
+import { ParamFlowGroupVO } from "../vo/ParamFlowGroupVO";
+import { UserInfoVO } from "../vo/UserInfoVO";
 import TSearch from "@/components/Trade-Search.vue";
 import TButton from "@/components/Trade-Button.vue";
 import TTable from "@/components/Trade-Table.vue";

@@ -61,8 +61,8 @@ public interface IDicFeignClient {
      * @author wanglei
      * @Date 2019/7/26/11:40
      */
-    @GetMapping("/security/find/code")
-    WinResponseData querySecurityTypeList();
+    @GetMapping("/api/param/securityBasicInfo/list")
+    WinResponseData querySecurityTypeList(@RequestBody SecurityTypeDTO dto);
     /**
      * @Title: queryMarketList
      * @Description: 交易市场
@@ -84,4 +84,15 @@ public interface IDicFeignClient {
      */
     @PostMapping("/api/prod/assetUnit/list")
     WinResponseData queryInvestCompanyList(InvestCompanyDTO investCompanyDTO);
+    /**
+     * @Title: queryControlTypes
+     * @Description 获取指令类型
+     * @param dto
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/19/11:03
+     */
+    @PostMapping("/dics/listMultipleAllSub")
+    WinResponseData queryInstructionTypeList(DataDicDTO dto);
 }

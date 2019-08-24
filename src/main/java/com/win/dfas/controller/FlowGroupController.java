@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,10 +45,20 @@ import java.util.List;
 @Slf4j
 public class FlowGroupController {
 
-
+    /**
+     * service层
+     */
     @Autowired
     private IFlowGroupService paramFlowService;
-
+    /**
+     * @Title: list
+     * @Description 获取流程实例信息
+     * @param
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:28
+     */
     @ApiOperation(value = "流程组实例查询")
     @PostMapping("/list")
     public WinResponseData list() {
@@ -56,24 +67,35 @@ public class FlowGroupController {
         return WinResponseData.handleSuccess(data);
     }
 
-
+    /**
+     * @Title: add
+     * @Description 流程组信息新增
+     * @param paramFlowGroupReqVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:28
+     */
     @ApiOperation(value = "流程组新增")
     @PostMapping
-    public WinResponseData add(@ApiParam(value = "流程组新增参数") @RequestBody ParamFlowGroupReqVO paramFlowGroupReqVO) {
-        if(ObjectUtil.isEmpty(paramFlowGroupReqVO.getFlowName())){
-            throw WinExceptionUtil.winException(BpmExceptionEnum.PARAMS_EMPTY);
-        }
-        paramFlowService.add(paramFlowGroupReqVO);
-        return WinResponseData.handleSuccess("流程组新增成功",paramFlowGroupReqVO);
-    }
+    public WinResponseData add(@ApiParam(value = "流程组新增参数") @RequestBody @Validated  ParamFlowGroupReqVO paramFlowGroupReqVO) {
+            paramFlowService.add(paramFlowGroupReqVO);
+            return WinResponseData.handleSuccess("流程组新增成功", paramFlowGroupReqVO);
 
-    @ApiOperation(value = "流程组更新", notes = "<br/>1. 流程组CODE必传")
+    }
+    /**
+     * @Title: update
+     * @Description 流程组信息更新
+     * @param reqVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:28
+     */
+    @ApiOperation(value = "流程组更新", notes = "<br/>1. 流程组NAME必传")
     @PutMapping
-    public WinResponseData update(@ApiParam(value = "流程组更新参数") @RequestBody ParamFlowGroupReqVO reqVO) {
-        log.info("updateReqVO",reqVO);
-        if(ObjectUtil.isEmpty(reqVO.getFlowName())){
-            throw WinExceptionUtil.winException(BpmExceptionEnum.PARAMS_EMPTY);
-        }
+    public WinResponseData update(@ApiParam(value = "流程组更新参数") @RequestBody @Validated ParamFlowGroupReqVO reqVO) {
+        log.info("updateReqVO:{}",reqVO);
         int ret = paramFlowService.merger(reqVO);
         String msg ="";
         if(ret==0){
@@ -83,14 +105,33 @@ public class FlowGroupController {
         }
         return WinResponseData.handleSuccess(msg);
     }
-
+    /**
+     * @Title: delete
+     * @Description 删除流程组信息
+     * @param id
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:27
+     */
     @ApiOperation(value = "流程组删除", notes = "流程组逻辑删除")
     @DeleteMapping("/{id}")
     public WinResponseData delete(@ApiParam(value = "流程组ID") @PathVariable("id") Long id) {
+        if(ObjectUtil.isEmpty(id)){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.ID_IS_NOTNULL);
+        }
         paramFlowService.delete(id);
         return WinResponseData.handleSuccess("流程组删除成功");
     }
-
+    /**
+     * @Title: getFlowGroupId
+     * @Description 生成id
+     * @param
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:29
+     */
     @ApiOperation(value = "流程组id生成")
     @GetMapping("/getflowgroupid")
     public WinResponseData getFlowGroupId() {
@@ -98,8 +139,20 @@ public class FlowGroupController {
         log. info(flowGroupId.toString());
         return WinResponseData.handleSuccess(flowGroupId);
     }
+    /**
+     * @Title: queryFlowByType
+     * @Description 根据id查询流程
+     * @param flowId
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:29
+     */
     @GetMapping("/getflowcount/{flowId}")
-    public WinResponseData deleteFlowByType(@PathVariable("flowId")  Long flowId) {
+    public WinResponseData queryFlowByType(@PathVariable("flowId")  Long flowId) {
+        if(ObjectUtil.isEmpty(flowId)){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.ID_IS_NOTNULL);
+        }
         DeleteEnum type =  paramFlowService.queryFlowByType(flowId);
         log. info(type.toString());
         return WinResponseData.handleSuccess(type);

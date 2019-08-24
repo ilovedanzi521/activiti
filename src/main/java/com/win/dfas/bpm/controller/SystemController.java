@@ -7,6 +7,7 @@ import com.win.dfas.bpm.constant.GroupTypeConstant;
 import com.win.dfas.bpm.util.AppUtil;
 import com.win.dfas.bpm.util.EnumUtil;
 import com.win.dfas.bpm.util.RequestUtil;
+import com.win.dfas.constant.InitDataConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,16 +19,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 包名称：com.win.dfas.bpm.controller
+ * 类名称：SystemController
+ * 类描述：SystemController
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 @Slf4j
 @RestController
 public class SystemController {
 
     @RequestMapping(value = "/sys/tools/getEnum", method = RequestMethod.POST)
     public Object getEnum(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
         String enumClassPath = RequestUtil.getString(request, "path");
-        boolean listMode = RequestUtil.getBoolean(request, "listMode");// 列表模式
+        // 列表模式
+        boolean listMode = RequestUtil.getBoolean(request, "listMode");
         if (listMode) {
             JSONArray objects = EnumUtil.toJSONArray(enumClassPath);
             return objects;
@@ -37,18 +44,24 @@ public class SystemController {
     }
 
 
-
+    /**
+     * @Title: getInterFaceImpls
+     * @Description 节点人员信息的下拉框的列表信息
+     * @param request
+     * @param response
+     * @return java.lang.Object
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/14:56
+     */
     @RequestMapping("/sys/tools/getInterFaceImpls")
     public Object getInterFaceImpls(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        String classPath = RequestUtil.getString(request, "classPath");
-//        Class<?> clazz = Class.forName(classPath);
-//        Map<String, ?> map = AppUtil.getImplInstance(clazz);
         List<Map<String,String>> list = new ArrayList<>();
-        Map<String,String> map = new HashMap<>();
+        Map<String,String> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
         map.put("title","部门");
         map.put("type","group");
         list.add(map);
-        Map<String,String> map1 = new HashMap<>();
+        Map<String,String> map1 = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
         map1.put("title","姓名");
         map1.put("type","user");
         list.add(map1);

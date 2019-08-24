@@ -1,5 +1,6 @@
 package com.win.dfas.bpm.controller.api;
 
+import com.win.dfas.constant.InitDataConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
@@ -77,16 +78,13 @@ public class BpmPngController {
             HistoricProcessInstance currProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(executionId).singleResult();
             String deploymentId = currProcessInstance.getDeploymentId();
             List<String> list = repositoryService.getDeploymentResourceNames(deploymentId);
-            //定义图片资源的名称
-            String resourceName = "";
-            if(list!=null && list.size()>0){
-                for(String name:list){
-                    if(name.indexOf(".png")>=0){
-                        resourceName = name;
-                    }
-                }
-            }
-            imageStream = repositoryService.getResourceAsStream(deploymentId, resourceName);
+            proDefId = currProcessInstance.getProcessDefinitionId();
+            BpmnModel bpmnModel = repositoryService.getBpmnModel(proDefId);
+            ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
+            String activityFontName=processEngineConfiguration.getActivityFontName();
+            String labelFontName=processEngineConfiguration.getLabelFontName();
+            imageStream =diagramGenerator.generateDiagram(bpmnModel, "png",activityFontName,labelFontName,null, null, 1.0);
+
         }else{
             proDefId = processInstance.getProcessDefinitionId();
             processId = processInstance.getId();
@@ -95,15 +93,14 @@ public class BpmPngController {
             List<String> activeActivityIds = runtimeService.getActiveActivityIds(executionId);
             List<String> highLightedFlows = getHighLightedFlows(processDefinition, processId);
             ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-            //InputStream imageStream =diagramGenerator.generateDiagram(bpmnModel, "png", activeActivityIds, highLightedFlows);
             String activityFontName=processEngineConfiguration.getActivityFontName();
             String labelFontName=processEngineConfiguration.getLabelFontName();
             imageStream =diagramGenerator.generateDiagram(bpmnModel, "png", activeActivityIds, highLightedFlows,activityFontName,labelFontName,null, null, 1.0);
         }
         // 输出资源内容到相应对象
-        byte[] b = new byte[1024];
+        byte[] b = new byte[InitDataConstant.BYTE_INIT_CAPACITY];
         int len;
-        while ((len = imageStream.read(b, 0, 1024)) != -1) {
+        while ((len = imageStream.read(b, 0, InitDataConstant.BYTE_INIT_CAPACITY)) != -1) {
             response.getOutputStream().write(b, 0, len);
         }
 
@@ -205,7 +202,8 @@ public class BpmPngController {
                 .getDeployedProcessDefinition(executionEntity.getProcessDefinitionId());
 
         ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) deployedProcessDefinition;
-        List<ActivityImpl> activitiList = processDefinition.getActivities();//获得当前任务的所有节点
+        //获得当前任务的所有节点
+        List<ActivityImpl> activitiList = processDefinition.getActivities();
 
         List<Map<String, Object>> activityInfos = new ArrayList<Map<String, Object>>();
         for (ActivityImpl activity : activitiList) {
@@ -250,15 +248,14 @@ public class BpmPngController {
      */
     private Map<String, Object> packageSingleActivitiInfo(ActivityImpl activity, String executionId,
                                                           boolean currentActiviti) throws Exception {
-        Map<String, Object> activityInfo = new HashMap<String, Object>();
+        Map<String, Object> activityInfo = new HashMap<String, Object>(InitDataConstant.MAP_INIT_CAPACITY);
         activityInfo.put("currentActiviti", currentActiviti);
 
         // 设置图形的XY坐标以及宽度、高度
         setSizeAndPositonInfo(activity, activityInfo);
 
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<String, Object>(InitDataConstant.MAP_INIT_CAPACITY);
         Map<String, Object> properties = activity.getProperties();
-//        vars.put("任务类型", ActivityUtil.getZhActivityType(properties.get("type").toString()));
         vars.put("任务名称", properties.get("name"));
 
         // 当前节点的task
@@ -266,7 +263,6 @@ public class BpmPngController {
             setCurrentTaskInfo(executionId, activity.getId(), vars);
         }
 
-        // logger.debug("trace variables: {}", vars);
         activityInfo.put("vars", vars);
         return activityInfo;
     }
@@ -279,9 +275,10 @@ public class BpmPngController {
     private void setCurrentTaskInfo(String executionId, String activityId, Map<String, Object> vars) {
         Task currentTask = taskService.createTaskQuery().executionId(executionId)
                 .taskDefinitionKey(activityId).singleResult();
-        // logger.debug("current task for processInstance: {}", ToStringBuilder.reflectionToString(currentTask));
 
-        if (currentTask == null) return;
+        if (currentTask == null) {
+            return;
+        }
 
         String assignee = currentTask.getAssignee();
         if (assignee != null) {

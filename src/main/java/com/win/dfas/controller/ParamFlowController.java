@@ -24,6 +24,7 @@ import com.win.dfas.bpm.converter.CostomBpmnJsonConverter;
 import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.constant.BpmExceptionEnum;
+import com.win.dfas.constant.InitDataConstant;
 import com.win.dfas.service.IActivitiService;
 import com.win.dfas.service.IParamFlowService;
 import com.win.dfas.vo.request.FlowTaskReqVO;
@@ -47,6 +48,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -69,24 +71,23 @@ import java.util.Map;
 @RequestMapping("/param/exchangeFlow")
 @Slf4j
 public class ParamFlowController {
-
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private HistoryService historyService;
-    @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
     private IParamFlowService paramFlowService;
     @Autowired
     private IActivitiService activitiService;
-
-    @Autowired
-    private TaskService taskService;
-
+    /**
+     * @Title: list
+     * @Description 查询
+     * @param queryVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:32
+     */
     @ApiOperation(value = "流程实例查询", notes = "<br/>1. 分页查询 ")
     @PostMapping("/list")
     public WinResponseData list(@ApiParam(value = "流程查询参数") @RequestBody ParamFlowReqVO queryVO) {
@@ -95,40 +96,82 @@ public class ParamFlowController {
         log. info(list.toString());
         return WinResponseData.handleSuccess(list);
     }
-
+    /**
+     * @Title: queryFlowByGroupid
+     * @Description 根据流程组id查询流程信息
+     * @param queryVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:31
+     */
     @ApiOperation(value = "流程组实例查询")
     @PostMapping("/listFlowByGroupid")
     public WinResponseData queryFlowByGroupid(@RequestBody ParamFlowReqVO queryVO) {
         log. info(queryVO.toString());
-        if(queryVO==null||queryVO.getFlowCode()==null||queryVO.getFlowCode().longValue()==0){//最顶级查询所有
+        //最顶级查询所有
+        if(queryVO==null||queryVO.getFlowCode()==null||queryVO.getFlowCode().longValue()==0){
             return list(queryVO);
         }
         PageInfo<ParamFlowRepVO>  data = paramFlowService.queryFlowByGroupid(queryVO);
         log. info(data.toString());
         return WinResponseData.handleSuccess(data);
     }
-
-    @ApiOperation(value = "流程新增", notes = "<br/>1. 货币数据库保留8位小数;<br/>")
+    /**
+     * @Title: add
+     * @Description 流程新增
+     * @param paramFlowRepVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:31
+     */
+    @ApiOperation(value = "流程新增", notes = "<br/>1. add;<br/>")
     @PostMapping
-    public WinResponseData add(@ApiParam(value = "流程新增参数") @RequestBody ParamFlowRepVO paramFlowRepVO) {
+    public WinResponseData add(@ApiParam(value = "流程新增参数") @RequestBody @Validated ParamFlowRepVO paramFlowRepVO) {
         log. info(paramFlowRepVO.toString());
         paramFlowService.add(paramFlowRepVO);
         return WinResponseData.handleSuccess("流程新增成功");
     }
-
+    /**
+     * @Title: update
+     * @Description 流程更新
+     * @param paramFlowRepVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:30
+     */
     @ApiOperation(value = "流程更新", notes = "<br/>1. 流程ID必传")
     @PutMapping
-    public WinResponseData update(@ApiParam(value = "流程更新参数") @RequestBody ParamFlowRepVO paramFlowRepVO) {
+    public WinResponseData update(@ApiParam(value = "流程更新参数") @RequestBody @Validated  ParamFlowRepVO paramFlowRepVO) {
         paramFlowService.update(paramFlowRepVO);
         return WinResponseData.handleSuccess("流程修改成功");
     }
-
-    @ApiOperation(value = "流程删除", notes = "流程逻辑删除")
+    /**
+     * @Title: delete
+     * @Description 流程数据删除
+     * @param id
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:30
+     */
+    @ApiOperation(value = "流程删除", notes = "流程物理删除")
     @DeleteMapping("/{id}")
     public WinResponseData delete(@ApiParam(value = "流程ID") @PathVariable("id") Long id) {
         paramFlowService.delete(id);
         return WinResponseData.handleSuccess("流程删除成功");
     }
+    /**
+     * @Title: deletes
+     * @Description 批量删除
+     * @param paramFlowRepVOS
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/17:30
+     */
     @PostMapping("/batchDelete")
     public WinResponseData deletes(@ApiParam(value = "流程新增参数") @RequestBody  List<ParamFlowRepVO> paramFlowRepVOS) {
         List<Long> ids = new ArrayList<>();
@@ -136,24 +179,24 @@ public class ParamFlowController {
             ids.add(paramFlowRepVO.getId());
         }
         paramFlowService.batchDelete(ids);
-//        for (Long id : ids) {
-////            revokePublish(id.toString())
-//        }
-
         return WinResponseData.handleSuccess("流程删除成功");
     }
 
     /**
-     * 创建模型
-     *
+     * @Title: create
+     * @Description 创建模型
      * @param response
+     * @param paramFlowRepVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws IOException
+     * @author wanglei
+     * @Date 2019/8/6/11:34
      */
     @ResponseBody
     @RequestMapping("/create")
     public WinResponseData create(HttpServletResponse response, @RequestBody ParamFlowRepVO paramFlowRepVO) throws IOException {
 
         if (null != paramFlowRepVO && StringUtils.isNotEmpty(paramFlowRepVO.getModelId())) {
-//            response.sendRedirect("/modeler.html?modelId="+ paramFlowRepVO.getModelId());
             return WinResponseData.handleSuccess(paramFlowRepVO.getModelId());
         }
         String name = paramFlowRepVO.getFlowName();
@@ -174,17 +217,19 @@ public class ParamFlowController {
         paramFlowRepVO.setModelId(modelId);
         paramFlowService.update(paramFlowRepVO);
         log.info("创建模型结束，返回模型ID：{}", modelId);
-//        response.sendRedirect("/modeler.html?modelId="+ modelId);
-//        repositoryService.addModelEditorSource(modelId);
         return WinResponseData.handleSuccess(modelId);
     }
 
 
     /**
-     * 创建模型时完善ModelEditorSource
+     * @Title: createObjectNode
+     * @Description 创建模型时完善ModelEditorSource
      * @param modelId
+     * @return void
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/11:30
      */
-    @SuppressWarnings("deprecation")
     private void createObjectNode(String modelId){
         log.info("创建模型完善ModelEditorSource入参模型ID：{}",modelId);
         ObjectNode editorNode = objectMapper.createObjectNode();
@@ -202,9 +247,13 @@ public class ParamFlowController {
     }
 
     /**
-     * 启动流程
+     * @Title: start
+     * @Description  启动流程
      * @param paramFlowRepVOS
-     * @return
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/11:30
      */
     @PostMapping("/batchStartFlow")
     public WinResponseData start(@ApiParam(value = "批量启动流程") @RequestBody  List<ParamFlowRepVO> paramFlowRepVOS) {
@@ -219,12 +268,7 @@ public class ParamFlowController {
             String processDefId=paramFlowRepVO.getProcessDefId();
             boolean startFlag=paramFlowRepVO.getStartFlag();
             if(ObjectUtil.isEmpty(deploymentId)) {
-                deploymentId=publish(modelId,paramFlowRepVO.getFlowName());
-                processDefId = activitiService.queryProcessDefId(deploymentId);
-                //TODO 是否批量更新
-                paramFlowRepVO.setDeploymentId(deploymentId);
-                paramFlowRepVO.setProcessDefId(processDefId);
-                paramFlowService.update(paramFlowRepVO);
+                updatePublish(paramFlowRepVO,modelId);
             }else{
                 //如果发布id不为空,流程定义id为空,则提示错误退出。
                 if(ObjectUtil.isEmpty(processDefId)){
@@ -232,44 +276,47 @@ public class ParamFlowController {
                     return WinResponseData.handleError("异常");
                 }
                 if(startFlag){
-                    //repositoryService.activateProcessDefinitionById(processDefId);
                     //重新发布
-                    deploymentId=publish(modelId,paramFlowRepVO.getFlowName());
-                    processDefId = activitiService.queryProcessDefId(deploymentId);
-                    //TODO 是否批量更新
-                    paramFlowRepVO.setDeploymentId(deploymentId);
-                    paramFlowRepVO.setProcessDefId(processDefId);
-                    paramFlowService.update(paramFlowRepVO);
-//                    continue;
+                    updatePublish(paramFlowRepVO,modelId);
                 }
+
             }
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put("apply", paramFlowRepVO.getCreateUserId());
-//            map.put("approve", "wanglei");
-//            map.put("controlType", 123);//控制
-//            //启动流程
-//            startProcessInstance(processDefId,map);
             log.info("启动流程实例,流程定义id="+processDefId);
 
         }
         //批量更新启动状态
         paramFlowService.updateStartFlagToStart(ids);
-        return WinResponseData.handleSuccess("成功");
+        return WinResponseData.handleSuccess("批量启用成功");
+    }
+    /**
+     * @Title: updatePublish
+     * @Description 发布并更新状态
+     * @param paramFlowRepVO
+     * @param modelId
+     * @return void
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/11:37
+     */
+    public void  updatePublish(ParamFlowRepVO paramFlowRepVO,String modelId){
+        String deploymentId=publish(modelId,paramFlowRepVO.getFlowName());
+        String processDefId = activitiService.queryProcessDefId(deploymentId);
+        //TODO 是否批量更新
+        paramFlowRepVO.setDeploymentId(deploymentId);
+        paramFlowRepVO.setProcessDefId(processDefId);
+        paramFlowService.update(paramFlowRepVO);
     }
 
     /**
-     * 根据流程部署ID 查询流程定义并启动流程实例
-     * @param processDefId
-     * @param map
+     * @Title: publish
+     * @Description 发布流程并获取activit 根据流程部署ID
+     * @param modelId
+     * @param key
+     * @return java.lang.String
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/11:16
      */
-    private String startProcessInstance(String processDefId,Map map) {
-        //通过指定流程定义的id，开启流程定义，得到流程实例。流程实例是一系列任务的集合
-        ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefId,map);
-        log.info("流程启动id："+processInstance.getId());
-        return processDefId;
-    }
-
-    //发布流程并获取activit 根据流程部署ID
     public String publish(String modelId,String key){
         log.info("流程部署入参modelId：{}",modelId);
         try {
@@ -292,7 +339,6 @@ public class ParamFlowController {
             modelData.setDeploymentId(deploymentId);
             modelData.setKey(key);
             repositoryService.saveModel(modelData);
-//            map.put("code", "SUCCESS");
             log.info("流程部署出参map：{}",deploymentId);
             return deploymentId;
         } catch (Exception e) {
@@ -302,9 +348,13 @@ public class ParamFlowController {
     }
 
     /**
-     * 停止挂起流程
+     * @Title: stop
+     * @Description 流程停止
      * @param paramFlowRepVOS
-     * @return
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/11:29
      */
     @PostMapping("/batchStopFlow")
     public WinResponseData stop( @RequestBody  List<ParamFlowRepVO> paramFlowRepVOS) {
@@ -313,53 +363,31 @@ public class ParamFlowController {
             ids.add(paramFlowRepVO.getId());
         }
         paramFlowService.updateStartFlagToStop(ids);
-        return WinResponseData.handleSuccess("成功");
+        return WinResponseData.handleSuccess("批量停用成功");
     }
 
     /**
-     * 撤销流程
-     * @param modelId
-     * @return
-     */
-    public Object revokePublish(String modelId){
-        log.info("撤销发布流程入参modelId：{}",modelId);
-        Map<String, String> map = new HashMap<String, String>();
-        Model modelData = repositoryService.getModel(modelId);
-        if(null != modelData){
-            try {
-                /**
-                 * 参数不加true:为普通删除，如果当前规则下有正在执行的流程，则抛异常
-                 * 参数加true:为级联删除,会删除和当前规则相关的所有信息，包括历史
-                 */
-                repositoryService.deleteDeployment(modelData.getDeploymentId(),true);
-                map.put("code", "SUCCESS");
-            } catch (Exception e) {
-                log.error("撤销已部署流程服务异常：{}",e);
-                map.put("code", "FAILURE");
-            }
-        }
-        log.info("撤销发布流程出参map：{}",map);
-        return map;
-    }
-
-    /**
-     *
+     * @Title: start
+     * @Description 启停流程
      * @param paramFlowRepVO
-     * @return
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/11:34
      */
     @PostMapping("/startOrStopFlow")
     public WinResponseData start(@ApiParam(value = "启动/停止流程") @RequestBody ParamFlowRepVO paramFlowRepVO) {
         List<ParamFlowRepVO> paramFlowRepVOS = new ArrayList<>();
         paramFlowRepVOS.add(paramFlowRepVO);
+        String rtnMsg = "";
         if(paramFlowRepVO.getStartFlag()){
             start(paramFlowRepVOS);
+            rtnMsg="流程启用成功";
         }else{
             stop(paramFlowRepVOS);
-//            paramFlowService.updateStartFlagToStop(ids);
+            rtnMsg="流程停用成功";
         }
-        return WinResponseData.handleSuccess("成功");
+        return WinResponseData.handleSuccess(rtnMsg);
     }
-
-
 
 }

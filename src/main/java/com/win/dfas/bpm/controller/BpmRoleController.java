@@ -54,24 +54,21 @@ public class BpmRoleController {
 
     @RequestMapping("/getTaskById/{instanceId}")
     public WinResponseData queryTaskInfoByTask( @PathVariable("instanceId") String instanceId) {
-//        String taskId = flowTask.getTaskId();
         //流程运行任务
         Task currentTask = taskService.createTaskQuery().processInstanceId(instanceId).singleResult();
-//        log.info(currentTask);
         String baseElementId = currentTask.getTaskDefinitionKey();
         log.info("currentTask.getProcessDefinitionId()="+currentTask.getProcessDefinitionId());
         //获取流程定义信息
         String defId = currentTask.getProcessDefinitionId();
         ProcessDefinitionEntity definitionEntity = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
                 .getProcessDefinition(defId);
-        //获取流程实例
-        ProcessInstance pi=runtimeService.createProcessInstanceQuery() // 根据流程实例id获取流程实例
+        // 根据流程实例id获取流程实例
+        ProcessInstance pi=runtimeService.createProcessInstanceQuery()
                 .processInstanceId(instanceId)
                 .singleResult();
 
         log.info("pi.getActivityId()="+pi.getActivityId());
         ActivityImpl activityImpl = definitionEntity.findActivity(pi.getActivityId());
-        //BpmnModel bm = repositoryService.getBpmnModel(instanceId);
         //获取task
         log.info(activityImpl.getProperty(BpmConstant.NAME).toString());
         return WinResponseData.handleSuccess("成功");
@@ -82,7 +79,7 @@ public class BpmRoleController {
     @RequestMapping(value = "/getUserNodeAssigners")
     public WinResponseData listUserNodeAssigners( HttpServletRequest request, HttpServletResponse response){
         String modelId = RequestUtil.getString(request, "modelId");
-        String nodeId = RequestUtil.getString(request, "nodeId");//
+        String nodeId = RequestUtil.getString(request, "nodeId");
         List<FlowAssignersRepVO> list = bpmService.queryNodeDescribe(modelId,nodeId);
         log.info(list.toString());
         return WinResponseData.handleSuccess("成功",list);
@@ -99,7 +96,7 @@ public class BpmRoleController {
     @PostMapping(value = "/deleteUserNodeAssigners")
     public WinResponseData deleteUserNodeAssigners( HttpServletRequest request, HttpServletResponse response){
         String modelId = RequestUtil.getString(request, "modelId");
-        String nodeId = RequestUtil.getString(request, "nodeId");//
+        String nodeId = RequestUtil.getString(request, "nodeId");
         Integer index = Integer.parseInt(RequestUtil.getString(request, "descIndex"));
         String description = RequestUtil.getString(request, "description");
         String pluginType = RequestUtil.getString(request, "pluginType");
@@ -117,7 +114,7 @@ public class BpmRoleController {
     @RequestMapping(value = "/saveUserNodeAssigners")
     public WinResponseData saveUserNodeAssigners(HttpServletRequest request, HttpServletResponse response){
         String modelId = RequestUtil.getString(request, "modelId");
-        String nodeId = RequestUtil.getString(request, "nodeId");//
+        String nodeId = RequestUtil.getString(request, "nodeId");
         Integer index = Integer.parseInt(RequestUtil.getString(request, "descIndex"));
         String description = RequestUtil.getString(request, "description");
         String codeDesc = RequestUtil.getString(request, "codeDesc");
@@ -132,9 +129,8 @@ public class BpmRoleController {
     @RequestMapping(value = "/updateTaskTypeToModel")
     public WinResponseData updateTaskTypeToModel(HttpServletRequest request, HttpServletResponse response){
         String modelId = RequestUtil.getString(request, "modelId");
-        String nodeId = RequestUtil.getString(request, "nodeId");//
+        String nodeId = RequestUtil.getString(request, "nodeId");
         String taskType = RequestUtil.getString(request, "taskType");
-//        FlowAssignersReqVO flowAssignersReqVO = new FlowAssignersReqVO(modelId,nodeId,index,description,codeDesc,pluginType,taskType);
         FlowAssignersReqVO flowAssignersReqVO = new FlowAssignersReqVO();
         flowAssignersReqVO.setModelId(modelId);
         flowAssignersReqVO.setNodeId(nodeId);

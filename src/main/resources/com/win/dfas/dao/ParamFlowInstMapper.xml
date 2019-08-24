@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.win.dfas.dao.ParamFlowInstMapper">
-  <resultMap id="BaseResultMap" type="com.win.dfas.entity.ParamFlowInst">
+  <resultMap id="BaseResultMap" type="com.win.dfas.vo.response.ParamFlowRepVO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="flow_name" jdbcType="VARCHAR" property="flowName" />
     <result column="flow_type" jdbcType="VARCHAR" property="flowType" />
@@ -38,13 +38,19 @@
     and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
      limit 1
   </select>
-  <select id="queryCountFromFlowInst" resultType="java.lang.Integer" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
-    select count(1) from param_flowInst where
+  <select id="queryIdFromFlowInst" resultType="java.lang.Long" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
+    select id from param_flowInst where
      product_code = #{productCode,jdbcType=BIGINT}
     and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
     and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
      limit 1
   </select>
+  <select id="listFlowName"
+          resultType="com.win.dfas.vo.response.item.FlowNameItem">
+  SELECT id as code,flow_name as name
+  FROM param_flowInst
+  </select>
+
   <select id="list" parameterType="com.win.dfas.vo.request.ParamFlowReqVO"
           resultMap="BaseResultMap">
     SELECT  <include refid="Base_Column_List" />

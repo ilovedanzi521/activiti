@@ -1,5 +1,5 @@
 import AxiosFun from "../../../api/AxiosFun";
-import { ParamFlowInstRepVO } from "../bean/ParamFlowInstVO";
+import { ParamFlowInstRepVO } from "../vo/ParamFlowInstVO";
 export default class ExchangeFlowService {
     /**流程类**/
     listFlowClass() {
@@ -129,6 +129,14 @@ export default class ExchangeFlowService {
             AxiosFun.commonBpmServiceName +
                 "/param/exchangeFlow/startOrStopFlow/",
             flowVO
+        );
+    }
+
+    // loadSelectschangeProductItemsItems
+    loadItems(itemType, param) {
+        return AxiosFun.get(
+            AxiosFun.commonBpmServiceName + "/param/feign/" + itemType,
+            { param }
         );
     }
 }

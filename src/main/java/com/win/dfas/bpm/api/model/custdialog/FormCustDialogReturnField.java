@@ -1,7 +1,6 @@
 package com.win.dfas.bpm.api.model.custdialog;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -16,9 +15,7 @@ import java.io.Serializable;
  */
 @Data
 public class FormCustDialogReturnField implements Serializable {
-    @NotEmpty
     private String columnName;
-    @NotEmpty
     private String returnName;
 
     public FormCustDialogReturnField() {

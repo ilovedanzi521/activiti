@@ -6,6 +6,13 @@ import com.alibaba.fastjson.JSONObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+/**
+ * 包名称：com.win.dfas.bpm.util
+ * 类名称：EnumUtil
+ * 类描述：EnumUtil
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 public class EnumUtil {
     /**
      * 防止被实例化
@@ -97,14 +104,15 @@ public class EnumUtil {
         JSONObject jsonObject = new JSONObject();
         Field[] fields = e.getClass().getDeclaredFields();
         for (Field field : fields) {
-            field.setAccessible(true);// 让私有变量也能被访问到
+            // 让私有变量也能被访问到
+            field.setAccessible(true);
             // 过滤掉自身的枚举（我都想不到枚举实例为什么也算是类的字段）和枚举类必有的全部变量的ENUM$VALUES字段
-//            "$VALUES".equals(field.getName()) ||
             if ("LOG".equals(field.getName())|field.getType().equals(e.getClass())) {
                 continue;
             }
             Object obj = field.get(e);
-            if (obj instanceof Enum) {// 如果类型是Enum，那刚好继续解释多一次
+            // 如果类型是Enum，那刚好继续解释多一次
+            if (obj instanceof Enum) {
                 jsonObject.put(field.getName(), toJSON((Enum<?>) field.get(e)));
             } else {
                 jsonObject.put(field.getName(), field.get(e));

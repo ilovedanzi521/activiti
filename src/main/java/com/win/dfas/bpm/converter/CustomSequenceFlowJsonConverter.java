@@ -30,10 +30,6 @@ public class CustomSequenceFlowJsonConverter extends SequenceFlowJsonConverter {
         super.convertElementToJson(propertiesNode, baseElement);
         SequenceFlow sequenceFlow = (SequenceFlow) baseElement;
         //解析新增属性的业务逻辑
-//        userTask.setFormProperties();
-//        String taskType = userTask.getAttributeValue(BpmConstant.NAMESPACE,BpmConstant.NAME);
-//        propertiesNode.put("taskType",taskType);
-//        userTask.set
         log.info(sequenceFlow.getConditionExpression());
     }
 
@@ -50,7 +46,7 @@ public class CustomSequenceFlowJsonConverter extends SequenceFlowJsonConverter {
         BigDecimal min = new BigDecimal(minLimit);
         BigDecimal max = new BigDecimal(maxLimit);
         String amtEl = BpmConstant.AMTCONDITION+">="+minLimit+" and "+BpmConstant.AMTCONDITION+"<"+maxLimit;
-        String permitEl = BpmConstant.PERMITCONDITION+"=="+permit;
+        String permitEl = BpmConstant.PERMITNAME+"=="+permit;
 
         sequenceFlow.setConditionExpression("${"+amtEl+" and "+permitEl+"}");
         log.info("el====="+"${"+amtEl+" and "+permitEl+"}");

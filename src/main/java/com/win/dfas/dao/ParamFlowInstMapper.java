@@ -2,9 +2,19 @@ package com.win.dfas.dao;
 
 import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.vo.request.ParamFlowReqVO;
+import com.win.dfas.vo.response.ParamFlowRepVO;
+import com.win.dfas.vo.response.item.FlowNameItem;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
+/**
+ * 包名称：com.win.dfas.dao
+ * 类名称：ParamFlowInstMapper
+ * 类描述：ParamFlowInstMapper
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 @Mapper
 public interface ParamFlowInstMapper {
     int deleteByPrimaryKey(Long id);
@@ -18,11 +28,11 @@ public interface ParamFlowInstMapper {
     int updateByPrimaryKeySelective(ParamFlowInst record);
 
     int updateByPrimaryKey(ParamFlowInst record);
-    List<ParamFlowInst> list(ParamFlowReqVO queryVO);
+    List<ParamFlowRepVO> list(ParamFlowReqVO queryVO);
 
     int batchDelete(List ids);
 
-    List<ParamFlowInst> queryFlowByGroupid(Long flowGroupId);
+    List<ParamFlowRepVO> queryFlowByGroupid(Long flowGroupId);
 
     int updateStartFlagToStop(List<Long> ids);
 
@@ -30,5 +40,7 @@ public interface ParamFlowInstMapper {
 
     String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO);
 
-    int queryCountFromFlowInst(ParamFlowReqVO queryVO);
+    Long queryIdFromFlowInst(ParamFlowReqVO queryVO);
+
+    List<FlowNameItem> listFlowName();
 }

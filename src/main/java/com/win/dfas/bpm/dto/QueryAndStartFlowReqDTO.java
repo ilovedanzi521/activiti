@@ -16,13 +16,21 @@ public class QueryAndStartFlowReqDTO {
     private String productCode;
     private String investConstitute;
     private String transactionDirection;
-    private String userId; //流程用户
-    private String groupId; //流程用户组
-    //    private String
+    /**
+     * 流程用户
+     */
+    private String userId;
+    /**
+     * 流程用户组
+     */
+    private String groupId;
     private String taskType;
     private BigDecimal amt;
     private String processId;
     private String processDefId;
     private String taskId;
-    private String permit="0"; //0-通过，1-是不通过
+    /**
+     * 0-通过，1-是不通过
+     */
+    private String permit="0";
 }

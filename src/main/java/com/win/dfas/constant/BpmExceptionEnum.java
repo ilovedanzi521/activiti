@@ -28,8 +28,15 @@ public enum BpmExceptionEnum implements IExceptionEnum {
     SYSTEM_ERR("800000", "系统错误"),
     NOT_FOUND_FLOW("800001", "没有发现流程记录"),
     PARAMS_EMPTY("800002", "参数为空"),
-    NOTUNIQUEKEY("800003", "唯一键冲突"),
-    DESIGN_PROBLEMS("800004", "流程设计有问题")
+    NOTUNIQUEKEY("800003", "(产品+组合+交易方向)唯一键冲突"),
+    DESIGN_PROBLEMS("800004", "请优先对流程进行\"设计流程\"处理"),
+    ID_IS_NOTNULL("800005", "ID不能为空"),
+    NAME_IS_NOTNULL("800006", "NAME不能为空"),
+    TYPE_IS_NOTNULL("800007", "TYPE不能为空"),
+    DATABASE_EXCEPTION("800008", "TYPE不能为空"),
+    REQ_DATABASE_EXCE("800009", "请求数据库异常"),
+    DATA_TOO_LONG("800010", "存在字段超过数据库限制长度")
+
 //    ID_NOT_NULL("100000", "ID不能为空")
     ;
 

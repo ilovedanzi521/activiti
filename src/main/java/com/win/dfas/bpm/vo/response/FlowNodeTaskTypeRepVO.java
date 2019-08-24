@@ -23,6 +23,52 @@ import lombok.Data;
  */
 @Data
 public class FlowNodeTaskTypeRepVO {
+    public FlowNodeTaskTypeRepVO() {
+    }
+
+    public FlowNodeTaskTypeRepVO(String processId) {
+        this.processId = processId;
+    }
+
+    public FlowNodeTaskTypeRepVO(String processId, EnumRunStatu statu) {
+        this.processId = processId;
+        this.statu = statu;
+    }
+
+    /**
+     * 流程实例id
+     */
     private String processId;
+    /**
+     * 下一节点任务类型
+     */
     private String taskType;
+    /**
+     * 是否结束 true-结束，false-没有结束
+     */
+    private EnumRunStatu statu ;
+
+    public FlowNodeTaskTypeRepVO setStatu(EnumRunStatu statu) {
+        this.statu = statu;
+        return this;
+    }
+
+    public static enum EnumRunStatu{
+        /**
+         * 流程运行中
+         */
+        RUNNING,
+        /**
+         * 审批后流程结束,正常结束
+         */
+        END,
+        /**
+         * 流程早已关闭或早已完成,执行的是非法操作
+         */
+        CLOSE,
+        /**
+         * 异常
+         */
+        EXCEPTION;
+    }
 }

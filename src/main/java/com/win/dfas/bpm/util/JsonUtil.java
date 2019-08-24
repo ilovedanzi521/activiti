@@ -7,7 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
+/**
+ * 包名称：com.win.dfas.bpm.util
+ * 类名称：JsonUtil
+ * 类描述：JsonUtil
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 public class JsonUtil {
     protected static final Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
 

@@ -13,6 +13,7 @@ import lombok.Data;
 @Data
 public class InvestConstituteDTO {
 
+     private String assetUnitNo;
      /**
       * 所属产品序号
       */

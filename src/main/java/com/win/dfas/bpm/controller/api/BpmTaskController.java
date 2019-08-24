@@ -7,6 +7,7 @@ import com.win.dfas.bpm.constant.BpmConstant;
 import com.win.dfas.bpm.dto.QueryAndStartFlowReqDTO;
 import com.win.dfas.bpm.entity.FlowAssigners;
 import com.win.dfas.bpm.service.BpmService;
+import com.win.dfas.bpm.util.EnumUtil;
 import com.win.dfas.bpm.vo.response.FlowNodeTaskTypeRepVO;
 import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.common.vo.WinResponseData;
@@ -60,7 +61,15 @@ public class BpmTaskController {
 
     @Autowired
     private IParamFlowService paramFlowService;
-
+    /**
+     * @Title: queryAndStart
+     * @Description 流程查询和启动
+     * @param queryAndStartFlowReqDTO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/14:59
+     */
     @PostMapping("/runFlow")
     public WinResponseData queryAndStart(@RequestBody QueryAndStartFlowReqDTO queryAndStartFlowReqDTO) {
         try {
@@ -72,7 +81,6 @@ public class BpmTaskController {
             WinResponseData rtn = queryprocessDef(paramFlowReqVO);
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
                 FlowTaskReqVO flowTaskReqVO = new FlowTaskReqVO();
-//            flowTaskReqVO.setProcessId(String.valueOf(rtn.getData()));
                 flowTaskReqVO.setAmt(queryAndStartFlowReqDTO.getAmt());
                 flowTaskReqVO.setPermit(queryAndStartFlowReqDTO.getPermit());
                 flowTaskReqVO.setGroupId(queryAndStartFlowReqDTO.getGroupId());
@@ -93,13 +101,20 @@ public class BpmTaskController {
         return WinResponseData.handleError("失败");
 
     }
-
+    /**
+     * @Title: run
+     * @Description 根据流程定义id启动流程
+     * @param flowTaskReqVO
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/15:00
+     */
     @PostMapping("/run")
     public WinResponseData run(@RequestBody FlowTaskReqVO flowTaskReqVO) {
         log.info("运行参数======" + BeanUtil.beanToMap(flowTaskReqVO).toString());
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(flowTaskReqVO.getProcessDefId(), BeanUtil.beanToMap(flowTaskReqVO));
         log.info("流程启动id：" + processInstance.getId());
-//        ExecutionEntity pi1 = (ExecutionEntity) runtimeService.startProcessInstanceById(defId);
         String processId = processInstance.getId();
         HistoricProcessInstance historicProcessInstance =
                 historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
@@ -110,31 +125,30 @@ public class BpmTaskController {
         log.info("processId=" + processId);
         Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
         log.info("task 步骤:{}", task);
-
-        String processDefinitionId=task.getProcessDefinitionId(); // 获取流程定义id
+        // 获取流程定义id
+        String processDefinitionId=task.getProcessDefinitionId();
         ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
-        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey()); // 根据活动id获取活动实例
+        // 根据活动id获取活动实例
+        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey());
 
         String taskType = (String) activityImpl.getProperties().get(BpmConstant.NAME);
         FlowNodeTaskTypeRepVO repVO = new FlowNodeTaskTypeRepVO();
         repVO.setProcessId(processId);
         repVO.setTaskType(taskType);
-//        taskService.claim(task.getId(), flowTaskReqVO.getUserName());
-//        taskService.complete(task.getId(), BeanUtil.beanToMap(flowTaskReqVO));
         return WinResponseData.handleSuccess("成功", repVO);
 
     }
 
 
-    /**
-     * @param queryVO
-     * @return com.win.dfas.common.vo.WinResponseData
-     * @throws
-     * @Title: queryprocessDef
-     * @Description: 获取流程定义id
-     * @author wanglei
-     * @Date 2019/7/9/13:44
-     */
+   /**
+    * @Title: queryprocessDef
+    * @Description 获取流程定义id
+    * @param queryVO
+    * @return com.win.dfas.common.vo.WinResponseData
+    * @throws
+    * @author wanglei
+    * @Date 2019/8/6/14:59
+    */
     @PostMapping("/queryprocessDef")
     public WinResponseData queryprocessDef(@RequestBody ParamFlowReqVO queryVO) {
         log.info("queryprocessDef入参：" + BeanUtil.beanToMap(queryVO).toString());
@@ -147,33 +161,26 @@ public class BpmTaskController {
 
     }
 
-    /**
-     * @param flowTaskReqVO
-     * @return com.win.dfas.common.vo.WinResponseData
-     * @throws
-     * @Title: queryTaskInfoByTask
-     * @Description: 查询未完成任务
-     * @author wanglei
-     * @Date 2019/7/9/14:16
-     */
+   /**
+    * @Title: queryTaskInfoByTask
+    * @Description 查询未完成任务
+    * @param flowTaskReqVO
+    * @return com.win.dfas.common.vo.WinResponseData
+    * @throws
+    * @author wanglei
+    * @Date 2019/8/6/14:59
+    */
     @PostMapping("/getTaskInfo")
     public WinResponseData queryTaskInfoByTask(@RequestBody FlowTaskReqVO flowTaskReqVO) {
         try {
-//            String groupName = flowTaskReqVO.getGroupId();
             String username = flowTaskReqVO.getUserId();
             String taskType = flowTaskReqVO.getTaskType();
             //按照类型返回task列表
             List<Task> list = new ArrayList<Task>();
             //第一步获取用户组流程信息
-//            List<Task> groupTasks = taskService.createTaskQuery().taskCandidateGroup(groupName).list();
-//            list.addAll(bpmService.selectTask(groupTasks, taskType));
-            //第二步获取用户流程信息
             List<Task> userTasks = taskService.createTaskQuery().taskCandidateUser(username).list();
             list.addAll(bpmService.selectTask(userTasks, taskType));
-//        List<Task> users = taskService.createTaskQuery().taskAssignee(username).list();
-//        list.addAll(bpmService.selectTask(users,taskType));
             //获取task
-//        log.info(activityImpl.getProperty(BpmConstant.NAME).toString());
             List<String> rtn = new ArrayList<String>();
             for (Task task : list) {
                 rtn.add(task.getProcessInstanceId());
@@ -186,45 +193,72 @@ public class BpmTaskController {
     }
 
     /**
+     * @Title: complete
+     * @Description 完成任务, 并返回下一节点信息
      * @param flowTaskReqVO
      * @return com.win.dfas.common.vo.WinResponseData
      * @throws
-     * @Title: complete
-     * @Description: 完成任务, 并返回下一节点信息
      * @author wanglei
-     * @Date 2019/7/9/14:22
+     * @Date 2019/8/6/14:58
      */
     @PostMapping("/complete")
     public WinResponseData complete(@RequestBody FlowTaskReqVO flowTaskReqVO) {
         try {
-            String processId = flowTaskReqVO.getProcessId();
-            Map map = BeanUtil.beanToMap(flowTaskReqVO);
-            log.info(map.toString());
-            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
-            if (historicProcessInstance.getEndTime() != null) {
-                log.info("流程已经结束！");
-                return WinResponseData.handleError("流程已经结束", historicProcessInstance.getEndTime());
-            } else {
-                Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
-
-                taskService.complete(task.getId(), map);
-                historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
-                if (historicProcessInstance.getEndTime() != null) {
-                    log.info("最后节点已完成！");
-                    return WinResponseData.handleSuccess("最后节点已完成", historicProcessInstance.getEndTime());
-                }
-                String taskType = bpmService.nextTaskType(processId);
-                FlowNodeTaskTypeRepVO repVO = new FlowNodeTaskTypeRepVO();
-                repVO.setProcessId(processId);
-                repVO.setTaskType(taskType);
-                return WinResponseData.handleSuccess("成功", repVO);
+            FlowNodeTaskTypeRepVO repVO = bpmService.complete(flowTaskReqVO);
+            switch(repVO.getStatu()){
+                case RUNNING:
+                    return WinResponseData.handleSuccess("成功", repVO);
+                case END:
+                    return WinResponseData.handleSuccess("最后节点已完成", repVO);
+                case CLOSE:
+                    return WinResponseData.handleError("流程已经结束",repVO);
+                default:
+                    throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
             }
         } catch (Throwable throwable) {
             throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
         }
     }
+    /**
+     * @Title: batchComplete
+     * @Description 批量审批
+     * @param flowTaskReqVOs
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/15:01
+     */
+    @PostMapping("/batchComplete")
+    public WinResponseData batchComplete(@RequestBody List<FlowTaskReqVO> flowTaskReqVOs) {
+        List<FlowNodeTaskTypeRepVO> list = new ArrayList<>();
+        //记录失败数据
+        int errorNum = 0;
+        for (FlowTaskReqVO flowTaskReqVO : flowTaskReqVOs) {
+            FlowNodeTaskTypeRepVO repVO = bpmService.complete(flowTaskReqVO);
+            list.add(repVO);
+            if(FlowNodeTaskTypeRepVO.EnumRunStatu.CLOSE.equals(repVO.getStatu())||
+                    FlowNodeTaskTypeRepVO.EnumRunStatu.EXCEPTION.equals(repVO.getStatu())){
+                errorNum++;
+            }
+        }
+        if(errorNum==list.size()){
+            return WinResponseData.handleError("批量审批全部失败",list);
+        }
+        if(errorNum>0){
+            return WinResponseData.handleError("批量审批有部分失败",list);
+        }
+        return WinResponseData.handleSuccess("批量审批成功完成",list);
+    }
 
-
+    /**
+     * @Title: listUserInfoToType
+     * @Description 获取流程的用户信息
+     * @param taskType
+     * @return com.win.dfas.common.vo.WinResponseData
+     * @throws
+     * @author wanglei
+     * @Date 2019/8/6/15:00
+     */
     @GetMapping("/listUserInfoToType")
     public WinResponseData listUserInfoToType(@ApiParam(value = "组类型") @RequestParam String taskType) {
         if (ObjectUtil.isEmpty(taskType)) {

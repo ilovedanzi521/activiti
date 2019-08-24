@@ -9,13 +9,25 @@ package com.win.dfas.bpm.constant;
  */
 public class BpmConstant {
 
-//    public static final String TASKTYPE = "tasktype";
     public static final String NAMESPACE = "http://activiti.org/bpmn";
-    public static final String NAME = "tasktype"; //UserTask 增加tasktype属性
-    public static final String MINLIMITNAME = "minlimit"; //SequenceFlow增加minlimit属性
-    public static final String MAXLIMITNAME = "maxlimit";//SequenceFlow增加maxlimit属性
-    public static final String PERMITNAME = "permit";//SequenceFlow增加permit属性
-
+    /**
+     * UserTask 增加tasktype属性
+     */
+    public static final String NAME = "tasktype";
+    /**
+     * SequenceFlow增加minlimit属性
+     */
+    public static final String MINLIMITNAME = "minlimit";
+    /**
+     * SequenceFlow增加maxlimit属性
+     */
+    public static final String MAXLIMITNAME = "maxlimit";
+    /**
+     * SequenceFlow增加permit属性
+     */
+    public static final String PERMITNAME = "permit";
+    /**
+     * SequenceFlow增加amt属性
+     */
     public static final String AMTCONDITION = "amt";
-    public static final String PERMITCONDITION = "permit";
 }

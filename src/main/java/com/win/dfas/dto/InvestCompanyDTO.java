@@ -23,6 +23,7 @@ import lombok.Data;
  */
 @Data
 public class InvestCompanyDTO {
+    private String fundNo;
     private String no;
     private String assetUnitName;
 }

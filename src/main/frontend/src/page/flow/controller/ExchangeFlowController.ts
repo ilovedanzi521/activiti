@@ -3,9 +3,9 @@ import ExchangeFlowService from "../service/ExchangeFlowService";
 import {
     ParamFlowInstReqVO,
     ParamFlowInstRepVO
-} from "../bean/ParamFlowInstVO";
-import { ParamFlowGroupVO } from "../bean/ParamFlowGroupVO";
-import { UserInfoVO } from "../bean/UserInfoVO";
+} from "../vo/ParamFlowInstVO";
+import { ParamFlowGroupVO } from "../vo/ParamFlowGroupVO";
+import { UserInfoVO } from "../vo/UserInfoVO";
 import AxiosFun from "../../../api/AxiosFun";
 import BaseController from "../../common/controller/BaseController";
 import { DeleteEnum } from "../../flow/enum/DeleteEnum";
@@ -13,40 +13,16 @@ import PageVO from "../../common/vo/PageVO";
 import dateUtils from "../../common/util/DateUtils";
 import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
-import {
-    FlowTypeItem,
-    InstructionTypeItem,
-    InvestCompanyItem,
-    InvestConstituteItem,
-    MarketItem,
-    ProductItem,
-    SecurityTypeItem,
-    TransactionDirectionItem,
-    ControlTypeItem
-} from "../bean/SelectSources";
+import {DynamicSelectItemVO, StaticSelectItemVO} from "../vo/SelectItemVO";
+import {FlowConstant} from "../../flow/constant/FlowConstant";
 @Component({
     components: {}
 })
 export default class ExchangeFlowController extends BaseController {
-    /**下拉框数据**/
-    // 流程类型
-    flowTypeItems: FlowTypeItem[] = [];
-    // 产品
-    productItems: ProductItem[] = [];
-    // 投资单位
-    investCompanyItems: InvestCompanyItem[] = [];
-    // 组合资产
-    investConstituteItems: InvestConstituteItem[] = [];
-    // 指令类型
-    instructionTypeItems: InstructionTypeItem[] = [];
-    // 交易市场
-    marketItems: MarketItem[] = [];
-    //证券类型
-    securityTypeItems: SecurityTypeItem[] = [];
-    // 交易方向
-    transactionDirectionItems: TransactionDirectionItem[] = [];
-    // 控制类型
-    controlTypeItems: ControlTypeItem[] = [];
+    staticSelectItemVO: StaticSelectItemVO = new StaticSelectItemVO();
+    items={"reqVO":new DynamicSelectItemVO(),"flowVO":new DynamicSelectItemVO()};
+
+    // selectItemFormVO: SelectItemVO = new SelectItemVO();
     /**下拉框数据end**/
     dialogTableVisible = false;
     flowUrl: string = "";
@@ -100,6 +76,7 @@ export default class ExchangeFlowController extends BaseController {
         this.flowGroupId = data.id;
         this.level = data.level;
         this.rownum = data.rownum;
+        this.reqVO.flowCode = data.id;
         this.queryFlowByGroupid(data.id);
     }
     //选中树形行后点击删除
@@ -253,6 +230,20 @@ export default class ExchangeFlowController extends BaseController {
         if (this.isExecute) {
             return;
         }
+        let reg = /^[\w\u4e00-\u9fa5]{1,80}$/g;
+
+        if (new RegExp(reg).test(item.label) == false) {
+            setTimeout(() => {}, 500);
+            //   this.$set(item, "isEdit", true);
+            this.errorMessage("请输入正确的名称");
+            return;
+        }
+        if (!item.label || item.label === "") {
+            this.errorMessage("名称不能为空");
+            // this.$set(item, "isEdit", true);
+            return;
+        }
+
         this.isExecute = true;
         this.$set(item, "isEdit", false);
         var flowGroupVO = new ParamFlowGroupVO();
@@ -263,9 +254,10 @@ export default class ExchangeFlowController extends BaseController {
         this.service.updateFlowgroup(flowGroupVO).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
+            }else{
+                this.successMessage(res.msg);
             }
             this.expandList = [item.id];
-            this.successMessage(res.msg);
             // this.queryflowgroup();
             this.isExecute = false;
         });
@@ -296,6 +288,8 @@ export default class ExchangeFlowController extends BaseController {
         this.$nextTick(() => {
             this.queryflowgroup();
             this.loadSelectsItems();
+            var defaultId=2;
+            this.queryFlowByGroupid(defaultId);
         });
     }
     //查询流程组
@@ -314,7 +308,7 @@ export default class ExchangeFlowController extends BaseController {
     queryFlowByGroupid(flowGroupid) {
         let reqVo: ParamFlowInstReqVO = new ParamFlowInstReqVO();
         reqVo.flowCode = flowGroupid;
-        this.reqVO.flowCode = flowGroupid;
+        // this.reqVO.flowCode = flowGroupid;
         this.service.listFlowByGroupid(reqVo).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
@@ -364,7 +358,7 @@ export default class ExchangeFlowController extends BaseController {
         });
         if (startFlag.length > 0) {
             this.win_message_box_warning(
-                "存在流程运行中,无法删除",
+                "目前流程有正在被使用,无法删除,请确认。",
                 "提示",
                 false,
                 null,
@@ -376,7 +370,7 @@ export default class ExchangeFlowController extends BaseController {
             this.openDeleteDialog(rows[0]);
         } else {
             this.win_message_box_warning(
-                "请确认删除此流程数据信息",
+                "请确认批量删除流程信息",
                 "提示",
                 false,
                 null,
@@ -386,8 +380,10 @@ export default class ExchangeFlowController extends BaseController {
                     this.service.deleteExchangeFlows(rows).then(res => {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
+                        }else{
+                            this.successMessage(res.msg)
                         }
-                        this.queryFlowByGroupid(this.flowGroupId);
+                        this.queryExchangeFlow(this.reqVO);
                     });
                 })
                 .catch();
@@ -406,9 +402,15 @@ export default class ExchangeFlowController extends BaseController {
                 .then(() => {
                     this.service.batchStartFlow(rows).then(res => {
                         if (res.winRspType === "ERROR") {
-                            this.errorMessage(res.msg);
+                            if(res.code==FlowConstant.DESIGN_PROBLEMS){
+                                this.warningMessage(res.msg);
+                            }else{
+                                this.errorMessage(res.msg);
+                            }
+                        }else{
+                            this.successMessage(res.msg)
                         }
-                        this.queryFlowByGroupid(this.flowGroupId);
+                        this.queryExchangeFlow(this.reqVO);
                     });
                 })
                 .catch();
@@ -432,8 +434,10 @@ export default class ExchangeFlowController extends BaseController {
                     this.service.batchStopFlow(rows).then(res => {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
+                        }else{
+                            this.successMessage(res.msg)
                         }
-                        this.queryFlowByGroupid(this.flowGroupId);
+                        this.queryExchangeFlow(this.reqVO);
                     });
                 })
                 .catch();
@@ -512,15 +516,20 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     closeFlowDialog() {
-        this.queryFlowByGroupid(this.flowVO.flowCode);
+        this.queryExchangeFlow(this.reqVO);
     }
     /**重置 */
     reset() {
         this.reqVO = new ParamFlowInstReqVO();
+        this.queryExchangeFlow(this.reqVO);
+        this.clearItemsData('reqVO');
     }
 
     /**打开新增弹框 */
     openAddDialog() {
+        this.$nextTick(()=>{
+            this.$refs.exchangeForm.resetFields();
+        });
         this.deleteFlag = false;
         this.dialogVisible = true;
         this.dialogTitle = "流程-新增";
@@ -538,8 +547,8 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     /**新增流程 */
-    addExchangeFlow(isCallBack) {
-        this.$refs["exchangeForm"].validate(valid => {
+    addExchangeFlow(exchangeForm) {
+        this.$refs[exchangeForm].validate(valid => {
             if (valid) {
                 this.setFormTime(this.flowVO.timeArray);
                 this.service.addExchangeFlow(this.flowVO).then(res => {
@@ -547,9 +556,8 @@ export default class ExchangeFlowController extends BaseController {
                         this.errorMessage(res.msg);
                     } else {
                         this.successMessage("添加流程成功");
+                        this.dialogVisible = false;
                     }
-                    this.dialogVisible = false;
-                    this.queryFlowByGroupid(this.flowVO.flowCode);
                 });
             }
         });
@@ -561,10 +569,14 @@ export default class ExchangeFlowController extends BaseController {
         this.dialogVisible = true;
         this.dialogTitle = "流程-删除";
         this.flowVO = flowVO;
+        this.flowVO = {
+            ...flowVO,
+            timeArray: [new Date(flowVO.beginDate), new Date(flowVO.endDate)]
+        };
     }
 
     /**打开修改弹框 */
-    openUpdateDialog(flowVO) {
+    async  openUpdateDialog(flowVO) {
         if (flowVO.startFlag) {
             this.errorMessage("流程已启动不能修改");
             return;
@@ -573,16 +585,17 @@ export default class ExchangeFlowController extends BaseController {
         this.dialogVisible = true;
         this.dialogTitle = "流程-修改";
 
-        var beginDate, endDate;
         this.flowVO = {
             ...flowVO,
-            timeArray: [flowVO.beginDate, flowVO.endDate]
+            timeArray: [new Date(flowVO.beginDate), new Date(flowVO.endDate)]
         };
+
+       let resulut=await this.loadStartItemsData(flowVO);
     }
 
     /**修改流程*/
-    updateExchangeFlow(isCallBack) {
-        this.$refs["exchangeForm"].validate(valid => {
+    updateExchangeFlow(exchangeForm) {
+        this.$refs[exchangeForm].validate(valid => {
             if (valid) {
                 this.setFormTime(this.flowVO.timeArray);
                 this.service.updateExchangeFlow(this.flowVO).then(res => {
@@ -590,25 +603,26 @@ export default class ExchangeFlowController extends BaseController {
                         this.errorMessage(res.msg);
                     } else {
                         this.successMessage("修改流程成功");
+                        this.dialogVisible = false;
                     }
-                    this.dialogVisible = false;
-                    this.queryFlowByGroupid(this.flowVO.flowCode);
                 });
             }
         });
     }
 
     /**删除流程实例 */
-    deleteExchangeFlow(isCallBack) {
+    deleteExchangeFlow(exchangeForm) {
         let _this = this;
         this.service.deleteExchangeFlow(this.flowVO.id).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
+            } else {
+                this.successMessage(res.msg);
             }
-            this.dialogVisible = false;
+            // this.dialogVisible = false;
         });
-
-        this.queryFlowByGroupid(this.flowGroupId);
+        this.dialogVisible = false;
+        // this.queryExchangeFlow(this.reqVO);
     }
 
     setFormTime(timeArray) {
@@ -620,12 +634,6 @@ export default class ExchangeFlowController extends BaseController {
     //     this.deleteFlag = false;
     //     this.queryFlowByGroupid(this.flowVO.flowCode);
     // }
-    closeDialog(formRule) {
-        this.$refs[formRule].resetFields();
-        this.dialogVisible = false;
-        this.deleteFlag = false;
-        this.queryFlowByGroupid(this.flowVO.flowCode);
-    }
 
     /**新增、修改，表单验证规则 */
     rules = {
@@ -658,15 +666,17 @@ export default class ExchangeFlowController extends BaseController {
         timeArray: [
             {
                 validator: function(rule, value, callback) {
+                    // var beginDate = new Date(value[0]);
+                    // var endDate = new Date(value[1]);
                     if (
-                        value[0].getTime() + 24 * 3600 * 1000 - 1 <
+                        value[1].getTime() + 24 * 3600 * 1000 - 1 <
                         new Date().getTime()
                     ) {
-                        callback(new Error("开始日期需大于等于当前日期"));
+                        callback(new Error("结束日期应选择大于系统日期"));
                     }
-                    if (value[1].getTime() <= value[0].getTime()) {
-                        callback(new Error("结束日期应选择大于开始日期"));
-                    }
+                    // if (value[1].getTime() <= value[0].getTime()) {
+                    //     callback(new Error("结束日期应选择大于开始日期"));
+                    // }
                     callback();
                 },
                 trigger: "change"
@@ -679,9 +689,15 @@ export default class ExchangeFlowController extends BaseController {
         let startFlag = flowVO.startFlag;
         this.service.startOrStopFlow(flowVO).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                if(res.code==FlowConstant.DESIGN_PROBLEMS){
+                    this.warningMessage(res.msg);
+                }else{
+                    this.errorMessage(res.msg);
+                }
+            }else{
+                this.successMessage(res.msg)
             }
-            this.queryFlowByGroupid(this.flowGroupId);
+            this.queryExchangeFlow(this.reqVO);
         });
     }
 
@@ -690,31 +706,121 @@ export default class ExchangeFlowController extends BaseController {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
             }
-            this.flowTypeItems = res.data.flowTypeItems;
-            // 产品
-            this.productItems = res.data.productItems;
-            // 投资单位
-            this.investCompanyItems = res.data.investCompanyItems;
-            // 组合资产
-            this.investConstituteItems = res.data.investConstituteItems;
-            // 指令类型
-            this.instructionTypeItems = res.data.instructionTypeItems;
-            // 交易市场
-            this.marketItems = res.data.marketItems;
-            //证券类型
-            this.securityTypeItems = res.data.securityTypeItems;
-            // 交易方向
-            this.transactionDirectionItems = res.data.transactionDirectionItems;
-            this.controlTypeItems = res.data.controlTypeItems;
+            this.setItemsValue(res.data);
         });
     }
-    closeCallback() {
-        if (this.deleteFlag) {
-            // this.deleteExchangeFlow(false);
-        } else if (this.flowVO.id) {
-            // this.updateExchangeFlow(false);
-        } else {
-            // this.addExchangeFlow(false);
+
+    setItemsValue(data){
+            this.staticSelectItemVO.flowNameItems = data.flowNameItems;
+            this.staticSelectItemVO.flowTypeItems = data.flowTypeItems;
+            // 产品
+            this.staticSelectItemVO.productItems = data.productItems;
+            // 指令类型
+            this.staticSelectItemVO.instructionTypeItems =
+                data.instructionTypeItems;
+            // 交易市场
+            this.staticSelectItemVO.marketItems = data.marketItems;
+            this.staticSelectItemVO.controlTypeItems = data.controlTypeItems;
+    }
+
+    /**
+     * 产品下拉框联动操作
+     */
+    changeItems(vo: string, itemType, value) {
+        this.clear(vo, itemType);
+        this.loadItemData(vo,itemType, value);
+    }
+    loadItemData(vo,itemType, value) {
+        this.service.loadItems(itemType, value).then(res => {
+            if (res.winRspType === "ERROR") {
+                this.errorMessage(res.msg);
+            } else {
+                if (itemType === "PRO") {
+                    this.items[vo].investCompanyItems = res.data;
+                }
+                if (itemType === "COM") {
+                    this.items[vo].investConstituteItems = res.data;
+                }
+                if (itemType === "MAK") {
+                    //证券类型
+                    this.items[vo].securityTypeItems =
+                        res.data.securityTypeItems;
+                    // 交易方向
+                    this.items[vo].transactionDirectionItems =
+                        res.data.transactionDirectionItems;
+                }
+            }
+        });
+    }
+    /**
+     * 联动清理数据后反转
+     */
+    changeLink() {
+        this.$forceUpdate();
+    }
+    /**
+     *
+     * @param itemType 清理数据
+     */
+    clear(vo: string, itemType: string) {
+        if (itemType === "PRO") {
+            this.init(vo, "investCompany");
+            this.init(vo, "investConstitute");
+        }
+        if (itemType === "COM") {
+            this.init(vo, "investConstitute");
+            this.changeLink();
+        }
+        if (itemType === "MAK") {
+            this.init(vo, "securityType");
+            this.init(vo, "transactionDirection");
         }
     }
+    /**
+     *
+     * @param flowVO 修改数据时，加载数据
+     */
+    loadStartItemsData(flowVO) {
+        if(flowVO.productCode){
+            this.loadItemData('flowVO',"PRO", flowVO.productCode);
+        }
+        if(flowVO.investCompany){
+            this.loadItemData('flowVO',"COM", flowVO.investCompany);
+        }
+        if(flowVO.marketCode){
+            this.loadItemData('flowVO',"MAK", flowVO.marketCode);
+        }
+    }
+    /**
+     * 清理items数据
+     */
+    clearItemsData(vo :string) {
+        //投资单元
+        this.items[vo].investCompanyItems = [];
+        // 组合资产
+        this.items[vo].investConstituteItems = [];
+        //证券类型
+        this.items[vo].securityTypeItems = [];
+        // 交易方向
+        this.items[vo].transactionDirectionItems = [];
+    }
+    /**
+     * 清理数据以及对规则和弹框的清理
+     */
+
+    closeDialog(formRule) {
+        this.$refs[formRule].resetFields();
+        this.deleteFlag = false;
+        this.clearItemsData('flowVO');
+        this.queryExchangeFlow(this.reqVO);
+    }
+    closeDia(formRule) {
+        this.dialogVisible = false;
+        // this.closeDialog(formRule);
+    }
+
+    init(vo: string, lable: string) {
+        this[vo][lable] = null;
+    }
+
 }

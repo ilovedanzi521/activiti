@@ -1,19 +1,29 @@
 package com.win.dfas.controller.feign;
 
 import com.alibaba.fastjson.JSONObject;
+import com.win.dfas.common.constant.DicConstants;
+import com.win.dfas.common.enumeration.FormatEnum;
 import com.win.dfas.common.vo.WinResponseData;
+import com.win.dfas.constant.InitDataConstant;
 import com.win.dfas.dto.*;
 import com.win.dfas.service.IFlowGroupService;
+import com.win.dfas.service.ILoadDicService;
+import com.win.dfas.service.strategy.StrategyFactory;
 import com.win.dfas.vo.response.SelectorItemEnum;
 import com.win.dfas.vo.response.item.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 包名称：com.win.dfas.controller
@@ -30,75 +40,132 @@ public class ThirdFeignInterfaceController {
     private IDicFeignClient dicFeignClient;
     @Autowired
     private IFlowGroupService paramFlowService;
+    @Autowired
+    private ILoadDicService loadDicService;
 
     @RequestMapping("/feign/loadSelectsItems")
-    public WinResponseData LoadSelectsItems() {
+    public WinResponseData loadSelectsItems() {
         HashMap<String, List> map = new HashMap<>();
+        List<FlowNameItem> list0 = queryFlow();
+        //加载数据字典
+        Map dicData=loadDicData();
         //获取流程类型
-        List<FlowTypeItem> list = loadFlowTypes();
-        //获取执行类型
-        List<InstructionTypeItem> list1 = loadInstructionTypes();
-        //获取投资单位
-        List<InvestCompanyItem> list2 = loadInvestCompanys();
-        //获取投资组合
-        List<InvestConstituteItem> list3 = loadInvestConstitutes();
+        List list = getDataDic(dicData,DicConstants.PDIC_1000297);
+        //获取指令类型
+        List list1 = getDataDic(dicData,DicConstants.PDIC_1000295);
+//        //获取投资单位
+//        List<InvestCompanyItem> list2 = loadInvestCompanys();
+//        //获取投资组合
+//        List<InvestConstituteItem> list3 = loadInvestConstitutes();
         //交易市场
         List<MarketItem> list4 = loadMarkets();
         //获取产品
         List<ProductItem> list5 = loadProds();
-        //证券类型
-        List<SecurityTypeItem> list6 = loadSecurityTypes();
+//        //证券类型
+//        List<SecurityTypeItem> list6 = loadSecurityTypes();
         //获取交易方向
-        List<TransactionDirectionItem> list7 = loadTransactionDirections();
-        //指令类型
+//        List<TransactionDirectionItem> list7 = loadTransactionDirections();
+        //控制类型
         List<ControlTypeItem> list8 = loadControlTypes();
-        log.info(list.toString());
+        map.put(SelectorItemEnum.NAM.getValue(), list0);
         map.put(SelectorItemEnum.FLW.getValue(), list);
         map.put(SelectorItemEnum.INS.getValue(), list1);
-        map.put(SelectorItemEnum.COM.getValue(), list2);
-        map.put(SelectorItemEnum.CON.getValue(), list3);
         map.put(SelectorItemEnum.MAK.getValue(), list4);
         map.put(SelectorItemEnum.PRO.getValue(), list5);
-        map.put(SelectorItemEnum.SEC.getValue(), list6);
-        map.put(SelectorItemEnum.TRN.getValue(), list7);
         map.put(SelectorItemEnum.CTR.getValue(), list8);
         return WinResponseData.handleSuccess(map);
     }
+
+    private List<FlowNameItem> queryFlow() {
+        try {
+            return loadDicService.queryFlow();
+        } catch (Exception e) {
+            log.error("feign接口异常:{}", e);
+        }
+        return null;
+    }
+
+    @RequestMapping("/feign/{loadItems}")
+    public WinResponseData loadSelectsItems(@PathVariable("loadItems") String loadItems, @RequestParam("param") String param) {
+        List list = new ArrayList<>();
+        switch (EnumUtils.getEnum(SelectorItemEnum.class, loadItems)) {
+            //产品
+            case PRO:
+//                list = loadDicService.queryInvestCompanyList(param);
+                list = loadDicService.queryDataList(param, InitDataConstant.PRO_ASSET_RELA,
+                        StrategyFactory.FeginKey.ASSET, FormatEnum.PROD_ASSET_UNIT);
+                break;
+            //单位
+            case COM:
+                list = loadDicService.queryDataList(param, InitDataConstant.PRO_PORTFOLIO_RELA,
+                        StrategyFactory.FeginKey.PORTFOLIO, FormatEnum.PORTFOLIO_NO_T_NAME);
+                break;
+            //市场类型
+            case MAK:
+                HashMap<String, List> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
+                list = loadDicService.queryDataList(param, InitDataConstant.MARK_SECURITY_RELA,
+                        StrategyFactory.FeginKey.SECURITY, FormatEnum.SECURITY_CODE_T_NAME);
+                map.put(SelectorItemEnum.SEC.getValue(), list);
+                list = loadDicService.queryDataList(param, InitDataConstant.MARK_TRA_DIR_RELA,
+                        StrategyFactory.FeginKey.TRA_DIR, FormatEnum.TRADEDIRECTION_CODE_T_NAME);
+                map.put(SelectorItemEnum.TRN.getValue(), list);
+                return WinResponseData.handleSuccess("成功返回", map);
+            default:
+                return WinResponseData.handleError("失败");
+        }
+        log.info("接口返回数据:{}",list);
+        return WinResponseData.handleSuccess("成功返回", list);
+    }
+
     /**
      * @Title: loadInstructionTypes
-     * @Description: 加载指令类型
+     * @Description: 加载数据字典
      * @return java.util.List<com.win.dfas.vo.response.item.InstructionTypeItem>
      * @throws
      * @author wanglei
      * @Date 2019/7/26/13:34
      */
-    private List<InstructionTypeItem> loadInstructionTypes() {
-        List<InstructionTypeItem> list1 = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            InstructionTypeItem info = new InstructionTypeItem();
-            info.setCode("12" + i);
-            info.setName("指令" + i);
-            list1.add(info);
+    private Map loadDicData() {
+        Map map = new HashMap(InitDataConstant.MAP_INIT_CAPACITY);
+        DataDicDTO dto = new DataDicDTO();
+        List<String> params = new ArrayList<>();
+        params.add(DicConstants.PDIC_1000295);
+        params.add(DicConstants.PDIC_1000297);
+        dto.setParentDicCodeList(params);
+        try {
+            WinResponseData rtn = dicFeignClient.queryInstructionTypeList(dto);
+            if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
+                return JSONObject.parseObject(JSONObject.toJSONString(rtn.getData()),Map.class);
+            } else {
+                log.error("feign接口queryMarketList异常, 返回{}", rtn.getMsg());
+            }
+        } catch (Throwable throwable) {
+            log.error("feign接口异常", throwable.getCause());
         }
-        return list1;
+        return map;
     }
-
     /**
-     * @Title: loadFlowTypes
-     * @Description: 获取流程类型
+     * @Title: loadInstructionTypes
+     * @Description 从字典中获取指令类型
+     * @param dicData
+     * @param key
      * @return java.util.List<com.win.dfas.vo.response.item.FlowTypeItem>
      * @throws
      * @author wanglei
-     * @Date 2019/7/26/13:33
+     * @Date 2019/8/19/13:43
      */
-    private List<FlowTypeItem> loadFlowTypes() {
-//        List<FlowTypeItem> list = paramFlowService.listFlowClass();
-        List<FlowTypeItem> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            FlowTypeItem info = new FlowTypeItem();
-            info.setCode("12" + i);
-            info.setName("流程类型" + i);
-            list.add(info);
+    private List<CommonItem> getDataDic(Map dicData, String key) {
+        List<CommonItem> list = new ArrayList<>();
+        try {
+            Object object = dicData.get(key);
+            if(object==null){
+                log.error("dicData:{},get:{} is null",dicData,key);
+                return list;
+            }
+            list=loadDicService.converterVO(object,
+                    CommonItem.class,new String[]{"dicCode","dicExplain"});
+        } catch (Exception e) {
+            log.error("loadInstructionTypes异常{}", e);
         }
         return list;
     }
@@ -137,7 +204,7 @@ public class ThirdFeignInterfaceController {
 
     /**
      * @Title: loadControlTypes
-     * @Description: 指令类型
+     * @Description: 控制类型
      * @return java.util.List<com.win.dfas.vo.response.item.ControlTypeItem>
      * @throws
      * @author wanglei
@@ -195,13 +262,13 @@ public class ThirdFeignInterfaceController {
         List<SecurityTypeItem> list = new ArrayList<>();
         try {
             List<SecurityTypeDTO> rtnList = new ArrayList<>();
-            WinResponseData rtn = dicFeignClient.querySecurityTypeList();
+            WinResponseData rtn = dicFeignClient.querySecurityTypeList(new SecurityTypeDTO());
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
                 rtnList = JSONObject.parseArray(JSONObject.toJSONString(rtn.getData())).toJavaList(SecurityTypeDTO.class);
                 for (SecurityTypeDTO dto : rtnList) {
                     SecurityTypeItem info = new SecurityTypeItem();
-                    info.setCode(dto.getSecurityType());
-                    info.setName(dto.getSecurityTypeName());
+                    info.setCode(dto.getSecurityCode());
+                    info.setName(dto.getSecurityName());
                     list.add(info);
                 }
             } else {
@@ -235,13 +302,6 @@ public class ThirdFeignInterfaceController {
                     info.setName(transactionDirectionDTO.getTransactionDirectionName());
                     list.add(info);
                 }
-            } else {
-                for (int i = 0; i < 5; i++) {
-                    TransactionDirectionItem info = new TransactionDirectionItem();
-                    info.setCode("11" + i);
-                    info.setName("交易方向" + i);
-                    list.add(info);
-                }
             }
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
@@ -271,13 +331,6 @@ public class ThirdFeignInterfaceController {
                     info.setName(investConstituteDTO.getPortfolioName());
                     list.add(info);
                 }
-            } else {
-                for (int i = 0; i < 5; i++) {
-                    InvestConstituteItem info = new InvestConstituteItem();
-                    info.setCode("11" + i);
-                    info.setName("组合资产" + i);
-                    list.add(info);
-                }
             }
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
@@ -296,17 +349,20 @@ public class ThirdFeignInterfaceController {
      */
     private List<ProductItem> loadProds() {
         List<ProductItem> list = new ArrayList<>();
-        WinResponseData rtn5 = dicFeignClient.queryProdList();
-        if (WinResponseData.WinRspType.SUCC.equals(rtn5.getWinRspType())) {
-            log.info("{}", rtn5.getData());
-            list = (List<ProductItem>) rtn5.getData();
-        } else {
-            for (int i = 0; i < 5; i++) {
-                ProductItem info = new ProductItem();
-                info.setCode("11" + i);
-                info.setName("产品" + i);
-                list.add(info);
+        try {
+            WinResponseData rtn = dicFeignClient.queryProdList();
+            List<ProdDTO> rtnList = new ArrayList<>();
+            if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
+                rtnList = JSONObject.parseArray(JSONObject.toJSONString(rtn.getData())).toJavaList(ProdDTO.class);
+                for (ProdDTO dto : rtnList) {
+                    ProductItem info = new ProductItem();
+                    info.setCode(dto.getNo() + "");
+                    info.setName(dto.getName());
+                    list.add(info);
+                }
             }
+        } catch (Throwable throwable) {
+            log.error("feign接口异常", throwable);
         }
         return list;
     }

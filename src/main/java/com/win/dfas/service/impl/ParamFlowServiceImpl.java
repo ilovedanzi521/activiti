@@ -23,6 +23,7 @@ import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.dao.ParamFlowInstMapper;
 import com.win.dfas.entity.ParamFlowInst;
 import com.win.dfas.service.IParamFlowService;
+import com.win.dfas.util.DataBaseExceptionUtil;
 import com.win.dfas.vo.request.ParamFlowReqVO;
 import com.win.dfas.vo.response.ParamFlowRepVO;
 import org.springframework.beans.BeanUtils;
@@ -48,39 +49,46 @@ public class ParamFlowServiceImpl implements IParamFlowService {
     @Override
     public PageInfo<ParamFlowRepVO> list(ParamFlowReqVO queryVO) {
         PageHelper.startPage(queryVO.getReqPageNum(),queryVO.getReqPageSize());
-        List<ParamFlowInst> flows = paramFlowMapper.list(queryVO);
-        PageInfo<ParamFlowInst> pageInfo = new PageInfo<ParamFlowInst>(flows);
-		return ObjectUtils.copyPageInfo(pageInfo, ParamFlowRepVO.class);
+        List<ParamFlowRepVO> flows = paramFlowMapper.list(queryVO);
+        ObjectUtils.formatList(flows, ParamFlowRepVO.class);
+
+		return new PageInfo<ParamFlowRepVO>(flows);
     }
 
     @Override
     public void add(ParamFlowRepVO vo) {
-//        if(StrUtil.isBlank(vo.get)) {
-//            throw ParameterExceptionUtil.winException(WinRspTypeEnum.EXCHANGE_RATE_SOURCE_NOT_NULL);
-//        }
-//        vo.setId(PrimaryKeyUtil.generateId());
         ParamFlowInst entity = new ParamFlowInst();
         BeanUtils.copyProperties(vo, entity);
-//        entity.setId(PrimaryKeyUtil.generateId());
         entity.preInsert();
         ParamFlowReqVO reqVO = new ParamFlowReqVO();
         BeanUtils.copyProperties(vo, reqVO);
-        if(paramFlowMapper.queryCountFromFlowInst(reqVO)>0){
+        if(paramFlowMapper.queryIdFromFlowInst(reqVO)!=null){
             throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
         }else {
-            paramFlowMapper.insert(entity);
+            try {
+                paramFlowMapper.insert(entity);
+            }catch (Throwable throwable){
+                DataBaseExceptionUtil.exceptionHandler(throwable);
+            }
         }
     }
 
     @Override
     public void update(ParamFlowRepVO vo) {
-        if(ObjectUtil.isNull(vo.getId())) {
-//            throw ParameterExceptionUtil.winException(WinRspTypeEnum.EXCHANGE_RATE_ID_NOT_NULL);
-            //TODO
+        ParamFlowReqVO reqVO = new ParamFlowReqVO();
+        BeanUtils.copyProperties(vo, reqVO);
+        Long id = paramFlowMapper.queryIdFromFlowInst(reqVO);
+        if(id==null || id.equals(vo.getId())){
+            ParamFlowInst entity = new ParamFlowInst();
+            BeanUtils.copyProperties(vo, entity);
+            try{
+                paramFlowMapper.updateByPrimaryKeySelective(entity);
+            }catch (Throwable throwable){
+                DataBaseExceptionUtil.exceptionHandler(throwable);
+            }
+        }else{
+            throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
         }
-        ParamFlowInst entity = new ParamFlowInst();
-        BeanUtils.copyProperties(vo, entity);
-        paramFlowMapper.updateByPrimaryKeySelective(entity);
     }
 
     @Override
@@ -100,9 +108,9 @@ public class ParamFlowServiceImpl implements IParamFlowService {
     @Override
     public  PageInfo<ParamFlowRepVO>  queryFlowByGroupid(ParamFlowReqVO queryVO) {
         PageHelper.startPage(queryVO.getReqPageNum(),queryVO.getReqPageSize());
-        List<ParamFlowInst> flows =paramFlowMapper.queryFlowByGroupid(queryVO.getFlowCode());
-        PageInfo<ParamFlowInst> pageInfo = new PageInfo<ParamFlowInst>(flows);
-        return ObjectUtils.copyPageInfo(pageInfo, ParamFlowRepVO.class);
+        List<ParamFlowRepVO> flows =paramFlowMapper.queryFlowByGroupid(queryVO.getFlowCode());
+        ObjectUtils.formatList(flows, ParamFlowRepVO.class);
+        return new PageInfo<ParamFlowRepVO>(flows);
     }
 
     @Override

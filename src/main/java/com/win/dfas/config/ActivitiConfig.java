@@ -16,8 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * activiti 配置类
- * WANGLEI 2019年6月27日下午3:26:56
+ * 包名称：com.win.dfas.config
+ * 类名称：ActivitiConfig
+ * 类描述：配置类
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
  */
 @Configuration
 public class ActivitiConfig {

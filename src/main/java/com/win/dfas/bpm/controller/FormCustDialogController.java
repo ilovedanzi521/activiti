@@ -14,6 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * 包名称：com.win.dfas.bpm.controller
+ * 类名称：FormCustDialogController
+ * 类描述：FormCustDialogController
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 @RestController
 @RequestMapping({"/form/formCustDialog/"})
 public class FormCustDialogController {
@@ -37,7 +44,6 @@ public class FormCustDialogController {
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("data",formCustDialog);
         jsonObject.put("isOk",true);
-//        return YhResponseData.handleSuccess(formCustDialog);
         return jsonObject;
     }
 }

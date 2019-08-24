@@ -6,7 +6,13 @@ import com.win.dfas.common.util.LongJsonDeserializer;
 import com.win.dfas.common.util.LongJsonSerializer;
 
 import java.util.Date;
-
+/**
+ * 包名称：com.win.dfas.entity
+ * 类名称：FlowGroup
+ * 类描述：FlowGroup
+ * 创建人：@author wanglei
+ * 创建时间：2019/8/6/10:20
+ */
 public class FlowGroup {
     @JsonSerialize(using = LongJsonSerializer.class)
     @JsonDeserialize(using = LongJsonDeserializer.class)
