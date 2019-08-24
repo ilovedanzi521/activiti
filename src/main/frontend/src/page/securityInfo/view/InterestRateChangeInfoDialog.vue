@@ -1,43 +1,43 @@
 <template>
-    <win_dialog :title="dialogTitle" :before-close="closeDia" :visible.sync="dialogVisibleSon" :close-on-click-modal="false" :close-on-press-escape="false" width="40%">
-        <win_form class="form" :rules="rules" id="#create" :model="InterestRateDetail" :disabled="allDisabled" ref="rulesForm" label-width="100px" size="small">
-            <win_row>
-                <win_col :span="spanWidth">
-                    <win_form_item label="证券代码" prop="securityCode" class="dialogItem">
-                        <win_select v-model="InterestRateDetail.securityCode" filterable :filter-method="getSecurityCode" @visible-change="visibleChangeTrigger" placeholder="请选择" :disabled="editDisabled" clearable>
-                            <win_option v-for="item in securityCodes" :key="item.securityCode" :label="item.securityCode" :value="item.securityCode">
+    <win-fdialog :title="dialogTitle" :before-close="closeDia" :visible.sync="dialogVisibleSon" :close-on-click-modal="false" :close-on-press-escape="false" width="40%">
+        <win-form class="form" :rules="rules" id="#create" :model="InterestRateDetail" :disabled="allDisabled" ref="rulesForm" label-width="100px" size="small">
+            <win-row>
+                <win-col :span="spanWidth">
+                    <win-form-item label="证券代码" prop="securityCode" class="dialogItem">
+                        <win-select v-model="InterestRateDetail.securityCode" filterable :filter-method="getSecurityCode" @visible-change="visibleChangeTrigger" placeholder="请选择" :disabled="editDisabled" clearable>
+                            <win-option v-for="item in securityCodes" :key="item.securityCode" :label="item.securityCode" :value="item.securityCode">
                                 <span style="float: left">{{ item.securityCode }}</span>
                                 <span>{{ "&nbsp;"+item.securityName }}</span>
-                            </win_option>
-                        </win_select>
-                    </win_form_item>
-                </win_col>
-                <win_col :span="spanWidth">
-                    <win_form_item label="票面利率" prop="couponRate" class="dialogItem">
-                        <win_input v-model="couponRate" :num="[8,6]" :ratio="0.01" :real.sync="InterestRateDetail.couponRate" unit="%" style="width:240px;"></win_input>
-                    </win_form_item>
-                </win_col>
-            </win_row>
-            <win_row>
-                <win_col :span="spanWidth">
-                    <win_form_item label="开始日期" prop="beginDate" class="dialogItem">
+                            </win-option>
+                        </win-select>
+                    </win-form-item>
+                </win-col>
+                <win-col :span="spanWidth">
+                    <win-form-item label="票面利率" prop="couponRate" class="dialogItem">
+                        <win-input v-model="couponRate" :num="[8,6]" :ratio="0.01" :real.sync="InterestRateDetail.couponRate" unit="%" style="width:240px;"></win-input>
+                    </win-form-item>
+                </win-col>
+            </win-row>
+            <win-row>
+                <win-col :span="spanWidth">
+                    <win-form-item label="开始日期" prop="beginDate" class="dialogItem">
                         <el-date-picker v-model="InterestRateDetail.beginDate" type="date" value-format="yyyy-MM-dd" placeholder="选择日期">
                         </el-date-picker>
-                    </win_form_item>
-                </win_col>
-                <win_col :span="spanWidth">
-                    <win_form_item label="结束日期" prop="endDate" class="dialogItem">
+                    </win-form-item>
+                </win-col>
+                <win-col :span="spanWidth">
+                    <win-form-item label="结束日期" prop="endDate" class="dialogItem">
                         <el-date-picker v-model="InterestRateDetail.endDate" type="date" value-format="yyyy-MM-dd" placeholder="选择日期">
                         </el-date-picker>
-                    </win_form_item>
-                </win_col>
-            </win_row>
-        </win_form>
+                    </win-form-item>
+                </win-col>
+            </win-row>
+        </win-form>
         <div slot="footer" class="dialog-footer" v-show="buttonShow">
-            <win_button @click="dialogCancel">取消</win_button>
-            <win_button type="primary" :loading="createLoading" @click="submitDialog('rulesForm')">{{dialogSumbitText}}</win_button>
+            <win-button @click="dialogCancel">取消</win-button>
+            <win-button type="primary" :loading="createLoading" @click="submitDialog('rulesForm')">{{dialogSumbitText}}</win-button>
         </div>
-    </win_dialog>
+    </win-fdialog>
 </template>
 <script lang="ts">
 import InterestRateChangeInfoDialogController from "../controller/InterestRateChangeInfoDialogController";

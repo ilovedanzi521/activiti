@@ -3,8 +3,8 @@
         <div class="aside">
             <div style="background-color:#273049;width:224px;height:100%;padding-top:5px">
                 <div class="tree" style="position:relative">
-                    <win_tree :data="catalogData" node-key="id" :props="defaultProps" style="{width:224px}" highlight-current @node-click="handleNodeClick">
-                    </win_tree>
+                    <win-tree :data="catalogData" node-key="id" :props="defaultProps" style="{width:224px}" highlight-current @node-click="handleNodeClick">
+                    </win-tree>
                 </div>
             </div>
         </div>
@@ -13,11 +13,11 @@
                 <ProductInfo> </ProductInfo>
             </div>
             <div ref="mainHeader" style="background-color:#273049;height:20px;">
-                <win_row type="flex" style="" justify="center" align="middle">
-                    <win_col style="text-align:center;">
-                        <win_button type="text" :icon="isShowClass" @click="showMore" style="background-color:#273049;color:#FF900D;padding: 0px 10px;" round>关联信息</win_button>
-                    </win_col>
-                </win_row>
+                <win-row type="flex" style="" justify="center" align="middle">
+                    <win-col style="text-align:center;">
+                        <win-button type="text" :icon="isShowClass" @click="showMore" style="background-color:#273049;color:#FF900D;padding: 0px 10px;" round>关联信息</win-button>
+                    </win-col>
+                </win-row>
             </div>
             <div div class="ps1" v-show="isTabsDisabled" style="overflow:hidden;">
                 <ProductTabs></ProductTabs>

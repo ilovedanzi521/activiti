@@ -1,6 +1,6 @@
 <template>
-    <win_dialog class="transfer" :title="dialogTitle" :before-close="closeDia" :visible.sync="transferVisible" :close-on-click-modal="false" :close-on-press-escape="false" width="33%" append-to-body>
-        <win_form :disabled="allDisabled">
+    <win-fdialog class="transfer" :title="dialogTitle" :before-close="closeDia" :visible.sync="transferVisible" :close-on-click-modal="false" :close-on-press-escape="false" width="33%" append-to-body>
+        <win-form :disabled="allDisabled">
             <p style="text-align: center; margin: 0 0 0px"></p>
             <div style="text-align: center">
                 <el-transfer style="text-align: left; display: inline-block" v-model="checkedItem" filterable :titles="['未授权', '已授权']" :format="{
@@ -10,12 +10,12 @@
                     <span slot-scope="{ option }">{{ option.key }} {{ option.label }}</span>
                 </el-transfer>
             </div>
-        </win_form>
+        </win-form>
         <div slot="footer" class="dialog-footer" v-show="buttonShow">
-            <win_button @click="dialogCancel">取消</win_button>
-            <win_button type="primary" :loading="createLoading" @click="dialogConfirm">确定</win_button>
+            <win-button @click="dialogCancel">取消</win-button>
+            <win-button type="primary" :loading="createLoading" @click="dialogConfirm">确定</win-button>
         </div>
-    </win_dialog>
+    </win-fdialog>
 </template>
 
 <script lang="ts">

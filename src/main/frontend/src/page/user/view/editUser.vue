@@ -1,95 +1,95 @@
 <template>
-    <win_fdialog title="修改用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="840px" v-win_dialogDrag>
-        <win_form :inline="true">
+    <win-fdialog title="修改用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="840px" v-win-dialogDrag>
+        <win-form :inline="true">
             <div>
-                <win_form_item label="用户编码">
-                    <win_input placeholder="用户编码" v-model="userReqVo.user.userCode" :disabled="true"></win_input>
-                    <win_input placeholder="用户Id" v-model="userReqVo.user.id" :disabled="true" v-if="false"></win_input>
-                </win_form_item>
-                <win_form_item label="所属公司">
-                    <win_input :placeholder="userReqVo.company.companyName" :disabled="true"></win_input>
-                </win_form_item>
+                <win-form-item label="用户编码">
+                    <win-input placeholder="用户编码" v-model="userReqVo.user.userCode" :disabled="true"></win-input>
+                    <win-input placeholder="用户Id" v-model="userReqVo.user.id" :disabled="true" v-if="false"></win-input>
+                </win-form-item>
+                <win-form-item label="所属公司">
+                    <win-input :placeholder="userReqVo.company.companyName" :disabled="true"></win-input>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="用户名">
-                    <win_input placeholder="用户名" v-model="user.userName"></win_input>
-                </win_form_item>
-                <win_form_item label="隶属部门">
-                    <win_select v-model="depName" placeholder="请选择">
-                        <win_option v-for="(item) in userReqVo.department.departmentArray" :key="item.id" :value="item.id" :label="item.label" @click.native="changeDep(item)"></win_option>
-                    </win_select>
-                </win_form_item>
+                <win-form-item label="用户名">
+                    <win-input placeholder="用户名" v-model="user.userName"></win-input>
+                </win-form-item>
+                <win-form-item label="隶属部门">
+                    <win-select v-model="depName" placeholder="请选择">
+                        <win-option v-for="(item) in userReqVo.department.departmentArray" :key="item.id" :value="item.id" :label="item.label" @click.native="changeDep(item)"></win-option>
+                    </win-select>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="邮箱">
-                    <win_input placeholder="邮箱" v-model="user.mailAddress"></win_input>
-                </win_form_item>
-                <win_form_item label="隶属角色">
-                    <win_select v-model="roleIds" multiple placeholder="隶属角色">
-                        <win_option v-for="item in userReqVo.role.rolesArray" :key="item.id" :value="item.id" :label="item.label"></win_option>
-                    </win_select>
-                </win_form_item>
+                <win-form-item label="邮箱">
+                    <win-input placeholder="邮箱" v-model="user.mailAddress"></win-input>
+                </win-form-item>
+                <win-form-item label="隶属角色">
+                    <win-select v-model="roleIds" multiple placeholder="隶属角色">
+                        <win-option v-for="item in userReqVo.role.rolesArray" :key="item.id" :value="item.id" :label="item.label"></win-option>
+                    </win-select>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="用户类别">
-                    <win_select v-model="userType" placeholder="请选择用户类别">
-                        <win_option v-for="item in userReqVo.userTypeArray" :key="item.userType" :value="item.userType" :label="item.userTypeName" @click.native="changeUserType(item)"></win_option>
-                    </win_select>
-                </win_form_item>
-                <win_form_item label="用户状态">
-                    <win_input placeholder="正常" :disabled="true"></win_input>
-                </win_form_item>
+                <win-form-item label="用户类别">
+                    <win-select v-model="userType" placeholder="请选择用户类别">
+                        <win-option v-for="item in userReqVo.userTypeArray" :key="item.userType" :value="item.userType" :label="item.userTypeName" @click.native="changeUserType(item)"></win-option>
+                    </win-select>
+                </win-form-item>
+                <win-form-item label="用户状态">
+                    <win-input placeholder="正常" :disabled="true"></win-input>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="联系方式">
-                    <win_input placeholder="联系方式" v-model="user.contactWay"></win_input>
-                </win_form_item>
-                <win_form_item label="手机号码">
-                    <win_input placeholder="手机号码" v-model="user.phoneNumber"></win_input>
-                </win_form_item>
+                <win-form-item label="联系方式">
+                    <win-input placeholder="联系方式" v-model="user.contactWay"></win-input>
+                </win-form-item>
+                <win-form-item label="手机号码">
+                    <win-input placeholder="手机号码" v-model="user.phoneNumber"></win-input>
+                </win-form-item>
 
             </div>
-        </win_form>
+        </win-form>
         <div slot="footer" class="dialog-footer">
-            <win_button @click="close">取 消</win_button>
-            <win_button type="primary" @click="handleEditUser">确 认</win_button>
+            <win-button @click="close">取 消</win-button>
+            <win-button type="primary" @click="handleEditUser">确 认</win-button>
         </div>
-    </win_fdialog>
+    </win-fdialog>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_tabs, win_tab } from "@win-frond-frameworks/biz-common";
-import { win_select, win_option } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinTabs, WinTabpane } from "@win-frond-frameworks/biz-common";
+import { WinSelect, WinOption } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
 
 import {
-    win_checkbox,
-    win_checkboxButton,
-    win_checkboxGroup
+    WinCheckbox,
+    WinCheckboxButton,
+    WinCheckboxGroup
 } from "@win-frond-frameworks/biz-common";
 import { UserReqVO, UserClass } from "../vo/UserVO";
 @Component({
     components: {
-        win_tabs,
-        win_tab,
-        win_select,
-        win_option,
-        win_input,
-        win_form,
-        win_form_item,
-        win_fdialog,
-        win_button,
-        win_table,
-        win_table_column,
-        win_checkbox,
-        win_checkboxButton,
-        win_checkboxGroup
+        WinTabs,
+        WinTabpane,
+        WinSelect,
+        WinOption,
+        WinInput,
+        WinForm,
+        WinFormItem,
+        WinFdialog,
+        WinButton,
+        WinTable,
+        WinTableColumn,
+        WinCheckbox,
+        WinCheckboxButton,
+        WinCheckboxGroup
     }
 })
 export default class AddUser extends Vue {

@@ -7,7 +7,7 @@
             </div>
             <div class="rightRole-tabs">
                 <el-tabs v-model="activeName">
-                    <win_tab label="菜单功能" name="menu"></win_tab>
+                    <win-tab-pane label="菜单功能" name="menu"></win-tab-pane>
                 </el-tabs>
             </div>
 
@@ -40,8 +40,8 @@
             </div>
             <div class="roleRole-buttonGrounp">
 
-                <win_button @click="closeRole">取消</win_button>
-                <win_button @click="addRoleRight" type="primary">确定</win_button>
+                <win-button @click="closeRole">取消</win-button>
+                <win-button @click="addRoleRight" type="primary">确定</win-button>
             </div>
         </div>
 
@@ -53,11 +53,11 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import RoleController from "../controller/roleContorller";
 import userService from "../service/userService";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
+import { WinButton } from "@win-frond-frameworks/biz-common";
 import { UserReqVO } from "../vo/UserVO";
 @Component({
-    components: { win_table, win_table_column, win_button }
+    components: { WinTable, WinTableColumn, WinButton }
 })
 export default class RoleRight extends RoleController {
     @Prop()

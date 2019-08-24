@@ -1,68 +1,68 @@
 <template>
     <div class="mask">
-        <win_fdialog :title="this.userReqVo.stateController.switchCompany?'删除公司':'修改公司'" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win_dialogDrag>
-            <win_form :inline="true" :model="company" :rules="rules" ref="company">
+        <win-fdialog :title="this.userReqVo.stateController.switchCompany?'删除公司':'修改公司'" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win-dialogDrag>
+            <win-form :inline="true" :model="company" :rules="rules" ref="company">
                 <div>
-                    <win_form_item label="公司全称" prop="companyFullName">
-                        <win_input v-model="company['companyFullName']" v-if="this.userReqVo.stateController.switchCompany" :disabled="true"></win_input>
-                        <win_input v-model="company['companyFullName']" v-else></win_input>
-                    </win_form_item>
+                    <win-form-item label="公司全称" prop="companyFullName">
+                        <win-input v-model="company['companyFullName']" v-if="this.userReqVo.stateController.switchCompany" :disabled="true"></win-input>
+                        <win-input v-model="company['companyFullName']" v-else></win-input>
+                    </win-form-item>
                 </div>
                 <div>
-                    <win_form_item label="公司简称" prop="companySimpleName">
-                        <win_input v-if="this.userReqVo.stateController.switchCompany" placeholder="请填写公司简称" v-model="company['companySimpleName']" :disabled="true"></win_input>
-                        <win_input v-else placeholder="请填写公司简称" v-model="company['companySimpleName']"></win_input>
-                    </win_form_item>
+                    <win-form-item label="公司简称" prop="companySimpleName">
+                        <win-input v-if="this.userReqVo.stateController.switchCompany" placeholder="请填写公司简称" v-model="company['companySimpleName']" :disabled="true"></win-input>
+                        <win-input v-else placeholder="请填写公司简称" v-model="company['companySimpleName']"></win-input>
+                    </win-form-item>
                 </div>
                 <div>
-                    <win_form_item label="公司编号" prop="companyCode">
-                        <win_input placeholder="请填写公司编号" v-model="company.companyCode" v-if="this.userReqVo.stateController.switchCompany" :disabled="true"></win_input>
-                        <win_input placeholder="请填写公司编号" v-model="company.companyCode" v-else :disabled="true"></win_input>
-                    </win_form_item>
+                    <win-form-item label="公司编号" prop="companyCode">
+                        <win-input placeholder="请填写公司编号" v-model="company.companyCode" v-if="this.userReqVo.stateController.switchCompany" :disabled="true"></win-input>
+                        <win-input placeholder="请填写公司编号" v-model="company.companyCode" v-else :disabled="true"></win-input>
+                    </win-form-item>
                 </div>
-            </win_form>
+            </win-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="close">取 消</el-button>
                 <el-button type="primary" @click="handleDeleteCom" v-if="this.userReqVo.stateController.switchCompany">确 认</el-button>
                 <el-button type="primary" @click="handleEditCom('company')" v-else>确 认</el-button>
             </div>
-        </win_fdialog>
+        </win-fdialog>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_tabs, win_tab } from "@win-frond-frameworks/biz-common";
-import { win_select, win_option } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinTabs, WinTabpane } from "@win-frond-frameworks/biz-common";
+import { WinSelect, WinOption } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
 import {
-    win_checkbox,
-    win_checkboxButton,
-    win_checkboxGroup
+    WinCheckbox,
+    WinCheckboxButton,
+    WinCheckboxGroup
 } from "@win-frond-frameworks/biz-common";
 // import { Company } from "../vo/UserVO";
 import { UserReqVO } from "../vo/UserVO";
 @Component({
     components: {
-        win_tabs,
-        win_tab,
-        win_select,
-        win_option,
-        win_input,
-        win_form,
-        win_form_item,
-        win_fdialog,
-        win_button,
-        win_table,
-        win_table_column,
-        win_checkbox,
-        win_checkboxButton,
-        win_checkboxGroup
+        WinTabs,
+        WinTabpane,
+        WinSelect,
+        WinOption,
+        WinInput,
+        WinForm,
+        WinFormItem,
+        WinFdialog,
+        WinButton,
+        WinTable,
+        WinTableColumn,
+        WinCheckbox,
+        WinCheckboxButton,
+        WinCheckboxGroup
     }
 })
 export default class FromDialog extends Vue {

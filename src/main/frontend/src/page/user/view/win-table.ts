@@ -1,4 +1,4 @@
-/* @win_table, win_tableColumn组件
+/* @WinTable, WinTableColumn组件
  * @Author: mikey.zhaopeng
  * @Date: 2019-06-05 14:01:33
  * @Last Modified by: mikey.zhaopeng
@@ -7,10 +7,10 @@
 
 import { Table, TableColumn } from "element-ui";
 
-export const win_table = {
+export const WinTable = {
     extends: Table
 };
 
-export const win_table_column = {
+export const WinTableColumn = {
     extends: TableColumn
 };

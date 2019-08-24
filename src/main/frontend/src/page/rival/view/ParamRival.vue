@@ -5,11 +5,11 @@
         <ParamRivalInfo> </ParamRivalInfo>
       </div>
       <div ref="mainHeader" style="height:21px;">
-        <win_row type="flex" style="" justify="center" align="middle">
-          <win_col style="text-align:center;background-color:#273049;">
+        <win-row type="flex" style="" justify="center" align="middle">
+          <win-col style="text-align:center;background-color:#273049;">
             <el-button type="text" :icon="isShowClass" @click="showMore" style="color:#FF900D;padding: 0px 10px;" round>关联信息</el-button>
-          </win_col>
-        </win_row>
+          </win-col>
+        </win-row>
       </div>
       <div div class="ps1" v-show="isTabsDisabled" style="overflow:hidden;">
         <ParamRivalTabs></ParamRivalTabs>

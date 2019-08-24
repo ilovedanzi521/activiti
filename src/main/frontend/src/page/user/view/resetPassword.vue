@@ -1,50 +1,50 @@
 <template>
-    <win_fdialog title="修改密码" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="420px" v-win_dialogDrag>
-        <win_form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm">
+    <win-fdialog title="修改密码" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="420px" v-win-dialogDrag>
+        <win-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm">
             <div>
-                <win_form_item label="用户编码">
-                    <win_input placeholder="用户名编码" :disabled="true" v-model="userReqVo.user.userCode"></win_input>
-                </win_form_item>
+                <win-form-item label="用户编码">
+                    <win-input placeholder="用户名编码" :disabled="true" v-model="userReqVo.user.userCode"></win-input>
+                </win-form-item>
 
             </div>
             <div>
-                <win_form_item label="用户姓名">
-                    <win_input placeholder="用户姓名" :disabled="true" v-model="userReqVo.user.userName"></win_input>
-                </win_form_item>
+                <win-form-item label="用户姓名">
+                    <win-input placeholder="用户姓名" :disabled="true" v-model="userReqVo.user.userName"></win-input>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="重置密码" prop="">
-                    <win_input placeholder="请输入密码" autocomplete="off" type="password" v-model="ruleForm.pass"></win_input>
-                </win_form_item>
+                <win-form-item label="重置密码" prop="">
+                    <win-input placeholder="请输入密码" autocomplete="off" type="password" v-model="ruleForm.pass"></win-input>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="确认密码" prop="checkPass">
-                    <win_input placeholder="请确认密码" v-model="ruleForm.checkPass" autocomplete="off" type="password"></win_input>
-                </win_form_item>
+                <win-form-item label="确认密码" prop="checkPass">
+                    <win-input placeholder="请确认密码" v-model="ruleForm.checkPass" autocomplete="off" type="password"></win-input>
+                </win-form-item>
             </div>
-        </win_form>
+        </win-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
             <el-button type="primary" @click="handleSubmitPassWord('ruleForm')">确 认</el-button>
         </div>
-    </win_fdialog>
+    </win-fdialog>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
 import { UserReqVO, UserClass } from "../vo/UserVO";
 @Component({
     components: {
-        win_fdialog,
-        win_button,
-        win_form,
-        win_form_item,
-        win_input
+        WinFdialog,
+        WinButton,
+        WinForm,
+        WinFormItem,
+        WinInput
     }
 })
 export default class Password extends Vue {

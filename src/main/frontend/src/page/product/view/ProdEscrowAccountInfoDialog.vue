@@ -1,118 +1,118 @@
 <template>
-  <win_dialog top :title="dialogTitle" :before-close="closeDialog" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" width="760px">
-    <win_form id="#create" :model="prodEscrowAccountInfo" :rules="rules" ref="prodEscrowAccountInfo" label-width="110px" :disabled="formDisabled">
-      <win_row>
+  <win-fdialog top :title="dialogTitle" :before-close="closeDialog" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" width="760px">
+    <win-form id="#create" :model="prodEscrowAccountInfo" :rules="rules" ref="prodEscrowAccountInfo" label-width="110px" :disabled="formDisabled">
+      <win-row>
         <span>
           <font color='white'>产品信息</font>
         </span>
-      </win_row>
-      <win_row>
-        <win_col :span="spanWidth">
-          <win_form_item label="产品代码" prop="fundCode">
-            <win_select v-model="prodEscrowAccountInfo.fundCode" filterable placeholder="请选择" :disabled="fundInfoDisabled">
+      </win-row>
+      <win-row>
+        <win-col :span="spanWidth">
+          <win-form-item label="产品代码" prop="fundCode">
+            <win-select v-model="prodEscrowAccountInfo.fundCode" filterable placeholder="请选择" :disabled="fundInfoDisabled">
               <el-input v-model.number="prodEscrowAccountInfo.accountType" clearable></el-input>
-            </win_select>
-          </win_form_item>
-        </win_col>
-        <win_col :span="spanWidth">
-          <win_form_item label="产品名称" prop="fundName">
+            </win-select>
+          </win-form-item>
+        </win-col>
+        <win-col :span="spanWidth">
+          <win-form-item label="产品名称" prop="fundName">
             <el-input v-model.number="prodEscrowAccountInfo.fundName" clearable :disabled="fundInfoDisabled"></el-input>
-          </win_form_item>
-        </win_col>
-      </win_row>
+          </win-form-item>
+        </win-col>
+      </win-row>
       <el-divider></el-divider>
-      <win_row>
+      <win-row>
         <span>
           <font color='white'>资产单元信息</font>
         </span>
-      </win_row>
-      <win_row>
-        <win_col :span="24">
-          <win_form_item label="所属资产单元" prop="assetUnitNo">
-            <win_select v-model="prodEscrowAccountInfo.assetUnitNo" filterable placeholder="请选择" clearable>
-              <win_option v-for="item in unitNoList" :key="item.no" :label="item.assetUnitName" :value="item.no">
+      </win-row>
+      <win-row>
+        <win-col :span="24">
+          <win-form-item label="所属资产单元" prop="assetUnitNo">
+            <win-select v-model="prodEscrowAccountInfo.assetUnitNo" filterable placeholder="请选择" clearable>
+              <win-option v-for="item in unitNoList" :key="item.no" :label="item.assetUnitName" :value="item.no">
                 <span style="float: left">{{ item.no }}</span>
                 <span>{{ "&nbsp;"+item.assetUnitName }}</span>
-              </win_option>
-            </win_select>
-          </win_form_item>
-        </win_col>
-      </win_row>
+              </win-option>
+            </win-select>
+          </win-form-item>
+        </win-col>
+      </win-row>
       <el-divider></el-divider>
-      <win_row>
+      <win-row>
         <span>
           <font color='white'>账户信息</font>
         </span>
-      </win_row>
-      <win_row>
-        <win_col :span="spanWidth">
-          <win_form_item label="银行账号" prop="accountCode">
-            <win_input v-model.number="prodEscrowAccountInfo.accountCode" :num="[20,0]" clearable maxlength="30"></win_input>
-          </win_form_item>
-        </win_col>
-        <win_col :span="spanWidth">
-          <win_form_item label="账户名称" prop="accountName">
+      </win-row>
+      <win-row>
+        <win-col :span="spanWidth">
+          <win-form-item label="银行账号" prop="accountCode">
+            <win-input v-model.number="prodEscrowAccountInfo.accountCode" :num="[20,0]" clearable maxlength="30"></win-input>
+          </win-form-item>
+        </win-col>
+        <win-col :span="spanWidth">
+          <win-form-item label="账户名称" prop="accountName">
             <el-input v-model.number="prodEscrowAccountInfo.accountName" clearable maxlength="100"></el-input>
-          </win_form_item>
-        </win_col>
-      </win_row>
-      <win_row>
-        <win_col :span="spanWidth">
-          <win_form_item label="开户行" prop="openBank">
+          </win-form-item>
+        </win-col>
+      </win-row>
+      <win-row>
+        <win-col :span="spanWidth">
+          <win-form-item label="开户行" prop="openBank">
             <el-input v-model.number="prodEscrowAccountInfo.openBank" clearable maxlength="100"></el-input>
-          </win_form_item>
-        </win_col>
-        <win_col :span="spanWidth">
-          <win_form_item label="银行账户类型" prop="accountType">
-            <win_select v-model="prodEscrowAccountInfo.accountType" filterable placeholder="请选择" clearable>
-              <win_option v-for="item in dicVOList.accountTypeDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
+          </win-form-item>
+        </win-col>
+        <win-col :span="spanWidth">
+          <win-form-item label="银行账户类型" prop="accountType">
+            <win-select v-model="prodEscrowAccountInfo.accountType" filterable placeholder="请选择" clearable>
+              <win-option v-for="item in dicVOList.accountTypeDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
                 <span style="float: left">{{ item.dicCode }}</span>
                 <span>{{ "&nbsp;"+item.dicExplain }}</span>
-              </win_option>
-            </win_select>
-          </win_form_item>
-        </win_col>
+              </win-option>
+            </win-select>
+          </win-form-item>
+        </win-col>
 
-      </win_row>
-      <win_row>
-        <win_col :span="spanWidth">
-          <win_form_item label="支付系统行号" prop="paymentSystemNumber">
+      </win-row>
+      <win-row>
+        <win-col :span="spanWidth">
+          <win-form-item label="支付系统行号" prop="paymentSystemNumber">
             <el-input v-model.number="prodEscrowAccountInfo.paymentSystemNumber" clearable maxlength="30"></el-input>
-          </win_form_item>
-        </win_col>
+          </win-form-item>
+        </win-col>
 
-        <win_col :span="spanWidth">
-          <win_form_item label="开户日期" prop="openDate">
+        <win-col :span="spanWidth">
+          <win-form-item label="开户日期" prop="openDate">
             <el-date-picker name="" v-model="prodEscrowAccountInfo.openDate" type="date" placeholder="选择日期" clearable>
             </el-date-picker>
-          </win_form_item>
-        </win_col>
-      </win_row>
-      <win_row>
-        <win_col :span="spanWidth">
-          <win_form_item label="账户币种" prop="currencyCode">
-            <win_select v-model="prodEscrowAccountInfo.currencyCode" filterable placeholder="请选择" clearable>
-              <win_option v-for="item in dicVOList.currencyDic" :key="item.currencyCode" :label="item.currencyName" :value="item.currencyCode">
+          </win-form-item>
+        </win-col>
+      </win-row>
+      <win-row>
+        <win-col :span="spanWidth">
+          <win-form-item label="账户币种" prop="currencyCode">
+            <win-select v-model="prodEscrowAccountInfo.currencyCode" filterable placeholder="请选择" clearable>
+              <win-option v-for="item in dicVOList.currencyDic" :key="item.currencyCode" :label="item.currencyName" :value="item.currencyCode">
                 <span style="float: left">{{ item.currencyCode }}</span>
                 <span>{{ "&nbsp;"+item.currencyName }}</span>
-              </win_option>
-            </win_select>
-          </win_form_item>
-        </win_col>
-      </win_row>
-      <win_row>
-        <win_col :span="24">
-          <win_form_item label="备注" prop="summary">
+              </win-option>
+            </win-select>
+          </win-form-item>
+        </win-col>
+      </win-row>
+      <win-row>
+        <win-col :span="24">
+          <win-form-item label="备注" prop="summary">
             <el-input style="width:800px;" :span="24" type="textarea" v-model="prodEscrowAccountInfo.summary"></el-input>
-          </win_form_item>
-        </win_col>
-      </win_row>
-    </win_form>
+          </win-form-item>
+        </win-col>
+      </win-row>
+    </win-form>
     <div slot="footer" class="dialog-footer" v-if="operationShow">
-      <win_button @click="dialogCancel">取消</win_button>
-      <win_button type="primary" :loading="createLoading" @click="submitDialog">{{ dialogSumbitText }}</win_button>
+      <win-button @click="dialogCancel">取消</win-button>
+      <win-button type="primary" :loading="createLoading" @click="submitDialog">{{ dialogSumbitText }}</win-button>
     </div>
-  </win_dialog>
+  </win-fdialog>
 </template>
 <script lang="ts">
 import ProdEscrowAccountInfoDialogController from "../controller/ProdEscrowAccountInfoDialogController";
