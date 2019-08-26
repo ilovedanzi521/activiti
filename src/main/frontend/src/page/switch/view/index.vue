@@ -1,19 +1,19 @@
 <template>
     <div class="switch-contanier">
-        <win_tabs v-model="activeName" @tab-click="handleTabClick">
-            <win_tab label="系统运行" name="SYSTEM_OPERATION">
+        <win-tabs v-model="activeName" @tab-click="handleTabClick">
+            <win-tab-pane label="系统运行" name="SYSTEM_OPERATION">
                 <SwitchTable :switchData="swtichList" :switchOpLogData="switchOpLogList" :switchPageData="switchPageVO" :opLogPageData="opLogPageVO" @swtichChange="switchChange" @swtichTableRowClick="swtichTableRowClick"
                     @switchPageQuery="switchPageQuery" @opLogPageQuery="opLogPageQuery"></SwitchTable>
-            </win_tab>
-            <win_tab label="初始化" name="INITIALIZATION">
+            </win-tab-pane>
+            <win-tab-pane label="初始化" name="INITIALIZATION">
                 <SwitchTable :switchData="swtichList" :switchOpLogData="switchOpLogList" :switchPageData="switchPageVO" :opLogPageData="opLogPageVO" @swtichChange="switchChange" @swtichTableRowClick="swtichTableRowClick"
                     @switchPageQuery="switchPageQuery" @opLogPageQuery="opLogPageQuery"></SwitchTable>
-            </win_tab>
-            <win_tab label="密码策略" name="PASSWORD_POLICY">
+            </win-tab-pane>
+            <win-tab-pane label="密码策略" name="PASSWORD_POLICY">
                 <SwitchTable :switchData="swtichList" :switchOpLogData="switchOpLogList" :switchPageData="switchPageVO" :opLogPageData="opLogPageVO" @swtichChange="switchChange" @swtichTableRowClick="swtichTableRowClick"
                     @switchPageQuery="switchPageQuery" @opLogPageQuery="opLogPageQuery"></SwitchTable>
-            </win_tab>
-        </win_tabs>
+            </win-tab-pane>
+        </win-tabs>
     </div>
 </template>
 

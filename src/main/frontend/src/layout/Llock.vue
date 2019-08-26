@@ -1,32 +1,32 @@
 
 <template>
-    <win_fdialog :title="getLock?'解屏':'锁屏'" :visible.sync="layoutReqVO.lockisOpen" :close-on-click-modal="false" width="420px" :show-close="!getLock" custom-class="lockScree">
-        <win_form :inline="true">
+    <win-fdialog :title="getLock?'解屏':'锁屏'" :visible.sync="layoutReqVO.lockisOpen" :close-on-click-modal="false" width="420px" :show-close="!getLock" custom-class="lockScree">
+        <win-form :inline="true">
             <div class="form_content">
-                <win_form_item label="登录密码">
-                    <win_input :placeholder="getLock?'请输入登录密码进行解屏':'请输入登录密码进行锁屏'" autocomplete="off" type="password" v-model="loginPassword"></win_input>
-                </win_form_item>
+                <win-form-item label="登录密码">
+                    <win-input :placeholder="getLock?'请输入登录密码进行解屏':'请输入登录密码进行锁屏'" autocomplete="off" type="password" v-model="loginPassword"></win-input>
+                </win-form-item>
             </div>
-        </win_form>
+        </win-form>
         <div slot="footer" class="dialog-footer">
             <el-button v-if="!getLock" @click="close">取 消</el-button>
             <el-button type="warning" v-if="getLock" @click="handleSolutionLock">确 认 解 屏</el-button>
             <el-button type="warning" @click="handleSubmitLock" v-else>确 认 锁 屏</el-button>
         </div>
-    </win_fdialog>
+    </win-fdialog>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { LayoutReqVO } from "./vo/LayoutVO";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
 import { gettLocalStore } from "../assets/js/localStore";
 @Component({
-    components: { win_fdialog, win_button, win_form, win_form_item, win_input }
+    components: { WinFdialog, WinButton, WinForm, WinFormItem, WinInput }
 })
 export default class Lock extends Vue {
     loginPassword: string = "";

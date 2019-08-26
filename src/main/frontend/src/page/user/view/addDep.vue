@@ -1,62 +1,62 @@
 <template>
-    <win_fdialog title="新增部门" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win_dialogDrag>
-        <win_form :inline="true" :model="department" :rules="rules" ref="department">
+    <win-fdialog title="新增部门" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win-dialogDrag>
+        <win-form :inline="true" :model="department" :rules="rules" ref="department">
             <div>
-                <win_form_item label="所属公司">
-                    <win_input :placeholder="userReqVo.company.companyName" :disabled="true"></win_input>
-                </win_form_item>
+                <win-form-item label="所属公司">
+                    <win-input :placeholder="userReqVo.company.companyName" :disabled="true"></win-input>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="部门名称" prop="departmentname">
-                    <win_input placeholder="请填写部门名称" v-model="department.departmentname" :maxlength="50"></win_input>
-                </win_form_item>
+                <win-form-item label="部门名称" prop="departmentname">
+                    <win-input placeholder="请填写部门名称" v-model="department.departmentname" :maxlength="50"></win-input>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="部门编号">
-                    <win_input placeholder="请填写部门编号" v-model="userReqVo.department.departmentCode" :disabled="true"></win_input>
-                </win_form_item>
+                <win-form-item label="部门编号">
+                    <win-input placeholder="请填写部门编号" v-model="userReqVo.department.departmentCode" :disabled="true"></win-input>
+                </win-form-item>
             </div>
-        </win_form>
+        </win-form>
         <div slot="footer" class="dialog-footer">
-            <win_button @click="close">取 消</win_button>
-            <win_button type="primary" @click="handleAddDep('department')">确 认</win_button>
+            <win-button @click="close">取 消</win-button>
+            <win-button type="primary" @click="handleAddDep('department')">确 认</win-button>
         </div>
-    </win_fdialog>
+    </win-fdialog>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_tabs, win_tab } from "@win-frond-frameworks/biz-common";
-import { win_select, win_option } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinTabs, WinTabpane } from "@win-frond-frameworks/biz-common";
+import { WinSelect, WinOption } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
 import {
-    win_checkbox,
-    win_checkboxButton,
-    win_checkboxGroup
+    WinCheckbox,
+    WinCheckboxButton,
+    WinCheckboxGroup
 } from "@win-frond-frameworks/biz-common";
 import { UserReqVO, DepartmentClass } from "../vo/UserVO";
 import BaseController from "../../common/controller/BaseController";
 @Component({
     components: {
-        win_tabs,
-        win_tab,
-        win_select,
-        win_option,
-        win_input,
-        win_form,
-        win_form_item,
-        win_fdialog,
-        win_button,
-        win_table,
-        win_table_column,
-        win_checkbox,
-        win_checkboxButton,
-        win_checkboxGroup
+        WinTabs,
+        WinTabpane,
+        WinSelect,
+        WinOption,
+        WinInput,
+        WinForm,
+        WinFormItem,
+        WinFdialog,
+        WinButton,
+        WinTable,
+        WinTableColumn,
+        WinCheckbox,
+        WinCheckboxButton,
+        WinCheckboxGroup
     }
 })
 export default class AddDep extends BaseController {

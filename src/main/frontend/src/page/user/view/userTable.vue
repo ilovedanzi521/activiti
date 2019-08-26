@@ -1,21 +1,21 @@
 <template>
     <div class="table-contanier">
-        <win_table style="width: 100%" stripe :data="userReqVo.userArray" :showSelection="false" max-height="600">
-            <win_table_column prop="userCode" label="用户编码" width="120"></win_table_column>
-            <win_table_column prop="userName" label="用户名" width="120"></win_table_column>
-            <win_table_column :formatter="formatRoleName" label="隶属角色" width="180"></win_table_column>
-            <win_table_column prop="contactWay" label="联系方式" width="140"></win_table_column>
-            <win_table_column prop="phoneNumber" label="手机号" width="140"></win_table_column>
-            <win_table_column prop="mailAddress" label="邮箱" width="180"></win_table_column>
-            <win_table_column prop="departmentName" label="所属部门" width="160"></win_table_column>
-            <win_table_column prop="status" label="状态1" width="160">
+        <win-table style="width: 100%" stripe :data="userReqVo.userArray" :showSelection="false" max-height="600">
+            <win-table-column prop="userCode" label="用户编码" width="120"></win-table-column>
+            <win-table-column prop="userName" label="用户名" width="120"></win-table-column>
+            <win-table-column :formatter="formatRoleName" label="隶属角色" width="180"></win-table-column>
+            <win-table-column prop="contactWay" label="联系方式" width="140"></win-table-column>
+            <win-table-column prop="phoneNumber" label="手机号" width="140"></win-table-column>
+            <win-table-column prop="mailAddress" label="邮箱" width="180"></win-table-column>
+            <win-table-column prop="departmentName" label="所属部门" width="160"></win-table-column>
+            <win-table-column prop="status" label="状态1" width="160">
                 <template slot-scope="scope">
                     <span v-if="scope.row.status== 1">正常</span>
                     <span v-if="scope.row.status === 2">冻结</span>
                     <span v-if="scope.row.status === 3">注销</span>
                 </template>
-            </win_table_column>
-            <win_table_column prop="operation" label="操作" width="480">
+            </win-table-column>
+            <win-table-column prop="operation" label="操作" width="480">
                 <template slot-scope="scope">
                     <span class="operation" @click="handleUserRole(scope.row)" v-if="userReqVo.changeType!=3">
                         <span class="operation" v-if="scope.row.status===3"></span>
@@ -43,9 +43,9 @@
                         <i class="icon icon3 el-icon-time"></i>修改用户
                     </span>
                 </template>
-            </win_table_column>
-        </win_table>
-        <win_pagination name="user" v-bind:childMsg="userReqVo.userPageVO" @callFather="userPageQuery"></win_pagination>
+            </win-table-column>
+        </win-table>
+        <win-pagination name="user" v-bind:childMsg="userReqVo.userPageVO" @callFather="userPageQuery"></win-pagination>
     </div>
 </template>
 
@@ -54,18 +54,18 @@ import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
 
 import {
-    win_table,
-    win_table_column,
-    win_pagination
+    WinTable,
+    WinTableColumn,
+    WinPagination
 } from "@win-frond-frameworks/biz-common";
 import { debuglog } from "util";
 import { UserReqVO, UserClass } from "../vo/UserVO";
 import PageVO from "../../common/vo/PageVO";
 @Component({
     components: {
-        win_table,
-        win_table_column,
-        win_pagination
+        WinTable,
+        WinTableColumn,
+        WinPagination
     }
 })
 export default class UserTable extends Vue {

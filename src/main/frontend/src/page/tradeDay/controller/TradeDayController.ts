@@ -11,10 +11,10 @@ import {
 import Calendar from "../../calendar/components/calendar.vue";
 import { WinResponseData } from "../../common/vo/BaseVO";
 import {} from "../../common/enum/BaseEnum";
-import { win_checkbox } from "@win-frond-frameworks/biz-common";
+import { WinCheckbox } from "@win-frond-frameworks/biz-common";
 import TradeDayTypeController from "../controller/TradeDayTypeController";
 
-@Component({ components: { Calendar, win_checkbox } })
+@Component({ components: { Calendar, WinCheckbox } })
 export default class TradeDayController extends BaseController {
     public tradeDayservice: TradeDayService = new TradeDayService();
     public tradeDayRepVO: Array<TradeDayRepVO> = [];

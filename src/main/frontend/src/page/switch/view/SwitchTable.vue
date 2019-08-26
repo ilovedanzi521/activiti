@@ -15,25 +15,25 @@
                     </div>
                     <!-----新增contanier头部------>
                     <div class="contanier-table">
-                        <win_table :data.sync="switchData" height="584" :show-header="false" :showIndex="false" :showSelection="false" highlight-current-row>
-                            <win_table_column prop="switchStatus" width="80">
+                        <win-table :data.sync="switchData" height="584" :show-header="false" :showIndex="false" :showSelection="false" highlight-current-row>
+                            <win-table-column prop="switchStatus" width="80">
                                 <template slot-scope="scope">
                                     <el-switch name="scope.row.switchName" active-color="#13ce66" inactive-color="#ff4949" :active-value="0" :inactive-value="1" v-model="scope.row.switchStatus"
                                         @change="handleSwitchChange(scope.$index, scope.row)">
                                     </el-switch>
                                 </template>
-                            </win_table_column>
-                            <win_table_column prop="switchName">
+                            </win-table-column>
+                            <win-table-column prop="switchName">
                                 <template slot-scope="scope">
                                     <el-popover trigger="hover" placement="bottom">
                                         <p>{{ scope.row.switchExplain }}</p>
                                         <div slot="reference">{{ scope.row.switchName }}</div>
                                     </el-popover>
                                 </template>
-                            </win_table_column>
-                        </win_table>
+                            </win-table-column>
+                        </win-table>
                     </div>
-                    <win_pagination v-bind:childMsg="switchPageData" :isEasy="true" @callFather="handleSwitchPageQuery"></win_pagination>
+                    <win-pagination v-bind:childMsg="switchPageData" :isEasy="true" @callFather="handleSwitchPageQuery"></win-pagination>
                 </div>
                 <!-----新增div.contanier------>
             </el-col>
@@ -57,14 +57,14 @@
                     </div>
                     <!-----新增contanier头部------>
                     <div class="contanier-table">
-                        <win_table :data.sync="switchOpLogData" max-height="750" :auto-resize="true" :showSelection="false">
-                            <win_table_column prop="switchName" label="开关名称" sortable min-width="150"></win_table_column>
-                            <win_table_column prop="operationType" label="操作类型" sortable min-width="30" :formatter="formatOperationType"></win_table_column>
-                            <win_table_column prop="createUserId" label="操作人" sortable min-width="30"></win_table_column>
-                            <win_table_column prop="createTime" label="操作时间" sortable min-width="50"></win_table_column>
-                            <win_table_column prop="operationExplain" label="备注" sortable min-width="120"></win_table_column>
-                        </win_table>
-                        <win_pagination v-bind:childMsg="opLogPageData" @callFather="handleOpLogPageQuery"></win_pagination>
+                        <win-table :data.sync="switchOpLogData" max-height="750" :auto-resize="true" :showSelection="false">
+                            <win-table-column prop="switchName" label="开关名称" sortable min-width="150"></win-table-column>
+                            <win-table-column prop="operationType" label="操作类型" sortable min-width="30" :formatter="formatOperationType"></win-table-column>
+                            <win-table-column prop="createUserId" label="操作人" sortable min-width="30"></win-table-column>
+                            <win-table-column prop="createTime" label="操作时间" sortable min-width="50"></win-table-column>
+                            <win-table-column prop="operationExplain" label="备注" sortable min-width="120"></win-table-column>
+                        </win-table>
+                        <win-pagination v-bind:childMsg="opLogPageData" @callFather="handleOpLogPageQuery"></win-pagination>
                     </div>
                 </div>
                 <!-----新增div.contanier------>
@@ -76,11 +76,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit, Watch } from "vue-property-decorator";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
 import PageVO from "../../common/vo/PageVO";
-import { win_pagination } from "@win-frond-frameworks/biz-common";
+import { WinPagination } from "@win-frond-frameworks/biz-common";
 
-@Component({ components: { win_table, win_table_column, win_pagination } })
+@Component({ components: { WinTable, WinTableColumn, WinPagination } })
 export default class SwitchTable extends Vue {
     value1 = true;
 

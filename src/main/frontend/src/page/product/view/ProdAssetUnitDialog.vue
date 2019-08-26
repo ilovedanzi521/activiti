@@ -1,59 +1,59 @@
 <template>
-    <win_dialog :title="dialogTitle" :before-close="closeDia" :visible.sync="dialogVisibleSon" :close-on-click-modal="false" :close-on-press-escape="false" width="40%">
-        <win_form class="form" :rules="rules" id="#create" :model="prodAssetUnitDetail" :disabled="allDisabled" label-width="120px" ref="rulesForm" size="small">
+    <win-fdialog :title="dialogTitle" :before-close="closeDia" :visible.sync="dialogVisibleSon" :close-on-click-modal="false" :close-on-press-escape="false" width="40%">
+        <win-form class="form" :rules="rules" id="#create" :model="prodAssetUnitDetail" :disabled="allDisabled" label-width="120px" ref="rulesForm" size="small">
             <p style="text-align: left; margin: -30px 0 0px">产品信息</p>
             <el-divider></el-divider>
-            <win_row>
-                <win_col :span="spanWidth">
-                    <win_form_item label="产品代码" prop="fundCode" class="dialogItem">
-                        <win_input v-model="prodAssetUnitDetail.fundCode" disabled></win_input>
-                    </win_form_item>
-                </win_col>
-                <win_col :span="spanWidth">
-                    <win_form_item label="产品名称" prop="fundName" class="dialogItem">
-                        <win_input v-model="prodAssetUnitDetail.fundName" disabled></win_input>
-                    </win_form_item>
-                </win_col>
-            </win_row>
+            <win-row>
+                <win-col :span="spanWidth">
+                    <win-form-item label="产品代码" prop="fundCode" class="dialogItem">
+                        <win-input v-model="prodAssetUnitDetail.fundCode" disabled></win-input>
+                    </win-form-item>
+                </win-col>
+                <win-col :span="spanWidth">
+                    <win-form-item label="产品名称" prop="fundName" class="dialogItem">
+                        <win-input v-model="prodAssetUnitDetail.fundName" disabled></win-input>
+                    </win-form-item>
+                </win-col>
+            </win-row>
             <p style="text-align: left; margin: 0 0 0px">资产单元信息</p>
             <el-divider></el-divider>
-            <win_row>
-                <win_col :span="spanWidth">
-                    <win_form_item label="资产单元编号" prop="no" class="dialogItem" v-if="showNo">
-                        <win_input v-model="prodAssetUnitDetail.no" disabled></win_input>
-                    </win_form_item>
-                </win_col>
-                <win_col :span="spanWidth">
-                    <win_form_item label="资产单元名称" prop="assetUnitName" class="dialogItem">
-                        <win_input v-model="prodAssetUnitDetail.assetUnitName" maxlength=100 clearable></win_input>
-                    </win_form_item>
-                </win_col>
-                <win_col :span="spanWidth">
-                    <win_form_item label="状态" prop="status" class="dialogItem">
-                        <win_select v-model="prodAssetUnitDetail.status" filterable placeholder="请选择" clearable>
-                            <win_option v-for="item in statuss" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
+            <win-row>
+                <win-col :span="spanWidth">
+                    <win-form-item label="资产单元编号" prop="no" class="dialogItem" v-if="showNo">
+                        <win-input v-model="prodAssetUnitDetail.no" disabled></win-input>
+                    </win-form-item>
+                </win-col>
+                <win-col :span="spanWidth">
+                    <win-form-item label="资产单元名称" prop="assetUnitName" class="dialogItem">
+                        <win-input v-model="prodAssetUnitDetail.assetUnitName" maxlength=100 clearable></win-input>
+                    </win-form-item>
+                </win-col>
+                <win-col :span="spanWidth">
+                    <win-form-item label="状态" prop="status" class="dialogItem">
+                        <win-select v-model="prodAssetUnitDetail.status" filterable placeholder="请选择" clearable>
+                            <win-option v-for="item in statuss" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
                                 <span style="float: left">{{ item.dicCode }}</span>
                                 <span>{{ "&nbsp;"+item.dicExplain }}</span>
-                            </win_option>
-                        </win_select>
-                    </win_form_item>
-                </win_col>
-            </win_row>
-            <win_row>
-                <win_col :span="spanWidth">
-                    <win_form_item label="备注" prop="summary" class="dialogItem">
-                        <win_input type="textarea" v-model="prodAssetUnitDetail.summary" :rows="3" maxlength=255 placeholder="请输入内容">
-                        </win_input>
-                    </win_form_item>
-                </win_col>
-            </win_row>
+                            </win-option>
+                        </win-select>
+                    </win-form-item>
+                </win-col>
+            </win-row>
+            <win-row>
+                <win-col :span="spanWidth">
+                    <win-form-item label="备注" prop="summary" class="dialogItem">
+                        <win-input type="textarea" v-model="prodAssetUnitDetail.summary" :rows="3" maxlength=255 placeholder="请输入内容">
+                        </win-input>
+                    </win-form-item>
+                </win-col>
+            </win-row>
 
-        </win_form>
+        </win-form>
         <div slot="footer" class="dialog-footer" v-show="buttonShow">
-            <win_button @click="dialogCancel">取消</win_button>
-            <win_button type="primary" :loading="createLoading" @click="submitDialog('rulesForm')">{{dialogSumbitText}}</win_button>
+            <win-button @click="dialogCancel">取消</win-button>
+            <win-button type="primary" :loading="createLoading" @click="submitDialog('rulesForm')">{{dialogSumbitText}}</win-button>
         </div>
-    </win_dialog>
+    </win-fdialog>
 </template>
 <script lang="ts">
 import ProdAssetUnitDialogController from "../controller/ProdAssetUnitDialogController";

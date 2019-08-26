@@ -5,43 +5,43 @@
                 <li class="liGroup">
                     <div class="fl">
                         <span>交易方向</span>
-                        <win_select clearable filterable v-model="directionReqVO.transactionDirection" placeholder="请选择">
-                            <win_option v-for="item in directionCodes" :key="item.transactionDirection" :label="item.transactionDirection+'-'+item.transactionDirectionName" :value="item.transactionDirection"></win_option>
-                        </win_select>
+                        <win-select clearable filterable v-model="directionReqVO.transactionDirection" placeholder="请选择">
+                            <win-option v-for="item in directionCodes" :key="item.transactionDirection" :label="item.transactionDirection+'-'+item.transactionDirectionName" :value="item.transactionDirection"></win-option>
+                        </win-select>
                     </div>
                     <div class="fr">
                         <span>证券方向</span>
-                        <win_select clearable v-model="directionReqVO.securityPath" placeholder="请选择">
-                            <win_option v-for="item in securityTypeDic.securityPathDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></win_option>
-                        </win_select>
+                        <win-select clearable v-model="directionReqVO.securityPath" placeholder="请选择">
+                            <win-option v-for="item in securityTypeDic.securityPathDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></win-option>
+                        </win-select>
                     </div>
                     <div class="fr">
                         <span>资金方向</span>
-                        <win_select clearable v-model="directionReqVO.fundsPath" placeholder="请选择">
-                            <win_option v-for="item in securityTypeDic.fundsPathDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></win_option>
-                        </win_select>
+                        <win-select clearable v-model="directionReqVO.fundsPath" placeholder="请选择">
+                            <win-option v-for="item in securityTypeDic.fundsPathDic" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode"></win-option>
+                        </win-select>
                     </div>
                     <div class="fr botton_group">
-                        <win_button style="width: 90px;" type="primary" icon="el-icon-search" @click="queryTransactionDirection">查询</win_button>
-                        <win_button style="width: 90px;" icon="el-icon-refresh" @click="reset">重置</win_button>
+                        <win-button style="width: 90px;" type="primary" icon="el-icon-search" @click="queryTransactionDirection">查询</win-button>
+                        <win-button style="width: 90px;" icon="el-icon-refresh" @click="reset">重置</win-button>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="ps2">
-            <win_table :max-height="520" :data="pageVO.list" style="width: 100%" :showSelection="false">
-                <win_table_column prop="marketCode" :formatter="marketFormatter" label="交易市场" width="157"></win_table_column>
-                <win_table_column prop="transactionDirection" label="交易方向" width="150"></win_table_column>
-                <win_table_column prop="transactionDirectionName" label="交易方向名称" width="180"></win_table_column>
-                <win_table_column prop="declarePath" :formatter="declarePatFormatter" label="申报方向" width="180"></win_table_column>
-                <win_table_column prop="fundsPath" :formatter="fundsPathFormatter" label="资金方向" width="180"></win_table_column>
-                <win_table_column prop="securityPath" :formatter="securityPathFormatter" label="证券方向" width="180"></win_table_column>
-                <win_table_column prop="effectSecurity" :formatter="effectSecurityFormatter" label="影响证券" width="180"></win_table_column>
-                <win_table_column prop="relationChangePath" :formatter="relationChangePathFormatter" label="关联变动方向" width="180"></win_table_column>
-                <win_table_column prop="relationEffectSecurity" :formatter="relationEffectSecurityFormatter" label="关联影响证券" width="150"></win_table_column>
-            </win_table>
+            <win-table :max-height="520" :data="pageVO.list" style="width: 100%" :showSelection="false">
+                <win-table-column prop="marketCode" :formatter="marketFormatter" label="交易市场" width="157"></win-table-column>
+                <win-table-column prop="transactionDirection" label="交易方向" width="150"></win-table-column>
+                <win-table-column prop="transactionDirectionName" label="交易方向名称" width="180"></win-table-column>
+                <win-table-column prop="declarePath" :formatter="declarePatFormatter" label="申报方向" width="180"></win-table-column>
+                <win-table-column prop="fundsPath" :formatter="fundsPathFormatter" label="资金方向" width="180"></win-table-column>
+                <win-table-column prop="securityPath" :formatter="securityPathFormatter" label="证券方向" width="180"></win-table-column>
+                <win-table-column prop="effectSecurity" :formatter="effectSecurityFormatter" label="影响证券" width="180"></win-table-column>
+                <win-table-column prop="relationChangePath" :formatter="relationChangePathFormatter" label="关联变动方向" width="180"></win-table-column>
+                <win-table-column prop="relationEffectSecurity" :formatter="relationEffectSecurityFormatter" label="关联影响证券" width="150"></win-table-column>
+            </win-table>
             <!-- 分页组件 -->
-            <win_pagination v-bind:child-msg="pageVO" @callFather="pageQuery"></win_pagination>
+            <win-pagination v-bind:child-msg="pageVO" @callFather="pageQuery"></win-pagination>
         </div>
     </div>
 </template>

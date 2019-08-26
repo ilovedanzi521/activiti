@@ -12,31 +12,31 @@
         <!-- <div class="contanierTop8px">
             <span class="input_group_wrap">
                 <label class="input_group_wrap_label">产品</label>
-                <win_input type="text" class="input_group_wrap_input" />
+                <win-input type="text" class="input_group_wrap_input" />
             </span>
             <span class="input_group_wrap">
                 <label class="input_group_wrap_label">组合</label>
-                <win_input type="text" class="input_group_wrap_input" />
+                <win-input type="text" class="input_group_wrap_input" />
             </span>
             <span class="input_group_wrap">
                 <label class="input_group_wrap_label">证券</label>
-                <win_input type="text" class="input_group_wrap_input" />
+                <win-input type="text" class="input_group_wrap_input" />
             </span>
             <span class="input_group_wrap">
                 <label class="input_group_wrap_label">股东代码</label>
-                <win_input type="text" class="input_group_wrap_input" />
+                <win-input type="text" class="input_group_wrap_input" />
             </span>
             <span class="input_group_wrap">
                 <label class="input_group_wrap_label">席位</label>
-                <win_input type="text" class="input_group_wrap_input" />
+                <win-input type="text" class="input_group_wrap_input" />
             </span>
             <span class="input_group_more">
                 <span>更多查询</span>
                 <em class="el-icon-caret-bottom"></em>
             </span>
             <span class="input_group_botton">
-                <win_button>查询</win_button>
-                <win_button>重置</win_button>
+                <win-button>查询</win-button>
+                <win-button>重置</win-button>
             </span>
         </div>
         <div class="contanierTop8px">
@@ -53,14 +53,14 @@
             </div>
         </div>
         <div class="contanierTop8px">
-            <win_table style="width: 100%">
-                <win_table_column prop="用户编码" label="用户编码" width="120"></win_table_column>
-                <win_table_column prop="用户名" label="用户名" width="120"></win_table_column>
-                <win_table_column prop="联系方式" label="联系方式" width="140"></win_table_column>
-                <win_table_column prop="手机号" label="手机号" width="140"></win_table_column>
-                <win_table_column prop="邮箱" label="邮箱" width="180"></win_table_column>
-                <win_table_column prop="所属部门" label="所属部门" width="160"></win_table_column>
-            </win_table>
+            <win-table style="width: 100%">
+                <win-table-column prop="用户编码" label="用户编码" width="120"></win-table-column>
+                <win-table-column prop="用户名" label="用户名" width="120"></win-table-column>
+                <win-table-column prop="联系方式" label="联系方式" width="140"></win-table-column>
+                <win-table-column prop="手机号" label="手机号" width="140"></win-table-column>
+                <win-table-column prop="邮箱" label="邮箱" width="180"></win-table-column>
+                <win-table-column prop="所属部门" label="所属部门" width="160"></win-table-column>
+            </win-table>
         </div> -->
     </div>
 </template>
@@ -70,23 +70,23 @@ import Vue from "vue";
 
 import Panels from "./addPanel.vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_tabs, win_tab } from "@win-frond-frameworks/biz-common";
-import { win_select, win_option } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinTabs, WinTabpane } from "@win-frond-frameworks/biz-common";
+import { WinSelect, WinOption } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
 import addPanel from "./addPanel.vue";
 
 @Component({
     components: {
         addPanel,
-        win_button,
-        win_tabs,
-        win_select,
-        win_input,
-        win_table
+        WinButton,
+        WinTabs,
+        WinSelect,
+        WinInput,
+        WinTable
     }
 })
 export default class Index extends Vue {

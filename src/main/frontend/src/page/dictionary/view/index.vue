@@ -3,23 +3,23 @@
         <div class="content-fr">
             <!-- <span class="zdx">字典项</span> -->
             <!-- <div :style="{ float: 'right' }">
-                <win_input type="text" placeholder="请输入查询条件" maxlength="64" v-model="dicReqVO.commonParam"></win_input>
-                <win_button type="primary" @click="search()">搜索</win_button>
+                <win-input type="text" placeholder="请输入查询条件" maxlength="64" v-model="dicReqVO.commonParam"></win-input>
+                <win-button type="primary" @click="search()">搜索</win-button>
             </div> -->
             <div class="search-contanier">
-                <win_input type="text" placeholder="请输入查询条件" maxlength="64" v-model="dicReqVO.commonParam" @input="search()"></win_input>
+                <win-input type="text" placeholder="请输入查询条件" maxlength="64" v-model="dicReqVO.commonParam" @input="search()"></win-input>
                 <!-- <lable class="add-botton">
                     <i class="el-icon-plus"></i>
                     <label>新增字典项</label>
                 </lable> -->
             </div>
             <div class="content-fr-warp">
-                <win_table :data="dicList" ref="dicTable" stripe :showSelection="false" max-height="640" :style="{'width': '100%'}" @cell-click="handleDicRow">
-                    <win_table_column prop="dicCode" :min-width="220" label="字典项编码" sortable></win_table_column>
-                    <win_table_column prop="dicExplain" :min-width="240" label="字典项说明" sortable></win_table_column>
-                </win_table>
+                <win-table :data="dicList" ref="dicTable" stripe :showSelection="false" max-height="640" :style="{'width': '100%'}" @cell-click="handleDicRow">
+                    <win-table-column prop="dicCode" :min-width="220" label="字典项编码" sortable></win-table-column>
+                    <win-table-column prop="dicExplain" :min-width="240" label="字典项说明" sortable></win-table-column>
+                </win-table>
                 <div class="paginatio-contanier">
-                    <win_pagination name="dic" :isEasy="true" v-bind:childMsg="dicPageVO" @callFather="dicPageQuery"></win_pagination>
+                    <win-pagination name="dic" :isEasy="true" v-bind:childMsg="dicPageVO" @callFather="dicPageQuery"></win-pagination>
                 </div>
             </div>
         </div>
@@ -33,16 +33,16 @@
             </div>
             <!-- <span class="zdzz">字典子项</span> -->
             <div class="content-fl-warp">
-                <win_table :data="dicSubList" :highlight-current-row="true" :showSelection="false" max-height="640" :style="{'width': '100%'}">
-                    <win_table_column prop="dicCode" :min-width="100" label="字典子项编码" sortable></win_table_column>
-                    <win_table_column prop="dicExplain" :min-width="150" label="字典子项说明"></win_table_column>
-                    <win_table_column prop="param1" :min-width="150" label="字典子项参数1"></win_table_column>
-                    <win_table_column prop="param2" :min-width="150" label="字典子项参数2"></win_table_column>
-                    <win_table_column prop="param3" :min-width="150" label="字典子项参数3"></win_table_column>
-                    <win_table_column prop="paramExplain" :min-width="155" label="字典子项参数说明"></win_table_column>
-                </win_table>
+                <win-table :data="dicSubList" :highlight-current-row="true" :showSelection="false" max-height="640" :style="{'width': '100%'}">
+                    <win-table-column prop="dicCode" :min-width="100" label="字典子项编码" sortable></win-table-column>
+                    <win-table-column prop="dicExplain" :min-width="150" label="字典子项说明"></win-table-column>
+                    <win-table-column prop="param1" :min-width="150" label="字典子项参数1"></win-table-column>
+                    <win-table-column prop="param2" :min-width="150" label="字典子项参数2"></win-table-column>
+                    <win-table-column prop="param3" :min-width="150" label="字典子项参数3"></win-table-column>
+                    <win-table-column prop="paramExplain" :min-width="155" label="字典子项参数说明"></win-table-column>
+                </win-table>
                 <div class="paginatio-contanier">
-                    <win_pagination name="subDic" v-bind:childMsg="dicSubPageVO" @callFather="dicSubPageQuery"></win_pagination>
+                    <win-pagination name="subDic" v-bind:childMsg="dicSubPageVO" @callFather="dicSubPageQuery"></win-pagination>
                 </div>
             </div>
         </div>

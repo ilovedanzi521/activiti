@@ -1,56 +1,56 @@
 <template>
     <div class="calendar">
-        <win_dialog :show-close="false" :visible.sync="dialogFormVisible" top="0px" custom-class="dialog" :close-on-click-modal="false" center width="70%" ref="dialog" @close="close">
+        <win-fdialog :show-close="false" :visible.sync="dialogFormVisible" top="0px" custom-class="dialog" :close-on-click-modal="false" center width="70%" ref="dialog" @close="close">
             <template #title>
-                <win_row type="flex" align="middle" justify="space-between">
-                    <win_col :span="6">
+                <win-row type="flex" align="middle" justify="space-between">
+                    <win-col :span="6">
                         <span class="jyr">{{titleName}}</span>
-                    </win_col>
-                    <win_col :span="10" style="text-align:right;">
+                    </win-col>
+                    <win-col :span="10" style="text-align:right;">
                         <div style="display:inline-block;text-align:right;margin-right:20px;">
                             <i class="el-icon-arrow-left" @click="subYear" />
                             <span class="year">年份</span>
-                            <win_select class="select" v-model="year" placeholder="请选择" size="mini">
+                            <win-select class="select" v-model="year" placeholder="请选择" size="mini">
                                 <el-option v-for="item in options" :key="item.year" :label="item.label" :value="item.year"></el-option>
-                            </win_select>
+                            </win-select>
                             <i class="el-icon-arrow-right" @click="addYear" />
                         </div>
                         <i class="el-icon-close" @click="handleClose"></i>
-                    </win_col>
-                </win_row>
+                    </win-col>
+                </win-row>
             </template>
-            <win_row style="height:60px" type="flex" align="middle">
-                <win_col v-show="checkFlag" style="text-align:left">
+            <win-row style="height:60px" type="flex" align="middle">
+                <win-col v-show="checkFlag" style="text-align:left">
                     <span class="radius"></span>
                     <span class="radius-title">交易/交收日</span>
                     <span class="radius se"></span>
                     <span class="radius-title">非交易/交收日</span>
                     <span v-show="hongkongflag" class="radius only"></span>
                     <span v-show="hongkongflag" class="radius-title">仅交易日</span>
-                </win_col>
-                <win_col v-show="!checkFlag" style="text-align:left">
-                    <win_button size="mini" :class="['button',buttonIndex===1?'button-actived':'']" @click="setTradeDay(1)">置交易/交收日</win_button>
-                    <win_button size="mini" :class="['button',buttonIndex===0?'button-actived':'']" @click="setTradeDay(0)">置非交易/交收日</win_button>
-                    <win_button v-show="hongkongflag" size="mini" :class="['button',buttonIndex===2?'button-actived':'']" @click="setTradeDay(2)">置仅交易日</win_button>
-                    <win_checkbox v-model="weekendFlag" :disabled="!buttonFlag" class="checkbox">双休日批量设置</win_checkbox>
-                </win_col>
-                <win_col v-show="buttonFlag" style="text-align:right">
-                    <win_button type="primary" @click="confirm">确认</win_button>
-                    <win_button type="primary" @click="cancel">取消</win_button>
-                </win_col>
-            </win_row>
+                </win-col>
+                <win-col v-show="!checkFlag" style="text-align:left">
+                    <win-button size="mini" :class="['button',buttonIndex===1?'button-actived':'']" @click="setTradeDay(1)">置交易/交收日</win-button>
+                    <win-button size="mini" :class="['button',buttonIndex===0?'button-actived':'']" @click="setTradeDay(0)">置非交易/交收日</win-button>
+                    <win-button v-show="hongkongflag" size="mini" :class="['button',buttonIndex===2?'button-actived':'']" @click="setTradeDay(2)">置仅交易日</win-button>
+                    <win-checkbox v-model="weekendFlag" :disabled="!buttonFlag" class="checkbox">双休日批量设置</win-checkbox>
+                </win-col>
+                <win-col v-show="buttonFlag" style="text-align:right">
+                    <win-button type="primary" @click="confirm">确认</win-button>
+                    <win-button type="primary" @click="cancel">取消</win-button>
+                </win-col>
+            </win-row>
 
             <!-- agoDayHide='1517483961' -->
             <!-- futureDayHide="1526054400" -->
             <div>
-                <win_row :gutter="5" class="calendar_row" v-for="(r,i) of 3" :key="r">
-                    <win_col :span="6" v-for="c of 4" :key="c">
+                <win-row :gutter="5" class="calendar_row" v-for="(r,i) of 3" :key="r">
+                    <win-col :span="6" v-for="c of 4" :key="c">
                         <Calendar ref="Calendar" :markDateMore="days" :markDate="chooseDays" :weekendFlag="weekendFlag" :onCheckDayHide="!buttonFlag" agoDayHide="1530115221" v-on:weekendays="getWeekendays" v-on:choseDay="clickDay"
                             :year="new Date(`${year}-${i*4+c}`)"></Calendar>
-                    </win_col>
-                </win_row>
+                    </win-col>
+                </win-row>
             </div>
-        </win_dialog>
+        </win-fdialog>
     </div>
 </template>
 <script lang="ts">

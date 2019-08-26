@@ -6,33 +6,33 @@ import { WinResponseData } from "../../common/vo/BaseVO";
 import BaseController from "../../common/controller/BaseController";
 import userService from "../service/userService";
 import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_select, win_option } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
-import { win_tab, win_tabs } from "@win-frond-frameworks/biz-common";
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinSelect, WinOption } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
+import { WinTabPane, WinTabs } from "@win-frond-frameworks/biz-common";
 import {
-    win_checkbox,
-    win_checkboxButton,
-    win_checkboxGroup
+    WinCheckbox,
+    WinCheckboxButton,
+    WinCheckboxGroup
 } from "@win-frond-frameworks/biz-common";
 @Component({
     components: {
-        win_select,
-        win_option,
-        win_input,
-        win_form,
-        win_form_item,
+        WinSelect,
+        WinOption,
+        WinInput,
+        WinForm,
+        WinFormItem,
         win_fdialog,
-        win_button,
-        win_table,
-        win_table_column,
-        win_checkbox,
-        win_checkboxButton,
-        win_checkboxGroup,
-        win_tab,
-        win_tabs
+        WinButton,
+        WinTable,
+        WinTableColumn,
+        WinCheckbox,
+        WinCheckboxButton,
+        WinCheckboxGroup,
+        WinTabPane,
+        WinTabs
     }
 })
 export default class RoleController extends Vue {

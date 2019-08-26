@@ -5,8 +5,8 @@
                 <input type="text" placeholder="输入进行模糊搜索" v-model="filterText" />
             </div>
             <div class="tree-wrapp">
-                <win_tree :data="userReqVo.companArray" node-key="id" :accordion="true" :default-expanded-keys="compayArray" :highlight-current="true" @node-click="handleNodeClick" :filter-node-method="filterNode" ref="tree2" v-tree>
-                </win_tree>
+                <win-tree :data="userReqVo.companArray" node-key="id" :accordion="true" :default-expanded-keys="compayArray" :highlight-current="true" @node-click="handleNodeClick" :filter-node-method="filterNode" ref="tree2" v-tree>
+                </win-tree>
             </div>
         </div>
         <div class="table-content">

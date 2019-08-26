@@ -1,61 +1,61 @@
 <template>
     <div>
-        <win_fdialog title="修改部门角色" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="840px" v-win_dialogDrag>
-            <win_form :inline="true" :model="role" :rules="rules" ref="role">
+        <win-fdialog title="修改部门角色" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="840px" v-win-dialogDrag>
+            <win-form :inline="true" :model="role" :rules="rules" ref="role">
                 <div>
-                    <win_form_item label="所属公司">
-                        <win_input :placeholder="userReqVo.company.companyName" :disabled="true"></win_input>
-                    </win_form_item>
-                    <win_form_item label="所属部门">
-                        <win_input :placeholder="userReqVo.department.departmentname" :disabled="true"></win_input>
-                    </win_form_item>
+                    <win-form-item label="所属公司">
+                        <win-input :placeholder="userReqVo.company.companyName" :disabled="true"></win-input>
+                    </win-form-item>
+                    <win-form-item label="所属部门">
+                        <win-input :placeholder="userReqVo.department.departmentname" :disabled="true"></win-input>
+                    </win-form-item>
                 </div>
                 <div>
-                    <win_form_item label="角色编码">
-                        <win_input placeholder="角色编码" v-model="userReqVo.role.roleCode" :disabled="true"></win_input>
-                    </win_form_item>
-                    <win_form_item label="角色名称" prop="role">
-                        <win_input placeholder="角色名称" v-model="role.role"></win_input>
-                    </win_form_item>
+                    <win-form-item label="角色编码">
+                        <win-input placeholder="角色编码" v-model="userReqVo.role.roleCode" :disabled="true"></win-input>
+                    </win-form-item>
+                    <win-form-item label="角色名称" prop="role">
+                        <win-input placeholder="角色名称" v-model="role.role"></win-input>
+                    </win-form-item>
                 </div>
                 <div>
-                    <win_form_item label="角色类型">
-                        <win_select v-model="roleType" placeholder="请选择角色类型">
-                            <win_option v-for="(item,index) in userReqVo.role.roleType" :key="item.id" :value="item.id" :label="item.name" @click.native="changeRoleType(item,index)"></win_option>
-                        </win_select>
-                    </win_form_item>
-                    <win_form_item label="角色状态">
-                        <win_input placeholder="角色状态" v-model="userReqVo.role.roleStatus[0]" :disabled="true"></win_input>
-                    </win_form_item>
+                    <win-form-item label="角色类型">
+                        <win-select v-model="roleType" placeholder="请选择角色类型">
+                            <win-option v-for="(item,index) in userReqVo.role.roleType" :key="item.id" :value="item.id" :label="item.name" @click.native="changeRoleType(item,index)"></win-option>
+                        </win-select>
+                    </win-form-item>
+                    <win-form-item label="角色状态">
+                        <win-input placeholder="角色状态" v-model="userReqVo.role.roleStatus[0]" :disabled="true"></win-input>
+                    </win-form-item>
                 </div>
                 <div>
-                    <win_form_item label="互斥角色">
-                        <win_select v-model="excludeRole" clearable placeholder="请选择互斥角色">
-                            <win_option v-for="item in userReqVo.company.companyRoleArray" :key="item.mutexRoleId" :value="item.mutexRoleId" :label="item.roleName" @click.native="changeMuteRole(item,index)"></win_option>
-                        </win_select>
-                    </win_form_item>
-                    <win_form_item label="复制权限">
-                        <win_select v-model="copyRole" clearable placeholder="请选择需要复制的角色">
-                            <win_option v-for="item in userReqVo.company.companyRoleArray" :key="item.mutexRoleId" :value="item.roleName"></win_option>
-                        </win_select>
-                    </win_form_item>
+                    <win-form-item label="互斥角色">
+                        <win-select v-model="excludeRole" clearable placeholder="请选择互斥角色">
+                            <win-option v-for="item in userReqVo.company.companyRoleArray" :key="item.mutexRoleId" :value="item.mutexRoleId" :label="item.roleName" @click.native="changeMuteRole(item,index)"></win-option>
+                        </win-select>
+                    </win-form-item>
+                    <win-form-item label="复制权限">
+                        <win-select v-model="copyRole" clearable placeholder="请选择需要复制的角色">
+                            <win-option v-for="item in userReqVo.company.companyRoleArray" :key="item.mutexRoleId" :value="item.roleName"></win-option>
+                        </win-select>
+                    </win-form-item>
                 </div>
                 <div>
-                    <win_form_item label="角色描述">
-                        <win_input placeholder="角色描述" v-model="userReqVo.role.roleInfo" type="textarea" :rows="2"></win_input>
-                    </win_form_item>
+                    <win-form-item label="角色描述">
+                        <win-input placeholder="角色描述" v-model="userReqVo.role.roleInfo" type="textarea" :rows="2"></win-input>
+                    </win-form-item>
                 </div>
                 <div class="role-jurisdiction">
                     <span class="text">权限分配</span>
                     <i class="el-icon-edit-outline"></i>
                     <span @click="handleAddJurisdiction" class="jurisdiction">功能权限</span>
                 </div>
-            </win_form>
+            </win-form>
             <div slot="footer" class="dialog-footer">
-                <win_button @click="close">取 消</win_button>
-                <win_button type="primary" @click="editRoleRightoK('role')">确 认</win_button>
+                <win-button @click="close">取 消</win-button>
+                <win-button type="primary" @click="editRoleRightoK('role')">确 认</win-button>
             </div>
-        </win_fdialog>
+        </win-fdialog>
         <RoleRight @closeRole="closeRoleRight" @editRoleRight="editRoleRight" :userReqVo="userReqVo" v-if="isRoleRightOpen" :roleId="userReqVo.role.roleId"></RoleRight>
     </div>
 </template>
@@ -63,40 +63,40 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
 import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_tabs, win_tab } from "@win-frond-frameworks/biz-common";
-import { win_select, win_option } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinTabs, WinTabpane } from "@win-frond-frameworks/biz-common";
+import { WinSelect, WinOption } from "@win-frond-frameworks/biz-common";
 import userService from "../service/userService";
-import { win_input } from "@win-frond-frameworks/biz-common";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
 import RoleRight from "../view/eRoleRight.vue";
 import BaseController from "../../common/controller/BaseController";
 import {
-    win_checkbox,
-    win_checkboxButton,
-    win_checkboxGroup
+    WinCheckbox,
+    WinCheckboxButton,
+    WinCheckboxGroup
 } from "@win-frond-frameworks/biz-common";
 import { UserReqVO, RoleClass } from "../vo/UserVO";
 @Component({
     components: {
-        win_tabs,
-        win_tab,
-        win_select,
-        win_option,
-        win_input,
-        win_form,
-        win_form_item,
-        win_fdialog,
-        win_button,
-        win_table,
-        win_table_column,
-        win_checkbox,
-        win_checkboxButton,
-        win_checkboxGroup,
+        WinTabs,
+        WinTabpane,
+        WinSelect,
+        WinOption,
+        WinInput,
+        WinForm,
+        WinFormItem,
+        WinFdialog,
+        WinButton,
+        WinTable,
+        WinTableColumn,
+        WinCheckbox,
+        WinCheckboxButton,
+        WinCheckboxGroup,
         RoleRight
     }
 })

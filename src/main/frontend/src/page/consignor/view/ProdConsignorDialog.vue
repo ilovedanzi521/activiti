@@ -1,55 +1,55 @@
 <template>
     <div class="ProdConsignorDialog">
         <!--产品详情对话框:Begin -->
-        <win_dialog :title="consignorDialogControl.myTitle" :visible.sync="consignorDialogControl.dialogFormVisible" :close-on-press-escape="false" :close-on-click-modal="false" width="805px" :before-close="handleClose">
+        <win-fdialog :title="consignorDialogControl.myTitle" :visible.sync="consignorDialogControl.dialogFormVisible" :close-on-press-escape="false" :close-on-click-modal="false" width="805px" :before-close="handleClose">
             <!--产品详情表单:Begin -->
-            <win_form :model="form" ref="ruleForm" :rules="consignorDialogRules" :disabled="consignorDialogControl.allDisabled" label-width="116px" :inline="true">
+            <win-form :model="form" ref="ruleForm" :rules="consignorDialogRules" :disabled="consignorDialogControl.allDisabled" label-width="116px" :inline="true">
 
-                <win_form_item label="委托人名称" prop="name">
-                    <win_input v-model="form.name" :rules="['number','word','chinese']" maxlength=50></win_input>
-                </win_form_item>
-                <win_form_item label="委托人简称" prop="shortName">
-                    <win_input v-model="form.shortName" :rules="['number','word','chinese']" maxlength=20></win_input>
-                </win_form_item>
-                <win_form_item label="公司类型" prop="type">
-                    <win_select v-model="form.type" clearable placeholder="请选择">
-                        <win_option v-for="item in consignorDicEntity['type']" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
+                <win-form-item label="委托人名称" prop="name">
+                    <win-input v-model="form.name" :rules="['number','word','chinese']" maxlength=50></win-input>
+                </win-form-item>
+                <win-form-item label="委托人简称" prop="shortName">
+                    <win-input v-model="form.shortName" :rules="['number','word','chinese']" maxlength=20></win-input>
+                </win-form-item>
+                <win-form-item label="公司类型" prop="type">
+                    <win-select v-model="form.type" clearable placeholder="请选择">
+                        <win-option v-for="item in consignorDicEntity['type']" :key="item.dicCode" :label="item.dicExplain" :value="item.dicCode">
                             <span style="float: left">{{ item.dicCode }}</span>
                             <span>{{ "&nbsp;"+item.dicExplain }}</span>
-                        </win_option>
-                    </win_select>
-                </win_form_item>
+                        </win-option>
+                    </win-select>
+                </win-form-item>
 
-                <win_form_item label="联系人">
-                    <win_input v-model="form.linkMan" maxlength=50></win_input>
-                </win_form_item>
+                <win-form-item label="联系人">
+                    <win-input v-model="form.linkMan" maxlength=50></win-input>
+                </win-form-item>
 
-                <win_form_item label="电话号码">
-                    <win_input v-model="form.telNo" :rules="['number',/-/]" maxlength=50></win_input>
-                </win_form_item>
+                <win-form-item label="电话号码">
+                    <win-input v-model="form.telNo" :rules="['number',/-/]" maxlength=50></win-input>
+                </win-form-item>
 
-                <win_form_item label=" 手机号码">
-                    <win_input v-model="form.mobile" :rules="['number',/-/]" maxlength=11></win_input>
-                </win_form_item>
+                <win-form-item label=" 手机号码">
+                    <win-input v-model="form.mobile" :rules="['number',/-/]" maxlength=11></win-input>
+                </win-form-item>
 
-                <win_form_item label="联系地址">
-                    <win_input v-model="form.address" maxlength=100></win_input>
-                </win_form_item>
+                <win-form-item label="联系地址">
+                    <win-input v-model="form.address" maxlength=100></win-input>
+                </win-form-item>
 
-                <win_form_item label="备注">
-                    <win_input type="textarea" v-model="form.summary" :rows="3" maxlength=255 placeholder="请输入内容">
-                    </win_input>
-                </win_form_item>
+                <win-form-item label="备注">
+                    <win-input type="textarea" v-model="form.summary" :rows="3" maxlength=255 placeholder="请输入内容">
+                    </win-input>
+                </win-form-item>
 
-            </win_form>
+            </win-form>
             <!--产品详情表单:End -->
             <!--产品详情提交:Begin -->
             <div slot="footer" class="dialog-footer" v-show="consignorDialogControl.isSubmitShow">
-                <win_button @click="undoForm('ruleForm')">取 消</win_button>
-                <win_button type="primary" @click="dialogFormSubmit('ruleForm')">{{consignorDialogControl.dialogSumbitText}}</win_button>
+                <win-button @click="undoForm('ruleForm')">取 消</win-button>
+                <win-button type="primary" @click="dialogFormSubmit('ruleForm')">{{consignorDialogControl.dialogSumbitText}}</win-button>
             </div>
             <!--产品详情提交:End -->
-        </win_dialog>
+        </win-fdialog>
         <!--产品详情对话框:End -->
     </div>
 </template>

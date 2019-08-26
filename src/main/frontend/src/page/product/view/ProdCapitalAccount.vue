@@ -7,27 +7,27 @@
     </div>
     <!-- 资金账户列表Table begin-->
     <div style="margin-top:5px;">
-      <win_table :data="pageVO.list" :showSelection="false" :fit="false" @cell-dblclick="dblclick" max-height="100px" highlight-current-row v-loading="loading" element-loading-text="拼命加载中...">
-        <win_table_column prop="assetUnitName" label="所属资产单元" width="150"></win_table_column>
-        <win_table_column prop="accountType" label="资金账户类型" width="150" :formatter="formatDic"></win_table_column>
-        <win_table_column prop="accountCode" label="资金账号" width="150"></win_table_column>
-        <win_table_column prop="accountName" label="资金账户名称" width="150"></win_table_column>
-        <win_table_column prop="brokerName" label="券商名称" width="150"></win_table_column>
-        <win_table_column prop="currencyCode" label="账户币种" width="100" :formatter="formatDic"></win_table_column>
-        <win_table_column prop="accountStatus" label="资金账户状态" width="180" :formatter="formatDic"></win_table_column>
-        <win_table_column prop="createUserId" label="操作人" width="150" :formatter="formatDic"></win_table_column>
-        <win_table_column prop="createTime" label="操作时间" width="150" :formatter="formatDic"></win_table_column>
-        <win_table_column width="200" label="操作">
+      <win-table :data="pageVO.list" :showSelection="false" :fit="false" @cell-dblclick="dblclick" max-height="100px" highlight-current-row v-loading="loading" element-loading-text="拼命加载中...">
+        <win-table-column prop="assetUnitName" label="所属资产单元" width="150"></win-table-column>
+        <win-table-column prop="accountType" label="资金账户类型" width="150" :formatter="formatDic"></win-table-column>
+        <win-table-column prop="accountCode" label="资金账号" width="150"></win-table-column>
+        <win-table-column prop="accountName" label="资金账户名称" width="150"></win-table-column>
+        <win-table-column prop="brokerName" label="券商名称" width="150"></win-table-column>
+        <win-table-column prop="currencyCode" label="账户币种" width="100" :formatter="formatDic"></win-table-column>
+        <win-table-column prop="accountStatus" label="资金账户状态" width="180" :formatter="formatDic"></win-table-column>
+        <win-table-column prop="createUserId" label="操作人" width="150" :formatter="formatDic"></win-table-column>
+        <win-table-column prop="createTime" label="操作时间" width="150" :formatter="formatDic"></win-table-column>
+        <win-table-column width="200" label="操作">
           <template slot-scope="scope">
-            <win_button type="text" size="small" icon="el-icon-edit-outline" @click="operation(scope.row,'UPDATE')">修改</win_button>
-            <win_button type="text" size="small" style="color:#FF4D4D" icon="el-icon-delete" @click="operation(scope.row,'DELETE')">删除</win_button>
+            <win-button type="text" size="small" icon="el-icon-edit-outline" @click="operation(scope.row,'UPDATE')">修改</win-button>
+            <win-button type="text" size="small" style="color:#FF4D4D" icon="el-icon-delete" @click="operation(scope.row,'DELETE')">删除</win-button>
           </template>
-        </win_table_column>
-      </win_table>
+        </win-table-column>
+      </win-table>
     </div>
     <!-- 资金账户列表Table end-->
     <!--分页组件-->
-    <win_pagination v-bind:childMsg="pageVO" @callFather="pageQuery"></win_pagination>
+    <win-pagination v-bind:childMsg="pageVO" @callFather="pageQuery"></win-pagination>
     <!-- 创建/修改/删除 -->
     <ProdCapitalAccountDialog :toChildMsg="cardNumber" @bindSend="toFatherMsg" v-if="dialogVisible">
     </ProdCapitalAccountDialog>

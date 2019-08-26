@@ -1,68 +1,68 @@
 <template>
 
-    <win_fdialog title="新增角色用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win_dialogDrag>
-        <win_form :inline="true">
+    <win-fdialog title="新增角色用户" :visible.sync="dialogFormVisible" @close="close" :close-on-click-modal="false" width="460px" v-win-dialogDrag>
+        <win-form :inline="true">
             <div>
-                <win_form_item label="所属公司" prop="companyName">
-                    <win_input v-model="this.userReqVo.company.companyName" :disabled="true"></win_input>
-                </win_form_item>
+                <win-form-item label="所属公司" prop="companyName">
+                    <win-input v-model="this.userReqVo.company.companyName" :disabled="true"></win-input>
+                </win-form-item>
             </div>
 
             <div>
-                <win_form_item label="当前角色" prop="companyCode">
-                    <win_input v-model="this.userReqVo.role.role" :disabled="true"></win_input>
-                </win_form_item>
+                <win-form-item label="当前角色" prop="companyCode">
+                    <win-input v-model="this.userReqVo.role.role" :disabled="true"></win-input>
+                </win-form-item>
             </div>
             <div>
-                <win_form_item label="添加用户">
-                    <win_select v-model="userIds" multiple placeholder="请选择用户">
-                        <win_option v-for="item in   userReqVo.company.companyUserArray" :key="item.id" :value="item.userId" :label="item.userName"></win_option>
-                    </win_select>
-                </win_form_item>
+                <win-form-item label="添加用户">
+                    <win-select v-model="userIds" multiple placeholder="请选择用户">
+                        <win-option v-for="item in   userReqVo.company.companyUserArray" :key="item.id" :value="item.userId" :label="item.userName"></win-option>
+                    </win-select>
+                </win-form-item>
             </div>
-        </win_form>
+        </win-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
             <el-button type="primary" @click="handleAddRoleUser">确 认</el-button>
 
         </div>
-    </win_fdialog>
+    </win-fdialog>
 
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_tabs, win_tab } from "@win-frond-frameworks/biz-common";
-import { win_select, win_option } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinTabs, WinTabpane } from "@win-frond-frameworks/biz-common";
+import { WinSelect, WinOption } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
 import {
-    win_checkbox,
-    win_checkboxButton,
-    win_checkboxGroup
+    WinCheckbox,
+    WinCheckboxButton,
+    WinCheckboxGroup
 } from "@win-frond-frameworks/biz-common";
 // import { Company } from "../vo/UserVO";
 import { UserReqVO } from "../vo/UserVO";
 @Component({
     components: {
-        win_tabs,
-        win_tab,
-        win_select,
-        win_option,
-        win_input,
-        win_form,
-        win_form_item,
-        win_fdialog,
-        win_button,
-        win_table,
-        win_table_column,
-        win_checkbox,
-        win_checkboxButton,
-        win_checkboxGroup
+        WinTabs,
+        WinTabpane,
+        WinSelect,
+        WinOption,
+        WinInput,
+        WinForm,
+        WinFormItem,
+        WinFdialog,
+        WinButton,
+        WinTable,
+        WinTableColumn,
+        WinCheckbox,
+        WinCheckboxButton,
+        WinCheckboxGroup
     }
 })
 export default class FromDialog extends Vue {

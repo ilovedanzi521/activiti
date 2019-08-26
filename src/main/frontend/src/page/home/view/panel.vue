@@ -1,24 +1,24 @@
 <template>
     <div class="pannel-container">
         <!---tabs组件--->
-        <win_tabs v-model="activeName">
-            <win_tab label="消息提示组件" name="first">
+        <win-tabs v-model="activeName">
+            <win-tab-pane label="消息提示组件" name="first">
                 <div class="message">
-                    <win_button :plain="true" @click="open2">成功</win_button>
-                    <win_button :plain="true" @click="open3">警告</win_button>
-                    <win_button :plain="true" @click="open4">错误</win_button>
-                    <win_button :plain="true" @click="open1">正常</win_button>
+                    <win-button :plain="true" @click="open2">成功</win-button>
+                    <win-button :plain="true" @click="open3">警告</win-button>
+                    <win-button :plain="true" @click="open4">错误</win-button>
+                    <win-button :plain="true" @click="open1">正常</win-button>
                 </div>
-            </win_tab>
-            <win_tab label="消息弹出框组件" name="second">
+            </win-tab-pane>
+            <win-tab-pane label="消息弹出框组件" name="second">
                 <div class="message">
-                    <win_button :plain="true" @click="open5">成功</win_button>
-                    <win_button :plain="true" @click="open6">警告</win_button>
-                    <win_button :plain="true" @click="open7">错误</win_button>
-                    <win_button :plain="true" @click="open8">正常</win_button>
+                    <win-button :plain="true" @click="open5">成功</win-button>
+                    <win-button :plain="true" @click="open6">警告</win-button>
+                    <win-button :plain="true" @click="open7">错误</win-button>
+                    <win-button :plain="true" @click="open8">正常</win-button>
                 </div>
-            </win_tab>
-        </win_tabs>
+            </win-tab-pane>
+        </win-tabs>
 
         <!---formdialog组件--->
     </div>
@@ -27,22 +27,22 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { win_fdialog } from "@win-frond-frameworks/biz-common";
-import { win_button } from "@win-frond-frameworks/biz-common";
-import { win_dialog } from "@win-frond-frameworks/biz-common";
-import { win_form, win_form_item } from "@win-frond-frameworks/biz-common";
-import { win_tabs, win_tab } from "@win-frond-frameworks/biz-common";
-import { win_select, win_option } from "@win-frond-frameworks/biz-common";
-import { win_input } from "@win-frond-frameworks/biz-common";
-import { win_table, win_table_column } from "@win-frond-frameworks/biz-common";
-import { win_pagination } from "@win-frond-frameworks/biz-common";
-import { win_switch } from "@win-frond-frameworks/biz-common";
-import { win_tree } from "@win-frond-frameworks/biz-common";
-import { win_menu, win_menu_item } from "@win-frond-frameworks/biz-common";
+
+import { WinButton } from "@win-frond-frameworks/biz-common";
+import { win-dialog } from "@win-frond-frameworks/biz-common";
+import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
+import { WinTabs, WinTabpane } from "@win-frond-frameworks/biz-common";
+import { WinSelect, WinOption } from "@win-frond-frameworks/biz-common";
+import { WinInput } from "@win-frond-frameworks/biz-common";
+import { WinTable, WinTableColumn } from "@win-frond-frameworks/biz-common";
+import { WinPagination } from "@win-frond-frameworks/biz-common";
+import { win-switch } from "@win-frond-frameworks/biz-common";
+import { win-tree } from "@win-frond-frameworks/biz-common";
+import { win-menu, win-menu-item } from "@win-frond-frameworks/biz-common";
 import {
-    win_checkbox,
-    win_checkboxButton,
-    win_checkboxGroup
+    WinCheckbox,
+    WinCheckboxButton,
+    WinCheckboxGroup
 } from "@win-frond-frameworks/biz-common";
 
 import {
@@ -60,26 +60,26 @@ import {
 
 @Component({
     components: {
-        win_tabs,
-        win_tab,
-        win_select,
-        win_option,
-        win_input,
-        win_form,
-        win_form_item,
-        win_fdialog,
-        win_dialog,
-        win_button,
-        win_table,
-        win_table_column,
-        win_pagination,
-        win_switch,
-        win_tree,
-        win_checkbox,
-        win_checkboxButton,
-        win_checkboxGroup,
-        win_menu,
-        win_menu_item
+        WinTabs,
+        WinTabpane,
+        WinSelect,
+        WinOption,
+        WinInput,
+        WinForm,
+        WinFormItem,
+        WinFdialog,
+        win-dialog,
+        WinButton,
+        WinTable,
+        WinTableColumn,
+        WinPagination,
+        win-switch,
+        win-tree,
+        WinCheckbox,
+        WinCheckboxButton,
+        WinCheckboxGroup,
+        win-menu,
+        win-menu-item
     }
 })
 export default class Panel extends Vue {

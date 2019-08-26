@@ -1,7 +1,7 @@
 import { Component } from "vue-property-decorator";
 import BaseController from "../../common/controller/BaseController";
-import { win_tree } from "@win-frond-frameworks/biz-common";
-@Component({ components: { win_tree } })
+import { WinTree } from "@win-frond-frameworks/biz-common";
+@Component({ components: { WinTree } })
 export default class MarketController extends BaseController {
     mounted() {
         this.activeName = this.$route.name;

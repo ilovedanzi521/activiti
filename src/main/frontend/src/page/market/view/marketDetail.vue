@@ -3,15 +3,15 @@
         <div class="buttonGroup_contanier">
             <li v-if="modifyFlag">
                 <div class="fl">
-                    <win_button type="primary" @click="modify">修改</win_button>
+                    <win-button type="primary" @click="modify">修改</win-button>
                 </div>
             </li>
             <li v-if="!modifyFlag">
                 <div class="fl">
-                    <win_button type="primary" @click="update">确认</win_button>
+                    <win-button type="primary" @click="update">确认</win-button>
                 </div>
                 <div class="fr">
-                    <win_button type="primary" @click="cancel">取消</win_button>
+                    <win-button type="primary" @click="cancel">取消</win-button>
                 </div>
             </li>
         </div>
@@ -19,31 +19,31 @@
             <li>
                 <div class="fl">
                     <span>市场编码</span>
-                    <win_input v-model="details.marketCode" :disabled="true"></win_input>
+                    <win-input v-model="details.marketCode" :disabled="true"></win-input>
                 </div>
                 <div class="fr">
                     <span>交易日类型</span>
-                    <win_input v-model="details.tradeDayType" :disabled="true"></win_input>
+                    <win-input v-model="details.tradeDayType" :disabled="true"></win-input>
                 </div>
             </li>
             <li>
                 <div class="fl">
                     <span>市场名称</span>
-                    <win_input v-model="details.marketName" :disabled="true"></win_input>
+                    <win-input v-model="details.marketName" :disabled="true"></win-input>
                 </div>
                 <div class="fr">
                     <span>市场全称</span>
-                    <win_input v-model="details.marketFullName" :disabled="true"></win_input>
+                    <win-input v-model="details.marketFullName" :disabled="true"></win-input>
                 </div>
             </li>
             <li>
                 <div class="fl">
                     <span>国家/地区</span>
-                    <win_input v-model="details.country" :disabled="true"></win_input>
+                    <win-input v-model="details.country" :disabled="true"></win-input>
                 </div>
                 <div class="fr">
                     <span>时区</span>
-                    <win_input v-model="details.timeZone" :disabled="true"></win_input>
+                    <win-input v-model="details.timeZone" :disabled="true"></win-input>
                 </div>
             </li>
             <li>
@@ -79,7 +79,7 @@
             <li>
                 <div>
                     <span class="beizhu">备注</span>
-                    <!-- <win_input v-model="details.remark" :disabled="modifyFlag" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></win_input> -->
+                    <!-- <win-input v-model="details.remark" :disabled="modifyFlag" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></win-input> -->
                     <textarea cols="2" rows="5" v-model="details.remark" :disabled="modifyFlag"></textarea>
                 </div>
             </li>
