@@ -1,5 +1,7 @@
 package com.win.dfas.bpm.controller.api;
 
+import com.win.dfas.common.util.WinExceptionUtil;
+import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.constant.InitDataConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.BpmnModel;
@@ -76,6 +78,9 @@ public class BpmPngController {
         InputStream imageStream;
         if(processInstance==null){
             HistoricProcessInstance currProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(executionId).singleResult();
+            if(currProcessInstance==null){
+                throw WinExceptionUtil.winException(BpmExceptionEnum.FLOW_DEF_NOEXIST);
+            }
             String deploymentId = currProcessInstance.getDeploymentId();
             List<String> list = repositoryService.getDeploymentResourceNames(deploymentId);
             proDefId = currProcessInstance.getProcessDefinitionId();
