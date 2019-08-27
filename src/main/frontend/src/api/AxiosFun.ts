@@ -7,6 +7,7 @@ export default class AxiosFun extends Vue {
     public static basicParameterServiceName = "/dfbp-common-basicparameter";
 
     public static authCenterServiceName = "/dfas-auth-center";
+
     public static commonBpmServiceName = "/dfas-common-bpm";
 
     snowflake: Snowflake = Snowflake.getInstance();
@@ -50,8 +51,8 @@ export default class AxiosFun extends Vue {
                 (!authorization || authorization.trim() == "")
             ) {
                 // 判断是否有token数据
-                // this.gotoIndex();
-                // return;
+                this.gotoIndex();
+                return;
             }
 
             // 头部数据

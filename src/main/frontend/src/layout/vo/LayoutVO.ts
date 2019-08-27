@@ -33,13 +33,20 @@ interface SwitchController {
 
 export class LayoutReqVO extends BaseReqVO {
     userName: string = "某某";
-    firstMenuIndex: string = "0";
+    firstMenuIndex: number = -1;
     secondMeunIsOpen: boolean = false;
     luserInfoOpen: boolean = false;
     lockisOpen: boolean = false;
     otherPanel: boolean = false;
+    isKeyCode: boolean = false; //判断是否开启键盘功能
     nameLock: string = ""; //用户锁频参数
+    changeTheme: string = "dark"; //换皮肤属性
     storageMenus: any[] = [];
+    activeMenuId: string = ""; //选择的MENUItem
+    isNoSearch: boolean = false; //判断isNoSearch是否查询到结果
+    moreFastPanelisOpen: boolean = false;
+    currentMenu: number = 0; //当前的二级菜单索引
+    menuSize: number = 0; //当前的二级菜单第几个元素
     firstMents: FristMenus[] = [
         // { menuIcon: "icon-35", menuName: "产品2", id: "222" }
     ];

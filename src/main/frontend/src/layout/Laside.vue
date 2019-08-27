@@ -5,13 +5,11 @@
  */
 
 <template>
-
     <section class="aside-container">
         <div>
             <p :class="['icon','win' ,item.menuIcon, {'active':item.id===layoutReqVO.firstMenuIndex}]" v-for="(item,index) in layoutReqVO.firstMents" :key="index" @mouseover="handleSecondMeunOpen(item.id)"></p>
         </div>
     </section>
-
 </template>
 
 <script lang="ts">
@@ -23,28 +21,28 @@ import _ from "lodash";
 import { setTimeout, clearTimeout } from "timers";
 
 @Component({})
-export default class FristMenus extends Vue {
+export default class LAside extends Vue {
     // s = BaseConst.Add;
     time;
     isFirstOpen: Boolean = false;
     @Prop()
     layoutReqVO: LayoutReqVO;
     handleSecondMeunOpen(id) {
-        // if (this.time) {
-        //     clearTimeout(this.time);
-        // }
-        // if (this.layoutReqVO.secondMeunIsOpen) {
-        //     this.layoutReqVO.firstMenuIndex = id;
-        //     return;
-        // }
-        // // 判读鼠标第一次进入的状态值，是否展开menu
-        // this.time = setTimeout(() => {
-        //     this.layoutReqVO.firstMenuIndex = id;
-        //     this.layoutReqVO.secondMeunIsOpen = true;
-        //     this.isFirstOpen = true;
-        // }, 300);
-        this.layoutReqVO.firstMenuIndex = id;
-        this.layoutReqVO.secondMeunIsOpen = true;
+        try {
+            //重置搜索
+            this.layoutReqVO.menuSize = 0;
+            this.layoutReqVO.currentMenu = 0;
+            this.layoutReqVO.isNoSearch = false;
+
+            this.layoutReqVO.firstMenuIndex = id;
+            this.layoutReqVO.stwichController.switchsScondMeunIsDetailed = true;
+            this.layoutReqVO.secondMeunIsOpen = true;
+            this.layoutReqVO.activeMenuId = this.layoutReqVO.secondMenus[
+                this.layoutReqVO.firstMenuIndex
+            ][0].children[0].id;
+        } catch (e) {
+            console.log(e);
+        }
     }
     firstMenuIsOpen() {
         if (this.layoutReqVO.secondMeunIsOpen) {
@@ -68,13 +66,13 @@ export default class FristMenus extends Vue {
 .aside-container {
     position: absolute;
     left: 0;
-    top: 48px;
+    top: 47px;
     bottom: 0;
     width: 70px;
-    background: $color-assist;
+    // background: $color-assist; //换色
     text-align: center;
     font-size: 20px;
-    z-index: 2;
+    z-index: 5;
     .icon {
         height: 52px;
         line-height: 52px;
@@ -87,39 +85,12 @@ export default class FristMenus extends Vue {
         //   }
         // }
         &::before {
-            color: #adb5bb;
+            // color: #adb5bb; //换色
         }
         &.active {
-            background: #1f2640;
+            // background: #1f2640;//换色
             &::before {
                 color: $color-orange;
-            }
-        }
-    }
-    .menu-first {
-        position: absolute;
-        left: 70px;
-        top: 0;
-        bottom: 0;
-        width: 130px;
-        background: #0a0f0e;
-        li {
-            display: flex;
-            height: 52px;
-            padding-right: 18px;
-            justify-content: space-between;
-            align-items: center;
-            text-align: left;
-            color: #adb5bb;
-            font-size: 14px;
-            box-sizing: border-box;
-            cursor: pointer;
-            &.active {
-                color: $color-orange;
-                background: #1f2640;
-                .icon-14::before {
-                    color: $color-orange;
-                }
             }
         }
     }

@@ -2,19 +2,23 @@
  * @Author: mikey.zhaopeng 
  * @Date: 2019-05-29 10:30:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-07-23 19:05:06
+ * @Last Modified time: 2019-08-17 14:15:09
  */
 
 <template>
-    <span class="fast-contanier">
-        <i :class="['icon','win',fastItem.menuIcon] " v-for="fastItem in layoutReqVO.fastMenus " @contextmenu.prevent="handleOpenDelPanel(fastItem.id)" :key="fastItem.menuName" :title="fastItem.menuName" @click="handleClick(fastItem)"
-            v-dragging="{ item: fastItem, list: layoutReqVO.fastMenus, group: 'fastItem' }">
-            <span :class="['delte',{'active':fastItem.id===fastIndex}]">
-                <span @click="handleCloseDelPanel" class="close">关闭</span>
-                <i class="icon-2" @click="handleDeleteFastItem(fastItem.id)">✖</i>
-            </span>
-            <b class="right-hr"></b>
-        </i>
+    <span>
+        <span class="fast-contanier">
+            <i :class="['icon','win',fastItem.menuIcon] " v-for="(fastItem,index) in layoutReqVO.fastMenus " @contextmenu.prevent="handleOpenDelPanel(fastItem.id)" :key="fastItem.menuName" :title="fastItem.menuName"
+                @click="handleClick(fastItem)" @mouseenter="handleFastItem(fastItem.id)" v-dragging="{ item: fastItem, list: layoutReqVO.fastMenus, group: 'fastItem' }" v-if="index<maxFast">
+                <!-- <span :class="['delte',{'active':fastItem.id===fastIndex}]">
+                    <span @click="handleCloseDelPanel" class="close">关闭</span>
+                    <i class="icon-2" @click="handleDeleteFastItem(fastItem.id)">✖</i>
+                </span> -->
+                <b class="right-hr"></b>
+            </i>
+            <em v-if="layoutReqVO.fastMenus.length>=maxFast" class="more" @click="openMorePanel"> 更多</em>
+        </span>
+
     </span>
 </template>
 
@@ -25,8 +29,9 @@ import { LayoutReqVO } from "./vo/LayoutVO";
 import { Menu } from "element-ui";
 
 @Component({})
-export default class FastMenus extends Vue {
+export default class LFast extends Vue {
     fastIndex: string = "";
+    maxFast = 3;
     @Prop()
     layoutReqVO: LayoutReqVO;
 
@@ -38,6 +43,10 @@ export default class FastMenus extends Vue {
     handleDeleteFastItem(id) {
         this.$emit("deleteFastItem", id);
     }
+    /**鼠标移到某个快捷元素获取id号 */
+    handleFastItem(id) {
+        this.$emit("hasFastId", id);
+    }
     /*关闭删除元素窗口动作 */
     handleCloseDelPanel() {
         this.fastIndex = "";
@@ -48,6 +57,9 @@ export default class FastMenus extends Vue {
         var returnMenu = Object.assign({}, menu);
         returnMenu.id = returnMenu.menuId;
         return returnMenu;
+    }
+    openMorePanel() {
+        this.layoutReqVO.moreFastPanelisOpen = true;
     }
 }
 </script>
@@ -70,12 +82,12 @@ export default class FastMenus extends Vue {
             }
         }
         &::before {
-            color: #adb5bb;
+            // color: #adb5bb;//换色
         }
         cursor: pointer;
         &:hover {
             &::before {
-                color: $color-orange;
+                // color: $color-orange;//换色
             }
         }
         .right-hr {
@@ -84,7 +96,7 @@ export default class FastMenus extends Vue {
             height: 12px;
             width: 1px;
             margin: 0 16px;
-            background: #adb5bb;
+            // background: #adb5bb;//换色
         }
     }
     .delte {
@@ -149,5 +161,13 @@ export default class FastMenus extends Vue {
             display: inline;
         }
     }
+}
+.more {
+    display: inline-block;
+    position: relative;
+    left: -11px;
+    padding: 2px 6px;
+    color: #fff;
+    cursor: pointer;
 }
 </style>

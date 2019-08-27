@@ -23,7 +23,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
 @Component({})
-export default class Card extends Vue {
+export default class LCard extends Vue {
     @Prop()
     messageTitle: string;
 

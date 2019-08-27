@@ -3,7 +3,7 @@ import { Component } from "vue-property-decorator";
 /**Win插件开始 */
 import {
     WinButton,
-    WinDialog,
+    // WinDialog,
     WinForm,
     WinFormItem,
     WinInput,
@@ -20,19 +20,30 @@ import {
     WinTabPane,
     WinRow,
     WinCol,
-    win_message_success,
-    win_message_warning,
-    win_message_error,
-    win_message_info,
+    WinDatePicker,
+    WinCheckbox,
+    WinTree,
+    WinAutocomplete,
+    WinDivider,
+    WinSelectTable,
+    WinButtonGroup
+} from "@win-frond-frameworks/biz-common";
+import { win_dic_select } from "@win-frond-frameworks/trade-biz";
+
+//新增抽出来的业务组件
+import {
     win_message_box_success,
     win_message_box_error,
     win_message_box_info,
     win_message_box_warning,
-    WinDatePicker,
-    WinCheckbox,
-    WinTree,
-    WinAutocomplete
-} from "@win-frond-frameworks/biz-common";
+    win_message_success,
+    win_message_warning,
+    win_message_error,
+    win_message_info,
+    WinFdialog
+} from "../../../components/index";
+//新增抽出来的业务组件
+
 /**Win插件结束 */
 import { DicRepVO } from "../../dictionary/vo/DicVO";
 import PageVO from "../vo/PageVO";
@@ -40,7 +51,6 @@ import PageVO from "../vo/PageVO";
     components: {
         WinButton,
         WinDatePicker,
-        WinDialog,
         WinForm,
         WinFormItem,
         WinInput,
@@ -59,7 +69,12 @@ import PageVO from "../vo/PageVO";
         WinCol,
         WinCheckbox,
         WinTree,
-        WinAutocomplete
+        WinAutocomplete,
+        win_dic_select,
+        WinDivider,
+        WinSelectTable,
+        WinButtonGroup,
+        WinFdialog
     }
 })
 export default class BaseController extends Vue {

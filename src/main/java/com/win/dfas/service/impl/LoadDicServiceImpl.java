@@ -21,6 +21,7 @@ import com.win.dfas.service.strategy.StrategyFactory;
 import com.win.dfas.vo.response.item.FlowNameItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Constructor;
@@ -42,16 +43,18 @@ public class LoadDicServiceImpl implements ILoadDicService {
     @Autowired
     private IDicFeignClient dicFeignClient;
 
+    @Value("${data.dic.isRedis}")
+    private boolean isRedis;
     @Override
     public List queryDataList(String param, String relation, String strategy, FormatEnum formatEnum) {
         List<Object> list = null;
         //1.使用缓存查询
-        list = redisQuery(param,relation,strategy,formatEnum);
-        //2.使用feign接口
-        log.info("redis查询结果为{}",list);
-        if(list==null){
-            list =  feignQuery(param, strategy);
-            log.info("redis查询结果为null,feign查询结果{}",list);
+        if(isRedis){
+            list = redisQuery(param,relation,strategy,formatEnum);
+        }else {
+            //2.使用feign接口
+            list = feignQuery(param, strategy);
+            log.info("feign查询结果{}", list);
         }
         return list;
     }

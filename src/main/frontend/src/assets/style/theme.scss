@@ -685,13 +685,13 @@ $--popover-title-font-color: $--color-text-primary !default;
 /* Tooltip
 -------------------------- */
 /// color|1|Color|0
-$--tooltip-fill: $--color-text-primary !default;
+$--tooltip-fill: $--color-primary !default;
 /// color|1|Color|0
 $--tooltip-color: $--color-white !default;
 /// fontSize||Font|1
 $--tooltip-font-size: 12px !default;
 /// color||Color|0
-$--tooltip-border-color: $--color-text-primary !default;
+$--tooltip-border-color: $--color-primary !default;
 $--tooltip-arrow-size: 6px !default;
 /// padding||Spacing|3
 $--tooltip-padding: 10px !default;

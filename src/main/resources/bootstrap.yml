@@ -46,3 +46,6 @@ eureka:
 mybatis:
   datasource:
     enable: true
+data:
+  dic:
+    isRedis: false

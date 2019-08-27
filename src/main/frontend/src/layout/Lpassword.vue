@@ -3,17 +3,17 @@
         <win-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm">
             <div class="form_content">
                 <win-form-item label="用户名">
-                    <win-input placeholder="用户名" v-model="layoutReqVO.userName" :disabled="true"></win-input>
+                    <win-input placeholder="用户名" v-model="layoutReqVO.userName" :disabled="true" test_name="editpassword-01"></win-input>
                 </win-form-item>
             </div>
             <div class="form_content">
                 <win-form-item label="修改密码" prop="pass">
-                    <win-input placeholder="请输入密码" v-model="ruleForm.pass" autocomplete="off" type="password"></win-input>
+                    <win-input placeholder="请输入密码" v-model="ruleForm.pass" autocomplete="off" type="password" test_name="editpassword-02"></win-input>
                 </win-form-item>
             </div>
             <div class="form_content">
                 <win-form-item label="请确认密码" prop="checkPass">
-                    <win-input placeholder="请确认密码" v-model="ruleForm.checkPass" autocomplete="off" type="password"></win-input>
+                    <win-input placeholder="请确认密码" v-model="ruleForm.checkPass" autocomplete="off" type="password" test_name="editpassword-03"></win-input>
                 </win-form-item>
             </div>
         </win-form>
@@ -27,21 +27,10 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-
-import { WinButton } from "@win-frond-frameworks/biz-common";
-import { WinForm, WinFormItem } from "@win-frond-frameworks/biz-common";
-import { WinInput } from "@win-frond-frameworks/biz-common";
 import { LayoutReqVO } from "./vo/LayoutVO";
-@Component({
-    components: {
-        WinFdialog,
-        WinButton,
-        WinForm,
-        WinFormItem,
-        WinInput
-    }
-})
-export default class Password extends Vue {
+import BaseController from "../page/common/controller/BaseController";
+@Component
+export default class LPassword extends BaseController {
     dialogFormVisible: boolean = true;
     ruleForm = {
         pass: "",

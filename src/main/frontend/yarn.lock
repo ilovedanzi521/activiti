@@ -41,47 +41,53 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@types/node@^12.0.10":
-  version "12.6.2"
-  resolved "http://docker.yhfin.club:81/repository/npm_group/@types/node/-/node-12.6.2.tgz#a5ccec6abb6060d5f20d256fb03ed743e9774999"
-  integrity sha512-gojym4tX0FWeV2gsW4Xmzo5wxGjXGm550oVUII7f7G5o4BV6c7DBdiG1RRQd+y1bvqRyYtPfMK85UM95vsapqQ==
-
 "@types/node@^12.0.8":
   version "12.0.8"
   resolved "http://docker.yhfin.club:81/repository/npm_group/@types/node/-/node-12.0.8.tgz#551466be11b2adc3f3d47156758f610bd9f6b1d8"
   integrity sha512-b8bbUOTwzIY3V5vDTY1fIJ+ePKDUBqt2hC2woVGotdQQhG/2Sh62HOKHrT7ab+VerXAcPyAiTEipPu/FsreUtg==
 
-"@win-frond-frameworks/biz-common@^1.0.7":
-  version "1.0.7"
-  resolved "http://docker.yhfin.club:81/repository/npm_group/@win-frond-frameworks/biz-common/-/biz-common-1.0.7.tgz#ddda5df414695841df3856dcf2374467493c0dde"
-  integrity sha512-E00LMM3E7sf5b045Hwu1vH+DoWLUMAdtNvfb8FX3h5f9DRl8xtmCrIFzkrY2oIVPXQhSYUJjQDRoAHnhAzIHWA==
-  dependencies:
-    "@types/node" "^12.0.8"
-    awe-dnd "^0.3.4"
-    axios "^0.18.0"
-    big-integer "^1.6.44"
-    element-ui "^2.9.1"
-    getmac "^1.4.6"
-    lodash "^4.17.11"
-    lodash-decorators "^6.0.1"
-    os "^0.1.1"
-    sass-resources-loader "^2.0.1"
-    sortablejs "^1.10.0-rc3"
-    vue "^2.5.2"
-    vue-calendar-component "^2.8.2"
-    vue-class-component "^7.1.0"
-    vue-lazy "^1.0.1"
-    vue-property-decorator "^8.1.1"
-    vue-router "^3.0.1"
-    vuex "^3.1.1"
-    vxe-table "^1.5.13"
-    vxe-table-plugin-element "^1.1.1"
-    xe-utils "^1.9.6"
+"@types/node@^12.6.6":
+  version "12.6.8"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/@types/node/-/node-12.6.8.tgz#e469b4bf9d1c9832aee4907ba8a051494357c12c"
+  integrity sha512-aX+gFgA5GHcDi89KG5keey2zf0WfZk/HAQotEamsK2kbey+8yGKcson0hbK8E+v0NArlCJQCqMP161YhV6ZXLg==
 
-"@win-frond-frameworks/trade-biz@^1.0.1":
-  version "1.0.1"
-  resolved "http://docker.yhfin.club:81/repository/npm_group/@win-frond-frameworks/trade-biz/-/trade-biz-1.0.1.tgz#2a9f98a84bd5ac542cbf54cc6c626878a15093b0"
-  integrity sha512-D0FlppUb551ft5adLbFB0Cn9zovJLhjCxxaRdy8huih0/UOIwh4lPiK1azpbDoM5bch/Pvp3PjRjPU/cPn/ZmA==
+"@types/node@^12.6.8":
+  version "12.6.9"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/@types/node/-/node-12.6.9.tgz#ffeee23afdc19ab16e979338e7b536fdebbbaeaf"
+  integrity sha512-+YB9FtyxXGyD54p8rXwWaN1EWEyar5L58GlGWgtH2I9rGmLGBQcw63+0jw+ujqVavNuO47S1ByAjm9zdHMnskw==
+
+"@win-frond-frameworks/biz-common@^1.0.12":
+  version "1.0.12"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/@win-frond-frameworks/biz-common/-/biz-common-1.0.12.tgz#ccb84d42f3aca5fff9f67dedb4a0fefbb8042c51"
+  integrity sha512-iQh1EABMdcJMJpXhW+tmcs/wiiJO3FVgR62sOpScukbmKr4HE7f4wvmm3u+iaYU4sO95gUQL3XATRi7zfPLJVw==
+  dependencies:
+    "@types/node" "^12.6.8"
+    awe-dnd "^0.3.4"
+    axios "^0.18.0"
+    big-integer "^1.6.44"
+    element-ui "^2.11.1"
+    getmac "^1.4.6"
+    lodash "^4.17.15"
+    lodash-decorators "^6.0.1"
+    os "^0.1.1"
+    pinyin "^2.9.0"
+    sass-resources-loader "^2.0.1"
+    sortablejs "^1.10.0-rc3"
+    vue "^2.6.10"
+    vue-calendar-component "^2.8.2"
+    vue-class-component "^7.1.0"
+    vue-lazy "^1.0.1"
+    vue-property-decorator "^8.1.1"
+    vue-router "^3.0.1"
+    vuex "^3.1.1"
+    vxe-table "^2.0.8"
+    vxe-table-plugin-element "^1.2.4"
+    xe-utils "^1.9.7"
+
+"@win-frond-frameworks/trade-biz@^1.0.8":
+  version "1.0.14"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/@win-frond-frameworks/trade-biz/-/trade-biz-1.0.14.tgz#1f57c380400450e4fd0710de98e1a43e54c9203d"
+  integrity sha512-5blHTCibWI0Pzb+aUqt8C6O14Ft5ZDsGW47wbfpbupbS9oqQ3xAWrhBxaTlvNIvXgz6sN/Eir/lZLLYTrXkGQQ==
   dependencies:
     "@types/node" "^12.0.8"
     awe-dnd "^0.3.4"
@@ -101,9 +107,6 @@
     vue-property-decorator "^8.1.1"
     vue-router "^3.0.1"
     vuex "^3.1.1"
-    vxe-table "^1.5.13"
-    vxe-table-plugin-element "^1.1.1"
-    xe-utils "^1.9.6"
 
 abbrev@1:
   version "1.1.1"
@@ -1686,6 +1689,13 @@ commander@^2.12.1, commander@^2.13.0:
   resolved "http://docker.yhfin.club:81/repository/npm_group/commander/-/commander-2.20.0.tgz#d58bb2b5c1ee8f87b0d340027e9e94e222c5a422"
   integrity sha512-7j2y+40w61zy6YC2iRNpUe/NwhNyoXrYpHMrSunaMG64nRnaf96zO/KMQR4OyN/UnE5KLyEBnKHd4aG3rskjpQ==
 
+commander@~1.1.1:
+  version "1.1.1"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/commander/-/commander-1.1.1.tgz#50d1651868ae60eccff0a2d9f34595376bc6b041"
+  integrity sha1-UNFlGGiuYOzP8KLZ80WVN2vGsEE=
+  dependencies:
+    keypress "0.1.x"
+
 commander@~2.13.0:
   version "2.13.0"
   resolved "http://docker.yhfin.club:81/repository/npm_group/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
@@ -1788,6 +1798,13 @@ convert-source-map@^1.5.1:
   integrity sha512-eFu7XigvxdZ1ETfbgPBohgyQ/Z++C0eEhTor0qRwBw9unw+L0/6V8wkSuGgzdThkiS5lSpdptOQPD8Ak40a+7A==
   dependencies:
     safe-buffer "~5.1.1"
+
+convertPinyin@^1.1.0:
+  version "1.1.0"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/convertPinyin/-/convertPinyin-1.1.0.tgz#0dcd1f1e2e45a94d7c64265e1ddd370d4a41b0b1"
+  integrity sha512-HsBC5pJLmPMPnB0H5s/7Jdzegx8DFnGxGNl+cOINBlHikmGsRTFd0biPLiicB50sMHAPv0r70XyVFKW4x6GcGQ==
+  dependencies:
+    lodash "^4.17.10"
 
 cookie-signature@1.0.6:
   version "1.0.6"
@@ -2389,10 +2406,10 @@ electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30, electron-to-chromium@
   resolved "http://docker.yhfin.club:81/repository/npm_group/electron-to-chromium/-/electron-to-chromium-1.3.166.tgz#99d267514f4b92339788172400bc527545deb75b"
   integrity sha512-7XwtJz81H/PBnkmQ/07oVPOGTkBZs6ibZN8OqXNUrxjRPzR0Xj+MFcMmRZEXGilEg1Pm+97V8BZVI63qnBX1hQ==
 
-element-ui@^2.9.1:
-  version "2.9.1"
-  resolved "http://docker.yhfin.club:81/repository/npm_group/element-ui/-/element-ui-2.9.1.tgz#a05f2e76023d529ba0dfa2d03ae16e5134b20c4e"
-  integrity sha512-w8vrCW5Q+2gfDzs19MUrFdnCy5IjF98rs7DBsKnJQKFfZJZiZ2O+YAsSp/EuPrCm3P/2o/N3MtvZ34VANel13g==
+element-ui@^2.11.1, element-ui@^2.9.1:
+  version "2.11.1"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/element-ui/-/element-ui-2.11.1.tgz#2b67f9eee3eda2e6884873c1c589cbe30d9a9d60"
+  integrity sha512-PACNMHPWqm+/Wc2f/q93pLNzbNyVbpMCXCrYe81czengSWj7IBku7F3zccybkxtWn5qdCmMDBCpG5BzGJL4rKA==
   dependencies:
     async-validator "~1.8.1"
     babel-helper-vue-jsx-merge-props "^2.0.0"
@@ -3900,6 +3917,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+keypress@0.1.x:
+  version "0.1.0"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/keypress/-/keypress-0.1.0.tgz#4a3188d4291b66b4f65edb99f806aa9ae293592a"
+  integrity sha1-SjGI1CkbZrT2XtuZ+AaqmuKTWSo=
+
 killable@^1.0.0:
   version "1.0.1"
   resolved "http://docker.yhfin.club:81/repository/npm_group/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
@@ -4033,6 +4055,11 @@ lodash@^4.0.0, lodash@^4.17.11, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, 
   version "4.17.11"
   resolved "http://docker.yhfin.club:81/repository/npm_group/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
+
+lodash@^4.17.10, lodash@^4.17.15:
+  version "4.17.15"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
 log-symbols@^2.1.0:
   version "2.2.0"
@@ -4338,7 +4365,7 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-nan@^2.12.1, nan@^2.13.2:
+nan@^2.12.1, nan@^2.13.2, nan@^2.14.0:
   version "2.14.0"
   resolved "http://docker.yhfin.club:81/repository/npm_group/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
@@ -4497,6 +4524,13 @@ node-sass@^4.12.0:
     sass-graph "^2.2.4"
     stdout-stream "^1.4.0"
     "true-case-path" "^1.0.2"
+
+nodejieba@^2.2.1:
+  version "2.3.1"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/nodejieba/-/nodejieba-2.3.1.tgz#8e67ff9fcd8c6b9cb15beb2d8ea0310225ea47e2"
+  integrity sha512-D63ClBLUEV2dsu3ptnFOn4eMhfoIpzVu/y92BTsz7dJfVeh6c++UENhGkRfhrVsV3DFQbWHvM16ZzHsoVSygow==
+  dependencies:
+    nan "^2.14.0"
 
 "nopt@2 || 3":
   version "3.0.6"
@@ -4947,6 +4981,16 @@ pinkie@^2.0.0:
   resolved "http://docker.yhfin.club:81/repository/npm_group/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
   integrity sha1-clVrgM+g1IqXToDnckjoDtT3+HA=
 
+pinyin@^2.9.0:
+  version "2.9.0"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/pinyin/-/pinyin-2.9.0.tgz#1e77025bf4fafdad4ea410022837b5f97e53aab1"
+  integrity sha512-TZYQ+2uE12arC1EfCeDmN5KgwIOuNMIweOotKvBZdhVOUuQc5RJsGEGf+BaSvxfVtu9ViYEFJmH0xTaj9t4n3Q==
+  dependencies:
+    commander "~1.1.1"
+    object-assign "^4.0.1"
+  optionalDependencies:
+    nodejieba "^2.2.1"
+
 pkg-dir@^2.0.0:
   version "2.0.0"
   resolved "http://docker.yhfin.club:81/repository/npm_group/pkg-dir/-/pkg-dir-2.0.0.tgz#f6d5d1109e19d63edf428e0bd57e12777615334b"
@@ -4954,7 +4998,16 @@ pkg-dir@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
-portfinder@^1.0.13, portfinder@^1.0.9:
+portfinder@^1.0.21:
+  version "1.0.21"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/portfinder/-/portfinder-1.0.21.tgz#60e1397b95ac170749db70034ece306b9a27e324"
+  integrity sha512-ESabpDCzmBS3ekHbmpAIiESq3udRsCBGiBZLsC+HgBKv2ezb0R4oG+7RnYEVZ/ZCfhel5Tx3UzdNWA0Lox2QCA==
+  dependencies:
+    async "^1.5.2"
+    debug "^2.2.0"
+    mkdirp "0.5.x"
+
+portfinder@^1.0.9:
   version "1.0.20"
   resolved "http://docker.yhfin.club:81/repository/npm_group/portfinder/-/portfinder-1.0.20.tgz#bea68632e54b2e13ab7b0c4775e9b41bf270e44a"
   integrity sha512-Yxe4mTyDzTd59PZJY4ojZR8F+E5e97iq2ZOHPz3HDgSvYC5siNad2tLooQ5y5QHyQhc3xVqvyk/eNA3wuoa7Sw==
@@ -6708,10 +6761,10 @@ typedarray@^0.0.6:
   resolved "http://docker.yhfin.club:81/repository/npm_group/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.5.1:
-  version "3.5.2"
-  resolved "http://docker.yhfin.club:81/repository/npm_group/typescript/-/typescript-3.5.2.tgz#a09e1dc69bc9551cadf17dba10ee42cf55e5d56c"
-  integrity sha512-7KxJovlYhTX5RaRbUdkAXN1KUZ8PwWlTzQdHV6xNqvuFOs7+WBo10TQUqT19Q/Jz2hk5v9TQDIhyLhhJY4p5AA==
+typescript@^3.5.3:
+  version "3.5.3"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/typescript/-/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
+  integrity sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
 
 uglify-es@^3.3.4:
   version "3.3.9"
@@ -7014,15 +7067,15 @@ vuex@^3.1.1:
   resolved "http://docker.yhfin.club:81/repository/npm_group/vuex/-/vuex-3.1.1.tgz#0c264bfe30cdbccf96ab9db3177d211828a5910e"
   integrity sha512-ER5moSbLZuNSMBFnEBVGhQ1uCBNJslH9W/Dw2W7GZN23UQA69uapP5GTT9Vm8Trc0PzBSVt6LzF3hGjmv41xcg==
 
-vxe-table-plugin-element@^1.1.1:
-  version "1.1.1"
-  resolved "http://docker.yhfin.club:81/repository/npm_group/vxe-table-plugin-element/-/vxe-table-plugin-element-1.1.1.tgz#34d7365ddd480a9504fa34bcb3b525b6764976cf"
-  integrity sha512-GpZPgYrF0nXrp2zZnDvd780Je2Z6UZV7HNuqBg1QCSNBxSn3emGKedlUTWDNfUthMcbgrlNTwn6GgyvwnaSSgQ==
+vxe-table-plugin-element@^1.2.4:
+  version "1.2.4"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/vxe-table-plugin-element/-/vxe-table-plugin-element-1.2.4.tgz#f44133da09a449d3137f22d7a028c3888f6caae1"
+  integrity sha512-D412ZYoYuNQpxfJyIHyFKPlXSX/+NFtKn9MIx5xChBMTu6GyDdjb84Z4233vLpG90rKmJqzPtL+wpC8248eYUg==
 
-vxe-table@^1.5.13, vxe-table@^1.7.8:
-  version "1.7.8"
-  resolved "http://docker.yhfin.club:81/repository/npm_group/vxe-table/-/vxe-table-1.7.8.tgz#5ad42eeb56797d9b964aa1ef285aaaa643697ff4"
-  integrity sha512-ViSsZR1NJpyFihSf5XGBHtYcpLekTC/7E+PSiF+lNaTyAzsreiE4mBnnom77A0LOXZRj0RXvjV37pf7TK9lz3w==
+vxe-table@^2.0.8:
+  version "2.0.10"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/vxe-table/-/vxe-table-2.0.10.tgz#a0b400c75e96d2b250e383bfbfbe40bb385df7de"
+  integrity sha512-3MGQBrvnTrVne9tHhwL5Ftk7F3aCOk4/VaegMTWprxCz45ZD9UPUAp4CPXRbzzshvRClrl+2T1ceLbckHKjsJA==
 
 watchpack@^1.4.0:
   version "1.6.0"
@@ -7226,10 +7279,10 @@ ws@^4.0.0:
     async-limiter "~1.0.0"
     safe-buffer "~5.1.0"
 
-xe-utils@^1.9.6:
-  version "1.9.6"
-  resolved "http://docker.yhfin.club:81/repository/npm_group/xe-utils/-/xe-utils-1.9.6.tgz#de04a73c052e98e19d972c6f91252292ac2c430e"
-  integrity sha512-Bjk9tpBIbAyDLrs8uoGv/xog4xm1yAlY97Jip/t8VsR0AxIffrSF4Kn/7Y2qsNAvwFKVrp5WjA/LbATMJeoJUQ==
+xe-utils@^1.9.7:
+  version "1.9.7"
+  resolved "http://docker.yhfin.club:81/repository/npm_group/xe-utils/-/xe-utils-1.9.7.tgz#b4336f61758272117c5f990ddfd43f96fc9f1035"
+  integrity sha512-vBL+Vk0VN0p2B/EZrxApdrb4CPWZ1TMGvVEImeZxLeyJ5osdtG/74x93mq/x5NaVxMGD8C8AOGEud8AsbkG9Ig==
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.1"

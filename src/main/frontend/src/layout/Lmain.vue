@@ -14,7 +14,7 @@ import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
 
 @Component({})
-export default class Main extends Vue {
+export default class LMain extends Vue {
     @Emit("closeMenusPanle")
     closeMenusPanle() {
         return false;
@@ -29,9 +29,9 @@ export default class Main extends Vue {
     position: absolute;
     left: 0;
     right: 0;
-    top: 84px;
+    top: 83px;
     bottom: 0;
-    background: $color-main2;
+    // background: $color-main2; //换色
     padding: 0 0 0 0;
     overflow: hidden;
     box-sizing: border-box;

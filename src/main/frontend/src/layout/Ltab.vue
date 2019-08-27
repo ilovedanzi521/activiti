@@ -1,6 +1,6 @@
 <template>
     <div class="tabContaner">
-        <el-tabs v-model="layoutReqVO.editableTabsValue2" type="card" closable @tab-remove="removeTab" @tab-click="clickTab" @contextmenu.prevent.native="otherPanle">
+        <el-tabs v-model="layoutReqVO.editableTabsValue2" type="card" closable @tab-remove="removeTab" @tab-click="clickTab" @contextmenu.prevent.native="otherPanle" @dblclick.native="refFrame">
             <el-tab-pane v-for="(item) in layoutReqVO.tabs" :key="item.id" :label="item.menuName" :name="item.name">
             </el-tab-pane>
         </el-tabs>
@@ -28,14 +28,16 @@ class TabItem {
 }
 
 @Component({})
-export default class Tab extends Vue {
+export default class LTab extends Vue {
     @Prop({})
     layoutReqVO: LayoutReqVO;
     moreLeft = "10px";
     tabindex = "";
+    dbClickMenuAddress = "";
 
     /**删除tab */
     removeTab(targetName) {
+        let deleteTab;
         let tabs = this.layoutReqVO.tabs;
         let iGotoPath: boolean = false;
         if (targetName == this.layoutReqVO.editableTabsValue2) {
@@ -57,11 +59,15 @@ export default class Tab extends Vue {
             return;
         }
         this.layoutReqVO.tabs = tabs.filter(tab => tab.name !== targetName);
+        deleteTab = tabs.filter(tab => tab.name == targetName);
+        this.$store.commit("setDeleteAddress", deleteTab[0].menuAddress);
+
         if (iGotoPath) {
             let lastIndex = this.layoutReqVO.tabs.length - 1;
             this.$store.commit("setMenuAddress", {
                 menuAddress: this.layoutReqVO.tabs[lastIndex].menuAddress
             });
+
             this.$router.push({
                 name: "directional",
                 params: {
@@ -72,7 +78,7 @@ export default class Tab extends Vue {
         this.layoutReqVO.otherPanel = false;
     }
     /**点击tab进行事件 */
-    clickTab() {
+    clickTab(item) {
         let pathMenu = this.layoutReqVO.tabs.filter(
             item => item.name == this.layoutReqVO.editableTabsValue2
         );
@@ -80,6 +86,9 @@ export default class Tab extends Vue {
         this.$store.commit("setMenuAddress", {
             menuAddress: pathMenu[0].menuAddress
         });
+        this.dbClickMenuAddress = pathMenu[0].menuAddress; //点击的tab键，获取地址
+        //切换刷页面不刷新状态
+        // this.$store.commit("setRefresh",false);
         this.$router.push({
             name: "directional",
             params: { address: pathMenu[0].menuAddress }
@@ -104,6 +113,12 @@ export default class Tab extends Vue {
         this.$store.commit("setMenuAddress", {
             menuAddress: this.layoutReqVO.tabs[lastIndex].menuAddress
         });
+
+        this.$store.commit(
+            "otherOnlyAddress",
+            this.layoutReqVO.tabs[lastIndex].menuAddress
+        );
+
         this.$router.push({
             name: "directional",
             params: {
@@ -129,6 +144,8 @@ export default class Tab extends Vue {
         this.$store.commit("setMenuAddress", {
             menuAddress: firstAddress
         });
+
+        this.$store.commit("otherOnlyAddress", firstAddress);
         this.$router.push({
             name: "directional",
             params: { address: firstAddress }
@@ -149,11 +166,17 @@ export default class Tab extends Vue {
 
         this.layoutReqVO.otherPanel = true;
     }
+
+    //双击tab,刷新
+    refFrame(e) {
+        this.$store.commit("setRefreshAddress", this.dbClickMenuAddress);
+    }
 }
 </script>
 <style lang="scss" scoped>
 .tabContaner {
     position: absolute;
+    // background: #0b1431;//换色
     width: 100%;
     z-index: 1;
     top: 47px;

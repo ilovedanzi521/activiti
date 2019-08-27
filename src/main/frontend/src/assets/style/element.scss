@@ -28,8 +28,8 @@ $color-font5: #c0c4cc;
 $color-font6: #8d959a;
 $color-border-hover: #b6b6b6; // hover边框
 $color-background-hover: #0b1431;
-
-// line color
+$colorAdb5bb:#adb5bb; // line color
+$colorADB5BBFF:#ADB5BBFF;
 $color-line-button: #dcdfe6; // 标题分割线、列表分割线、按钮边框
 $color-line-card: #e4e7ed; // 卡片分割线.或者浅色背景
 $color-line-nav: rgba($color-main, 0.3); // 导航下边线和tagview边框
@@ -49,8 +49,16 @@ $font-size3: 16px; //块级标题/Table
 $font-size4: 14px; //正文内容
 $font-size5: 12px; //提示
 
-//other
 $radius4px: 4px;
+
+
+
+
+//light color
+$lightManiColor:#fff;
+$maniColor:#ff6a00;
+$colorFont:#999;
+$footerColor:rgba(0, 0, 0, .1);
 
 @mixin button($width: 100px, $height: 40px, $bg: #f5f7fa, $color: #999999) {
     display: inline-block;

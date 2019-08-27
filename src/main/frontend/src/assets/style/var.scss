@@ -17,7 +17,7 @@ $--color-success: #33cc33 !default;
 /// color|1|Functional Color|1
 $--color-warning: #f7ba2a !default;
 /// color|1|Functional Color|1
-$--color-danger: #ff4d4d !default;
+$--color-danger: #f72a2a !default;
 /// color|1|Functional Color|1
 $--color-info: #2b3551 !default;
 
@@ -46,18 +46,27 @@ $--background-color-base: #0b1431 !default;
 $--button-hover-tint-percent: 20% !default;
 
 //diy
-$--color-success-blue: #546fd8;
 
-$--color-default-color: #999999;
+$--color-default-color: #999999 !default;
 
 $--table-header-background-color: #444e69 !default;
 
-$--table-current-row-background-color: #6b799e !default;
+$--table-current-row-background-color: #24376c !default;
 
 $--table-current-row-outline-color: #1375bd !default;
 
-$--table-row-striped-background-color: #1b2441;
+$--table-row-striped-background-color: #1b2441 !default;
 
 $--font-color-disabled-base: #bbb !default;
 
-$--color-secondary: #2680eb !default;
+$--color-sec-danger: #fc5660 !default;
+
+$--color-sec-warning: #e2d34f !default;
+
+$--color-light-blue: #00baf3 !default;
+
+$--color-blue: #2680eb !default;
+
+$--color-purple: #d094d7 !default;
+
+$--color-dark-blue: #006a9e !default;

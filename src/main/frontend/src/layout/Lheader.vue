@@ -39,15 +39,16 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import { Component, Prop } from "vue-property-decorator";
 import Fast from "./LFast.vue";
-import Cavr from "./Lcard.vue";
-import LuserInfo from "./LuserInfo.vue";
+import Cavr from "./LCard.vue";
+import LuserInfo from "./LUserInfo.vue";
 import { LayoutReqVO } from "./vo/LayoutVO";
 import { setTimeout, clearTimeout } from "timers";
+import LayoutController from "./controller/layoutControllers";
 @Component({ components: { Fast, Cavr, LuserInfo } })
-export default class Header extends Vue {
-    // d: string = "12121313121";
+export default class LHeader extends Vue {
     cavrIsOpen: boolean = false;
     luserInfoOpen: boolean = false;
     passWordOpen: boolean = false;
@@ -72,6 +73,7 @@ export default class Header extends Vue {
         }
         this.time = setTimeout(() => {
             this.layoutReqVO.secondMeunIsOpen = true;
+            this.layoutReqVO.isKeyCode = true;
             this.isMenuOpen = true;
         }, 500);
     }
@@ -91,8 +93,13 @@ export default class Header extends Vue {
     closeUserInfo() {
         this.layoutReqVO.luserInfoOpen = false;
     }
+    //锁屏
     handleLocking() {
         this.layoutReqVO.lockisOpen = true;
+        localStorage.setItem("lockName", Math.random() * 54 + "");
+        this.layoutReqVO.nameLock = localStorage.getItem("lockName");
+        // this.successMessage("锁屏成功");
+        // this.inFullCreeen();
     }
     handlefullScree() {
         this.inFullCreeen();
@@ -112,7 +119,7 @@ export default class Header extends Vue {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background: $color-assist;
+    // background: $color-assist; //换色
     padding-left: 16px;
     .logo-container {
         img,
@@ -124,6 +131,8 @@ export default class Header extends Vue {
                 margin-left: 22px;
                 font-size: 22px;
                 color: $color-white;
+                position: relative;
+                top: -2px;
             }
         }
     }
@@ -162,13 +171,13 @@ export default class Header extends Vue {
             }
             &.user {
                 font-size: 12px;
-                color: $color-font6;
+                // color: $color-font6;//换色
             }
             & + .more-userinfo {
                 height: 0;
                 width: 0;
-                border: 6px solid transparent;
-                border-top-color: #444e69;
+                // border: 6px solid transparent;//换色
+                // border-top-color: #444e69;//换色
                 z-index: 9999;
                 position: absolute;
                 top: 22px;
@@ -195,7 +204,7 @@ export default class Header extends Vue {
         margin-right: 10px;
         color: #fff;
         font-size: 14px;
-        z-index: 99;
+        z-index: 2;
         i {
             display: none;
 
@@ -229,11 +238,11 @@ export default class Header extends Vue {
         vertical-align: middle;
         &:hover {
             &::before {
-                color: #ff900d;
+                // color: #ff900d;//换色
             }
         }
         &::before {
-            color: #adb5bb;
+            // color: #adb5bb;//换色
             font-size: 17px;
         }
     }

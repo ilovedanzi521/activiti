@@ -10,11 +10,12 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { LayoutReqVO } from "./vo/LayoutVO";
 @Component({})
-export default class Fast extends Vue {
+export default class LUserInfo extends Vue {
     @Prop()
     layoutReqVO: LayoutReqVO;
     //退出
     logout() {
+        // window.location.reload(); 重新刷新页面
         if (localStorage.getItem("Authorization")) {
             localStorage.removeItem("Authorization");
         }
@@ -37,15 +38,15 @@ export default class Fast extends Vue {
     z-index: 9999;
     width: 120px;
     text-align: center;
-    color: #fff;
-    background: #444e69;
+    // color: #fff; //换色
+    // background: #444e69; //换色
     border-radius: 6px;
     div {
         height: 36px;
         line-height: 36px;
         cursor: pointer;
         &:hover {
-            color: #ff900d;
+            // color: #ff900d; //换色
         }
     }
     &::after {
@@ -54,8 +55,8 @@ export default class Fast extends Vue {
         height: 0;
         width: 0;
         top: -23px;
-        border: 12px solid transparent;
-        border-bottom-color: #444e69;
+        // border: 12px solid transparent;换色
+        // border-bottom-color: #444e69; //换色
     }
 }
 </style>

@@ -2,7 +2,7 @@
  * @Author: mikey.zhaopeng 
  * @Date: 2019-05-31 00:48:32 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-07-15 09:41:19
+ * @Last Modified time: 2019-08-17 14:15:13
  */
 
 
@@ -17,7 +17,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 
 @Component({})
-export default class Footer extends Vue {
+export default class LFooter extends Vue {
     date: Date = new Date();
     get init() {
         this.date = new Date();
@@ -53,7 +53,7 @@ export default class Footer extends Vue {
     justify-content: flex-end;
     align-items: center;
     padding-right: 16px;
-    background: $color-footer-bg;
+    // background: $color-footer-bg; //换色
     .transaction-time {
         display: inline-block;
         vertical-align: middle;

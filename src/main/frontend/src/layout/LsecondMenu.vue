@@ -7,30 +7,35 @@
 <template>
     <section class="menu-container">
         <div>
-
             <div class="menu-panel">
                 <div class="search">
                     <i class="win win-el-icon-search"></i>
-                    <input type="text" class="searchInput" placeholder="请输入关键词" v-model.trim="serverValue" @input="setSearchMenuItem(serverValue)" v-winfocus />
+                    <input type="text" class="searchInput" placeholder="请输入关键词" v-model.trim="serverValueArray[index]" @input="searchMeunItem(serverValueArray[index])" v-winfocus v-for="(element,index) in serverValueArray"
+                        v-if="index==layoutReqVO.firstMenuIndex" :key="serverValueArray[index]" :test_name="'indexMenu_'+index" />
                 </div>
                 <div class="menu-second">
-                    <dl class="second-menu-floor" v-for="(item) in layoutReqVO.secondMenus[layoutReqVO.firstMenuIndex]" :key="item.id" v-show="item.children && item.children.length > 0">
-                        <div>{{layoutReqVO.firstIndex}}</div>
+                    <div v-if="layoutReqVO.isNoSearch" class="noSearch">
+                        <p>
+                            <i class="win win-hint"></i>
+                        </p>
+                        <p>
+                            无结果
+                        </p>
+                    </div>
+                    <dl class="second-menu-floor" v-for="(item,firstIndex) in layoutReqVO.secondMenus[layoutReqVO.firstMenuIndex]" :key="item.id" v-show="item.children && item.children.length > 0" v-else>
                         <dt>{{item.menuName}}</dt>
-                        <dd v-for="(menuItem) in item.children" :key="menuItem.menuName" @click="gotoMenuPath(menuItem,item)">
-                            <span :class="['el-icon-s-goods','win',menuItem.menuIcon]" :style="{'marginRight':'10px','paddingLeft':'10px'}"></span>
+                        <dd v-for="(menuItem,index) in item.children" :key="menuItem.menuName" @click="gotoMenuPath(menuItem,item)" :class="{'active':menuItem.id==layoutReqVO.activeMenuId}"
+                            @mouseover="changeMeunItem(menuItem,firstIndex,index)">
+                            <span :class="['win',menuItem.menuIcon||'win-kezhiyazhengquanchaxun']" :style="{'marginRight':'10px','paddingLeft':'10px'}"></span>
                             <span :class="{'noAddress':!menuItem.menuAddress}">{{menuItem.menuName}}</span>
                             <i @click.stop="handleToggleFast(menuItem)" v-if="!menuItem.collect" class="startImg">
                                 <img src="../assets/image/start.png" width="14" height="14" />
                             </i>
                             <i :class="['icon-11','win','win-star' ,{'active':menuItem.collect}]" @click.stop="handleToggleFast(menuItem)" v-else></i>
-                            <!-- <i :class="['icon-11','win','win-star' ,{'active':menuItem.collect}]" @click.stop="handleToggleFast(menuItem)"></i> -->
                         </dd>
                     </dl>
                 </div>
-
                 <span class="close icon-2" @click="closeSecondMenus">✖</span>
-
             </div>
         </div>
     </section>
@@ -39,10 +44,13 @@
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
 import { LayoutReqVO } from "./vo/LayoutVO";
+import { clearTimeout, setTimeout } from "timers";
 
 @Component({})
-export default class SecondMenus extends Vue {
+export default class LSecondMenu extends Vue {
     serverValue: string = "";
+    times;
+    serverValueArray = new Array(10);
     // storageMenus;
     @Prop()
     layoutReqVO: LayoutReqVO;
@@ -78,7 +86,27 @@ export default class SecondMenus extends Vue {
      *
      * */
 
+    searchMeunItem(searchValue) {
+        if (this.times) {
+            clearTimeout(this.times);
+        }
+
+        this.times = setTimeout(() => {
+            this.setSearchMenuItem(searchValue);
+        }, 500);
+    }
+
+    changeMeunItem(item, firstIndex, index) {
+        this.layoutReqVO.menuSize = index;
+        this.layoutReqVO.currentMenu = firstIndex;
+        this.layoutReqVO.activeMenuId = item.id;
+    }
+    /**
+     *查找菜单的搜索的元素
+     *
+     * */
     setSearchMenuItem(searchValue) {
+        this.layoutReqVO.isNoSearch = false;
         this.layoutReqVO.secondMenus[
             this.layoutReqVO.firstMenuIndex
         ] = this.layoutReqVO.storageMenus[this.layoutReqVO.firstMenuIndex];
@@ -107,8 +135,22 @@ export default class SecondMenus extends Vue {
             }
         );
         if (!searchArray.length) {
+            this.layoutReqVO.isNoSearch = true;
             return;
         }
+        this.formatArray(searchArray);
+    }
+
+    /*
+     *
+     *
+     *
+     *  获取到搜索的结构组装成搜索要的数据
+     *
+     *
+     */
+
+    formatArray(searchArray) {
         let d = {};
         searchArray.forEach(item => {
             if (!d[item.parentId]) {
@@ -127,14 +169,23 @@ export default class SecondMenus extends Vue {
         f.forEach(item => {
             lastSearchArray.push(d[item]);
         });
-        this.layoutReqVO.secondMenus[
-            this.layoutReqVO.firstMenuIndex
-        ] = lastSearchArray;
+        this.layoutReqVO.secondMenus[this.layoutReqVO.firstMenuIndex] = [
+            ...lastSearchArray
+        ];
+        this.layoutReqVO.secondMenus = [...this.layoutReqVO.secondMenus];
+        try {
+            this.layoutReqVO.activeMenuId = this.layoutReqVO.secondMenus[
+                this.layoutReqVO.firstMenuIndex
+            ][0].children[0].id;
+        } catch (e) {
+            console.log(e);
+        }
         this.$forceUpdate();
     }
 
     closeSecondMenus() {
         this.layoutReqVO.stwichController.switchsScondMeunIsDetailed = false;
+        this.layoutReqVO.isKeyCode = false; //将键盘事件重置到默认属性
         this.layoutReqVO.secondMeunIsOpen = false;
         this.layoutReqVO.secondMenus = [...this.layoutReqVO.storageMenus];
     }
@@ -168,7 +219,7 @@ export default class SecondMenus extends Vue {
         top: 0;
         bottom: 0;
         padding: 12px 34px 12px 50px;
-        background: #1f2640;
+        // background: #1f2640;//换色
         box-sizing: border-box;
         z-index: 1;
         .lately {
@@ -180,34 +231,37 @@ export default class SecondMenus extends Vue {
             }
             dd {
                 display: inline-block;
-                margin: 0 130px 10px 0;
+                margin: 0 130px 10px 0; 
                 vertical-align: middle;
                 font-size: 12px;
                 color: $color-white;
                 cursor: pointer;
-                &:hover {
-                    color: $color-orange;
-                }
+                // &:hover {
+                //     color: $color-orange;
+                // }
                 &:last-of-type {
                     margin-right: 0;
                 }
             }
         }
         .menu-second {
-            margin-top: 42px;
+            display: flex;
+            max-width: 800px;
+            flex-wrap: wrap;
             // overflow: hidden;
             .second-menu-floor {
-                float: left;
                 width: 200px;
-                box-sizing: border-box;
+                margin-top: 42px;
                 margin-right: 30px;
+                box-sizing: border-box;
+
                 &:last-of-type {
                     margin-right: 0;
                 }
                 dt {
                     margin-bottom: 16px;
                     font-size: 14px;
-                    color: #fff;
+                    // color: #fff;//换色
                     font-weight: bold;
                 }
                 dd {
@@ -217,6 +271,29 @@ export default class SecondMenus extends Vue {
                     height: 32px;
                     line-height: 32px;
                     font-size: 14px;
+                    &.active {
+                        background: #0b1431; //换色
+                        span {
+                            color: $color-orange;
+                        }
+                        .startImg {
+                            display: inline-block;
+                        }
+
+                        span,
+                        i {
+                            &.win-star.active {
+                                + span {
+                                    color: $color-orange;
+                                }
+                                &::before {
+                                    opacity: 1;
+                                    font-size: 12px;
+                                    // color: red;
+                                }
+                            }
+                        }
+                    }
                     .startImg {
                         display: none;
                         position: absolute;
@@ -224,30 +301,31 @@ export default class SecondMenus extends Vue {
                         top: 2px;
                     }
                     // background: red;
+                    // color: #adb5bb;//换色
                     cursor: pointer;
-                    color: #adb5bb;
-                    cursor: pointer;
+                    //当没有地址的时候
                     & span.noAddress {
-                        color: #999;
-                        &:hover {
-                            color: #999;
-                            & + .win-star {
-                                &::before {
-                                    opacity: 1;
-                                }
-                            }
+                        // color: #999; //换色
+                        // &:hover {
+                        //     color: #999;
+                        //     & + .win-star {
+                        //         &::before {
+                        //             opacity: 1;
+                        //         }
+                        //     }
+                        // }
+                        & + .startImg {
+                            display: none;
                         }
                     }
                     span,
                     i {
                         display: inline-block;
                         vertical-align: middle;
-
                         &.win-star {
                             position: absolute;
                             right: 12px;
                             top: -1px;
-
                             &::before {
                                 opacity: 0;
                             }
@@ -264,18 +342,18 @@ export default class SecondMenus extends Vue {
                         }
                     }
                     &:hover {
-                        .startImg {
-                            display: inline-block;
-                        }
-                        background: #0b1431;
-                        span {
-                            color: $color-orange;
-                        }
-                        .win-star {
-                            &::before {
-                                opacity: 1;
-                            }
-                        }
+                        // .startImg {
+                        //     display: inline-block;
+                        // }
+                        // background: #0b1431; //换色
+                        // // span {
+                        // //     color: red;
+                        // // }
+                        // .win-star {
+                        //     &::before {
+                        //         opacity: 1;
+                        //     }
+                        // }
                     }
                 }
             }
@@ -287,7 +365,7 @@ export default class SecondMenus extends Vue {
         top: 8px;
         right: 22px;
         font-size: 16px;
-        color: #fff;
+        color: #fff; //换色
         cursor: pointer;
         &:hover {
             color: $color-orange;
@@ -320,6 +398,26 @@ export default class SecondMenus extends Vue {
             border: none;
             margin-top: -10px;
             background: transparent;
+        }
+    }
+    .noSearch {
+        position: relative;
+        left: -19px;
+        top: 8px;
+        width: 300px;
+        height: 200px;
+        line-height: 100px;
+        color: #666;
+        font-size: 22px;
+        text-align: center;
+        background: transparent;
+        z-index: 1;
+        p {
+            height: 50x;
+            line-height: 50px;
+            .win {
+                font-size: 40px;
+            }
         }
     }
 }

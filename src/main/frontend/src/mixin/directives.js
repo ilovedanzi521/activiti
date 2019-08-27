@@ -1,6 +1,6 @@
 export default (Vue) => {
     /* from面板拖动指令
-     *
+     * 
      * */
     Vue.directive("win_dialogDrag", {
             inserted(el) {
@@ -9,13 +9,13 @@ export default (Vue) => {
                 const dragDomParent = el.querySelector(".el-dialog").parentNode
                 dragDomParent.style.display = "block"
                 dialogHeaderEl.style.cursor = "move"
-                dragDom.style.marginTop = "0px"
                 dragDom.style.left = "50%"
-                dragDom.style.top = "80px"
+                dragDom.style.top = "18%"
                 let marginLeft = -parseInt(dragDom.style.width) / 2
+                let marginTop = -parseInt(dragDom.clientHeight) / 2
                 dragDom.style.marginLeft = marginLeft + "px"
-                dragDom.style.marginTop = "0px"
-                dragDom.style.marginBottom = "0px"
+                dragDom.style.marginTop = 0 + "px"
+                // dragDom.style.marginBottom = "0px"
                 const sty =
                     dragDom.currentStyle || window.getComputedStyle(dragDom, null);
                 dialogHeaderEl.onmousedown = e => {
@@ -50,14 +50,14 @@ export default (Vue) => {
                             left = 0 - marginLeft;
                         }
                         if (left > screeWidth - dialoWidth - marginLeft) {
-                            left = screeWidth - dialoWidth - marginLeft
+                            left = screeWidth - dialoWidth - marginLeft - 10
                         }
                         if (top <= 0) {
                             top = 0 + 20
                         }
 
-                        if (top > screeHeight - dialoHeight - 50) {
-                            top = screeHeight - dialoHeight - 50
+                        if (top > screeHeight - dialoHeight - 70) {
+                            top = screeHeight - dialoHeight - 70
                         }
 
                         dragDom.style.left = `${left}px`;
@@ -74,45 +74,66 @@ export default (Vue) => {
             }
         }),
         /* from光标定位到那个input框
-         *
+         * 
          * */
         Vue.directive("focus", {
             inserted(el) {
-
                 let input = el.querySelector(".el-input__inner")
                 input.focus();
             }
         }),
 
         Vue.directive("winfocus", {
-            inserted(el) {
+            bind(el) {
                 el.focus();
-
-            }
-        }),
-        Vue.directive("testName", {
-            bind(el, binding) {
-                let elNode = getChildNodes(el)
-                elNode.forEach((item, index) => {
-                    if (item.localName == "input") {
-                        item.setAttribute("test_name", `${binding.value.TEST_NAME}-${index}`);
-                        console.log(item)
-                    }
-                    if (item.localName == "textarea") {
-                        item.setAttribute("test_name", `${binding.value.TEST_NAME}-${index}`);
-                    }
-                })
             }
         })
+
+    Vue.directive("testName", {
+        inserted(el, binding) {
+            // if (process.env.NODE_ENV != developmen1111t) {
+            //     return
+            // }/代码判断生产环境下不执行任何代码
+            let e = el.parentNode.parentNode
+            let elNode = getChildNodes(e)
+            let type = 1
+            elNode.forEach((item, index) => {
+                if (item.localName == "input") {
+                    let placeholder = item.getAttribute("placeholder")
+                    if (!placeholder) {
+                        item.setAttribute("test_name", `${binding.value.TEST_NAME}-${index}`);
+                    } else {
+                        item.setAttribute("test_name", `${binding.value.TEST_NAME}-${placeholder}`);
+                    }
+
+                }
+                if (item.localName == "textarea") {
+                    item.setAttribute("test_name", `${binding.value.TEST_NAME}-${index}`);
+                }
+
+                if (item.localName == "button") {
+                    if (type == 1) {
+                        item.setAttribute("test_name", `${binding.value.TEST_NAME}-确定`);
+                        type = 2
+                    } else {
+                        item.setAttribute("test_name", `${binding.value.TEST_NAME}-取消 `);
+                        type = 1
+                    }
+                }
+            })
+
+        }
+    })
 }
 
 
 
-
 function getChildNodes(node) {
-    var nodes = node.childNodes;
+    var nodes = [...node.childNodes];
+    // console.log(node.childNodes)
     var arr = [];
     for (var i = 0; i < nodes.length; i++) {
+        // console.log(nodes[i])
         var childNode = nodes[i];
         if (childNode.nodeType == 1) {
             arr.push(childNode);
@@ -121,7 +142,5 @@ function getChildNodes(node) {
         }
     }
     return arr;
-
-
 
 }

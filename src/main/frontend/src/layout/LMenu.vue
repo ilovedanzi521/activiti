@@ -9,7 +9,7 @@
         <ul class="menu-first">
             <li :class="{'active':layoutReqVO.firstMenuIndex===item.id}" v-for="( item,index ) in layoutReqVO.firstMents" :key="item.id" @mouseenter="handleChangeTab(item.id,index)">
                 <span>{{item.menuName}}</span>
-                <i class="icon-14"></i>
+                <i class="icon-14 win win-next"></i>
             </li>
         </ul>
         <!-- <span class="icon_panel"></span> -->
@@ -22,7 +22,7 @@ import { LayoutReqVO } from "./vo/LayoutVO";
 import { setTimeout, clearTimeout } from "timers";
 
 @Component({})
-export default class SecondMenus extends Vue {
+export default class LMenu extends Vue {
     time;
     isSecondOpen: Boolean = false;
     @Prop()
@@ -35,23 +35,15 @@ export default class SecondMenus extends Vue {
         if (this.time) {
             clearTimeout(this.time);
         }
-        // // if (this.layoutReqVO.stwichController.switchsScondMeunIsDetailed) {
-        // //     this.layoutReqVO.firstMenuIndex = id;
-        // //     return id;
-        // // }
-        // //判断鼠标第一次进入二级目录的状态
-        // this.time = setTimeout(() => {
-        //     this.layoutReqVO.firstMenuIndex = id;
-        //     this.layoutReqVO.stwichController.switchsScondMeunIsDetailed = true;
-        //     this.isSecondOpen = true;
-        //     return id;
-        // }, 300);
         this.layoutReqVO.firstMenuIndex = id;
         this.layoutReqVO.stwichController.switchsScondMeunIsDetailed = true;
+        //重置搜索
+        this.layoutReqVO.menuSize = 0;
+        this.layoutReqVO.currentMenu = 0;
+        this.layoutReqVO.isNoSearch = false;
         return id;
     }
     secondIsClose() {
-        console.log(1111);
         if (this.isSecondOpen) {
             return;
         } else {
@@ -67,10 +59,10 @@ export default class SecondMenus extends Vue {
 .menu-container {
     position: absolute;
     left: 70px;
-    top: 48px;
+    top: 47px;
     bottom: 22px;
     width: 130px;
-    z-index: 4;
+    z-index: 5;
     .icon_panel {
         position: absolute;
         width: 15px;
@@ -89,7 +81,7 @@ export default class SecondMenus extends Vue {
         top: 0;
         bottom: -36px;
         width: 130px;
-        background: #0a0f0e;
+        // background: #0a0f0e; //换色
         li {
             display: flex;
             height: 52px;
@@ -97,103 +89,19 @@ export default class SecondMenus extends Vue {
             justify-content: space-between;
             align-items: center;
             text-align: left;
-            color: #adb5bb;
+            // color: #adb5bb; //换色
             font-size: 14px;
             box-sizing: border-box;
             cursor: pointer;
             .icon-14::before {
                 color: transparent;
+                font-size: 14px;
             }
             &.active {
-                background: #1f2640;
+                // background: #1f2640;//换色
                 color: $color-orange;
                 .icon-14::before {
                     color: $color-orange;
-                }
-            }
-        }
-    }
-
-    .menu-panel {
-        position: absolute;
-        width: 788px;
-        left: 130px;
-        top: 0;
-        bottom: 0;
-        padding: 85px 51px;
-        background: #1f2640;
-        box-sizing: border-box;
-        .lately {
-            dt {
-                margin-bottom: 16px;
-                font-size: 16px;
-                color: $color-orange;
-            }
-            dd {
-                display: inline-block;
-                margin: 0 130px 10px 0;
-                vertical-align: middle;
-                font-size: 14px;
-                color: $color-white;
-                cursor: pointer;
-                &:hover {
-                    color: $color-orange;
-                }
-                &:last-of-type {
-                    margin-right: 0;
-                }
-            }
-        }
-        .menu-second {
-            margin-top: 48px;
-            overflow: hidden;
-            .second-menu-floor {
-                float: left;
-                margin-right: 130px;
-                &:last-of-type {
-                    margin-right: 0;
-                }
-                dt {
-                    margin-bottom: 16px;
-                    font-size: 16px;
-                    color: $color-orange;
-                    cursor: pointer;
-                }
-                dd {
-                    margin-bottom: 24px;
-                    font-size: $font-size4;
-                    cursor: pointer;
-                    color: $color-white;
-                    cursor: pointer;
-                    span,
-                    i {
-                        display: inline-block;
-                        vertical-align: middle;
-                        &.icon-11 {
-                            &::before {
-                                opacity: 0;
-                            }
-                        }
-                        &.icon-11.active {
-                            + span {
-                                color: $color-orange;
-                            }
-                            &::before {
-                                opacity: 1;
-                                color: $color-orange;
-                            }
-                        }
-                    }
-                    &:hover {
-                        span {
-                            color: $color-orange;
-                        }
-                        .icon-11 {
-                            &::before {
-                                opacity: 1;
-                            }
-                        }
-                    }
                 }
             }
         }
