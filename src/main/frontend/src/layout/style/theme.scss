@@ -1,0 +1,428 @@
+@import "../../assets/style/element.scss";
+
+/**需要换色css**/
+/**dark css**/
+.containerDark {
+    .header-container {
+        background: $color-assist; //换色
+
+        .win-more {
+            &:hover {
+                &::before {
+                    color: $color-orange; //换色
+                }
+            }
+
+            &::before {
+                color: $colorAdb5bb; //换色
+            }
+        }
+
+        .user {
+            color: $color-font6; //换色
+
+            &+.more-userinfo {
+                border: 6px solid transparent; //换色
+                border-top-color: $color-footer-bg; //换色
+            }
+        }
+    }
+
+    //user弹出层
+    .contanier-user {
+        color: #fff; //换色
+        background: $color-footer-bg; //换色
+
+        div {
+            &:hover {
+                color: $color-orange; //换色
+            }
+        }
+
+        &::after {
+            border: 12px solid transparent;
+            border-bottom-color: $color-footer-bg; //换色
+        }
+    }
+
+    /*快速菜单*/
+    .fast-contanier {
+        .icon {
+
+            &::before {
+                color: $colorAdb5bb; //换色
+            }
+
+            &:hover {
+                &::before {
+                    color: $color-orange; //换色
+                }
+            }
+
+            .right-hr {
+                background: $colorAdb5bb; //换色
+            }
+        }
+    }
+
+    .tabContaner {
+        background: $color-main2 //换色
+    }
+
+    /*侧边栏**/
+    .aside-container {
+        background: $color-assist; //换色
+
+        .icon {
+            &::before {
+                color: $colorAdb5bb; //换色
+            }
+
+            &.active {
+                background: $color-main; //换色
+
+                &::before {
+                    color: $color-orange;
+                }
+            }
+        }
+    }
+
+    /*一级侧边栏**/
+    .menu-first {
+        background: $color-assist; //换色
+
+        li {
+            color: $colorAdb5bb; //换色
+            font-size: 14px;
+
+            &.active {
+                background: $color-main; //换色
+                color: $color-orange;
+
+                .icon-14::before {
+                    color: $color-orange;
+                }
+            }
+        }
+    }
+
+    /*二级侧边栏**/
+    .secondMeun {
+        background: $color-main; //换色
+    }
+
+    .menu-panel {
+        background: $color-main; //换色
+    }
+
+    //二级菜单标签
+    .menu-second {
+        .second-menu-floor {
+            dt {
+                color: #fff; //换肤字体
+            }
+
+            dd {
+                color: $colorADB5BBFF; //换肤字体
+
+                &.active {
+                    background: #0b1431; //换色
+
+                    span {
+                        color: $color-orange;
+                    }
+
+                    .startImg {
+                        display: inline-block;
+                    }
+                }
+
+                & span.noAddress {
+                    color: #999; //换色
+
+                    &:hover {
+                        color: #999;
+
+                    }
+                }
+
+                span,
+                i {
+                    &.win-star {
+                        &::before {
+                            opacity: 0;
+                        }
+                    }
+
+                    &.win-star.active {
+                        +span {
+                            color: $color-orange;
+                        }
+
+                        &::before {
+
+                            color: $color-orange;
+                        }
+                    }
+                }
+
+                &:hover {
+                    // background: $color-main2; //换色
+
+                    // span {
+                    //     color: $color-orange;
+                    // }
+
+                    // .win-star {
+                    //     &::before {
+                    //         opacity: 1;
+                    //     }
+                    // }
+                }
+            }
+        }
+
+        .close {
+            color: #666; //换色
+
+            &:hover {
+                color: $color-orange; //换色
+            }
+        }
+    }
+
+    /*右侧container内容**/
+    .main-container {
+        background: $color-main2
+    }
+
+    /*底部内容**/
+    .footer-container {
+        background: $color-footer-bg; //换色
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+/**light css**/
+.containerLight {
+
+    /*头部*/
+    .header-container {
+        background: $maniColor; //换色
+
+        .win-more {
+            &:hover {
+                &::before {
+                    color: $lightManiColor; //换色
+                }
+            }
+
+            &::before {
+                color: $lightManiColor; //换色
+            }
+        }
+
+        .user {
+            color: $lightManiColor; //换色
+
+            &+.more-userinfo {
+                border: 6px solid transparent; //换色
+                border-top-color: $lightManiColor; //换色
+            }
+        }
+
+
+    }
+
+    //user弹出层
+    .contanier-user {
+        color: $lightManiColor; //换色
+        background: $maniColor; //换色
+
+        div {
+            &:hover {
+                color: $lightManiColor; //换色
+            }
+        }
+
+        &::after {
+            border: 12px solid transparent;
+            border-bottom-color: $maniColor; //换色
+        }
+    }
+
+
+    /*快速菜单*/
+    .fast-contanier {
+        .icon {
+
+            &::before {
+                color: $lightManiColor; //换色
+            }
+
+            &:hover {
+                &::before {
+                    color: $lightManiColor; //换色
+                }
+            }
+
+            .right-hr {
+                background: $lightManiColor; //换色
+            }
+        }
+    }
+
+    .tabContaner {
+        background: $lightManiColor //换色
+    }
+
+    /*侧边栏**/
+    .aside-container {
+        background: $maniColor; //换色
+
+        .icon {
+            &::before {
+                color: $lightManiColor; //换色
+            }
+
+            &.active {
+                background: $lightManiColor; //换色
+
+                &::before {
+                    color: $color-orange;
+                }
+            }
+        }
+    }
+
+    /*一级侧边栏**/
+    .menu-first {
+        background: $maniColor; //换色
+
+        li {
+            color: $lightManiColor; //换色
+            font-size: 14px;
+
+            &.active {
+                background: $lightManiColor; //换色
+                color: $color-orange;
+
+                .icon-14::before {
+                    color: $color-orange;
+                }
+            }
+        }
+    }
+
+    /*二级侧边栏**/
+    .secondMeun {
+        background: $lightManiColor; //换色
+    }
+
+    .menu-panel {
+        background: $lightManiColor; //换色
+    }
+
+    //二级菜单标签
+    .menu-second {
+        .second-menu-floor {
+            dt {
+                color: $colorFont;
+                ; //换肤字体
+            }
+
+            dd {
+                color: $colorFont; //换肤字体
+
+                &.active {
+                    background: rgba(0, 0, 0, .1); //换色
+
+                    span {
+                        color: $color-orange;
+                    }
+
+                    .startImg {
+                        display: inline-block;
+                    }
+                }
+
+                & span.noAddress {
+                    color: #999;
+
+                    &:hover {
+                        color: $colorFont;
+
+                    }
+                }
+
+                span,
+                i {
+
+
+                    &.win-star {
+
+
+                        &::before {
+                            opacity: 0;
+                        }
+                    }
+
+                    &.win-star.active {
+                        +span {
+                            color: $maniColor;
+                        }
+
+                        &::before {
+
+                            color: $maniColor;
+                        }
+                    }
+                }
+
+                // &:hover {
+                //     background: rgba(0, 0, 0, .1); //换色
+
+                //     span {
+                //         color: $maniColor;
+                //     }
+
+                //     .win-star {
+                //         &::before {
+                //             opacity: 1;
+                //         }
+                //     }
+                // }
+            }
+        }
+
+        .close {
+            color: #fff; //换色
+
+            &:hover {
+                color: $color-orange; //换色
+            }
+        }
+    }
+
+    /*右侧container内容**/
+    .main-container {
+        background: $lightManiColor; //换色
+    }
+
+    /*底部内容**/
+    .footer-container {
+        background: $footerColor; //换色
+    }
+
+
+}
