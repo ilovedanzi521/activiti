@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@types/node": "^12.7.2",
-        "@win-frond-frameworks/biz-common": "^2.0.1",
+        "win-plus": "^2.0.1",
         "@win-frond-frameworks/trade-biz": "^1.0.18",
         "awe-dnd": "^0.3.4",
         "axios": "^0.18.0",

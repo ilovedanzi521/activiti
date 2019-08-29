@@ -12,7 +12,7 @@ import "./assets/style/font.scss";
 // import "./assets/style/comm.scss";
 import directives from "../src/mixin/directives";
 import "./layout/require.context";
-import "@win-frond-frameworks/biz-common/dist/static/index.css";
+import "win-plus/dist/static/index.css";
 
 Vue.use(VueDND);
 Vue.use(ElementUI);

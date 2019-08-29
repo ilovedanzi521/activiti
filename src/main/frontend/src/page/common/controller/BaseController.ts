@@ -27,7 +27,7 @@ import {
     WinDivider,
     WinSelectTable,
     WinButtonGroup
-} from "@win-frond-frameworks/biz-common";
+} from "win-plus";
 import { win_dic_select } from "@win-frond-frameworks/trade-biz";
 
 //新增抽出来的业务组件
