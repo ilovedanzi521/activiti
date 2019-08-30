@@ -12,13 +12,14 @@ import "./assets/style/font.scss";
 // import "./assets/style/comm.scss";
 import directives from "../src/mixin/directives";
 import "./layout/require.context";
-import "win-plus/dist/static/index.css";
 import XEUtils from "xe-utils";
 import VXEUtils from "vxe-utils";
-Vue.use(VXEUtils, XEUtils);
+import "win-plus/dist/static/index.css";
+
 Vue.use(VueDND);
 Vue.use(ElementUI);
 Vue.use(directives);
+Vue.use(VXEUtils, XEUtils);
 
 Vue.config.productionTip = false;
 let d = process.env.NODE_ENV;
