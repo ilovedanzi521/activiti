@@ -29,7 +29,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import { win-tree } from "@win-frond-frameworks/biz-common";
+import { win-tree } from "win-plus";
 
 @Component({
     components: {}
