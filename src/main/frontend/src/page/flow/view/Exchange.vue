@@ -10,7 +10,7 @@
                     </el-button-group>
 
                     <!--左侧树形列表 -->
-                    <win-tree style="margin-top:10px; width:185px;top: 30px;bottom: 0;position: absolute" ref="SlotTree" node-key="id" :accordion="true" :default-expanded-keys="expandList" :data="treedata" :auto-expand-parent="false"
+                    <el-tree style="margin-top:10px; width:185px;top: 30px;bottom: 0;position: absolute" ref="SlotTree" node-key="id" :accordion="true" :default-expanded-keys="expandList" :data="treedata" :auto-expand-parent="false"
                               @node-click="handleNodeClick" :highlight-current="true">
                         <div class="comp-tr-node" slot-scope="{ node, data }">
                             <template v-if="data.isEdit">
@@ -23,7 +23,7 @@
                                 </span>
                             </template>
                         </div>
-                    </win-tree>
+                    </el-tree>
                 </div>
             </el-aside>
             <el-container>
