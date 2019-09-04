@@ -1,9 +1,6 @@
 import { Component } from "vue-property-decorator";
 import ExchangeFlowService from "../service/ExchangeFlowService";
-import {
-    ParamFlowInstReqVO,
-    ParamFlowInstRepVO
-} from "../vo/ParamFlowInstVO";
+import { ParamFlowInstReqVO, ParamFlowInstRepVO } from "../vo/ParamFlowInstVO";
 import { ParamFlowGroupVO } from "../vo/ParamFlowGroupVO";
 import { UserInfoVO } from "../vo/UserInfoVO";
 import AxiosFun from "../../../api/AxiosFun";
@@ -13,14 +10,17 @@ import PageVO from "../../common/vo/PageVO";
 import dateUtils from "../../common/util/DateUtils";
 import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
-import {DynamicSelectItemVO, StaticSelectItemVO} from "../vo/SelectItemVO";
-import {FlowConstant} from "../../flow/constant/FlowConstant";
+import { DynamicSelectItemVO, StaticSelectItemVO } from "../vo/SelectItemVO";
+import { FlowConstant } from "../../flow/constant/FlowConstant";
 @Component({
     components: {}
 })
 export default class ExchangeFlowController extends BaseController {
     staticSelectItemVO: StaticSelectItemVO = new StaticSelectItemVO();
-    items={"reqVO":new DynamicSelectItemVO(),"flowVO":new DynamicSelectItemVO()};
+    items = {
+        reqVO: new DynamicSelectItemVO(),
+        flowVO: new DynamicSelectItemVO()
+    };
 
     // selectItemFormVO: SelectItemVO = new SelectItemVO();
     /**下拉框数据end**/
@@ -254,7 +254,7 @@ export default class ExchangeFlowController extends BaseController {
         this.service.updateFlowgroup(flowGroupVO).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
-            }else{
+            } else {
                 this.successMessage(res.msg);
             }
             this.expandList = [item.id];
@@ -288,7 +288,7 @@ export default class ExchangeFlowController extends BaseController {
         this.$nextTick(() => {
             this.queryflowgroup();
             this.loadSelectsItems();
-            var defaultId=2;
+            var defaultId = 2;
             this.queryFlowByGroupid(defaultId);
         });
     }
@@ -380,8 +380,8 @@ export default class ExchangeFlowController extends BaseController {
                     this.service.deleteExchangeFlows(rows).then(res => {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
-                        }else{
-                            this.successMessage(res.msg)
+                        } else {
+                            this.successMessage(res.msg);
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -402,13 +402,13 @@ export default class ExchangeFlowController extends BaseController {
                 .then(() => {
                     this.service.batchStartFlow(rows).then(res => {
                         if (res.winRspType === "ERROR") {
-                            if(res.code==FlowConstant.DESIGN_PROBLEMS){
+                            if (res.code == FlowConstant.DESIGN_PROBLEMS) {
                                 this.warningMessage(res.msg);
-                            }else{
+                            } else {
                                 this.errorMessage(res.msg);
                             }
-                        }else{
-                            this.successMessage(res.msg)
+                        } else {
+                            this.successMessage(res.msg);
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -434,8 +434,8 @@ export default class ExchangeFlowController extends BaseController {
                     this.service.batchStopFlow(rows).then(res => {
                         if (res.winRspType === "ERROR") {
                             this.errorMessage(res.msg);
-                        }else{
-                            this.successMessage(res.msg)
+                        } else {
+                            this.successMessage(res.msg);
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -522,12 +522,12 @@ export default class ExchangeFlowController extends BaseController {
     reset() {
         this.reqVO = new ParamFlowInstReqVO();
         this.queryExchangeFlow(this.reqVO);
-        this.clearItemsData('reqVO');
+        this.clearItemsData("reqVO");
     }
 
     /**打开新增弹框 */
     openAddDialog() {
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
             this.$refs.exchangeForm.resetFields();
         });
         this.deleteFlag = false;
@@ -576,7 +576,7 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     /**打开修改弹框 */
-    async  openUpdateDialog(flowVO) {
+    async openUpdateDialog(flowVO) {
         if (flowVO.startFlag) {
             this.errorMessage("流程已启动不能修改");
             return;
@@ -590,7 +590,7 @@ export default class ExchangeFlowController extends BaseController {
             timeArray: [new Date(flowVO.beginDate), new Date(flowVO.endDate)]
         };
 
-       let resulut=await this.loadStartItemsData(flowVO);
+        let resulut = await this.loadStartItemsData(flowVO);
     }
 
     /**修改流程*/
@@ -663,6 +663,20 @@ export default class ExchangeFlowController extends BaseController {
                 trigger: "change"
             }
         ],
+        marketCode: [
+            {
+                required: true,
+                message: "交易市场不能为空",
+                trigger: "change"
+            }
+        ],
+        transactionDirection: [
+            {
+                required: true,
+                message: "交易方向不能为空",
+                trigger: "change"
+            }
+        ],
         timeArray: [
             {
                 validator: function(rule, value, callback) {
@@ -689,13 +703,13 @@ export default class ExchangeFlowController extends BaseController {
         let startFlag = flowVO.startFlag;
         this.service.startOrStopFlow(flowVO).then(res => {
             if (res.winRspType === "ERROR") {
-                if(res.code==FlowConstant.DESIGN_PROBLEMS){
+                if (res.code == FlowConstant.DESIGN_PROBLEMS) {
                     this.warningMessage(res.msg);
-                }else{
+                } else {
                     this.errorMessage(res.msg);
                 }
-            }else{
-                this.successMessage(res.msg)
+            } else {
+                this.successMessage(res.msg);
             }
             this.queryExchangeFlow(this.reqVO);
         });
@@ -710,17 +724,17 @@ export default class ExchangeFlowController extends BaseController {
         });
     }
 
-    setItemsValue(data){
-            this.staticSelectItemVO.flowNameItems = data.flowNameItems;
-            this.staticSelectItemVO.flowTypeItems = data.flowTypeItems;
-            // 产品
-            this.staticSelectItemVO.productItems = data.productItems;
-            // 指令类型
-            this.staticSelectItemVO.instructionTypeItems =
-                data.instructionTypeItems;
-            // 交易市场
-            this.staticSelectItemVO.marketItems = data.marketItems;
-            this.staticSelectItemVO.controlTypeItems = data.controlTypeItems;
+    setItemsValue(data) {
+        this.staticSelectItemVO.flowNameItems = data.flowNameItems;
+        this.staticSelectItemVO.flowTypeItems = data.flowTypeItems;
+        // 产品
+        this.staticSelectItemVO.productItems = data.productItems;
+        // 指令类型
+        this.staticSelectItemVO.instructionTypeItems =
+            data.instructionTypeItems;
+        // 交易市场
+        this.staticSelectItemVO.marketItems = data.marketItems;
+        this.staticSelectItemVO.controlTypeItems = data.controlTypeItems;
     }
 
     /**
@@ -728,9 +742,9 @@ export default class ExchangeFlowController extends BaseController {
      */
     changeItems(vo: string, itemType, value) {
         this.clear(vo, itemType);
-        this.loadItemData(vo,itemType, value);
+        this.loadItemData(vo, itemType, value);
     }
-    loadItemData(vo,itemType, value) {
+    loadItemData(vo, itemType, value) {
         this.service.loadItems(itemType, value).then(res => {
             if (res.winRspType === "ERROR") {
                 this.errorMessage(res.msg);
@@ -781,20 +795,20 @@ export default class ExchangeFlowController extends BaseController {
      * @param flowVO 修改数据时，加载数据
      */
     loadStartItemsData(flowVO) {
-        if(flowVO.productCode){
-            this.loadItemData('flowVO',"PRO", flowVO.productCode);
+        if (flowVO.productCode) {
+            this.loadItemData("flowVO", "PRO", flowVO.productCode);
         }
-        if(flowVO.investCompany){
-            this.loadItemData('flowVO',"COM", flowVO.investCompany);
+        if (flowVO.investCompany) {
+            this.loadItemData("flowVO", "COM", flowVO.investCompany);
         }
-        if(flowVO.marketCode){
-            this.loadItemData('flowVO',"MAK", flowVO.marketCode);
+        if (flowVO.marketCode) {
+            this.loadItemData("flowVO", "MAK", flowVO.marketCode);
         }
     }
     /**
      * 清理items数据
      */
-    clearItemsData(vo :string) {
+    clearItemsData(vo: string) {
         //投资单元
         this.items[vo].investCompanyItems = [];
         // 组合资产
@@ -811,7 +825,7 @@ export default class ExchangeFlowController extends BaseController {
     closeDialog(formRule) {
         this.$refs[formRule].resetFields();
         this.deleteFlag = false;
-        this.clearItemsData('flowVO');
+        this.clearItemsData("flowVO");
         this.queryExchangeFlow(this.reqVO);
     }
     closeDia(formRule) {
@@ -822,5 +836,4 @@ export default class ExchangeFlowController extends BaseController {
     init(vo: string, lable: string) {
         this[vo][lable] = null;
     }
-
 }

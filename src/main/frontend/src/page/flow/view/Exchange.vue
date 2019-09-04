@@ -11,7 +11,7 @@
 
                     <!--左侧树形列表 -->
                     <el-tree style="margin-top:10px; width:185px;top: 30px;bottom: 0;position: absolute" ref="SlotTree" node-key="id" :accordion="true" :default-expanded-keys="expandList" :data="treedata" :auto-expand-parent="false"
-                              @node-click="handleNodeClick" :highlight-current="true">
+                        @node-click="handleNodeClick" :highlight-current="true">
                         <div class="comp-tr-node" slot-scope="{ node, data }">
                             <template v-if="data.isEdit">
                                 <el-input size="mini" v-focus v-model.trim="data.label" @blur.stop="handleBlur(data)" @keyup.enter.native="handleBlur(data)" :ref="'slotTreeInput' +data.id" :id="data.id" :autofocus="true" :maxlength="15">
@@ -45,7 +45,10 @@
                             </win-form-item>
                             <win-form-item label="产品" style="margin-right:-15px">
                                 <win-select v-model="reqVO.productCode" filterable clearable placeholder="请选择" @change="changeItems('reqVO','PRO',reqVO.productCode)">
-                                    <win-option v-for="item in staticSelectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
+                                    <win-option v-for="item in staticSelectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code">
+                                        <span style="float: left">{{ item.code }}</span>
+                                        <span>{{ "&nbsp;"+item.name }}</span>
+                                    </win-option>
                                 </win-select>
                             </win-form-item>
                             <win-form-item label="资产单元" style="margin-right:-15px">
@@ -55,7 +58,10 @@
                             </win-form-item>
                             <win-form-item label="投资组合" style="margin-right:-15px">
                                 <win-select v-model="reqVO.investConstitute" filterable clearable placeholder="请选择" @change="changeLink">
-                                    <win-option v-for="item in items.reqVO.investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
+                                    <win-option v-for="item in items.reqVO.investConstituteItems" :key="item.code" :label="item.name" :value="item.code">
+                                        <span style="float: left">{{ item.code }}</span>
+                                        <span>{{ "&nbsp;"+item.name }}</span>
+                                    </win-option>
                                 </win-select>
                             </win-form-item>
                         </el-row>
@@ -77,7 +83,10 @@
                             </win-form-item>
                             <win-form-item label="交易方向" style="margin-right:-15px">
                                 <win-select v-model="reqVO.transactionDirection" filterable clearable placeholder="请选择" @change="changeLink">
-                                    <win-option v-for="item in items.reqVO.transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
+                                    <win-option v-for="item in items.reqVO.transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code">
+                                        <span style="float: left">{{ item.code }}</span>
+                                        <span>{{ "&nbsp;"+item.name }}</span>
+                                    </win-option>
                                 </win-select>
                             </win-form-item>
                         </el-row>
@@ -156,7 +165,10 @@
                 <div class="form_content_flow">
                     <win-form-item label="产品" prop="productCode">
                         <win-select v-model="flowVO.productCode" :disabled="flowVO.id!=null" filterable clearable placeholder="请选择" @change="changeItems('flowVO','PRO',flowVO.productCode)">
-                            <win-option v-for="item in staticSelectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
+                            <win-option v-for="item in staticSelectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code">
+                                <span style="float: left">{{ item.code }}</span>
+                                <span>{{ "&nbsp;"+item.name }}</span>
+                            </win-option>
                         </win-select>
                     </win-form-item>
                     <win-form-item label="资产单元">
@@ -168,7 +180,10 @@
                 <div class="form_content_flow">
                     <win-form-item label="投资组合">
                         <win-select v-model="flowVO.investConstitute" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeLink">
-                            <win-option v-for="item in items.flowVO.investConstituteItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
+                            <win-option v-for="item in items.flowVO.investConstituteItems" :key="item.code" :label="item.name" :value="item.code">
+                                <span style="float: left">{{ item.code }}</span>
+                                <span>{{ "&nbsp;"+item.name }}</span>
+                            </win-option>
                         </win-select>
                     </win-form-item>
                     <win-form-item label="指令类型">
@@ -178,7 +193,7 @@
                     </win-form-item>
                 </div>
                 <div class="form_content_flow">
-                    <win-form-item label="交易市场">
+                    <win-form-item label="交易市场" prop="marketCode">
                         <win-select v-model="flowVO.marketCode" filterable clearable placeholder="请选择" @change="changeItems('flowVO','MAK',flowVO.marketCode)" :disabled="deleteFlag">
                             <win-option v-for="item in staticSelectItemVO.marketItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
                         </win-select>
@@ -187,12 +202,15 @@
                         <win-select v-model="flowVO.securityType" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeLink">
                             <win-option v-for="item in items.flowVO.securityTypeItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
                         </win-select>
-                        </win-form-item>
+                    </win-form-item>
                 </div>
                 <div class="form_content_flow">
-                    <win-form-item label="交易方向">
+                    <win-form-item label="交易方向" prop="transactionDirection">
                         <win-select v-model="flowVO.transactionDirection" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeLink">
-                            <win-option v-for="item in items.flowVO.transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
+                            <win-option v-for="item in items.flowVO.transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code">
+                                <span style="float: left">{{ item.code }}</span>
+                                <span>{{ "&nbsp;"+item.name }}</span>
+                            </win-option>
                         </win-select>
                     </win-form-item>
                     <win-form-item label="控制类型">
@@ -202,8 +220,8 @@
                     </win-form-item>
                     <win-input v-if="false" v-model="flowVO.flowCode"></win-input>
                 </div>
-                </win-form>
-                <span slot="footer" class="dialog-footer">
+            </win-form>
+            <span slot="footer" class="dialog-footer">
                 <win-button @click="closeDia('exchangeForm')" type="default">取消</win-button>
                 <span v-if="deleteFlag">
                     <win-button @click="deleteExchangeFlow('exchangeForm')" type="primary">确认</win-button>
@@ -215,7 +233,7 @@
                     <win-button @click="addExchangeFlow('exchangeForm')" type="primary">确认</win-button>
                 </span>
             </span>
-                <!-- <div>
+            <!-- <div>
 
                     <win-button @click="closeDialog('exchangeForm')" class="defaultButton">取消</win-button>
                     <span v-if="deleteFlag">
@@ -238,42 +256,42 @@
     </div>
 </template>
 <script lang="ts">
-    import ExchangeFlowController from "../controller/ExchangeFlowController";
-    import Component from "vue-class-component";
-    import ElementUI from "element-ui";
-    export default class Exchange extends ExchangeFlowController {
-        /**鼠标聚焦 */
-        /**鼠标移开 */
-    }
+import ExchangeFlowController from "../controller/ExchangeFlowController";
+import Component from "vue-class-component";
+import ElementUI from "element-ui";
+export default class Exchange extends ExchangeFlowController {
+    /**鼠标聚焦 */
+    /**鼠标移开 */
+}
 </script>
 <style lang="scss" scoped>
-    /*@import "../../../assets/style/page.scss";*/
-    .flow {
-        position: fixed;
-        width: 80%;
-        height: 100%;
-        right: 0;
-        top: 0;
-        background: #000;
-        z-index: 9999;
-    }
-    .win_aside {
-        background-color: #000;
-        color: #333;
-        text-align: center;
-        /*line-height: 600px;*/
-    }
+/*@import "../../../assets/style/page.scss";*/
+.flow {
+    position: fixed;
+    width: 80%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    background: #000;
+    z-index: 9999;
+}
+.win_aside {
+    background-color: #000;
+    color: #333;
+    text-align: center;
+    /*line-height: 600px;*/
+}
 
-    .win_header {
-        background-color: #000;
-        height: 20%;
-    }
-    .form_content_flow {
-        height: 12%;
-    }
-    .dialogclass {
-        margin-top: 62px;
-    }
+.win_header {
+    background-color: #000;
+    height: 20%;
+}
+.form_content_flow {
+    height: 12%;
+}
+.dialogclass {
+    margin-top: 62px;
+}
 </style>
 
 
