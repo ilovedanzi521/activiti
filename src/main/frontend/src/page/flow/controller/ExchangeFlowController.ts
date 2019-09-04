@@ -528,7 +528,9 @@ export default class ExchangeFlowController extends BaseController {
     /**打开新增弹框 */
     openAddDialog() {
         this.$nextTick(() => {
-            this.$refs.exchangeForm.resetFields();
+            if (this.$refs.exchangeForm) {
+                this.$refs.exchangeForm.resetFields();
+            }
         });
         this.deleteFlag = false;
         this.dialogVisible = true;
@@ -834,6 +836,8 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     init(vo: string, lable: string) {
-        this[vo][lable] = null;
+        if (this[vo][lable]) {
+            this[vo][lable] = null;
+        }
     }
 }

@@ -50,9 +50,9 @@ public class ActivitiConfig {
         // 流程历史等级
         configuration.setHistoryLevel(HistoryLevel.FULL);
         // 流程图字体
-        configuration.setActivityFontName("宋体");
-        configuration.setAnnotationFontName("宋体");
-        configuration.setLabelFontName("宋体");
+        configuration.setActivityFontName("雅黑字体");
+        configuration.setAnnotationFontName("雅黑字体");
+        configuration.setLabelFontName("雅黑字体");
         configuration.setTransactionManager(transactionManager);
         List<BpmnParseHandler> customDefaultBpmnParseHandlers= new ArrayList<>();
         customDefaultBpmnParseHandlers.add(handler);
