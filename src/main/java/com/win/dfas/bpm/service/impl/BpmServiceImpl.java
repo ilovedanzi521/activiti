@@ -123,12 +123,7 @@ public class BpmServiceImpl implements BpmService {
 
     @Override
     public List<String> nextUserInfo(String processId) {
-        Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
-        // 获取流程定义id
-        String processDefinitionId=task.getProcessDefinitionId();
-        ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
-        // 根据活动id获取活动实例
-        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey());
+        ActivityImpl activityImpl = findActivity(processId);
         TaskDefinition taskDef = (TaskDefinition)activityImpl.getProperties().get("taskDefinition");
         //候选人
         Set<Expression> userCodes = taskDef.getCandidateUserIdExpressions();
@@ -160,12 +155,7 @@ public class BpmServiceImpl implements BpmService {
 
     @Override
     public String nextTaskType(String processId) {
-        Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
-        // 获取流程定义id
-        String processDefinitionId=task.getProcessDefinitionId();
-        ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
-        // 根据活动id获取活动实例
-        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey());
+        ActivityImpl activityImpl = findActivity(processId);
         String taskType = (String) activityImpl.getProperties().get(BpmConstant.NAME);
         return taskType;
     }
@@ -199,6 +189,23 @@ public class BpmServiceImpl implements BpmService {
             log.error("异常返回{}",throwable);
             return repVO.setStatu(FlowNodeTaskTypeRepVO.EnumRunStatu.EXCEPTION);
         }
+    }
+
+    @Override
+    public ActivityImpl findActivity(String processId) {
+        Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
+        if(ObjectUtil.isEmpty(task)){
+            return null;
+        }
+        // 获取流程定义id
+        String processDefinitionId=task.getProcessDefinitionId();
+        ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
+        if(ObjectUtil.isEmpty(processDefinitionEntity)){
+            return null;
+        }
+        // 根据活动id获取活动实例
+        ActivityImpl activityImpl=processDefinitionEntity.findActivity(task.getTaskDefinitionKey());
+        return activityImpl;
     }
 
     private List<String> getUserInfo(Set<Expression> expressions) {

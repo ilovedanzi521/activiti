@@ -6,6 +6,7 @@ import com.win.dfas.bpm.vo.response.AllFlowAssignersRepVO;
 import com.win.dfas.bpm.vo.response.FlowAssignersRepVO;
 import com.win.dfas.bpm.vo.response.FlowNodeTaskTypeRepVO;
 import com.win.dfas.vo.request.FlowTaskReqVO;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Service;
 
@@ -123,4 +124,14 @@ public interface BpmService {
      * @Date 2019/8/6/15:04
      */
     FlowNodeTaskTypeRepVO complete(FlowTaskReqVO flowTaskReqVO);
+    /**
+     * @Title: findActivity
+     * @Description 根据实例id获取当前流程节点
+     * @param processId
+     * @return org.activiti.engine.impl.pvm.process.ActivityImpl
+     * @throws
+     * @author wanglei
+     * @Date 2019/9/5/9:36
+     */
+    ActivityImpl findActivity(String processId);
 }
