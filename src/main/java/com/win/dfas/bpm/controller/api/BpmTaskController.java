@@ -88,9 +88,7 @@ public class BpmTaskController {
                 flowTaskReqVO.setProcessDefId(String.valueOf(rtn.getData()));
 
                 WinResponseData runRtn = run(flowTaskReqVO);
-                if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                    return WinResponseData.handleSuccess("成功", runRtn.getData());
-                }
+                return runRtn;
             } else {
                 throw WinExceptionUtil.winException(BpmExceptionEnum.NOT_FOUND_FLOW);
             }
@@ -98,7 +96,7 @@ public class BpmTaskController {
             throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
         }
 
-        return WinResponseData.handleError("失败");
+//        return WinResponseData.handleError("失败");
 
     }
     /**
@@ -119,8 +117,8 @@ public class BpmTaskController {
         HistoricProcessInstance historicProcessInstance =
                 historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (historicProcessInstance.getEndTime() != null) {
-            log.info("流程结束-谢谢！");
-            return WinResponseData.handleSuccess("结束", historicProcessInstance.getEndTime());
+            log.info("流程流转异常");
+            return WinResponseData.handleError("流程流转异常,请查看流程审批金额");
         }
         log.info("processId=" + processId);
         Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
