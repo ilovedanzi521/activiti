@@ -29,6 +29,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class BpmTaskController {
      * @Date 2019/8/6/14:59
      */
     @PostMapping("/runFlow")
-    public WinResponseData queryAndStart(@RequestBody QueryAndStartFlowReqDTO queryAndStartFlowReqDTO) {
+    public WinResponseData queryAndStart(@RequestBody @Validated QueryAndStartFlowReqDTO queryAndStartFlowReqDTO) {
         try {
             log.info("运行参数======" + BeanUtil.beanToMap(queryAndStartFlowReqDTO).toString());
             ParamFlowReqVO paramFlowReqVO = new ParamFlowReqVO();
@@ -118,7 +119,7 @@ public class BpmTaskController {
                 historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (historicProcessInstance.getEndTime() != null) {
             log.info("流程流转异常");
-            return WinResponseData.handleError("流程流转异常,请查看流程审批金额");
+            return WinResponseData.handleError("流程流转异常,请查看流程审批金额以及审批状态");
         }
         log.info("processId=" + processId);
         Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();

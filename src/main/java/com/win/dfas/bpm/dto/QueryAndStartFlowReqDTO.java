@@ -2,6 +2,7 @@ package com.win.dfas.bpm.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -13,8 +14,11 @@ import java.math.BigDecimal;
  */
 @Data
 public class QueryAndStartFlowReqDTO {
+    @NotNull(message = "productCode(产品)不能为空")
     private String productCode;
+    @NotNull(message = "investConstitute(组合)不能为空")
     private String investConstitute;
+    @NotNull(message = "transactionDirection(交易方向)不能为空")
     private String transactionDirection;
     /**
      * 流程用户
@@ -25,6 +29,7 @@ public class QueryAndStartFlowReqDTO {
      */
     private String groupId;
     private String taskType;
+    @NotNull(message = "amt(金额)不能为空")
     private BigDecimal amt;
     private String processId;
     private String processDefId;
@@ -32,5 +37,6 @@ public class QueryAndStartFlowReqDTO {
     /**
      * 0-通过，1-是不通过
      */
+    @NotNull(message = "permit(审核状态:0-通过，1-是不通过)不能为空")
     private String permit="0";
 }
