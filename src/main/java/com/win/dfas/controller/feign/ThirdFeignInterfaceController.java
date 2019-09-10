@@ -1,5 +1,6 @@
 package com.win.dfas.controller.feign;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.win.dfas.common.constant.DicConstants;
 import com.win.dfas.common.enumeration.FormatEnum;
@@ -88,6 +89,9 @@ public class ThirdFeignInterfaceController {
     @RequestMapping("/feign/{loadItems}")
     public WinResponseData loadSelectsItems(@PathVariable("loadItems") String loadItems, @RequestParam("param") String param) {
         List list = new ArrayList<>();
+        if(ObjectUtil.isEmpty(param)){
+           return WinResponseData.handleSuccess("成功返回", list);
+        }
         switch (EnumUtils.getEnum(SelectorItemEnum.class, loadItems)) {
             //产品
             case PRO:

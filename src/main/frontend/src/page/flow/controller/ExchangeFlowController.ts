@@ -838,7 +838,7 @@ export default class ExchangeFlowController extends BaseController {
 
     init(vo: string, lable: string) {
         if (this[vo][lable]) {
-            this[vo][lable] = null;
+            this[vo][lable] = "";
         }
     }
 
