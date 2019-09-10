@@ -4,7 +4,7 @@
         <el-container height="100%">
             <el-aside width="185px">
                 <div ref="userinfo">
-                    <el-button-group style="width:200px;margin-bottom:-18px ">
+                    <el-button-group style="width:185px;margin-bottom:-18px ">
                         <win-button :disabled="level!=1" type="info" round @click="addflowgroup" icon="el-icon-plus">新增</win-button>
                         <win-button type="info" icon="el-icon-delete" round @click="delflowgroup">删除</win-button>
                     </el-button-group>
@@ -30,7 +30,7 @@
                 <el-header height="165px">
                     <win-form :inline="true" :model="reqVO" class="demo-form-inline" v-testName="{'TEST_NAME':'WLL'}">
                         <el-row>
-                            <win-form-item label="流程名称" style="margin-right:-5px;margin-left:-25px">
+                            <win-form-item label="流程名称" style="margin-right:-20px;margin-left:-25px">
                                 <!-- <el-input v-model="reqVO.flowName" :maxlength="80"></el-input> -->
 
                                 <win-select v-model="reqVO.flowName" filterable clearable placeholder="请选择">
@@ -38,12 +38,12 @@
                                 </win-select>
 
                             </win-form-item>
-                            <win-form-item label="流程类型" style="margin-right:-15px">
+                            <win-form-item label="流程类型" style="margin-right:-20px">
                                 <win-select v-model="reqVO.flowType" filterable clearable placeholder="请选择">
                                     <win-option v-for="item in staticSelectItemVO.flowTypeItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
                                 </win-select>
                             </win-form-item>
-                            <win-form-item label="产品" style="margin-right:-15px">
+                            <win-form-item label="产品" style="margin-right:-20px">
                                 <win-select v-model="reqVO.productCode" filterable clearable placeholder="请选择" @change="changeItems('reqVO','PRO',reqVO.productCode)">
                                     <win-option v-for="item in staticSelectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code">
                                         <span style="float: left">{{ item.code }}</span>
@@ -51,12 +51,12 @@
                                     </win-option>
                                 </win-select>
                             </win-form-item>
-                            <win-form-item label="资产单元" style="margin-right:-15px">
+                            <win-form-item label="资产单元" style="margin-right:-20px">
                                 <win-select v-model="reqVO.investCompany" filterable clearable placeholder="请选择" @change="changeItems('reqVO','COM',reqVO.investCompany)">
                                     <win-option v-for="item in items.reqVO.investCompanyItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
                                 </win-select>
                             </win-form-item>
-                            <win-form-item label="投资组合" style="margin-right:-15px">
+                            <win-form-item label="投资组合" style="margin-right:-20px">
                                 <win-select v-model="reqVO.investConstitute" filterable clearable placeholder="请选择" @change="changeLink">
                                     <win-option v-for="item in items.reqVO.investConstituteItems" :key="item.code" :label="item.name" :value="item.code">
                                         <span style="float: left">{{ item.code }}</span>
@@ -64,24 +64,27 @@
                                     </win-option>
                                 </win-select>
                             </win-form-item>
+                            <win-form-item style="width:50px">
+                                <el-button type="text" style="color:#FF900D" :icon="isShowClass" @click="showMore" round>{{showMoreText}}</el-button>
+                            </win-form-item>
                         </el-row>
-                        <el-row style="margin-top:-20px;margin-left:5px">
-                            <win-form-item label="指令类型" style="margin-right:-5px;margin-left:-30px">
+                        <el-row style="margin-top:-20px;margin-right:-20px;margin-left:5px" v-if="isShow">
+                            <win-form-item label="指令类型" style="margin-right:-20px;margin-left:-30px">
                                 <win-select v-model="reqVO.instructionType" filterable clearable placeholder="请选择">
                                     <win-option v-for="item in staticSelectItemVO.instructionTypeItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
                                 </win-select>
                             </win-form-item>
-                            <win-form-item label="交易市场" style="margin-right:-15px">
+                            <win-form-item label="交易市场" style="margin-right:-20px">
                                 <win-select v-model="reqVO.marketCode" filterable clearable placeholder="请选择" @change="changeItems('reqVO','MAK',reqVO.marketCode)">
                                     <win-option v-for="item in staticSelectItemVO.marketItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
                                 </win-select>
                             </win-form-item>
-                            <win-form-item label="证券类型" style="margin-right:-15px">
+                            <win-form-item label="证券类型" style="margin-right:-20px">
                                 <win-select v-model="reqVO.securityType" filterable clearable placeholder="请选择" @change="changeLink">
                                     <win-option v-for="item in items.reqVO.securityTypeItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
                                 </win-select>
                             </win-form-item>
-                            <win-form-item label="交易方向" style="margin-right:-15px">
+                            <win-form-item label="交易方向" style="margin-right:-20px">
                                 <win-select v-model="reqVO.transactionDirection" filterable clearable placeholder="请选择" @change="changeLink">
                                     <win-option v-for="item in items.reqVO.transactionDirectionItems" :key="item.code" :label="item.name" :value="item.code">
                                         <span style="float: left">{{ item.code }}</span>
@@ -126,7 +129,7 @@
                                 <el-switch v-model="scope.row.startFlag" :active-value="true" :inactive-value="false" active-color="#13ce66" inactive-color="#ff4949" @change="change(scope.row,scope.row.startFlag)"></el-switch>
                             </template>
                         </win-table-column>
-                        <win-table-column prop="publisherCode" label="操作" :width="200">
+                        <win-table-column min-width="200" prop="publisherCode" fi label="操作" header-align="center" align="center" fixed="right">
                             <template slot-scope="scope">
                                 <win-button type="text" @click="openUpdateDialog(scope.row)" size="small" icon="el-icon-edit-outline">修改</win-button>
 

@@ -12,6 +12,7 @@ import { WinRspType } from "../../common/enum/BaseEnum";
 import { WinResponseData } from "../../common/vo/BaseVO";
 import { DynamicSelectItemVO, StaticSelectItemVO } from "../vo/SelectItemVO";
 import { FlowConstant } from "../../flow/constant/FlowConstant";
+import { BaseConst } from "../../common/const/BaseConst";
 @Component({
     components: {}
 })
@@ -838,6 +839,22 @@ export default class ExchangeFlowController extends BaseController {
     init(vo: string, lable: string) {
         if (this[vo][lable]) {
             this[vo][lable] = null;
+        }
+    }
+
+    private isShow: boolean = false;
+    private showMoreText: string = BaseConst.QUERYMORE;
+    private isShowClass: string = "el-icon-caret-bottom";
+
+    /** 更多查询样式处理 */
+    private showMore() {
+        this.isShow = !this.isShow;
+        if (this.showMoreText === BaseConst.QUERYMORE) {
+            this.showMoreText = BaseConst.RETRACT;
+            this.isShowClass = "el-icon-caret-top";
+        } else {
+            this.showMoreText = BaseConst.QUERYMORE;
+            this.isShowClass = "el-icon-caret-bottom";
         }
     }
 }
