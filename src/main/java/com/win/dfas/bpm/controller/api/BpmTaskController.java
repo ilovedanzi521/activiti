@@ -73,29 +73,26 @@ public class BpmTaskController {
      */
     @PostMapping("/runFlow")
     public WinResponseData queryAndStart(@RequestBody @Validated QueryAndStartFlowReqDTO queryAndStartFlowReqDTO) {
-        try {
-            log.info("运行参数======" + BeanUtil.beanToMap(queryAndStartFlowReqDTO).toString());
-            ParamFlowReqVO paramFlowReqVO = new ParamFlowReqVO();
-            paramFlowReqVO.setInvestConstitute(queryAndStartFlowReqDTO.getInvestConstitute());
-            paramFlowReqVO.setTransactionDirection(queryAndStartFlowReqDTO.getTransactionDirection());
-            paramFlowReqVO.setProductCode(queryAndStartFlowReqDTO.getProductCode());
-            WinResponseData rtn = queryprocessDef(paramFlowReqVO);
-            if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
-                FlowTaskReqVO flowTaskReqVO = new FlowTaskReqVO();
-                flowTaskReqVO.setAmt(queryAndStartFlowReqDTO.getAmt());
-                flowTaskReqVO.setPermit(queryAndStartFlowReqDTO.getPermit());
-                flowTaskReqVO.setGroupId(queryAndStartFlowReqDTO.getGroupId());
-                flowTaskReqVO.setUserId(queryAndStartFlowReqDTO.getUserId());
-                flowTaskReqVO.setProcessDefId(String.valueOf(rtn.getData()));
+        log.info("运行参数======" + BeanUtil.beanToMap(queryAndStartFlowReqDTO).toString());
+        ParamFlowReqVO paramFlowReqVO = new ParamFlowReqVO();
+        paramFlowReqVO.setInvestConstitute(queryAndStartFlowReqDTO.getInvestConstitute());
+        paramFlowReqVO.setTransactionDirection(queryAndStartFlowReqDTO.getTransactionDirection());
+        paramFlowReqVO.setProductCode(queryAndStartFlowReqDTO.getProductCode());
+        WinResponseData rtn = queryprocessDef(paramFlowReqVO);
+        if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
+            FlowTaskReqVO flowTaskReqVO = new FlowTaskReqVO();
+            flowTaskReqVO.setAmt(queryAndStartFlowReqDTO.getAmt());
+            flowTaskReqVO.setPermit(queryAndStartFlowReqDTO.getPermit());
+            flowTaskReqVO.setGroupId(queryAndStartFlowReqDTO.getGroupId());
+            flowTaskReqVO.setUserId(queryAndStartFlowReqDTO.getUserId());
+            flowTaskReqVO.setProcessDefId(String.valueOf(rtn.getData()));
 
-                WinResponseData runRtn = run(flowTaskReqVO);
-                return runRtn;
-            } else {
-                throw WinExceptionUtil.winException(BpmExceptionEnum.NOT_FOUND_FLOW);
-            }
-        } catch (Throwable throwable) {
-            throw WinExceptionUtil.winException(BpmExceptionEnum.SYSTEM_ERR);
+            WinResponseData runRtn = run(flowTaskReqVO);
+            return runRtn;
+        } else {
+            throw WinExceptionUtil.winException(BpmExceptionEnum.NOT_FOUND_FLOW);
         }
+
 
 //        return WinResponseData.handleError("失败");
 
