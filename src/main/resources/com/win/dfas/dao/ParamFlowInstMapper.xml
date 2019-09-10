@@ -37,6 +37,7 @@
     and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
     and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
     and start_flag=1
+    and TIMESTAMPDIFF(day,date_format(CURRENT_DATE(),'%Y-%m-%d'),end_date)>=0
      limit 1
   </select>
   <select id="queryIdFromFlowInst" resultType="java.lang.Long" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
