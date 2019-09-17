@@ -70,7 +70,7 @@
 	</springProfile>
 
 	<!-- 测试环境 -->
-	<springProfile name="test">
+	<springProfile name="sit">
 		<logger name="com.win" level="INFO">
 			<appender-ref ref="LOGCONSOLE" />
 			<appender-ref ref="LOGSTASH-TEST"/>
