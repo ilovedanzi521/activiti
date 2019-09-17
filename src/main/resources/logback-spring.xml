@@ -68,18 +68,26 @@
             <appender-ref ref="asyncFileAppender" />
         </root>
 	</springProfile>
+    <springProfile name="test">
+        <logger name="com.win" level="INFO">
+            <appender-ref ref="LOGCONSOLE" />
+            <appender-ref ref="asyncFileAppender" />
+        </logger>
 
+        <root level="INFO">
+            <appender-ref ref="LOGCONSOLE" />
+            <appender-ref ref="asyncFileAppender" />
+        </root>
+    </springProfile>
 	<!-- 测试环境 -->
 	<springProfile name="sit">
 		<logger name="com.win" level="INFO">
 			<appender-ref ref="LOGCONSOLE" />
-			<appender-ref ref="LOGSTASH-TEST"/>
 			<appender-ref ref="asyncFileAppender" />
 		</logger>
 
 		<root level="INFO">
             <appender-ref ref="LOGCONSOLE" />
-            <appender-ref ref="LOGSTASH-TEST" />
             <appender-ref ref="asyncFileAppender" />
         </root>
 	</springProfile>
