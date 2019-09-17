@@ -289,8 +289,10 @@ export default class ExchangeFlowController extends BaseController {
         this.$nextTick(() => {
             this.queryflowgroup();
             this.loadSelectsItems();
-            var defaultId = 2;
-            this.queryFlowByGroupid(defaultId);
+            // var defaultId = 2;
+            this.reqVO.flowCode=2;
+            this.queryExchangeFlow(this.reqVO);
+            // this.queryFlowByGroupid(defaultId);
         });
     }
     //查询流程组
