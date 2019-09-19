@@ -1,12 +1,12 @@
-apollo:
-  bootstrap:
-    eagerLoad:
-      enabled: true
-    enabled: true
-    namespaces: application,application.yml
-  meta: http://192.168.0.60:8080
-app:
-  id: dfas-common-bpm
+#apollo:
+#  bootstrap:
+#    eagerLoad:
+#      enabled: true
+#    enabled: true
+#    namespaces: application,application.yml
+#  meta: http://192.168.0.60:8080
+#app:
+#  id: dfas-common-bpm
 server:
   port: 10015 #本地开发环境时用，生产部署时，应该设置为0，系统随机创建端口
 spring:
@@ -31,6 +31,7 @@ spring:
       allow-bean-definition-overriding: true
   cloud:
     config:
+      enabled: true
       name: common,${spring.application.name}
       label: ${spring.profiles.active:dev} #对应前配置文件的git分支 #/{label}/{application}-{profile}.yml
       profile: ${spring.profiles.active:dev} #对应前配置文件中的{profile}部分
@@ -49,7 +50,7 @@ eureka:
     InstanceInfoReplicationIntervalSeconds: 10 #复制实例变化信息到eureka服务器所需要的时间间隔（s），默认为30秒
     RegistryFetchIntervalSeconds: 10 #从eureka服务器注册表中获取注册信息的时间间隔（s），默认为30秒
     service-url:
-      defaultZone: http://192.168.0.61:10010/eureka/ #配置服务注册中心 多个用逗号分隔
+      defaultZone: http://192.168.0.60:10010/eureka/ #配置服务注册中心 多个用逗号分隔
 
 ##如果无需使用数据库，请做如下设置，否则将导致监控失败下线. 用数据库则设置为true
 mybatis:
