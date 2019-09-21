@@ -30,4 +30,6 @@ public class BpmConstant {
      * SequenceFlow增加amt属性
      */
     public static final String AMTCONDITION = "amt";
+
+    public static final String NODE_NAME = "name";
 }

@@ -1,5 +1,6 @@
 package com.win.dfas.bpm.controller.api;
 
+import com.win.dfas.bpm.img.DefaultInstHistImgService;
 import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.constant.InitDataConstant;
@@ -23,7 +24,6 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.activiti.image.ProcessDiagramGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,14 +67,14 @@ public class BpmPngController {
 
     @Autowired
     ProcessEngineConfiguration processEngineConfiguration;
-
+    @Autowired
+    DefaultInstHistImgService defaultInstHistImgService;
     @RequestMapping(value = "trace/data/auto/{executionId}")
     public void readResource(@PathVariable("executionId") String executionId, HttpServletResponse response)
             throws Exception {
-
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(executionId).singleResult();
-        String proDefId ;
-        String processId ;
+        BpmnModel bpmnModel;
+        String proDefId;
         InputStream imageStream;
         if(processInstance==null){
             HistoricProcessInstance currProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(executionId).singleResult();
@@ -84,24 +84,11 @@ public class BpmPngController {
             String deploymentId = currProcessInstance.getDeploymentId();
             List<String> list = repositoryService.getDeploymentResourceNames(deploymentId);
             proDefId = currProcessInstance.getProcessDefinitionId();
-            BpmnModel bpmnModel = repositoryService.getBpmnModel(proDefId);
-            ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-            String activityFontName=processEngineConfiguration.getActivityFontName();
-            String labelFontName=processEngineConfiguration.getLabelFontName();
-            imageStream =diagramGenerator.generateDiagram(bpmnModel, "png",activityFontName,labelFontName,null, null, 1.0);
-
         }else{
             proDefId = processInstance.getProcessDefinitionId();
-            processId = processInstance.getId();
-            BpmnModel bpmnModel = repositoryService.getBpmnModel(proDefId);
-            ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) repositoryService.createProcessDefinitionQuery().processDefinitionId(proDefId).singleResult();
-            List<String> activeActivityIds = runtimeService.getActiveActivityIds(executionId);
-            List<String> highLightedFlows = getHighLightedFlows(processDefinition, processId);
-            ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-            String activityFontName=processEngineConfiguration.getActivityFontName();
-            String labelFontName=processEngineConfiguration.getLabelFontName();
-            imageStream =diagramGenerator.generateDiagram(bpmnModel, "png", activeActivityIds, highLightedFlows,activityFontName,labelFontName,null, null, 1.0);
         }
+        bpmnModel = repositoryService.getBpmnModel(proDefId);
+        imageStream = defaultInstHistImgService.draw(bpmnModel,executionId);
         // 输出资源内容到相应对象
         byte[] b = new byte[InitDataConstant.BYTE_INIT_CAPACITY];
         int len;

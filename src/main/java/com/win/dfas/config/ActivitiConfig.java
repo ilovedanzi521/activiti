@@ -2,6 +2,7 @@ package com.win.dfas.config;
 
 import com.win.dfas.bpm.ExtensionSequenceFlowParseHandler;
 import com.win.dfas.bpm.ExtensionUserTaskParseHandler;
+import com.win.dfas.bpm.img.BpmProcessDiagramGenerator;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.impl.history.HistoryLevel;
 import org.activiti.engine.parse.BpmnParseHandler;
@@ -34,6 +35,9 @@ public class ActivitiConfig {
 
     @Autowired
     private ExtensionSequenceFlowParseHandler sequenceFlowParseHandler;
+
+    @Autowired
+    private BpmProcessDiagramGenerator processDiagramGenerator;
     /**
      * 初始化配置
      *
@@ -50,10 +54,11 @@ public class ActivitiConfig {
         // 流程历史等级
         configuration.setHistoryLevel(HistoryLevel.FULL);
         // 流程图字体
-        configuration.setActivityFontName("雅黑字体");
-        configuration.setAnnotationFontName("雅黑字体");
-        configuration.setLabelFontName("雅黑字体");
+        configuration.setActivityFontName("宋体");
+        configuration.setAnnotationFontName("宋体");
+        configuration.setLabelFontName("宋体");
         configuration.setTransactionManager(transactionManager);
+        configuration.setProcessDiagramGenerator(processDiagramGenerator);
         List<BpmnParseHandler> customDefaultBpmnParseHandlers= new ArrayList<>();
         customDefaultBpmnParseHandlers.add(handler);
         customDefaultBpmnParseHandlers.add(sequenceFlowParseHandler);
