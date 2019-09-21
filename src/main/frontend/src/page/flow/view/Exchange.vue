@@ -45,7 +45,7 @@
                             </win-form-item>
                             <win-form-item label="产品" style="margin-right:-15px">
                                 <win-select v-model="reqVO.productCode" filterable clearable placeholder="请选择" @change="changeItems('reqVO','PRO',reqVO.productCode)">
-                                    <win-option v-for="item in staticSelectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code">
+                                    <win-option v-for="item in staticSelectItemVO.productItems" :key="item.no" :label="item.name" :value="item.no">
                                         <span style="float: left">{{ item.code }}</span>
                                         <span>{{ "&nbsp;"+item.name }}</span>
                                     </win-option>
@@ -169,7 +169,7 @@
                 <div class="form_content_flow">
                     <win-form-item label="产品" prop="productCode">
                         <win-select v-model="flowVO.productCode" :disabled="flowVO.id!=null" filterable clearable placeholder="请选择" @change="changeItems('flowVO','PRO',flowVO.productCode)">
-                            <win-option v-for="item in staticSelectItemVO.productItems" :key="item.code" :label="item.name" :value="item.code">
+                            <win-option v-for="item in staticSelectItemVO.productItems" :key="item.no" :label="item.name" :value="item.no">
                                 <span style="float: left">{{ item.code }}</span>
                                 <span>{{ "&nbsp;"+item.name }}</span>
                             </win-option>

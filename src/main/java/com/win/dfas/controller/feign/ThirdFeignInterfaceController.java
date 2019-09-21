@@ -360,7 +360,8 @@ public class ThirdFeignInterfaceController {
                 rtnList = JSONObject.parseArray(JSONObject.toJSONString(rtn.getData())).toJavaList(ProdDTO.class);
                 for (ProdDTO dto : rtnList) {
                     ProductItem info = new ProductItem();
-                    info.setCode(dto.getNo() + "");
+                    info.setNo(dto.getNo() + "");
+                    info.setCode(dto.getCode());
                     info.setName(dto.getName());
                     list.add(info);
                 }

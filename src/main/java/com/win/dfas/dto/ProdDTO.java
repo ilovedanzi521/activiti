@@ -25,4 +25,5 @@ import lombok.Data;
 public class ProdDTO {
     private Integer no;
     private String name;
+    private String code;
 }

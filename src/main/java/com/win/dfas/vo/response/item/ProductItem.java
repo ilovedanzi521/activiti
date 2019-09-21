@@ -11,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class ProductItem {
+    private String no;
     private String code;
     private String name;
 }
