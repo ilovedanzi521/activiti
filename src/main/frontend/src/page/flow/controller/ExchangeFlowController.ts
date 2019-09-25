@@ -682,6 +682,20 @@ export default class ExchangeFlowController extends BaseController {
                 trigger: "change"
             }
         ],
+        investCompany: [
+            {
+                required: true,
+                message: "资产单元不能为空",
+                trigger: "change"
+            }
+        ],
+        investConstitute: [
+            {
+                required: true,
+                message: "投资组合不能为空",
+                trigger: "change"
+            }
+        ],
         timeArray: [
             {
                 validator: function(rule, value, callback) {

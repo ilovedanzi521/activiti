@@ -175,14 +175,14 @@
                             </win-option>
                         </win-select>
                     </win-form-item>
-                    <win-form-item label="资产单元">
+                    <win-form-item label="资产单元" prop="investCompany">
                         <win-select v-model="flowVO.investCompany" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeItems('flowVO','COM',flowVO.investCompany)">
                             <win-option v-for="item in items.flowVO.investCompanyItems" :key="item.code" :label="item.name" :value="item.code"></win-option>
                         </win-select>
                     </win-form-item>
                 </div>
                 <div class="form_content_flow">
-                    <win-form-item label="投资组合">
+                    <win-form-item label="投资组合" prop="investConstitute">
                         <win-select v-model="flowVO.investConstitute" filterable clearable placeholder="请选择" :disabled="deleteFlag" @change="changeLink">
                             <win-option v-for="item in items.flowVO.investConstituteItems" :key="item.code" :label="item.name" :value="item.code">
                                 <span style="float: left">{{ item.code }}</span>
