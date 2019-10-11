@@ -3,24 +3,27 @@
 import Vue from "vue";
 import VueDND from "awe-dnd";
 import ElementUI from "element-ui";
+import "xe-utils";
 import App from "./App.vue";
 import router from "./router/index";
 import store from "./store/index";
-import "./assets/style/theme.scss";
-import "./assets/style/reset.scss";
-import "./assets/style/font.scss";
+// import "./assets/style/theme.scss";
+// import "./assets/style/reset.scss";
+// import "./assets/style/font.scss";
 // import "./assets/style/comm.scss";
-import directives from "../src/mixin/directives";
-import "./layout/require.context";
+import { PluginsPage } from "win-biz";
+// import directives from "../src/mixin/directives";
+// import "./layout/require.context";
 import XEUtils from "xe-utils";
 import VXEUtils from "vxe-utils";
 import "win-plus/dist/static/index.css";
 
 Vue.use(VueDND);
 Vue.use(ElementUI);
-Vue.use(directives);
+Vue.use(PluginsPage)
 Vue.use(VXEUtils, XEUtils);
-
+let $env = process.env.NODE_ENV;
+Vue.prototype.$env = $env;
 Vue.config.productionTip = false;
 let d = process.env.NODE_ENV;
 
