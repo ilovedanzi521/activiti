@@ -106,7 +106,7 @@ public class ParamFlowRepVO extends BaseRepVO {
     /**
      * 交易市场
      */
-    @NotNull(message = "marketCode(交易市场)不能为空")
+//    @NotNull(message = "marketCode(交易市场)不能为空")
     @Length( max = 8, message = "marketCode(交易市场)长度需要在1和8之间")
     @ApiModelProperty(value = "交易市场")
     private String marketCode;
@@ -125,7 +125,7 @@ public class ParamFlowRepVO extends BaseRepVO {
     /**
      * 交易方向
      */
-    @NotNull(message = "transactionDirection(交易方向)不能为空")
+//    @NotNull(message = "transactionDirection(交易方向)不能为空")
     @Length(max = 8, message = "transactionDirection(交易方向)长度需要在1和8之间")
     @ApiModelProperty(value = "交易方向")
     private String transactionDirection;

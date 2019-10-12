@@ -34,8 +34,6 @@
   <select id="queryProcessDefIdfromFlowInst" resultType="java.lang.String" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
     select process_def_id from param_flowInst where
      product_code = #{productCode,jdbcType=BIGINT}
-    and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
-    and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
     and start_flag=1
     and TIMESTAMPDIFF(day,date_format(CURRENT_DATE(),'%Y-%m-%d'),end_date)>=0
      limit 1
@@ -43,8 +41,6 @@
   <select id="queryIdFromFlowInst" resultType="java.lang.Long" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
     select id from param_flowInst where
      product_code = #{productCode,jdbcType=BIGINT}
-    and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
-    and transaction_direction = #{transactionDirection,jdbcType=VARCHAR}
      limit 1
   </select>
   <select id="listFlowName"

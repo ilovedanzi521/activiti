@@ -87,13 +87,14 @@ export default class ExchangeFlowController extends BaseController {
         if (flowId != 1 && flowId != null) {
             this.deleteFlowClass(flowId, level);
         } else if (flowId == 1) {
-            this.win_message_box_warning(
-                "不能删除默认流程类",
-                "提示",
-                false,
-                null,
-                null
-            ).catch();
+            // this.win_message_box_warning(
+            //     "不能删除默认流程类",
+            //     "提示",
+            //     false,
+            //     null,
+            //     null
+            // ).catch();
+            this.win_message_box_warning("不能删除默认流程类");
         }
     }
 
@@ -102,7 +103,7 @@ export default class ExchangeFlowController extends BaseController {
         //1.获取流程组信息
         this.service.queryGroupCount(flowId).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             } else {
                 let msg = "";
                 let type = res.data;
@@ -111,7 +112,7 @@ export default class ExchangeFlowController extends BaseController {
                     if (level == 2) {
                         msg = "该流程组存在流程数据，请优先删除对应流程数据。";
                     }
-                    this.win_message_box_warning(msg, "提示", false, null, null)
+                    this.win_message_box_warning(msg)
                         .then(() => {})
                         .catch();
                 } else {
@@ -123,11 +124,11 @@ export default class ExchangeFlowController extends BaseController {
                     if (level == 2) {
                         msg = "请确认删除该流程组信息";
                     }
-                    this.win_message_box_warning(msg, "提示", false, null, null)
+                    this.win_message_box_warning(msg)
                         .then(() => {
                             this.service.delflowgroup(flowId).then(res => {
                                 if (res.winRspType === "ERROR") {
-                                    this.errorMessage(res.msg);
+                                    this.win_message_error(res.msg);
                                 }
                                 // this.queryflowgroup();
                                 this.remove(flowId);
@@ -144,7 +145,7 @@ export default class ExchangeFlowController extends BaseController {
             for (let i = 0; i < this.treedata.length; i++) {
                 if (this.treedata[i].id == flowId) {
                     this.treedata.splice(i, 1);
-                    this.successMessage("删除成功");
+                    this.win_message_success("删除成功");
                 }
             }
         }
@@ -154,7 +155,7 @@ export default class ExchangeFlowController extends BaseController {
                 for (let j = 0; j < children.length; j++) {
                     if (children[j].id == flowId) {
                         this.treedata[i].children.splice(j, 1);
-                        this.successMessage("删除成功");
+                        this.win_message_success("删除成功");
                         console.log(this.treedata);
                         return;
                     }
@@ -211,7 +212,7 @@ export default class ExchangeFlowController extends BaseController {
         if (this.flowGroupId == 1) {
             this.service.getflowgroupid().then(res => {
                 if (res.winRspType === "ERROR") {
-                    this.errorMessage(res.msg);
+                    this.win_message_error(res.msg);
                 }
                 var id = res.data;
                 this.addNode(id, "1", "新增流程类", null);
@@ -219,7 +220,7 @@ export default class ExchangeFlowController extends BaseController {
         } else if (this.flowGroupId > 1) {
             this.service.getflowgroupid().then(res => {
                 if (res.winRspType === "ERROR") {
-                    this.errorMessage(res.msg);
+                    this.win_message_error(res.msg);
                 }
                 var id = res.data;
                 this.addNode(id, "2", "新增流程组", this.flowGroupId);
@@ -236,11 +237,11 @@ export default class ExchangeFlowController extends BaseController {
         if (new RegExp(reg).test(item.label) == false) {
             setTimeout(() => {}, 500);
             //   this.$set(item, "isEdit", true);
-            this.errorMessage("请输入正确的名称");
+            this.win_message_error("请输入正确的名称");
             return;
         }
         if (!item.label || item.label === "") {
-            this.errorMessage("名称不能为空");
+            this.win_message_error("名称不能为空");
             // this.$set(item, "isEdit", true);
             return;
         }
@@ -254,9 +255,9 @@ export default class ExchangeFlowController extends BaseController {
         flowGroupVO.fatherId = item.fatherId;
         this.service.updateFlowgroup(flowGroupVO).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             } else {
-                this.successMessage(res.msg);
+                this.win_message_success(res.msg);
             }
             this.expandList = [item.id];
             // this.queryflowgroup();
@@ -275,7 +276,7 @@ export default class ExchangeFlowController extends BaseController {
             that.flowGroupVO
         ).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             }
             that.queryflowgroup();
         });
@@ -290,7 +291,7 @@ export default class ExchangeFlowController extends BaseController {
             this.queryflowgroup();
             this.loadSelectsItems();
             // var defaultId = 2;
-            this.reqVO.flowCode=2;
+            this.reqVO.flowCode = 2;
             this.queryExchangeFlow(this.reqVO);
             // this.queryFlowByGroupid(defaultId);
         });
@@ -300,7 +301,7 @@ export default class ExchangeFlowController extends BaseController {
         let _this = this;
         this.service.listFlowGroup().then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             }
             // _this.data = JSON.parse(res.data);
             this.expandList = [res.data[0].id];
@@ -314,7 +315,7 @@ export default class ExchangeFlowController extends BaseController {
         // this.reqVO.flowCode = flowGroupid;
         this.service.listFlowByGroupid(reqVo).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             }
             this.pageVO = res.data;
         });
@@ -332,7 +333,7 @@ export default class ExchangeFlowController extends BaseController {
         let _this = this;
         this.service.listExchangeFlow(reqVO).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             }
             _this.pageVO = res.data;
         });
@@ -361,30 +362,21 @@ export default class ExchangeFlowController extends BaseController {
         });
         if (startFlag.length > 0) {
             this.win_message_box_warning(
-                "目前流程有正在被使用,无法删除,请确认。",
-                "提示",
-                false,
-                null,
-                null
-            ).catch(() => {});
+                "目前流程有正在被使用,无法删除,请确认。");
             return;
         }
         if (rows.length == 1) {
             this.openDeleteDialog(rows[0]);
         } else {
             this.win_message_box_warning(
-                "请确认批量删除流程信息",
-                "提示",
-                false,
-                null,
-                null
+                "请确认批量删除流程信息"
             )
                 .then(() => {
                     this.service.deleteExchangeFlows(rows).then(res => {
                         if (res.winRspType === "ERROR") {
-                            this.errorMessage(res.msg);
+                            this.win_message_error(res.msg);
                         } else {
-                            this.successMessage(res.msg);
+                            this.win_message_success(res.msg);
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -396,22 +388,18 @@ export default class ExchangeFlowController extends BaseController {
     startflow(rows: Array<ParamFlowInstRepVO>) {
         if (this.conditionFlowDiagram(rows, true)) {
             this.win_message_box_warning(
-                "请确认批量启用流程。",
-                "提示",
-                false,
-                null,
-                null
+                "请确认批量启用流程。"
             )
                 .then(() => {
                     this.service.batchStartFlow(rows).then(res => {
                         if (res.winRspType === "ERROR") {
                             if (res.code == FlowConstant.DESIGN_PROBLEMS) {
-                                this.warningMessage(res.msg);
+                                this.win_message_warn(res.msg);
                             } else {
-                                this.errorMessage(res.msg);
+                                this.win_message_error(res.msg);
                             }
                         } else {
-                            this.successMessage(res.msg);
+                            this.win_message_success(res.msg);
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -427,18 +415,14 @@ export default class ExchangeFlowController extends BaseController {
             //     ids.push(repVO.processDefId);
             // });
             this.win_message_box_warning(
-                "请确认批量停用流程。",
-                "提示",
-                false,
-                null,
-                null
+                "请确认批量停用流程。"
             )
                 .then(() => {
                     this.service.batchStopFlow(rows).then(res => {
                         if (res.winRspType === "ERROR") {
-                            this.errorMessage(res.msg);
+                            this.win_message_error(res.msg);
                         } else {
-                            this.successMessage(res.msg);
+                            this.win_message_success(res.msg);
                         }
                         this.queryExchangeFlow(this.reqVO);
                     });
@@ -465,22 +449,12 @@ export default class ExchangeFlowController extends BaseController {
         });
         if (modelIds.length > 0) {
             this.win_message_box_warning(
-                "存在流程没有设计,无法正常" + msg,
-                "提示",
-                false,
-                null,
-                null
-            ).catch(() => {});
+                "存在流程没有设计,无法正常" + msg);
             return false;
         }
         if (startFlag.length > 0) {
             this.win_message_box_warning(
-                "存在流程已" + msg,
-                "提示",
-                false,
-                null,
-                null
-            ).catch(() => {});
+                "存在流程已" + msg);
             return false;
         }
         return true;
@@ -488,7 +462,7 @@ export default class ExchangeFlowController extends BaseController {
     //流程模型设计
     designFlow(flowVO) {
         if (flowVO.startFlag) {
-            this.errorMessage("流程已启动不能修改");
+            this.win_message_error("流程已启动不能修改");
             return;
         }
         this.flowVO = flowVO;
@@ -498,7 +472,7 @@ export default class ExchangeFlowController extends BaseController {
             flowVO
         ).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.data);
+                this.win_message_error(res.data);
             } else {
                 this.dialogTableVisible = true;
                 // console.log("/flow-editor/modeler.html?modelId=" + res.msg);
@@ -558,9 +532,9 @@ export default class ExchangeFlowController extends BaseController {
                 this.setFormTime(this.flowVO.timeArray);
                 this.service.addExchangeFlow(this.flowVO).then(res => {
                     if (res.winRspType === "ERROR") {
-                        this.errorMessage(res.msg);
+                        this.win_message_error(res.msg);
                     } else {
-                        this.successMessage("添加流程成功");
+                        this.win_message_success("添加流程成功");
                         this.dialogVisible = false;
                     }
                 });
@@ -583,7 +557,7 @@ export default class ExchangeFlowController extends BaseController {
     /**打开修改弹框 */
     async openUpdateDialog(flowVO) {
         if (flowVO.startFlag) {
-            this.errorMessage("流程已启动不能修改");
+            this.win_message_error("流程已启动不能修改");
             return;
         }
         this.deleteFlag = false;
@@ -605,9 +579,9 @@ export default class ExchangeFlowController extends BaseController {
                 this.setFormTime(this.flowVO.timeArray);
                 this.service.updateExchangeFlow(this.flowVO).then(res => {
                     if (res.winRspType === "ERROR") {
-                        this.errorMessage(res.msg);
+                        this.win_message_error(res.msg);
                     } else {
-                        this.successMessage("修改流程成功");
+                        this.win_message_success("修改流程成功");
                         this.dialogVisible = false;
                     }
                 });
@@ -620,9 +594,9 @@ export default class ExchangeFlowController extends BaseController {
         let _this = this;
         this.service.deleteExchangeFlow(this.flowVO.id).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             } else {
-                this.successMessage(res.msg);
+                this.win_message_success(res.msg);
             }
             // this.dialogVisible = false;
         });
@@ -668,34 +642,6 @@ export default class ExchangeFlowController extends BaseController {
                 trigger: "change"
             }
         ],
-        marketCode: [
-            {
-                required: true,
-                message: "交易市场不能为空",
-                trigger: "change"
-            }
-        ],
-        transactionDirection: [
-            {
-                required: true,
-                message: "交易方向不能为空",
-                trigger: "change"
-            }
-        ],
-        investCompany: [
-            {
-                required: true,
-                message: "资产单元不能为空",
-                trigger: "change"
-            }
-        ],
-        investConstitute: [
-            {
-                required: true,
-                message: "投资组合不能为空",
-                trigger: "change"
-            }
-        ],
         timeArray: [
             {
                 validator: function(rule, value, callback) {
@@ -723,12 +669,12 @@ export default class ExchangeFlowController extends BaseController {
         this.service.startOrStopFlow(flowVO).then(res => {
             if (res.winRspType === "ERROR") {
                 if (res.code == FlowConstant.DESIGN_PROBLEMS) {
-                    this.warningMessage(res.msg);
+                    this.win_message_warn(res.msg);
                 } else {
-                    this.errorMessage(res.msg);
+                    this.win_message_error(res.msg);
                 }
             } else {
-                this.successMessage(res.msg);
+                this.win_message_success(res.msg);
             }
             this.queryExchangeFlow(this.reqVO);
         });
@@ -737,7 +683,7 @@ export default class ExchangeFlowController extends BaseController {
     private loadSelectsItems() {
         this.service.loadSelectsItems().then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             }
             this.setItemsValue(res.data);
         });
@@ -766,7 +712,7 @@ export default class ExchangeFlowController extends BaseController {
     loadItemData(vo, itemType, value) {
         this.service.loadItems(itemType, value).then(res => {
             if (res.winRspType === "ERROR") {
-                this.errorMessage(res.msg);
+                this.win_message_error(res.msg);
             } else {
                 if (itemType === "PRO") {
                     this.items[vo].investCompanyItems = res.data;

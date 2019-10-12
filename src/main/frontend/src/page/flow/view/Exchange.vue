@@ -103,7 +103,7 @@
                                 </win-form-item>
                             </el-row>
                         </div>
-                        <el-row style="margin-left:5px ;margin-bottom:0px;margin-top:-15px">
+                        <el-row style="margin-left:5px ;margin-bottom:8px;margin-top:-15px">
                             <el-button-group>
 
                                 <win-button :disabled="level!=2" type="info" round @click="openAddDialog()" icon="el-icon-plus">新增</win-button>
