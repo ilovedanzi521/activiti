@@ -139,8 +139,8 @@
                         </win-table-column>
                     </win-table>
                     <!--分页组件-->
-                    <!-- <Pagination v-bind:childMsg="pageVO" @callFather="pageQuery"></Pagination> -->
-                    <win-pagination v-bind:child-msg="pageVO" @callFather="pageQuery"></win-pagination>
+                    <!-- <Pagination v-bind:pageInfo="pageVO" @pageInfoChange="pageQuery"></Pagination> -->
+                    <win-pagination v-bind:pageInfo="pageVO" @pageInfoChange="pageQuery"></win-pagination>
                 </el-header>
             </el-container>
         </el-container>
