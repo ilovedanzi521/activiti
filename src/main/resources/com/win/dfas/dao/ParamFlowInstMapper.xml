@@ -41,6 +41,11 @@
   <select id="queryIdFromFlowInst" resultType="java.lang.Long" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
     select id from param_flowInst where
      product_code = #{productCode,jdbcType=BIGINT}
+     and instruction_type = #{instructionType,jdbcType=VARCHAR}
+     and market_code = #{marketCode,jdbcType=VARCHAR}
+     and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
+     and invest_company = #{investCompany,jdbcType=VARCHAR}
+     and security_type = #{securityType,jdbcType=VARCHAR}
      limit 1
   </select>
   <select id="listFlowName"
