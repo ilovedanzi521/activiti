@@ -41,11 +41,21 @@
   <select id="queryIdFromFlowInst" resultType="java.lang.Long" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
     select id from param_flowInst where
      product_code = #{productCode,jdbcType=BIGINT}
-     and instruction_type = #{instructionType,jdbcType=VARCHAR}
-     and market_code = #{marketCode,jdbcType=VARCHAR}
-     and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
-     and invest_company = #{investCompany,jdbcType=VARCHAR}
-     and security_type = #{securityType,jdbcType=VARCHAR}
+     <if test="investCompany != null and investCompany.length() > 0">
+       and instruction_type = #{instructionType,jdbcType=VARCHAR}
+     </if>
+    <if test="investCompany != null and investCompany.length() > 0">
+       and market_code = #{marketCode,jdbcType=VARCHAR}
+    </if>
+    <if test="investCompany != null and investCompany.length() > 0">
+       and invest_constitute = #{investConstitute,jdbcType=VARCHAR}
+    </if>
+    <if test="investCompany != null and investCompany.length() > 0">
+       and invest_company = #{investCompany,jdbcType=VARCHAR}
+    </if>
+    <if test="investCompany != null and investCompany.length() > 0">
+       and security_type = #{securityType,jdbcType=VARCHAR}
+    </if>
      limit 1
   </select>
   <select id="listFlowName"

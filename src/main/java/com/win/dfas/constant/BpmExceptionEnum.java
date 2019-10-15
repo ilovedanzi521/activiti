@@ -28,7 +28,7 @@ public enum BpmExceptionEnum implements IExceptionEnum {
     SYSTEM_ERR("800000", "系统错误"),
     NOT_FOUND_FLOW("800001", "检查流程有效日期和启停状态以及输入要素"),
     PARAMS_EMPTY("800002", "参数为空"),
-    NOTUNIQUEKEY("800003", "(产品、证券类型、指令类型、交易市场、投资组合、资产单元)唯一键冲突"),
+    NOTUNIQUEKEY("800003", "存在相同的记录"),
     DESIGN_PROBLEMS("800004", "请优先对流程进行\"设计流程\"处理"),
     ID_IS_NOTNULL("800005", "ID不能为空"),
     NAME_IS_NOTNULL("800006", "NAME不能为空"),
