@@ -86,16 +86,13 @@ export default class ExchangeFlowController extends BaseController {
         let level = this.level;
         if (flowId != 1 && flowId != null) {
             this.deleteFlowClass(flowId, level);
-        } else if (flowId == 1) {
-            // this.win_message_box_warning(
-            //     "不能删除默认流程类",
-            //     "提示",
-            //     false,
-            //     null,
-            //     null
-            // ).catch();
-            this.win_message_box_warning("不能删除默认流程类");
+            return;
         }
+        if (flowId == 1) {
+            this.win_message_warn("不能删除默认流程类");
+            return;
+        }
+
     }
 
     //删除流程实例
@@ -122,6 +119,10 @@ export default class ExchangeFlowController extends BaseController {
                         msg = "请确认删除此流程分类信息";
                     }
                     if (level == 2) {
+                        if (flowId == 2) {
+                            this.win_message_warn("不能删除默认流程组");
+                            return;
+                        }
                         msg = "请确认删除该流程组信息";
                     }
                     this.win_message_box_warning(msg)
@@ -283,6 +284,14 @@ export default class ExchangeFlowController extends BaseController {
     }
 
     edit(item) {
+        if (item.id == 1) {
+            this.win_message_warn("默认流程类不能修改！");
+            return;
+        }
+        if (item.id == 2) {
+            this.win_message_warn("默认流程组不能修改！");
+            return;
+        }
         this.$set(item, "isEdit", true);
     }
 

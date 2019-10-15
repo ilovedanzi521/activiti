@@ -149,7 +149,7 @@
 
         <win-fdialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%" class="dialogclass" :close-on-click-modal="false" @close="closeDialog('exchangeForm')">
             <win-form :inline="true" label-position="right" ref="exchangeForm" :model="flowVO" :rules="rules" v-testName="{'TEST_NAME':'WLL'}">
-                <div class="form_content_flow">
+                <div class="form_content_flow" style="margin-top: 20px;">
                     <win-form-item label="流程名称" prop="flowName">
                         <win-input v-model.trim="flowVO.flowName" :disabled="flowVO.id!=null" :maxlength="80"></win-input>
                     </win-form-item>
