@@ -108,7 +108,7 @@ public class ThirdFeignInterfaceController {
             case MAK:
                 HashMap<String, List> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
                 list = loadDicService.queryDataList(param, InitDataConstant.MARK_SECURITY_RELA,
-                        StrategyFactory.FeginKey.SECURITY, FormatEnum.SECURITY_CODE_T_NAME);
+                        StrategyFactory.FeginKey.SECURITY, FormatEnum.SECURITY_TYPE_T_NAME);
                 map.put(SelectorItemEnum.SEC.getValue(), list);
                 list = loadDicService.queryDataList(param, InitDataConstant.MARK_TRA_DIR_RELA,
                         StrategyFactory.FeginKey.TRA_DIR, FormatEnum.TRADEDIRECTION_CODE_T_NAME);

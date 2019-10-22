@@ -119,7 +119,7 @@ public class ParamFlowRepVO extends BaseRepVO {
     @Length(max = 16, message = "securityType(证券类型)长度需要在1和16之间")
     @ApiModelProperty(value = "证券类型")
     private String securityType;
-    @WinFormat(value = FormatEnum.SECURITY_CODE_T_NAME, fromField = "securityType")
+    @WinFormat(value = FormatEnum.SECURITY_TYPE_T_NAME, fromField = "securityType")
     private String securityTypeName;
 
     /**

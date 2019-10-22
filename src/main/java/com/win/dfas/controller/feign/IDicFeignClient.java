@@ -61,7 +61,7 @@ public interface IDicFeignClient {
      * @author wanglei
      * @Date 2019/7/26/11:40
      */
-    @GetMapping("/api/param/securityBasicInfo/list")
+    @GetMapping("/security/find/all")
     WinResponseData querySecurityTypeList(@RequestBody SecurityTypeDTO dto);
     /**
      * @Title: queryMarketList

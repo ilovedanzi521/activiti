@@ -44,7 +44,7 @@ public class SecurityTypeStrategy extends BaseStrategy{
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
                 list = converterVO(rtn.getData(),
                         CommonItem.class,
-                        new String[]{"securityCode", "securityName"});
+                        new String[]{"securityType", "securityTypeName"});
             }
         } catch (Throwable throwable) {
             log.error("feign接口异常", throwable);
