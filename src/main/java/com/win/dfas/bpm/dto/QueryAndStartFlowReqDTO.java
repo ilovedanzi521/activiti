@@ -16,10 +16,26 @@ import java.math.BigDecimal;
 public class QueryAndStartFlowReqDTO {
     @NotNull(message = "productCode(产品)不能为空")
     private String productCode;
-    @NotNull(message = "investConstitute(组合)不能为空")
+    /**
+     * 组合
+     */
     private String investConstitute;
-    @NotNull(message = "transactionDirection(交易方向)不能为空")
-    private String transactionDirection;
+    /**
+     * 证券类型
+     */
+    private String securityType;
+    /**
+     * 指令类型
+     */
+    private String instructionType;
+    /**
+     * 交易市场
+     */
+    private String marketCode;
+    /**
+     * 资产单元
+     */
+    private String investCompany;
     /**
      * 流程用户
      */
@@ -39,4 +55,6 @@ public class QueryAndStartFlowReqDTO {
      */
     @NotNull(message = "permit(审核状态:0-通过，1-是不通过)不能为空")
     private String permit="0";
+
+
 }

@@ -15,9 +15,7 @@ package com.win.dfas.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.win.dfas.common.entity.BaseEntity;
 import com.win.dfas.common.util.ObjectUtils;
-import com.win.dfas.common.util.PrimaryKeyUtil;
 import com.win.dfas.common.util.WinExceptionUtil;
 import com.win.dfas.constant.BpmExceptionEnum;
 import com.win.dfas.dao.ParamFlowInstMapper;
@@ -26,11 +24,14 @@ import com.win.dfas.service.IParamFlowService;
 import com.win.dfas.util.DataBaseExceptionUtil;
 import com.win.dfas.vo.request.ParamFlowReqVO;
 import com.win.dfas.vo.response.ParamFlowRepVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 包名称：com.win.dfas.service.impl
@@ -40,6 +41,7 @@ import java.util.List;
  * 创建时间：2019/6/11/13:46
  *
  */
+@Slf4j
 @Service
 public class ParamFlowServiceImpl implements IParamFlowService {
 
@@ -63,6 +65,7 @@ public class ParamFlowServiceImpl implements IParamFlowService {
         ParamFlowReqVO reqVO = new ParamFlowReqVO();
         BeanUtils.copyProperties(vo, reqVO);
         if(paramFlowMapper.queryIdFromFlowInst(reqVO)!=null){
+            log.error("入参:{}",reqVO.primaryKey());
             throw WinExceptionUtil.winException(BpmExceptionEnum.NOTUNIQUEKEY);
         }else {
             try {
@@ -125,6 +128,62 @@ public class ParamFlowServiceImpl implements IParamFlowService {
 
     @Override
     public String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO) {
-        return  paramFlowMapper.queryProcessDefIdfromFlowInst(queryVO);
+        List<ParamFlowRepVO> list =  paramFlowMapper.queryProcessDefIdfromFlowInst(queryVO);
+        ParamFlowRepVO sourceParamFlowRepVO = new ParamFlowRepVO();
+        sourceParamFlowRepVO.setSecurityType(queryVO.getSecurityType());
+        sourceParamFlowRepVO.setInstructionType(queryVO.getInstructionType());
+        sourceParamFlowRepVO.setMarketCode(queryVO.getMarketCode());
+        sourceParamFlowRepVO.setInvestCompany(queryVO.getInvestCompany());
+        sourceParamFlowRepVO.setInvestConstitute(queryVO.getInvestConstitute());
+        LinkedHashMap<Integer,String> map = parseParamFlowRepVO(sourceParamFlowRepVO);
+        return fetchRecord(map,list);
+    }
+    private String fetchRecord(LinkedHashMap<Integer,String> map,List<ParamFlowRepVO> list){
+        String processDefId = null;
+        for (ParamFlowRepVO paramFlowRepVO : list) {
+            LinkedHashMap<Integer,String> tempMap = parseParamFlowRepVO(paramFlowRepVO);
+            for (Map.Entry<Integer, String> entry : map.entrySet()) {
+                Integer key = entry.getKey();
+                String value = entry.getValue();
+                if(value.equals(tempMap.get(key))){
+                    processDefId = paramFlowRepVO.getProcessDefId();
+                }else{
+                    break;
+//                    processDefId = fetchRecord(map,list);
+
+                }
+                continue;
+            }
+
+        }
+
+        return processDefId;
+    }
+
+    private LinkedHashMap<Integer,String> parseParamFlowRepVO(ParamFlowRepVO queryVO){
+        LinkedHashMap<Integer,String> map = new LinkedHashMap<Integer,String>();
+        if(ObjectUtil.isNotEmpty(queryVO.getSecurityType())){
+            map.put(5,queryVO.getSecurityType());
+        }
+        //指令类型
+        if(ObjectUtil.isNotEmpty(queryVO.getInstructionType())){
+            map.put(4,queryVO.getInstructionType());
+        }
+        String instructionType=queryVO.getInstructionType();
+        //交易市场
+        if(ObjectUtil.isNotEmpty(queryVO.getMarketCode())){
+            map.put(3,queryVO.getMarketCode());
+        }
+        String marketCode=queryVO.getMarketCode();
+        //组合
+        if(ObjectUtil.isNotEmpty(queryVO.getInvestConstitute())){
+            map.put(2,queryVO.getInvestConstitute());
+        }
+        String investConstitute=queryVO.getInvestConstitute();
+        //资产单元
+        if(ObjectUtil.isNotEmpty(queryVO.getInvestCompany())){
+            map.put(1,queryVO.getInvestCompany());
+        }
+        return map;
     }
 }

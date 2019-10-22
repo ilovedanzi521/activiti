@@ -69,4 +69,14 @@ public class ParamFlowReqVO extends BaseReqVO {
     @ApiModelProperty(value = "交易方向")
     private String transactionDirection;
 
+    public String primaryKey() {
+        return "{" +
+                "  securityType='" + securityType + '\'' +
+                ", instructionType='" + instructionType + '\'' +
+                ", marketCode='" + marketCode + '\'' +
+                ", productCode='" + productCode + '\'' +
+                ", investConstitute='" + investConstitute + '\'' +
+                ", investCompany='" + investCompany + '\'' +
+                '}';
+    }
 }

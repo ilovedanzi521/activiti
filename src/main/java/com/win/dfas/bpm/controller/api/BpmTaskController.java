@@ -75,9 +75,13 @@ public class BpmTaskController {
     public WinResponseData queryAndStart(@RequestBody @Validated QueryAndStartFlowReqDTO queryAndStartFlowReqDTO) {
         log.info("运行参数======" + BeanUtil.beanToMap(queryAndStartFlowReqDTO).toString());
         ParamFlowReqVO paramFlowReqVO = new ParamFlowReqVO();
-        paramFlowReqVO.setInvestConstitute(queryAndStartFlowReqDTO.getInvestConstitute());
-        paramFlowReqVO.setTransactionDirection(queryAndStartFlowReqDTO.getTransactionDirection());
         paramFlowReqVO.setProductCode(queryAndStartFlowReqDTO.getProductCode());
+        paramFlowReqVO.setSecurityType(queryAndStartFlowReqDTO.getSecurityType());
+        paramFlowReqVO.setInstructionType(queryAndStartFlowReqDTO.getInstructionType());
+        paramFlowReqVO.setMarketCode(queryAndStartFlowReqDTO.getMarketCode());
+        paramFlowReqVO.setInvestCompany(queryAndStartFlowReqDTO.getInvestCompany());
+        paramFlowReqVO.setInvestConstitute(queryAndStartFlowReqDTO.getInvestConstitute());
+
         WinResponseData rtn = queryprocessDef(paramFlowReqVO);
         if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
             FlowTaskReqVO flowTaskReqVO = new FlowTaskReqVO();

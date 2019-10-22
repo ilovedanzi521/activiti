@@ -38,7 +38,7 @@ public interface ParamFlowInstMapper {
 
     int updateStartFlagToStart(List<Long> ids);
 
-    String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO);
+    List<ParamFlowRepVO> queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO);
 
     Long queryIdFromFlowInst(ParamFlowReqVO queryVO);
 
