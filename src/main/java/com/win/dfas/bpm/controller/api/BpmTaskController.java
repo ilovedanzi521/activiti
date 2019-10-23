@@ -153,6 +153,7 @@ public class BpmTaskController {
     public WinResponseData queryprocessDef(@RequestBody ParamFlowReqVO queryVO) {
         log.info("queryprocessDef入参：" + BeanUtil.beanToMap(queryVO).toString());
         String processDefId = paramFlowService.queryProcessDefIdfromFlowInst(queryVO);
+        log.info("processDefId={}",processDefId);
         if (processDefId != null) {
             return WinResponseData.handleSuccess("成功", (Object) processDefId);
         } else {

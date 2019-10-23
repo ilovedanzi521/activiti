@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -140,24 +141,26 @@ public class ParamFlowServiceImpl implements IParamFlowService {
     }
     private String fetchRecord(LinkedHashMap<Integer,String> map,List<ParamFlowRepVO> list){
         String processDefId = null;
+        LinkedList<String> tmpList = new LinkedList<>();
         for (ParamFlowRepVO paramFlowRepVO : list) {
+            processDefId = paramFlowRepVO.getProcessDefId();
+            tmpList.addFirst(processDefId);
             LinkedHashMap<Integer,String> tempMap = parseParamFlowRepVO(paramFlowRepVO);
             for (Map.Entry<Integer, String> entry : map.entrySet()) {
                 Integer key = entry.getKey();
                 String value = entry.getValue();
                 if(value.equals(tempMap.get(key))){
-                    processDefId = paramFlowRepVO.getProcessDefId();
+                }else if(tempMap.get(key)==null){
+                    continue;
                 }else{
+                    tmpList.removeFirst();
                     break;
 //                    processDefId = fetchRecord(map,list);
-
                 }
-                continue;
             }
-
         }
 
-        return processDefId;
+        return tmpList.getFirst();
     }
 
     private LinkedHashMap<Integer,String> parseParamFlowRepVO(ParamFlowRepVO queryVO){
