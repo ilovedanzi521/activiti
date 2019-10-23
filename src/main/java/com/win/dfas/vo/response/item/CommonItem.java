@@ -15,6 +15,7 @@ package com.win.dfas.vo.response.item;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 包名称：com.win.dfas.vo.response.item
@@ -27,4 +28,17 @@ import java.io.Serializable;
 public class CommonItem{
     private String code;
     private String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CommonItem that = (CommonItem) o;
+        return Objects.equals(code, that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
+    }
 }

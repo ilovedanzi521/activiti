@@ -24,6 +24,6 @@ import lombok.Data;
 @Data
 public class SecurityTypeDTO {
     private String marketCode;
-    private String securityCode;
-    private String securityName;
+    private String securityType;
+    private String securityTypeName;
 }

@@ -117,7 +117,9 @@ public class LoadDicServiceImpl implements ILoadDicService {
             setAccessibleIsTrue(afterClazz.getDeclaredField("code")).set(newInstance, code);
             Object name = String.valueOf(t.get(fields[1]));
             setAccessibleIsTrue(afterClazz.getDeclaredField("name")).set(newInstance, name);
-            list.add((T) newInstance);
+            if(!list.contains(newInstance)){
+                list.add((T) newInstance);
+            }
         }
         return list;
     }

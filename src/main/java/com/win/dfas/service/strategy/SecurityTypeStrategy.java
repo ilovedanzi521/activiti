@@ -12,6 +12,7 @@
 
 package com.win.dfas.service.strategy;
 
+import com.alibaba.fastjson.JSON;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.dto.InvestConstituteDTO;
 import com.win.dfas.dto.SecurityTypeDTO;
@@ -42,6 +43,7 @@ public class SecurityTypeStrategy extends BaseStrategy{
         try {
             WinResponseData rtn = dicFeignClient.querySecurityTypeList(securityTypeDTO);
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {
+//                List<SecurityTypeDTO> dtos = JSON.parseArray(rtn.getData().toString(),SecurityTypeDTO.class);
                 list = converterVO(rtn.getData(),
                         CommonItem.class,
                         new String[]{"securityType", "securityTypeName"});

@@ -55,17 +55,17 @@ public class ThirdFeignInterfaceController {
         //获取指令类型
         List list1 = getDataDic(dicData,DicConstants.PDIC_1000295);
 //        //获取投资单位
-//        List<InvestCompanyItem> list2 = loadInvestCompanys();
+        List<InvestCompanyItem> list2 = loadInvestCompanys();
 //        //获取投资组合
-//        List<InvestConstituteItem> list3 = loadInvestConstitutes();
+        List<InvestConstituteItem> list3 = loadInvestConstitutes();
         //交易市场
         List<MarketItem> list4 = loadMarkets();
         //获取产品
         List<ProductItem> list5 = loadProds();
 //        //证券类型
-//        List<SecurityTypeItem> list6 = loadSecurityTypes();
+        List<SecurityTypeItem> list6 = loadSecurityTypes();
         //获取交易方向
-//        List<TransactionDirectionItem> list7 = loadTransactionDirections();
+        List<TransactionDirectionItem> list7 = loadTransactionDirections();
         //控制类型
         List<ControlTypeItem> list8 = loadControlTypes();
         map.put(SelectorItemEnum.NAM.getValue(), list0);
@@ -74,6 +74,10 @@ public class ThirdFeignInterfaceController {
         map.put(SelectorItemEnum.MAK.getValue(), list4);
         map.put(SelectorItemEnum.PRO.getValue(), list5);
         map.put(SelectorItemEnum.CTR.getValue(), list8);
+        map.put(SelectorItemEnum.COM.getValue(), list2);
+        map.put(SelectorItemEnum.CON.getValue(), list3);
+        map.put(SelectorItemEnum.SEC.getValue(), list6);
+        map.put(SelectorItemEnum.TRN.getValue(), list7);
         return WinResponseData.handleSuccess(map);
     }
 
@@ -88,25 +92,29 @@ public class ThirdFeignInterfaceController {
 
     @RequestMapping("/feign/{loadItems}")
     public WinResponseData loadSelectsItems(@PathVariable("loadItems") String loadItems, @RequestParam("param") String param) {
-        List list = new ArrayList<>();
+        List list = null;
+        HashMap<String, List> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
         if(ObjectUtil.isEmpty(param)){
-           return WinResponseData.handleSuccess("成功返回", list);
+            param = null;
         }
+
         switch (EnumUtils.getEnum(SelectorItemEnum.class, loadItems)) {
             //产品
+
             case PRO:
 //                list = loadDicService.queryInvestCompanyList(param);
                 list = loadDicService.queryDataList(param, InitDataConstant.PRO_ASSET_RELA,
                         StrategyFactory.FeginKey.ASSET, FormatEnum.PROD_ASSET_UNIT);
-                break;
+                map.put(SelectorItemEnum.COM.getValue(), list);
+//                break;
             //单位
             case COM:
-                list = loadDicService.queryDataList(param, InitDataConstant.PRO_PORTFOLIO_RELA,
+                list = loadDicService.queryDataList(loadItems+param, InitDataConstant.PRO_PORTFOLIO_RELA,
                         StrategyFactory.FeginKey.PORTFOLIO, FormatEnum.PORTFOLIO_NO_T_NAME);
+                map.put(SelectorItemEnum.CON.getValue(), list);
                 break;
             //市场类型
             case MAK:
-                HashMap<String, List> map = new HashMap<>(InitDataConstant.MAP_INIT_CAPACITY);
                 list = loadDicService.queryDataList(param, InitDataConstant.MARK_SECURITY_RELA,
                         StrategyFactory.FeginKey.SECURITY, FormatEnum.SECURITY_TYPE_T_NAME);
                 map.put(SelectorItemEnum.SEC.getValue(), list);
@@ -118,7 +126,7 @@ public class ThirdFeignInterfaceController {
                 return WinResponseData.handleError("失败");
         }
         log.info("接口返回数据:{}",list);
-        return WinResponseData.handleSuccess("成功返回", list);
+        return WinResponseData.handleSuccess("成功返回", map);
     }
 
     /**
@@ -271,9 +279,11 @@ public class ThirdFeignInterfaceController {
                 rtnList = JSONObject.parseArray(JSONObject.toJSONString(rtn.getData())).toJavaList(SecurityTypeDTO.class);
                 for (SecurityTypeDTO dto : rtnList) {
                     SecurityTypeItem info = new SecurityTypeItem();
-                    info.setCode(dto.getSecurityCode());
-                    info.setName(dto.getSecurityName());
-                    list.add(info);
+                    info.setCode(dto.getSecurityType());
+                    info.setName(dto.getSecurityTypeName());
+                    if(!list.contains(info)){
+                        list.add(info);
+                    }
                 }
             } else {
                 log.error("feign接口querySecurityTypeList异常, 返回{}", rtn.getMsg());

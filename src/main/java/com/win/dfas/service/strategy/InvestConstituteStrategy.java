@@ -15,6 +15,7 @@ package com.win.dfas.service.strategy;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.dto.InvestCompanyDTO;
 import com.win.dfas.dto.InvestConstituteDTO;
+import com.win.dfas.vo.response.SelectorItemEnum;
 import com.win.dfas.vo.response.item.CommonItem;
 import com.win.dfas.vo.response.item.InvestCompanyItem;
 import com.win.dfas.vo.response.item.InvestConstituteItem;
@@ -38,7 +39,14 @@ public class InvestConstituteStrategy extends BaseStrategy{
     public List feignAndConverterVO(String param){
         List list = new ArrayList();
         InvestConstituteDTO investConstituteDTO = new InvestConstituteDTO();
-        investConstituteDTO.setAssetUnitNo(param);
+        String prefix = SelectorItemEnum.PRO.toString();
+        String no = param.replace(prefix,"").replace(SelectorItemEnum.COM.toString(),"");
+        if(param.startsWith(prefix)){
+            investConstituteDTO.setFundNo(no);
+        }else{
+            investConstituteDTO.setAssetUnitNo(no);
+        }
+
         try {
             WinResponseData rtn = dicFeignClient.queryInvestConstituteList(investConstituteDTO);
             if (WinResponseData.WinRspType.SUCC.equals(rtn.getWinRspType())) {

@@ -18,7 +18,7 @@ public class InvestConstituteDTO {
       * 所属产品序号
       */
      @ApiModelProperty(value = "所属产品序号")
-     private Integer fundNo;
+     private String fundNo;
 
      /**
       * 组合编号

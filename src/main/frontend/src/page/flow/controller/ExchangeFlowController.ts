@@ -18,6 +18,7 @@ import { BaseConst } from "../../common/const/BaseConst";
 })
 export default class ExchangeFlowController extends BaseController {
     staticSelectItemVO: StaticSelectItemVO = new StaticSelectItemVO();
+    dynamicSelectItemVO:DynamicSelectItemVO = new DynamicSelectItemVO();
     items = {
         reqVO: new DynamicSelectItemVO(),
         flowVO: new DynamicSelectItemVO()
@@ -709,6 +710,24 @@ export default class ExchangeFlowController extends BaseController {
         // 交易市场
         this.staticSelectItemVO.marketItems = data.marketItems;
         this.staticSelectItemVO.controlTypeItems = data.controlTypeItems;
+        //新增
+        this.dynamicSelectItemVO.investCompanyItems = data.investCompanyItems;
+        this.dynamicSelectItemVO.investConstituteItems = data.investConstituteItems;
+        this.dynamicSelectItemVO.securityTypeItems = data.securityTypeItems;
+        this.dynamicSelectItemVO.transactionDirectionItems = data.transactionDirectionItems;
+
+        this.load(this.dynamicSelectItemVO);
+
+    }
+
+    private load(dynamicSelectItemVO: DynamicSelectItemVO) {
+        var  vos =['reqVO','flowVO'];
+        for (const vo of vos) {
+            this.items[vo].investCompanyItems = dynamicSelectItemVO.investCompanyItems;
+            this.items[vo].investConstituteItems = dynamicSelectItemVO.investConstituteItems;
+            this.items[vo].securityTypeItems = dynamicSelectItemVO.securityTypeItems;
+            this.items[vo].transactionDirectionItems = dynamicSelectItemVO.transactionDirectionItems;
+        }
     }
 
     /**
@@ -724,10 +743,11 @@ export default class ExchangeFlowController extends BaseController {
                 this.win_message_error(res.msg);
             } else {
                 if (itemType === "PRO") {
-                    this.items[vo].investCompanyItems = res.data;
+                    this.items[vo].investCompanyItems = res.data.investCompanyItems;
+                    this.items[vo].investConstituteItems = res.data.investConstituteItems;
                 }
                 if (itemType === "COM") {
-                    this.items[vo].investConstituteItems = res.data;
+                    this.items[vo].investConstituteItems = res.data.investConstituteItems;
                 }
                 if (itemType === "MAK") {
                     //证券类型
@@ -782,15 +802,8 @@ export default class ExchangeFlowController extends BaseController {
     /**
      * 清理items数据
      */
-    clearItemsData(vo: string) {
-        //投资单元
-        this.items[vo].investCompanyItems = [];
-        // 组合资产
-        this.items[vo].investConstituteItems = [];
-        //证券类型
-        this.items[vo].securityTypeItems = [];
-        // 交易方向
-        this.items[vo].transactionDirectionItems = [];
+    clearItemsData() {
+        this.load(this.dynamicSelectItemVO);
     }
     /**
      * 清理数据以及对规则和弹框的清理
@@ -799,7 +812,7 @@ export default class ExchangeFlowController extends BaseController {
     closeDialog(formRule) {
         this.$refs[formRule].resetFields();
         this.deleteFlag = false;
-        this.clearItemsData("flowVO");
+        this.clearItemsData();
         this.queryExchangeFlow(this.reqVO);
     }
     closeDia(formRule) {
