@@ -130,6 +130,9 @@ public class ParamFlowServiceImpl implements IParamFlowService {
     @Override
     public String queryProcessDefIdfromFlowInst(ParamFlowReqVO queryVO) {
         List<ParamFlowRepVO> list =  paramFlowMapper.queryProcessDefIdfromFlowInst(queryVO);
+        if(list.size()==0){
+            throw WinExceptionUtil.winException(BpmExceptionEnum.NOT_EXIST_FUND_INFO);
+        }
         ParamFlowRepVO sourceParamFlowRepVO = new ParamFlowRepVO();
         sourceParamFlowRepVO.setSecurityType(queryVO.getSecurityType());
         sourceParamFlowRepVO.setInstructionType(queryVO.getInstructionType());
