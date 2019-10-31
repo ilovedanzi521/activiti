@@ -738,6 +738,9 @@ export default class ExchangeFlowController extends BaseController {
         this.loadItemData(vo, itemType, value);
     }
     loadItemData(vo, itemType, value) {
+        if (itemType === "COM") {
+            value={fundNo:this[vo].productCode,assetUnitNo:value};
+        }
         this.service.loadItems(itemType, value).then(res => {
             if (res.winRspType === "ERROR") {
                 this.win_message_error(res.msg);

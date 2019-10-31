@@ -12,6 +12,7 @@
 
 package com.win.dfas.service.strategy;
 
+import com.alibaba.fastjson.JSON;
 import com.win.dfas.common.vo.WinResponseData;
 import com.win.dfas.dto.InvestCompanyDTO;
 import com.win.dfas.dto.InvestConstituteDTO;
@@ -44,7 +45,7 @@ public class InvestConstituteStrategy extends BaseStrategy{
         if(param.startsWith(prefix)){
             investConstituteDTO.setFundNo(no);
         }else{
-            investConstituteDTO.setAssetUnitNo(no);
+            investConstituteDTO= JSON.parseObject(no,InvestConstituteDTO.class);
         }
 
         try {
