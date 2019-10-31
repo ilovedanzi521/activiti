@@ -37,7 +37,47 @@
      product_code = #{productCode,jdbcType=BIGINT}
     and start_flag=1
     and TIMESTAMPDIFF(day,date_format(CURRENT_DATE(),'%Y-%m-%d'),end_date)>=0
-    order by  security_type,instruction_type,market_code,invest_constitute,invest_company
+    order by
+    <choose>
+      <when test="securityType != null and securityType.length() > 0">
+        security_type ,
+      </when>
+      <otherwise>
+        security_type desc,
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="instructionType != null and instructionType.length() > 0">
+        instruction_type ,
+      </when>
+      <otherwise>
+        instruction_type desc,
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="marketCode != null and marketCode.length() > 0">
+        market_code ,
+      </when>
+      <otherwise>
+        market_code desc,
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="investConstitute != null and investConstitute.length() > 0">
+        invest_constitute ,
+      </when>
+      <otherwise>
+        invest_constitute desc,
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="investCompany != null and investCompany.length() > 0">
+        invest_company
+      </when>
+      <otherwise>
+        invest_company desc
+      </otherwise>
+    </choose>
   </select>
   <select id="queryIdFromFlowInst" resultType="java.lang.Long" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
     select id from param_flowInst where
