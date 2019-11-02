@@ -1,4 +1,4 @@
-import { DatePicker } from "element-ui";
+import {} from "element-ui";
 class DateUtils {
     /** 默认开始时间,今天 */
     public defaultStartTime(): Date {
@@ -19,7 +19,9 @@ class DateUtils {
     }
     /** 昨天 */
     public setYDTime(picker: DatePicker): void {
-        const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+        const yesterday = new Date(
+            new Date().setDate(new Date().getDate() - 1)
+        );
         const start = new Date(yesterday.toLocaleDateString());
         const endtime = 24 * 60 * 60 * 1000 - 1;
         const end = new Date(start.getTime() + endtime);
@@ -30,31 +32,45 @@ class DateUtils {
         const nearWeek = new Date(new Date().setDate(new Date().getDate() - 6));
         const start = new Date(nearWeek.toLocaleDateString());
         const endtime = 24 * 60 * 60 * 1000 - 1;
-        const end = new Date(new Date(new Date().toLocaleDateString()).getTime() + endtime);
+        const end = new Date(
+            new Date(new Date().toLocaleDateString()).getTime() + endtime
+        );
         picker.$emit("pick", [start, end]);
     }
     /** 最近一月 */
     public setNMTime(picker: DatePicker): void {
-        const nearMonth = new Date(new Date().setMonth(new Date().getMonth() - 1));
+        const nearMonth = new Date(
+            new Date().setMonth(new Date().getMonth() - 1)
+        );
         const start = new Date(nearMonth.toLocaleDateString());
         const endtime = 24 * 60 * 60 * 1000 - 1;
-        const end = new Date(new Date(new Date().toLocaleDateString()).getTime() + endtime);
+        const end = new Date(
+            new Date(new Date().toLocaleDateString()).getTime() + endtime
+        );
         picker.$emit("pick", [start, end]);
     }
     /** 最近半年 */
     public setHYTime(picker: DatePicker): void {
-        const nearHalfYear = new Date(new Date().setMonth(new Date().getMonth() - 6));
+        const nearHalfYear = new Date(
+            new Date().setMonth(new Date().getMonth() - 6)
+        );
         const start = new Date(nearHalfYear.toLocaleDateString());
         const endtime = 24 * 60 * 60 * 1000 - 1;
-        const end = new Date(new Date(new Date().toLocaleDateString()).getTime() + endtime);
+        const end = new Date(
+            new Date(new Date().toLocaleDateString()).getTime() + endtime
+        );
         picker.$emit("pick", [start, end]);
     }
     /** 最近一年 */
     public setNYTime(picker: DatePicker): void {
-        const nearYear = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+        const nearYear = new Date(
+            new Date().setFullYear(new Date().getFullYear() - 1)
+        );
         const start = new Date(nearYear.toLocaleDateString());
         const endtime = 24 * 60 * 60 * 1000 - 1;
-        const end = new Date(new Date(new Date().toLocaleDateString()).getTime() + endtime);
+        const end = new Date(
+            new Date(new Date().toLocaleDateString()).getTime() + endtime
+        );
         picker.$emit("pick", [start, end]);
     }
 
@@ -70,12 +86,20 @@ class DateUtils {
             S: date.getMilliseconds() // 毫秒
         };
         if (/(y+)/.test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+            fmt = fmt.replace(
+                RegExp.$1,
+                (date.getFullYear() + "").substr(4 - RegExp.$1.length)
+            );
         }
 
         for (const k in o) {
             if (new RegExp("(" + k + ")").test(fmt)) {
-                fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+                fmt = fmt.replace(
+                    RegExp.$1,
+                    RegExp.$1.length === 1
+                        ? o[k]
+                        : ("00" + o[k]).substr(("" + o[k]).length)
+                );
             }
         }
         return fmt;

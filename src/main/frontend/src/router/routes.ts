@@ -1,16 +1,15 @@
-import { Layout } from "win-biz";
-import Directional from "@/page/fram/view/Directional.vue";
-import Flow from "@/page/flow/view/Exchange.vue";
+import asyncChunks from "../async-chunks";
+
 let routers = [
     {
         path: "/",
         name: "layout",
-        component: Layout,
+        component: () => asyncChunks.winBiz("Layout"),
         children: [
             {
                 path: "/directional",
                 name: "directional",
-                component: Directional
+                component: asyncChunks.Directional
             }
         ]
     }
@@ -20,8 +19,9 @@ const routerChildren = [
     {
         path: "/flow",
         name: "Flow",
-        component: Flow
-    }]
+        component: asyncChunks.Flow
+    }
+];
 
 if ("development" === process.env.NODE_ENV) {
     routerChildren.forEach(item => {
@@ -38,6 +38,3 @@ if ("development" === process.env.NODE_ENV) {
     });
 }
 export default routers;
-
-
-

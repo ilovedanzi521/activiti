@@ -262,7 +262,6 @@
 <script lang="ts">
 import ExchangeFlowController from "../controller/ExchangeFlowController";
 import Component from "vue-class-component";
-import ElementUI from "element-ui";
 export default class Exchange extends ExchangeFlowController {
     /**鼠标聚焦 */
     /**鼠标移开 */
