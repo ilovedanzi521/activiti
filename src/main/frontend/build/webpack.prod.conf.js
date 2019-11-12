@@ -31,13 +31,11 @@ const webpackConfig = merge(baseWebpackConfig, {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      minSize: 3000,
-      maxSize: 0,
+      minSize: 30000,
       minChunks: 1,
       maxAsyncRequests: 5,
-      maxInitialRequests: 3,
+      maxInitialRequests: 5,
       automaticNameDelimiter: '~',
-      automaticNameMaxLength: 30,
       cacheGroups: {
         "win-lib": {
           name: "win-lib",

@@ -39,20 +39,28 @@
     and TIMESTAMPDIFF(day,date_format(CURRENT_DATE(),'%Y-%m-%d'),end_date)>=0
     order by
     <choose>
-      <when test="securityType != null and securityType.length() > 0">
-        security_type ,
-      </when>
-      <otherwise>
-        security_type desc,
-      </otherwise>
+          <when test="investCompany != null and investCompany.length() > 0">
+              invest_company
+          </when>
+          <otherwise>
+              invest_company desc
+          </otherwise>
     </choose>
     <choose>
-      <when test="instructionType != null and instructionType.length() > 0">
-        instruction_type ,
-      </when>
-      <otherwise>
-        instruction_type desc,
-      </otherwise>
+        <when test="investConstitute != null and investConstitute.length() > 0">
+            invest_constitute ,
+        </when>
+        <otherwise>
+            invest_constitute desc,
+        </otherwise>
+    </choose>
+    <choose>
+        <when test="instructionType != null and instructionType.length() > 0">
+            instruction_type ,
+        </when>
+        <otherwise>
+            instruction_type desc,
+        </otherwise>
     </choose>
     <choose>
       <when test="marketCode != null and marketCode.length() > 0">
@@ -63,20 +71,12 @@
       </otherwise>
     </choose>
     <choose>
-      <when test="investConstitute != null and investConstitute.length() > 0">
-        invest_constitute ,
-      </when>
-      <otherwise>
-        invest_constitute desc,
-      </otherwise>
-    </choose>
-    <choose>
-      <when test="investCompany != null and investCompany.length() > 0">
-        invest_company
-      </when>
-      <otherwise>
-        invest_company desc
-      </otherwise>
+      <when test="securityType != null and securityType.length() > 0">
+            security_type ,
+        </when>
+        <otherwise>
+            security_type desc,
+        </otherwise>
     </choose>
   </select>
   <select id="queryIdFromFlowInst" resultType="java.lang.Long" parameterType="com.win.dfas.vo.request.ParamFlowReqVO">
